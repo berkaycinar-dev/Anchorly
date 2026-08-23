@@ -1,4 +1,4 @@
-# Dolt.
+# Loop
 
 Günlük görevleri ve alışkanlıkları tek bir yerden takip etmek için geliştirdiğim, React tabanlı bir görev/alışkanlık yönetim panosu.
 
@@ -24,43 +24,10 @@ Günlük görevleri ve alışkanlıkları tek bir yerden takip etmek için geli�
 ## Kurulum
 
 ```bash
-git clone https://github.com/kullaniciadin/dolt-todo-app.git
-cd dolt-todo-app
+git clone https://github.com/kullaniciadin/loop.git
+cd loop
 npm install
 npm run dev
 ```
 
 ## Klasör Yapısı
-
-```
-src/
-├── components/
-│   ├── AddTaskForm.jsx    # Yeni görev ekleme formu
-│   ├── Header.jsx         # Üst bar, dark mode toggle
-│   ├── Sidebar.jsx        # Sayfa navigasyonu
-│   ├── Statcard.jsx       # Dashboard istatistik kartı
-│   └── TaskList.jsx       # Görev listesi
-├── App.jsx                # Ana state ve sayfa yönlendirme mantığı
-└── main.jsx
-```
-
-## Bilinen Eksikler / Devam Eden Geliştirme
-
-Proje aktif geliştirme aşamasında. Şu an sidebar'da görünüp henüz işlevsel olmayan sayfalar:
-
-- [ ] Calendar
-- [ ] Archive
-- [ ] Projects
-- [ ] Settings
-
-## Yol Haritası
-
-- [ ] Yukarıdaki sekmelerin tamamlanması
-- [ ] Backend + veritabanı entegrasyonu (localStorage yerine kalıcı, cihazlar arası senkronize veri)
-- [ ] Kullanıcı girişi / kimlik doğrulama
-- [ ] Görev önceliklendirme ve hatırlatıcılar
-- [ ] Mobil uyumlu (responsive) tasarım iyileştirmeleri
-
-## Ekran Görüntüsü
-
-_Ekran görüntüleri yakında eklenecek_
