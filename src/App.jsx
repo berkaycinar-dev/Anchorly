@@ -5,7 +5,6 @@ import TaskList from "./components/TaskList";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import AddTaskForm from "./components/AddTaskForm";
-import { renderToReadableStream } from "react-dom/server";
 
 const initialTasks = [
   {
@@ -119,7 +118,7 @@ function App() {
   const [tasks, setTasks] = useState(getInitialTasks);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
-  const [newTaskDate, setNewTaskDate] = useState("2026-08-05");
+  const [newTaskDate, setNewTaskDate] = useState(new Date().toISOString().slice(0,10),);
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [darkMode, setDarkMode] = useState(false);
@@ -154,9 +153,10 @@ function App() {
   const allTaskCount = tasks.length;
   const completedTasksCount = tasks.filter((task) => task.completed).length;
   const activeTaskCount = tasks.filter((task) => !task.completed).length;
-  const overdueTaskCount = 0;
   const today = new Date().toISOString().slice(0, 10);
-
+  const overdueTaskCount = tasks.filter(
+  (task) => !task.completed && task.date < today,
+  ).length;
   const todayTasks = tasks.filter((task) => task.date === today);
   const todayTasksCount = todayTasks.length;
   const completedTodayTasksCount = todayTasks.filter(
@@ -307,7 +307,7 @@ function App() {
     setTasks([newTask, ...tasks]);
     setNewTaskTitle("");
     setNewTaskCategory("Work");
-    setNewTaskDate("2026-08-05");
+    setNewTaskDate(new Date().toISOString().slice(0,10));
   }
 
   function deleteTask(id) {
