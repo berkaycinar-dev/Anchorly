@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Anchorly
 
 *[English](#english) | [Türkçe](#türkçe)*
@@ -85,45 +85,17 @@ This project was built for personal/portfolio purposes.
 
 ## Türkçe
 =======
-# Loop
->>>>>>> d8fb7ae9094594ee0a39c6b2de1c28a50bbfba43
 
-Günlük görevleri ve alışkanlıkları tek bir yerden takip etmek için geliştirdiğim, React tabanlı bir görev/alışkanlık yönetim panosu.
-
-**Canlı demo:** _Yakında eklenecek_
-
-### Özellikler
-
-- **Dashboard** — toplam/tamamlanan/devam eden görev sayıları ve günlük tamamlanma oranını gösteren dairesel grafik
-- **Today (Bugünün Görevleri)** — görev ekleme, silme, tamamlandı olarak işaretleme
-  - Başlığa göre arama
-  - Tümü / Aktif / Tamamlanan filtreleme
-  - Her görev için kategori (İş, Kişisel, Kişisel Gelişim, Diğer) ve tarih
-- **Daily Routine (Günlük Rutin)** — aylık takvim görünümünde alışkanlık takibi, ay ay ileri/geri gezinme, yeni rutin ekleme/silme
-- **Dark Mode** — açık/koyu tema geçişi
-- **Kalıcı veri** — tüm görev ve rutin verileri tarayıcının `localStorage`'ında saklanır, sayfa yenilendiğinde kaybolmaz
-
-### Kullanılan Teknolojiler
-
-- React 19
-- Vite
-- Vanilla CSS (herhangi bir UI kütüphanesi kullanılmadı)
-
-### Kurulum
 
 ```bash
-<<<<<<< HEAD
+
 git clone https://github.com/berkaycinar-dev/anchorly.git
 cd anchorly
-=======
-git clone https://github.com/kullaniciadin/loop.git
-cd loop
->>>>>>> d8fb7ae9094594ee0a39c6b2de1c28a50bbfba43
 npm install
 npm run dev
 ```
 
-<<<<<<< HEAD
+
 ### Klasör Yapısı
 
 ```
@@ -166,6 +138,4 @@ Bu proje kişisel/portfolyo amaçlı geliştirilmiştir.
 ---
 
 **Geliştiren:** [berkaycinar-dev](https://github.com/berkaycinar-dev)
-=======
-## Klasör Yapısı
->>>>>>> d8fb7ae9094594ee0a39c6b2de1c28a50bbfba43
+
