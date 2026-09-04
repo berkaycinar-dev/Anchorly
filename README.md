@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Anchorly
 
 *[English](#english) | [Türkçe](#türkçe)*
@@ -83,6 +84,9 @@ This project was built for personal/portfolio purposes.
 ---
 
 ## Türkçe
+=======
+# Loop
+>>>>>>> d8fb7ae9094594ee0a39c6b2de1c28a50bbfba43
 
 Günlük görevleri ve alışkanlıkları tek bir yerden takip etmek için geliştirdiğim, React tabanlı bir görev/alışkanlık yönetim panosu.
 
@@ -108,12 +112,18 @@ Günlük görevleri ve alışkanlıkları tek bir yerden takip etmek için geli�
 ### Kurulum
 
 ```bash
+<<<<<<< HEAD
 git clone https://github.com/berkaycinar-dev/anchorly.git
 cd anchorly
+=======
+git clone https://github.com/kullaniciadin/loop.git
+cd loop
+>>>>>>> d8fb7ae9094594ee0a39c6b2de1c28a50bbfba43
 npm install
 npm run dev
 ```
 
+<<<<<<< HEAD
 ### Klasör Yapısı
 
 ```
@@ -156,3 +166,6 @@ Bu proje kişisel/portfolyo amaçlı geliştirilmiştir.
 ---
 
 **Geliştiren:** [berkaycinar-dev](https://github.com/berkaycinar-dev)
+=======
+## Klasör Yapısı
+>>>>>>> d8fb7ae9094594ee0a39c6b2de1c28a50bbfba43
