@@ -1,7 +1,7 @@
 function Sidebar({activePage, setActivePage}) {
   return (
     <aside className="sidebar">
-      <h2>Loop</h2>
+      <h2>Anchorly</h2>
 
       <nav>
         {["Dashboard","Today", "Daily Routine", "Calendar", "Archive", "Projects", "Settings"].map(
