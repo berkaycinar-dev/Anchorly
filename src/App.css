@@ -774,3 +774,33 @@ body {
   font-size: 12px;
   color: #6b7280;
 }
+.settings-section {
+  margin-top: 24px;
+}
+
+.theme-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.theme-option {
+  padding: 10px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.active-theme {
+  border-color: #7c3aed;
+  background-color: #7c3aed;
+  color: white;
+}
+
+.theme-dark .theme-option {
+  background-color: #111827;
+  color: #f9fafb;
+  border-color: #374151;
+}

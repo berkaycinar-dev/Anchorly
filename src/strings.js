@@ -1,0 +1,28 @@
+export const strings = {
+  tr: {
+    dashboard: "Dashboard",
+    today: "Today",
+    dailyRoutine: "Daily Routine",
+    calendar: "Calendar",
+    archive: "Archive",
+    projects: "Projects",
+    settings: "Settings",
+    settingsTitle: "Ayarlar",
+    settingsDescription: "Temayı ve dili buradan yönetebilirsin.",
+    themeLabel: "Tema",
+    languageLabel: "Dil",
+  },
+  en: {
+    dashboard: "Dashboard",
+    today: "Today",
+    dailyRoutine: "Daily Routine",
+    calendar: "Calendar",
+    archive: "Archive",
+    projects: "Projects",
+    settings: "Settings",
+    settingsTitle: "Settings",
+    settingsDescription: "Manage your theme and language here.",
+    themeLabel: "Theme",
+    languageLabel: "Language",
+  },
+};
