@@ -639,3 +639,79 @@ body {
   color: #e0f2fe;
   border-color: #334155;
 }
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 480px;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-box textarea {
+  width: 100%;
+  min-height: 80px;
+  margin-bottom: 16px;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  box-sizing: border-box;
+}
+
+.task-steps-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.task-steps-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.task-steps-list li span {
+  flex: 1;
+}
+
+.step-done {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.task-step-form {
+  display: flex;
+  gap: 8px;
+}
+
+.task-step-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.theme-dark .modal-box {
+  background-color: #1e293b;
+  color: #e0f2fe;
+}

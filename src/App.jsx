@@ -5,6 +5,7 @@ import TaskList from "./components/TaskList";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import AddTaskForm from "./components/AddTaskForm";
+import TaskDetailModal from "./components/TaskDetailModal";
 
 const initialTasks = [
   {
@@ -14,6 +15,8 @@ const initialTasks = [
     date: "2026-08-05",
     completed: false,
     projectId: null,
+    description: "",
+steps: [],
   },
   {
     id: 2,
@@ -22,6 +25,8 @@ const initialTasks = [
     date: "2026-08-05",
     completed: false,
     projectId: null,
+    description: "",
+steps: [],
   },
   {
     id: 3,
@@ -30,6 +35,8 @@ const initialTasks = [
     date: "2026-08-05",
     completed: false,
     projectId: null,
+    description: "",
+steps: [],
   },
   {
     id: 4,
@@ -38,6 +45,8 @@ const initialTasks = [
     date: "2026-08-05",
     completed: true,
     projectId: null,
+    description: "",
+steps: [],
   },
   {
     id: 5,
@@ -46,6 +55,8 @@ const initialTasks = [
     date: "2026-08-06",
     completed: false,
     projectId: null,
+    description: "",
+steps: [],
   },
 ];
 const initialRoutines = [
@@ -108,7 +119,13 @@ function getInitialTasks() {
   const savedTasks = localStorage.getItem("tasks");
 
   if (savedTasks) {
-    return JSON.parse(savedTasks);
+    const parsedTasks = JSON.parse(savedTasks);
+
+    return parsedTasks.map((task) => ({
+      description: "",
+      steps: [],
+      ...task,
+    }));
   }
 
   return initialTasks;
@@ -126,6 +143,8 @@ function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
   });
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
   const [activePage, setActivePage] = useState("DashBoard");
   const [routines, setRoutines] = useState(getInitialRoutines);
   const [routineChecks, setRoutineChecks] = useState(getInitialRoutineChecks);
@@ -310,12 +329,63 @@ function App() {
       date: newTaskDate,
       completed: false,
       projectId: null,
+      description: "",
+      steps: [],
     };
 
     setTasks([newTask, ...tasks]);
     setNewTaskTitle("");
     setNewTaskCategory("Work");
     setNewTaskDate(new Date().toISOString().slice(0, 10));
+  }
+
+  function updateTaskDescription(taskId, newDescription) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, description: newDescription } : task,
+      ),
+    );
+  }
+
+  function addTaskStep(taskId, stepText) {
+    if (stepText.trim() === "") {
+      return;
+    }
+
+    const newStep = { id: Date.now(), text: stepText, done: false };
+
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? { ...task, steps: [...task.steps, newStep] }
+          : task,
+      ),
+    );
+  }
+
+  function toggleTaskStep(taskId, stepId) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              steps: task.steps.map((step) =>
+                step.id === stepId ? { ...step, done: !step.done } : step,
+              ),
+            }
+          : task,
+      ),
+    );
+  }
+
+  function deleteTaskStep(taskId, stepId) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? { ...task, steps: task.steps.filter((step) => step.id !== stepId) }
+          : task,
+      ),
+    );
   }
 
   function deleteTask(id) {
@@ -531,6 +601,7 @@ function App() {
                 tasks={filteredTasks}
                 toggleTask={toggleTask}
                 deleteTask={deleteTask}
+                onSelectTask={setSelectedTaskId}
               />
             </section>
           </>
@@ -665,6 +736,7 @@ function App() {
               tasks={filteredArchiveTasks}
               toggleTask={toggleTask}
               deleteTask={deleteTask}
+              onSelectTask={setSelectedTaskId}
             />
           </section>
         )}
@@ -703,6 +775,16 @@ function App() {
           </section>
         )}
       </main>
+
+      <TaskDetailModal
+        task={selectedTask}
+        onClose={() => setSelectedTaskId(null)}
+        onUpdateDescription={updateTaskDescription}
+        onAddStep={addTaskStep}
+        onToggleStep={toggleTaskStep}
+        onDeleteStep={deleteTaskStep}
+      />
+
     </div>
   );
 }
