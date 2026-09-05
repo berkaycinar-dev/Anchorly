@@ -1,12 +1,17 @@
-function Header( {darkMode, setDarkMode}) {
+function Header({ theme, setTheme }) {
+  const themes = ["light", "dark", "ocean"];
+
+  const cycleTheme = () => {
+    const currentIndex = themes.indexOf(theme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    setTheme(themes[nextIndex]);
+  };
+
   return (
     <header className="header">
-      <div>
-      </div>
+      <div></div>
 
-      <button onClick={() => setDarkMode((preDarkMode) => !preDarkMode)}>
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </button>
+      <button onClick={cycleTheme}>Tema: {theme}</button>
     </header>
   );
 }

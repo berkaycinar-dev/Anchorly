@@ -118,10 +118,14 @@ function App() {
   const [tasks, setTasks] = useState(getInitialTasks);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
-  const [newTaskDate, setNewTaskDate] = useState(new Date().toISOString().slice(0,10),);
+  const [newTaskDate, setNewTaskDate] = useState(
+    new Date().toISOString().slice(0, 10),
+  );
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
   const [activePage, setActivePage] = useState("DashBoard");
   const [routines, setRoutines] = useState(getInitialRoutines);
   const [routineChecks, setRoutineChecks] = useState(getInitialRoutineChecks);
@@ -150,12 +154,16 @@ function App() {
     localStorage.setItem("projects", JSON.stringify(projects));
   }, [projects]);
 
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const allTaskCount = tasks.length;
   const completedTasksCount = tasks.filter((task) => task.completed).length;
   const activeTaskCount = tasks.filter((task) => !task.completed).length;
   const today = new Date().toISOString().slice(0, 10);
   const overdueTaskCount = tasks.filter(
-  (task) => !task.completed && task.date < today,
+    (task) => !task.completed && task.date < today,
   ).length;
   const todayTasks = tasks.filter((task) => task.date === today);
   const todayTasksCount = todayTasks.length;
@@ -307,7 +315,7 @@ function App() {
     setTasks([newTask, ...tasks]);
     setNewTaskTitle("");
     setNewTaskCategory("Work");
-    setNewTaskDate(new Date().toISOString().slice(0,10));
+    setNewTaskDate(new Date().toISOString().slice(0, 10));
   }
 
   function deleteTask(id) {
@@ -337,11 +345,11 @@ function App() {
   }
 
   return (
-    <div className={darkMode ? "app dark-mode" : "app"}>
+    <div className={`app theme-${theme}`}>
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
 
       <main className="main-content">
-        <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+        <Header theme={theme} setTheme={setTheme} />
         <h2 className="page-title">{activePage}</h2>
 
         {activePage === "Dashboard" && (

@@ -213,40 +213,40 @@ body {
   background-color: #f9fafb;
   border-radius: 8px;
 }
-.dark-mode {
+.theme-dark {
   background-color: #111827;
   color: #f9fafb;
 }
 
-.dark-mode .sidebar,
-.dark-mode .stat-card,
-.dark-mode .task-section {
+.theme-dark .sidebar,
+.theme-dark .stat-card,
+.theme-dark .task-section {
   background-color: #1f2937;
   border-color: #374151;
 }
 
-.dark-mode .sidebar a,
-.dark-mode .header p,
-.dark-mode .task-list li span:nth-child(3),
-.dark-mode .empty-message {
+.theme-dark .sidebar a,
+.theme-dark .header p,
+.theme-dark .task-list li span:nth-child(3),
+.theme-dark .empty-message {
   color: #d1d5db;
 }
 
-.dark-mode input,
-.dark-mode select {
+.theme-dark input,
+.theme-dark select {
   background-color: #111827;
   color: #f9fafb;
   border-color: #374151;
 }
 
-.dark-mode .empty-message {
+.theme-dark .empty-message {
   background-color: #111827;
 }
 .page-title {
   margin-bottom: 20px;
   color: #374151;
 }
-.dark-mode .page-title {
+.theme-dark .page-title {
   color: #f9fafb;
 }
 .dashboard-page {
@@ -270,11 +270,11 @@ body {
   color: #6b7280;
 }
 
-.dark-mode .dashboard-welcome {
+.theme-dark .dashboard-welcome {
   background-color: #1f2937;
 }
 
-.dark-mode .dashboard-welcome p {
+.theme-dark .dashboard-welcome p {
   color: #d1d5db;
 }
 .dashboard-grid {
@@ -313,11 +313,11 @@ body {
   font-size: 24px;
 }
 
-.dark-mode .chart-card {
+.theme-dark .chart-card {
   background-color: #1f2937;
 }
 
-.dark-mode .pie-chart span {
+.theme-dark .pie-chart span {
   background-color: #1f2937;
 }
 .routine-page {
@@ -338,7 +338,7 @@ body {
   font-weight: 600;
 }
 
-.dark-mode .routine-item {
+.theme-dark .routine-item {
   background-color: #1f2937;
 }
 .routine-table-wrapper {
@@ -373,14 +373,14 @@ body {
   font-weight: bold;
 }
 
-.dark-mode .routine-table-wrapper,
-.dark-mode .routine-table th:first-child,
-.dark-mode .routine-table td:first-child {
+.theme-dark .routine-table-wrapper,
+.theme-dark .routine-table th:first-child,
+.theme-dark .routine-table td:first-child {
   background-color: #1f2937;
 }
 
-.dark-mode .routine-table th,
-.dark-mode .routine-table td {
+.theme-dark .routine-table th,
+.theme-dark .routine-table td {
   border-color: #374151;
 }
 .routine-form {
@@ -406,7 +406,7 @@ body {
   cursor: pointer;
 }
 
-.dark-mode .routine-form input {
+.theme-dark .routine-form input {
   background-color: #111827;
   color: #f9fafb;
   border-color: #374151;
@@ -458,9 +458,9 @@ body {
   background-color: #f9fafb;
 }
 
-.dark-mode .calendar-grid,
-.dark-mode .calendar-cell,
-.dark-mode .calendar-day-name {
+.theme-dark .calendar-grid,
+.theme-dark .calendar-cell,
+.theme-dark .calendar-day-name {
   background-color: #1f2937;
   border-color: #374151;
 }
@@ -479,7 +479,7 @@ body {
   font-weight: bold;
 }
 
-.dark-mode .calendar-task {
+.theme-dark .calendar-task {
   background-color: #312e81;
   color: #ddd6fe;
 }
@@ -491,7 +491,7 @@ body {
   background-color: #f5f3ff;
 }
 
-.dark-mode .calendar-cell:not(.empty):hover {
+.theme-dark .calendar-cell:not(.empty):hover {
   background-color: #111827;
 }.calendar-cell:not(.empty) {
   cursor: pointer;
@@ -501,7 +501,7 @@ body {
   background-color: #f5f3ff;
 }
 
-.dark-mode .calendar-cell:not(.empty):hover {
+.theme-dark .calendar-cell:not(.empty):hover {
   background-color: #111827;
 }
 .archive-page {
@@ -534,12 +534,12 @@ body {
   cursor: pointer;
 }
 
-.dark-mode .archive-filters {
+.theme-dark .archive-filters {
   background-color: #1f2937;
 }
 
-.dark-mode .archive-filters select,
-.dark-mode .archive-filters input {
+.theme-dark .archive-filters select,
+.theme-dark .archive-filters input {
   background-color: #111827;
   color: #f9fafb;
   border-color: #374151;
@@ -570,11 +570,11 @@ body {
   color: #6b7280;
 }
 
-.dark-mode .project-card {
+.theme-dark .project-card {
   background-color: #1f2937;
 }
 
-.dark-mode .project-card p {
+.theme-dark .project-card p {
   color: #d1d5db;
 }
 .project-form {
@@ -600,7 +600,7 @@ body {
   cursor: pointer;
 }
 
-.dark-mode .project-form input {
+.theme-dark .project-form input {
   background-color: #111827;
   color: #f9fafb;
   border-color: #374151;
@@ -620,4 +620,22 @@ body {
   color: #dc2626;
   font-weight: bold;
   cursor: pointer;
+}
+.theme-ocean {
+  background-color: #0f172a;
+  color: #e0f2fe;
+}
+
+.theme-ocean .sidebar,
+.theme-ocean .stat-card,
+.theme-ocean .task-section {
+  background-color: #1e293b;
+  color: #e0f2fe;
+}
+
+.theme-ocean input,
+.theme-ocean select {
+  background-color: #0f172a;
+  color: #e0f2fe;
+  border-color: #334155;
 }
