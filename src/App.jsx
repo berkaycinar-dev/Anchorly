@@ -16,7 +16,7 @@ const initialTasks = [
     completed: false,
     projectId: null,
     description: "",
-steps: [],
+    steps: [],
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ steps: [],
     completed: false,
     projectId: null,
     description: "",
-steps: [],
+    steps: [],
   },
   {
     id: 3,
@@ -36,7 +36,7 @@ steps: [],
     completed: false,
     projectId: null,
     description: "",
-steps: [],
+    steps: [],
   },
   {
     id: 4,
@@ -46,7 +46,7 @@ steps: [],
     completed: true,
     projectId: null,
     description: "",
-steps: [],
+    steps: [],
   },
   {
     id: 5,
@@ -56,7 +56,7 @@ steps: [],
     completed: false,
     projectId: null,
     description: "",
-steps: [],
+    steps: [],
   },
 ];
 const initialRoutines = [
@@ -225,10 +225,59 @@ function App() {
     (_, index) => index + 1,
   );
 
+  function getGreeting() {
+    const hour = new Date().getHours();
+
+    if (hour < 12) {
+      return "Günaydın";
+    }
+
+    if (hour < 18) {
+      return "İyi günler";
+    }
+
+    return "İyi akşamlar";
+  }
+
   function getRoutineKey(routineId, day) {
     const monthKey = `${routineYear}-${routineMonthIndex + 1}`;
     return `${monthKey}-${routineId}-${day}`;
   }
+
+  function getRoutineKeyForDate(routineId, date) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${routineId}-${day}`;
+  }
+
+  function getWeeklyProductivity() {
+    const days = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+
+      const totalRoutines = routines.length;
+      const completedRoutines = routines.filter(
+        (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
+      ).length;
+
+      const percent =
+        totalRoutines === 0
+          ? 0
+          : Math.round((completedRoutines / totalRoutines) * 100);
+
+      days.push({
+        label: date.toLocaleDateString("tr-TR", { weekday: "short" }),
+        percent,
+      });
+    }
+
+    return days;
+  }
+
+  const weeklyProductivity = getWeeklyProductivity();
 
   function toggleRoutineCheck(routineId, day) {
     const key = getRoutineKey(routineId, day);
@@ -425,7 +474,7 @@ function App() {
         {activePage === "Dashboard" && (
           <section className="dashboard-page">
             <div className="dashboard-welcome">
-              <h2>Hoş geldin, Berkay</h2>
+              <h2>{getGreeting()}, Berkay</h2>
               <p>
                 Bugünkü {todayTasksCount} görevin var.{" "}
                 {completedTodayTasksCount} tanesini tamamladın.
@@ -455,6 +504,25 @@ function App() {
                 <p>
                   {completedTodayTasksCount} / {todayTasksCount} tamamlandı
                 </p>
+                <div className="chart-legend">
+                  <span className="legend-dot legend-done"></span> Tamamlanan
+                  <span className="legend-dot legend-pending"></span> Bekleyen
+                </div>
+              </div>
+              <div className="chart-card">
+                <h3>Haftalık Productivity</h3>
+
+                <div className="weekly-chart">
+                  {weeklyProductivity.map((day, index) => (
+                    <div className="weekly-bar-wrapper" key={index}>
+                      <div
+                        className="weekly-bar"
+                        style={{ height: `${day.percent}%` }}
+                      ></div>
+                      <span>{day.label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
           </section>
@@ -784,7 +852,6 @@ function App() {
         onToggleStep={toggleTaskStep}
         onDeleteStep={deleteTaskStep}
       />
-
     </div>
   );
 }
