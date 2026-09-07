@@ -804,3 +804,12 @@ body {
   color: #f9fafb;
   border-color: #374151;
 }
+.active-view-toggle {
+  background-color: #7c3aed;
+  color: white;
+  border-color: #7c3aed;
+}
+
+.calendar-grid-week {
+  grid-template-rows: auto 1fr;
+}

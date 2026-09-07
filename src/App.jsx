@@ -161,6 +161,8 @@ function App() {
   const [routineMonth, setRoutineMounth] = useState(new Date());
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
+  const [calendarViewMode, setCalendarViewMode] = useState("month");
+  const [calendarWeekStart, setCalendarWeekStart] = useState(new Date());
   const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
   const [archiveStartDate, setArchiveStartDate] = useState("");
   const [archiveEndDate, setArchiveEndDate] = useState("");
@@ -234,6 +236,18 @@ function App() {
     { length: daysInCalendarMonth },
     (_, index) => index + 1,
   );
+  function getWeekDays(anchorDate) {
+    const startOfWeek = new Date(anchorDate);
+    startOfWeek.setDate(anchorDate.getDate() - anchorDate.getDay());
+
+    return Array.from({ length: 7 }, (_, index) => {
+      const day = new Date(startOfWeek);
+      day.setDate(startOfWeek.getDate() + index);
+      return day;
+    });
+  }
+
+  const weekDays = getWeekDays(calendarWeekStart);
 
   function getGreeting() {
     const hour = new Date().getHours();
@@ -690,83 +704,171 @@ function App() {
             <div className="routine-header">
               <div>
                 <h2>Takvim</h2>
-                <p>
-                  {calendarMonth.toLocaleDateString("tr-TR", {
-                    month: "long",
-                    year: "numeric",
-                  })}
+                                <p>
+                  {calendarViewMode === "month"
+                    ? calendarMonth.toLocaleDateString("tr-TR", {
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : `${weekDays[0].toLocaleDateString("tr-TR", { day: "numeric", month: "short" })} - ${weekDays[6].toLocaleDateString("tr-TR", { day: "numeric", month: "short" })}`}
                 </p>
               </div>
 
-              <div className="routine-month-actions">
+                            <div className="routine-month-actions">
                 <button
-                  onClick={() =>
-                    setCalendarMonth(
-                      new Date(calendarYear, calendarMonthIndex - 1, 1),
-                    )
+                  className={
+                    calendarViewMode === "month" ? "active-view-toggle" : ""
                   }
+                  onClick={() => setCalendarViewMode("month")}
                 >
-                  Önceki Ay
+                  Aylık
                 </button>
 
                 <button
-                  onClick={() =>
-                    setCalendarMonth(
-                      new Date(calendarYear, calendarMonthIndex + 1, 1),
-                    )
+                  className={
+                    calendarViewMode === "week" ? "active-view-toggle" : ""
                   }
+                  onClick={() => setCalendarViewMode("week")}
                 >
-                  Sonraki Ay
+                  Haftalık
                 </button>
+
+                {calendarViewMode === "month" && (
+                  <>
+                    <button
+                      onClick={() =>
+                        setCalendarMonth(
+                          new Date(calendarYear, calendarMonthIndex - 1, 1),
+                        )
+                      }
+                    >
+                      Önceki Ay
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        setCalendarMonth(
+                          new Date(calendarYear, calendarMonthIndex + 1, 1),
+                        )
+                      }
+                    >
+                      Sonraki Ay
+                    </button>
+                  </>
+                )}
+
+                {calendarViewMode === "week" && (
+                  <>
+                    <button
+                      onClick={() => {
+                        const newDate = new Date(calendarWeekStart);
+                        newDate.setDate(newDate.getDate() - 7);
+                        setCalendarWeekStart(newDate);
+                      }}
+                    >
+                      Önceki Hafta
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        const newDate = new Date(calendarWeekStart);
+                        newDate.setDate(newDate.getDate() + 7);
+                        setCalendarWeekStart(newDate);
+                      }}
+                    >
+                      Sonraki Hafta
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
-            <div className="calendar-grid">
-              {["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"].map(
-                (dayName) => (
-                  <div className="calendar-day-name" key={dayName}>
-                    {dayName}
+                        {calendarViewMode === "month" && (
+              <div className="calendar-grid">
+                {["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"].map(
+                  (dayName) => (
+                    <div className="calendar-day-name" key={dayName}>
+                      {dayName}
+                    </div>
+                  ),
+                )}
+
+                {Array.from({ length: calendarStartDay }).map((_, index) => (
+                  <div
+                    className="calendar-cell empty"
+                    key={`empty-${index}`}
+                  ></div>
+                ))}
+
+                {calendarDays.map((day) => (
+                  <div
+                    className="calendar-cell"
+                    key={day}
+                    onClick={() => {
+                      const selectedDate = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                      setNewTaskDate(selectedDate);
+                      setActivePage("Today");
+                    }}
+                  >
+                    <strong>{day}</strong>
+
+                    <div className="calendar-tasks">
+                      {tasks
+                        .filter((task) => {
+                          const date = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                          return task.date === date;
+                        })
+                        .map((task) => (
+                          <div className="calendar-task" key={task.id}>
+                            {task.title}
+                          </div>
+                        ))}
+                    </div>
                   </div>
-                ),
-              )}
+                ))}
+              </div>
+            )}
 
-              {Array.from({ length: calendarStartDay }).map((_, index) => (
-                <div
-                  className="calendar-cell empty"
-                  key={`empty-${index}`}
-                ></div>
-              ))}
-
-              {calendarDays.map((day) => (
-                <div
-                  className="calendar-cell"
-                  key={day}
-                  onClick={() => {
-                    const selectedDate = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                    setNewTaskDate(selectedDate);
-                    setActivePage("Today");
-                  }}
-                >
-                  <strong>{day}</strong>
-
-                  <div className="calendar-tasks">
-                    {tasks
-                      .filter((task) => {
-                        const date = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                        return task.date === date;
-                      })
-                      .map((task) => (
-                        <div className="calendar-task" key={task.id}>
-                          {task.title}
-                        </div>
-                      ))}
+            {calendarViewMode === "week" && (
+              <div className="calendar-grid calendar-grid-week">
+                {weekDays.map((day) => (
+                  <div className="calendar-day-name" key={`name-${day}`}>
+                    {day.toLocaleDateString("tr-TR", { weekday: "short" })}
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+
+                {weekDays.map((day) => {
+                  const dateString = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
+
+                  return (
+                    <div
+                      className="calendar-cell"
+                      key={dateString}
+                      onClick={() => {
+                        setNewTaskDate(dateString);
+                        setActivePage("Today");
+                      }}
+                    >
+                      <strong>{day.getDate()}</strong>
+
+                      <div className="calendar-tasks">
+                        {tasks
+                          .filter((task) => task.date === dateString)
+                          .map((task) => (
+                            <div className="calendar-task" key={task.id}>
+                              {task.title}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </section>
         )}
 
+              
         {activePage === "Archive" && (
           <section className="archive-page">
             <div className="dashboard-welcome">
