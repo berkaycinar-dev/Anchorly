@@ -813,3 +813,34 @@ body {
 .calendar-grid-week {
   grid-template-rows: auto 1fr;
 }
+.project-task-form {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.project-task-form input {
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.project-task-form input:first-child {
+  flex: 1;
+}
+
+.project-task-form button {
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background-color: #7c3aed;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.theme-dark .project-task-form input {
+  background-color: #111827;
+  color: #f9fafb;
+  border-color: #374151;
+}

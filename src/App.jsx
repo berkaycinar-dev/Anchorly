@@ -168,6 +168,7 @@ function App() {
   const [archiveEndDate, setArchiveEndDate] = useState("");
   const [projects, setProjects] = useState(getInitialProjects);
   const [newProjectName, setNewProjectsName] = useState("");
+  
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -193,6 +194,11 @@ function App() {
   const completedTasksCount = tasks.filter((task) => task.completed).length;
   const activeTaskCount = tasks.filter((task) => !task.completed).length;
   const today = new Date().toISOString().slice(0, 10);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
+  const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
+  const selectedProject =
+    projects.find((project) => project.id === selectedProjectId) || null;
   const overdueTaskCount = tasks.filter(
     (task) => !task.completed && task.date < today,
   ).length;
@@ -487,6 +493,29 @@ function App() {
     setProjects(filteredProjects);
   }
 
+  function addProjectTask(event) {
+    event.preventDefault();
+
+    if (newProjectTaskTitle.trim() === "") {
+      return;
+    }
+
+    const newTask = {
+      id: Date.now(),
+      title: newProjectTaskTitle,
+      category: "Project",
+      date: newProjectTaskDate,
+      completed: false,
+      projectId: selectedProjectId,
+      description: "",
+      steps: [],
+    };
+
+    setTasks([...tasks, newTask]);
+    setNewProjectTaskTitle("");
+    setNewProjectTaskDate(today);
+  }
+
   return (
     <div className={`app theme-${theme}`}>
       <Sidebar activePage={activePage} setActivePage={setActivePage} t={t} />
@@ -704,7 +733,7 @@ function App() {
             <div className="routine-header">
               <div>
                 <h2>Takvim</h2>
-                                <p>
+                <p>
                   {calendarViewMode === "month"
                     ? calendarMonth.toLocaleDateString("tr-TR", {
                         month: "long",
@@ -714,7 +743,7 @@ function App() {
                 </p>
               </div>
 
-                            <div className="routine-month-actions">
+              <div className="routine-month-actions">
                 <button
                   className={
                     calendarViewMode === "month" ? "active-view-toggle" : ""
@@ -783,7 +812,7 @@ function App() {
               </div>
             </div>
 
-                        {calendarViewMode === "month" && (
+            {calendarViewMode === "month" && (
               <div className="calendar-grid">
                 {["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"].map(
                   (dayName) => (
@@ -868,7 +897,6 @@ function App() {
           </section>
         )}
 
-              
         {activePage === "Archive" && (
           <section className="archive-page">
             <div className="dashboard-welcome">
@@ -921,7 +949,7 @@ function App() {
           </section>
         )}
 
-        {activePage === "Projects" && (
+        {activePage === "Projects" && !selectedProject && (
           <section className="projects-page">
             <div className="dashboard-welcome">
               <h2>Projeler</h2>
@@ -940,18 +968,74 @@ function App() {
             </form>
             <div className="project-list">
               {projects.map((project) => (
-                <div className="project-card" key={project.id}>
+                <div
+                  className="project-card"
+                  key={project.id}
+                  onClick={() => setSelectedProjectId(project.id)}
+                >
                   <div className="project-card-header">
                     <h3>{project.name}</h3>
-                    <button onClick={() => deleteProject(project.id)}>
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        deleteProject(project.id);
+                      }}
+                    >
                       Sil
                     </button>
                   </div>
 
-                  <p>Bu proje için görevler sonraki adımda eklenecek.</p>
+                  <p>
+                    {
+                      tasks.filter((task) => task.projectId === project.id)
+                        .length
+                    }{" "}
+                    görev
+                  </p>
                 </div>
               ))}
             </div>
+          </section>
+        )}
+
+                {activePage === "Projects" && selectedProject && (
+          <section className="project-detail">
+            <div className="dashboard-welcome">
+              <button onClick={() => setSelectedProjectId(null)}>
+                ← Projelere Dön
+              </button>
+              <h2>{selectedProject.name}</h2>
+            </div>
+
+            <form className="project-task-form" onSubmit={addProjectTask}>
+              <input
+                type="text"
+                placeholder="Proje görevi ekle..."
+                value={newProjectTaskTitle}
+                onChange={(event) =>
+                  setNewProjectTaskTitle(event.target.value)
+                }
+              />
+
+              <input
+                type="date"
+                value={newProjectTaskDate}
+                onChange={(event) =>
+                  setNewProjectTaskDate(event.target.value)
+                }
+              />
+
+              <button type="submit">Görev Ekle</button>
+            </form>
+
+            <TaskList
+              tasks={tasks.filter(
+                (task) => task.projectId === selectedProjectId,
+              )}
+              toggleTask={toggleTask}
+              deleteTask={deleteTask}
+              onSelectTask={setSelectedTaskId}
+            />
           </section>
         )}
 
