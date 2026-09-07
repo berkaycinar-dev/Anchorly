@@ -844,3 +844,39 @@ body {
   color: #f9fafb;
   border-color: #374151;
 }
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-shrink: 1;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .sidebar nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-grid {
+    font-size: 12px;
+  }
+
+  .modal-box {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .project-task-form,
+  .task-step-form {
+    flex-direction: column;
+  }
+}

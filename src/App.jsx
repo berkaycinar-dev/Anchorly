@@ -326,7 +326,7 @@ function App() {
     }
 
     const newRoutine = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       title: newRoutineTitle,
     };
 
@@ -402,7 +402,7 @@ function App() {
     }
 
     const newTask = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       title: newTaskTitle,
       category: newTaskCategory,
       date: newTaskDate,
@@ -431,7 +431,7 @@ function App() {
       return;
     }
 
-    const newStep = { id: Date.now(), text: stepText, done: false };
+    const newStep = { id: crypto.randomUUID(), text: stepText, done: false };
 
     setTasks(
       tasks.map((task) =>
@@ -480,7 +480,7 @@ function App() {
     }
 
     const newProject = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       name: newProjectName,
     };
 
@@ -501,7 +501,7 @@ function App() {
     }
 
     const newTask = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       title: newProjectTaskTitle,
       category: "Project",
       date: newProjectTaskDate,
