@@ -1068,3 +1068,10 @@ body {
 .routine-delete-button:hover {
   background-color: #fee2e2;
 }
+.task-card[draggable="true"] {
+  cursor: grab;
+}
+
+.task-card-dragging {
+  opacity: 0.4;
+}

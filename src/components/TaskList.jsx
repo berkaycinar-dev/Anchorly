@@ -1,21 +1,50 @@
 import { useState } from "react";
 
-function TaskList({ tasks, toggleTask, deleteTask, onSelectTask }) {
+function TaskList({ tasks, toggleTask, deleteTask, onSelectTask, onReorderTasks }) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
+  const [draggedTaskId, setDraggedTaskId] = useState(null);
 
   if (tasks.length === 0) {
     return <p className="empty-message">Görev bulunamadı.</p>;
   }
 
-  const activeTasks = tasks.filter((task) => !task.completed);
+  const activeTasks = tasks
+    .filter((task) => !task.completed)
+    .sort((a, b) => a.order - b.order);
+
   const completedTasks = tasks.filter((task) => task.completed);
 
-  function renderTaskCard(task) {
+  function renderTaskCard(task, isDraggable) {
     return (
       <li
         key={task.id}
-        className={task.completed ? "task-card completed-task" : "task-card"}
+        className={
+          task.completed
+            ? "task-card completed-task"
+            : draggedTaskId === String(task.id)
+              ? "task-card task-card-dragging"
+              : "task-card"
+        }
+        draggable={isDraggable}
         onClick={() => onSelectTask(task.id)}
+        onDragStart={(event) => {
+          event.dataTransfer.setData("text/plain", String(task.id));
+          setDraggedTaskId(String(task.id));
+        }}
+        onDragEnd={() => setDraggedTaskId(null)}
+        onDragOver={(event) => {
+          if (isDraggable) {
+            event.preventDefault();
+          }
+        }}
+        onDrop={(event) => {
+          if (!isDraggable) {
+            return;
+          }
+          event.preventDefault();
+          const draggedId = event.dataTransfer.getData("text/plain");
+          onReorderTasks(draggedId, task.id);
+        }}
       >
         <input
           type="checkbox"
@@ -58,7 +87,9 @@ function TaskList({ tasks, toggleTask, deleteTask, onSelectTask }) {
 
   return (
     <div className="task-list-container">
-      <ul className="task-list">{activeTasks.map(renderTaskCard)}</ul>
+      <ul className="task-list">
+        {activeTasks.map((task) => renderTaskCard(task, true))}
+      </ul>
 
       {completedTasks.length > 0 && (
         <div className="completed-section">
@@ -66,16 +97,16 @@ function TaskList({ tasks, toggleTask, deleteTask, onSelectTask }) {
             className="completed-toggle"
             onClick={() => setIsCompletedOpen(!isCompletedOpen)}
           >
-            <span
-              className={isCompletedOpen ? "chevron chevron-open" : "chevron"}
-            >
+            <span className={isCompletedOpen ? "chevron chevron-open" : "chevron"}>
               ▸
             </span>
             Tamamlandı ({completedTasks.length})
           </button>
 
           {isCompletedOpen && (
-            <ul className="task-list">{completedTasks.map(renderTaskCard)}</ul>
+            <ul className="task-list">
+              {completedTasks.map((task) => renderTaskCard(task, false))}
+            </ul>
           )}
         </div>
       )}

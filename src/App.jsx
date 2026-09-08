@@ -19,6 +19,7 @@ const initialTasks = [
     description: "",
     steps: [],
     completedAt: null,
+    order: 0,
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ const initialTasks = [
     description: "",
     steps: [],
     completedAt: null,
+    order: 1,
   },
   {
     id: 3,
@@ -41,6 +43,7 @@ const initialTasks = [
     description: "",
     steps: [],
     completedAt: null,
+    order: 2,
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ const initialTasks = [
     description: "",
     steps: [],
     completedAt: null,
+    order: 3,
   },
   {
     id: 5,
@@ -63,6 +67,7 @@ const initialTasks = [
     description: "",
     steps: [],
     completedAt: null,
+    order: 4,
   },
 ];
 const initialRoutines = [
@@ -127,10 +132,11 @@ function getInitialTasks() {
   if (savedTasks) {
     const parsedTasks = JSON.parse(savedTasks);
 
-    return parsedTasks.map((task) => ({
+    return parsedTasks.map((task, index) => ({
       description: "",
       steps: [],
       completedAt: null,
+      order: index,
       ...task,
     }));
   }
@@ -428,6 +434,8 @@ function App() {
       projectId: null,
       description: "",
       steps: [],
+      completedAt: null,
+      order: Date.now(),
     };
 
     setTasks([newTask, ...tasks]);
@@ -488,6 +496,44 @@ function App() {
   function deleteTask(id) {
     const filteredTasks = tasks.filter((task) => task.id !== id);
     setTasks(filteredTasks);
+  }
+
+  function reorderTasks(draggedId, targetId) {
+    if (draggedId === String(targetId)) {
+      return;
+    }
+
+    const activeTasksSorted = tasks
+      .filter((task) => !task.completed)
+      .sort((a, b) => a.order - b.order);
+
+    const draggedIndex = activeTasksSorted.findIndex(
+      (task) => String(task.id) === draggedId,
+    );
+    const targetIndex = activeTasksSorted.findIndex(
+      (task) => task.id === targetId,
+    );
+
+    if (draggedIndex === -1 || targetIndex === -1) {
+      return;
+    }
+
+    const reordered = [...activeTasksSorted];
+    const [draggedTask] = reordered.splice(draggedIndex, 1);
+    reordered.splice(targetIndex, 0, draggedTask);
+
+    const orderMap = {};
+    reordered.forEach((task, index) => {
+      orderMap[task.id] = index;
+    });
+
+    setTasks(
+      tasks.map((task) =>
+        orderMap[task.id] !== undefined
+          ? { ...task, order: orderMap[task.id] }
+          : task,
+      ),
+    );
   }
 
   function addProject(event) {
@@ -746,6 +792,7 @@ function App() {
                 toggleTask={toggleTask}
                 deleteTask={deleteTask}
                 onSelectTask={setSelectedTaskId}
+                onReorderTasks={reorderTasks}
               />
             </section>
           </>
@@ -968,6 +1015,7 @@ function App() {
               toggleTask={toggleTask}
               deleteTask={deleteTask}
               onSelectTask={setSelectedTaskId}
+              onReorderTasks={reorderTasks}
             />
           </section>
         )}
@@ -1054,6 +1102,7 @@ function App() {
               toggleTask={toggleTask}
               deleteTask={deleteTask}
               onSelectTask={setSelectedTaskId}
+              onReorderTasks={reorderTasks}
             />
           </section>
         )}
