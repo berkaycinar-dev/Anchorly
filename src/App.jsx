@@ -356,29 +356,29 @@ function App() {
   }
 
   const filteredTasks = tasks.filter((task) => {
-  const isDateless = !task.date;
-  const isTodayDated = task.date === today;
-  const belongsToToday = isDateless || isTodayDated;
+    const isDateless = !task.date;
+    const isTodayDated = task.date === today;
+    const belongsToToday = isDateless || isTodayDated;
 
-  if (!belongsToToday) {
-    return false;
-  }
+    if (!belongsToToday) {
+      return false;
+    }
 
-  if (task.completed && task.completedAt !== today) {
-    return false;
-  }
+    if (task.completed && task.completedAt !== today) {
+      return false;
+    }
 
-  const matchesSearch = task.title
-    .toLowerCase()
-    .includes(searchText.toLowerCase());
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
 
-  const matchesFilter =
-    filter === "all" ||
-    (filter === "active" && !task.completed) ||
-    (filter === "completed" && task.completed);
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "active" && !task.completed) ||
+      (filter === "completed" && task.completed);
 
-  return matchesSearch && matchesFilter;
-});
+    return matchesSearch && matchesFilter;
+  });
 
   const filteredArchiveTasks = tasks.filter((task) => {
     const matchesStatus =
@@ -395,22 +395,22 @@ function App() {
   });
 
   function toggleTask(id) {
-  const updatedTasks = tasks.map((task) => {
-    if (task.id === id) {
-      const isNowCompleted = !task.completed;
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        const isNowCompleted = !task.completed;
 
-      return {
-        ...task,
-        completed: isNowCompleted,
-        completedAt: isNowCompleted ? today : null,
-      };
-    }
+        return {
+          ...task,
+          completed: isNowCompleted,
+          completedAt: isNowCompleted ? today : null,
+        };
+      }
 
-    return task;
-  });
+      return task;
+    });
 
-  setTasks(updatedTasks);
-}
+    setTasks(updatedTasks);
+  }
 
   function addTask(event) {
     event.preventDefault();
@@ -663,8 +663,12 @@ function App() {
                       <td>
                         <div className="routine-name-cell">
                           <span>{routine.title}</span>
-                          <button onClick={() => deleteRoutine(routine.id)}>
-                            Sil
+                          <button
+                            className="routine-delete-button"
+                            aria-label="Rutini sil"
+                            onClick={() => deleteRoutine(routine.id)}
+                          >
+                            x
                           </button>
                         </div>
                       </td>
