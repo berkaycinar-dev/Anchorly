@@ -18,6 +18,7 @@ const initialTasks = [
     projectId: null,
     description: "",
     steps: [],
+    completedAt: null,
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ const initialTasks = [
     projectId: null,
     description: "",
     steps: [],
+    completedAt: null,
   },
   {
     id: 3,
@@ -38,6 +40,7 @@ const initialTasks = [
     projectId: null,
     description: "",
     steps: [],
+    completedAt: null,
   },
   {
     id: 4,
@@ -48,6 +51,7 @@ const initialTasks = [
     projectId: null,
     description: "",
     steps: [],
+    completedAt: null,
   },
   {
     id: 5,
@@ -58,6 +62,7 @@ const initialTasks = [
     projectId: null,
     description: "",
     steps: [],
+    completedAt: null,
   },
 ];
 const initialRoutines = [
@@ -125,6 +130,7 @@ function getInitialTasks() {
     return parsedTasks.map((task) => ({
       description: "",
       steps: [],
+      completedAt: null,
       ...task,
     }));
   }
@@ -136,9 +142,7 @@ function App() {
   const [tasks, setTasks] = useState(getInitialTasks);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
-  const [newTaskDate, setNewTaskDate] = useState(
-    new Date().toISOString().slice(0, 10),
-  );
+  const [newTaskDate, setNewTaskDate] = useState("");
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [theme, setTheme] = useState(() => {
@@ -168,7 +172,6 @@ function App() {
   const [archiveEndDate, setArchiveEndDate] = useState("");
   const [projects, setProjects] = useState(getInitialProjects);
   const [newProjectName, setNewProjectsName] = useState("");
-  
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -353,17 +356,29 @@ function App() {
   }
 
   const filteredTasks = tasks.filter((task) => {
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
+  const isDateless = !task.date;
+  const isTodayDated = task.date === today;
+  const belongsToToday = isDateless || isTodayDated;
 
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "active" && !task.completed) ||
-      (filter === "completed" && task.completed);
+  if (!belongsToToday) {
+    return false;
+  }
 
-    return matchesSearch && matchesFilter;
-  });
+  if (task.completed && task.completedAt !== today) {
+    return false;
+  }
+
+  const matchesSearch = task.title
+    .toLowerCase()
+    .includes(searchText.toLowerCase());
+
+  const matchesFilter =
+    filter === "all" ||
+    (filter === "active" && !task.completed) ||
+    (filter === "completed" && task.completed);
+
+  return matchesSearch && matchesFilter;
+});
 
   const filteredArchiveTasks = tasks.filter((task) => {
     const matchesStatus =
@@ -380,19 +395,22 @@ function App() {
   });
 
   function toggleTask(id) {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return {
-          ...task,
-          completed: !task.completed,
-        };
-      }
+  const updatedTasks = tasks.map((task) => {
+    if (task.id === id) {
+      const isNowCompleted = !task.completed;
 
-      return task;
-    });
+      return {
+        ...task,
+        completed: isNowCompleted,
+        completedAt: isNowCompleted ? today : null,
+      };
+    }
 
-    setTasks(updatedTasks);
-  }
+    return task;
+  });
+
+  setTasks(updatedTasks);
+}
 
   function addTask(event) {
     event.preventDefault();
@@ -415,7 +433,7 @@ function App() {
     setTasks([newTask, ...tasks]);
     setNewTaskTitle("");
     setNewTaskCategory("Work");
-    setNewTaskDate(new Date().toISOString().slice(0, 10));
+    setNewTaskDate("");
   }
 
   function updateTaskDescription(taskId, newDescription) {
@@ -509,6 +527,7 @@ function App() {
       projectId: selectedProjectId,
       description: "",
       steps: [],
+      completedAt: null,
     };
 
     setTasks([...tasks, newTask]);
@@ -998,7 +1017,7 @@ function App() {
           </section>
         )}
 
-                {activePage === "Projects" && selectedProject && (
+        {activePage === "Projects" && selectedProject && (
           <section className="project-detail">
             <div className="dashboard-welcome">
               <button onClick={() => setSelectedProjectId(null)}>
@@ -1012,17 +1031,13 @@ function App() {
                 type="text"
                 placeholder="Proje görevi ekle..."
                 value={newProjectTaskTitle}
-                onChange={(event) =>
-                  setNewProjectTaskTitle(event.target.value)
-                }
+                onChange={(event) => setNewProjectTaskTitle(event.target.value)}
               />
 
               <input
                 type="date"
                 value={newProjectTaskDate}
-                onChange={(event) =>
-                  setNewProjectTaskDate(event.target.value)
-                }
+                onChange={(event) => setNewProjectTaskDate(event.target.value)}
               />
 
               <button type="submit">Görev Ekle</button>
