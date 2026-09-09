@@ -1075,3 +1075,23 @@ body {
 .task-card-dragging {
   opacity: 0.4;
 }
+.task-badge-repeat {
+  background-color: #dbeafe;
+  color: #2563eb;
+  padding: 2px 6px;
+}
+.task-repeat-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.theme-dark .task-repeat-select {
+  background-color: #111827;
+  color: #f9fafb;
+  border-color: #374151;
+}

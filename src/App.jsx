@@ -20,6 +20,8 @@ const initialTasks = [
     steps: [],
     completedAt: null,
     order: 0,
+    repeat: "none",
+    repeatGroupId: null,
   },
   {
     id: 2,
@@ -32,6 +34,8 @@ const initialTasks = [
     steps: [],
     completedAt: null,
     order: 1,
+    repeat: "none",
+    repeatGroupId: null,
   },
   {
     id: 3,
@@ -44,6 +48,8 @@ const initialTasks = [
     steps: [],
     completedAt: null,
     order: 2,
+    repeat: "none",
+    repeatGroupId: null,
   },
   {
     id: 4,
@@ -56,6 +62,8 @@ const initialTasks = [
     steps: [],
     completedAt: null,
     order: 3,
+    repeat: "none",
+    repeatGroupId: null,
   },
   {
     id: 5,
@@ -68,6 +76,8 @@ const initialTasks = [
     steps: [],
     completedAt: null,
     order: 4,
+    repeat: "none",
+    repeatGroupId: null,
   },
 ];
 const initialRoutines = [
@@ -137,6 +147,8 @@ function getInitialTasks() {
       steps: [],
       completedAt: null,
       order: index,
+      repeat: "none",
+      repeatGroupId: null,
       ...task,
     }));
   }
@@ -198,6 +210,55 @@ function App() {
   useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    const latestByGroup = {};
+
+    tasks.forEach((task) => {
+      if (task.repeat !== "none" && task.repeatGroupId && task.date) {
+        const current = latestByGroup[task.repeatGroupId];
+
+        if (!current || task.date > current.date) {
+          latestByGroup[task.repeatGroupId] = task;
+        }
+      }
+    });
+
+    const newTasks = [];
+
+    Object.values(latestByGroup).forEach((latestTask) => {
+      let nextDate = latestTask.date;
+      let safetyCounter = 0;
+
+      while (nextDate < today && safetyCounter < 60) {
+        nextDate = getNextRepeatDate(nextDate, latestTask.repeat);
+        safetyCounter++;
+      }
+
+      const alreadyExists = tasks.some(
+        (task) =>
+          task.repeatGroupId === latestTask.repeatGroupId &&
+          task.date === nextDate,
+      );
+
+      if (nextDate !== latestTask.date && !alreadyExists) {
+        newTasks.push({
+          ...latestTask,
+          id: crypto.randomUUID(),
+          date: nextDate,
+          completed: false,
+          completedAt: null,
+          order: Date.now(),
+          steps: latestTask.steps.map((step) => ({ ...step, done: false })),
+        });
+      }
+    });
+
+    if (newTasks.length > 0) {
+      setTasks((currentTasks) => [...currentTasks, ...newTasks]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const allTaskCount = tasks.length;
   const completedTasksCount = tasks.filter((task) => task.completed).length;
@@ -314,6 +375,18 @@ function App() {
     }
 
     return days;
+  }
+
+  function getNextRepeatDate(dateString, repeat) {
+    const date = new Date(dateString);
+
+    if (repeat === "daily") {
+      date.setDate(date.getDate() + 1);
+    } else if (repeat === "weekly") {
+      date.setDate(date.getDate() + 7);
+    }
+
+    return date.toISOString().slice(0, 10);
   }
 
   const weeklyProductivity = getWeeklyProductivity();
@@ -436,6 +509,8 @@ function App() {
       steps: [],
       completedAt: null,
       order: Date.now(),
+      repeat: "none",
+      repeatGroupId: null,
     };
 
     setTasks([newTask, ...tasks]);
@@ -490,6 +565,26 @@ function App() {
           ? { ...task, steps: task.steps.filter((step) => step.id !== stepId) }
           : task,
       ),
+    );
+  }
+
+  function updateTaskRepeat(taskId, newRepeat) {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id !== taskId) {
+          return task;
+        }
+
+        if (newRepeat === "none") {
+          return { ...task, repeat: "none", repeatGroupId: null };
+        }
+
+        return {
+          ...task,
+          repeat: newRepeat,
+          repeatGroupId: task.repeatGroupId || crypto.randomUUID(),
+        };
+      }),
     );
   }
 
@@ -1164,6 +1259,7 @@ function App() {
         onAddStep={addTaskStep}
         onToggleStep={toggleTaskStep}
         onDeleteStep={deleteTaskStep}
+        onUpdateRepeat={updateTaskRepeat}
       />
     </div>
   );

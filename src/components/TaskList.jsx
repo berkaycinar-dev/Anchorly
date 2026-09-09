@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-function TaskList({ tasks, toggleTask, deleteTask, onSelectTask, onReorderTasks }) {
+function TaskList({
+  tasks,
+  toggleTask,
+  deleteTask,
+  onSelectTask,
+  onReorderTasks,
+}) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
   const [draggedTaskId, setDraggedTaskId] = useState(null);
 
@@ -68,6 +74,19 @@ function TaskList({ tasks, toggleTask, deleteTask, onSelectTask, onReorderTasks 
             {task.date && (
               <span className="task-badge task-badge-date">{task.date}</span>
             )}
+
+            {task.repeat !== "none" && (
+              <span
+                className="task-badge task-badge-repeat"
+                title={
+                  task.repeat === "daily"
+                    ? "Her gün tekrarlanır"
+                    : "Her hafta tekrarlanır"
+                }
+              >
+                🔁
+              </span>
+            )}
           </div>
         </div>
 
@@ -97,7 +116,9 @@ function TaskList({ tasks, toggleTask, deleteTask, onSelectTask, onReorderTasks 
             className="completed-toggle"
             onClick={() => setIsCompletedOpen(!isCompletedOpen)}
           >
-            <span className={isCompletedOpen ? "chevron chevron-open" : "chevron"}>
+            <span
+              className={isCompletedOpen ? "chevron chevron-open" : "chevron"}
+            >
               ▸
             </span>
             Tamamlandı ({completedTasks.length})

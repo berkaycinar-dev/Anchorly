@@ -7,6 +7,7 @@ function TaskDetailModal({
   onAddStep,
   onToggleStep,
   onDeleteStep,
+  onUpdateRepeat,
 }) {
   const [newStepText, setNewStepText] = useState("");
 
@@ -31,11 +32,20 @@ function TaskDetailModal({
         <label>Açıklama</label>
         <textarea
           value={task.description || ""}
-          onChange={(event) =>
-            onUpdateDescription(task.id, event.target.value)
-          }
+          onChange={(event) => onUpdateDescription(task.id, event.target.value)}
           placeholder="Bu görev hakkında not ekle..."
         />
+
+        <label>Tekrar</label>
+        <select
+          className="task-repeat-select"
+          value={task.repeat || "none"}
+          onChange={(event) => onUpdateRepeat(task.id, event.target.value)}
+        >
+          <option value="none">Tekrarlanmaz</option>
+          <option value="daily">Her gün</option>
+          <option value="weekly">Her hafta</option>
+        </select>
 
         <label>Adımlar</label>
         <ul className="task-steps-list">
@@ -46,9 +56,7 @@ function TaskDetailModal({
                 checked={step.done}
                 onChange={() => onToggleStep(task.id, step.id)}
               />
-              <span className={step.done ? "step-done" : ""}>
-                {step.text}
-              </span>
+              <span className={step.done ? "step-done" : ""}>{step.text}</span>
               <button onClick={() => onDeleteStep(task.id, step.id)}>
                 Sil
               </button>
