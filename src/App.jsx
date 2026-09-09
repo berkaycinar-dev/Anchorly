@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Statcard from "./components/Statcard";
 import TaskList from "./components/TaskList";
 import Header from "./components/Header";
@@ -161,6 +161,7 @@ function App() {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
   const [newTaskDate, setNewTaskDate] = useState("");
+  const newTaskTitleInputRef = useRef(null);
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
   const [theme, setTheme] = useState(() => {
@@ -258,6 +259,39 @@ function App() {
       setTasks((currentTasks) => [...currentTasks, ...newTasks]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setSelectedTaskId(null);
+        return;
+      }
+
+      const isTypingField =
+        event.target.tagName === "INPUT" ||
+        event.target.tagName === "TEXTAREA" ||
+        event.target.tagName === "SELECT";
+
+      if (isTypingField) {
+        return;
+      }
+
+      if (event.key === "n" || event.key === "N") {
+        event.preventDefault();
+        setActivePage("Today");
+
+        setTimeout(() => {
+          newTaskTitleInputRef.current?.focus();
+        }, 0);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   const allTaskCount = tasks.length;
@@ -852,6 +886,7 @@ function App() {
               newTaskDate={newTaskDate}
               setNewTaskDate={setNewTaskDate}
               addTask={addTask}
+              titleInputRef={newTaskTitleInputRef}
             />
 
             <section className="task-section">

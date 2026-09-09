@@ -6,6 +6,7 @@ function AddTaskForm({
   newTaskDate,
   setNewTaskDate,
   addTask,
+  titleInputRef,
 }) {
   return (
     <form className="add-task-form" onSubmit={addTask}>
@@ -14,6 +15,7 @@ function AddTaskForm({
         placeholder="Yeni görev ekle..."
         value={newTaskTitle}
         onChange={(event) => setNewTaskTitle(event.target.value)}
+        ref={titleInputRef}
       />
 
       <select
