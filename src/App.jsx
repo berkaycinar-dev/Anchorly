@@ -293,23 +293,42 @@ function App() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
-  const allTaskCount = tasks.length;
-  const completedTasksCount = tasks.filter((task) => task.completed).length;
-  const activeTaskCount = tasks.filter((task) => !task.completed).length;
   const today = new Date().toISOString().slice(0, 10);
+  function isVisibleInToday(task) {
+  const isDateless = !task.date;
+  const isTodayDated = task.date === today;
+  const belongsToToday = isDateless || isTodayDated;
+
+  if (!belongsToToday) {
+    return false;
+  }
+
+  if (task.completed && task.completedAt !== today) {
+    return false;
+  }
+
+  return true;
+}
+  const todayScopedTasks = tasks.filter(isVisibleInToday);
+  const allTaskCount = todayScopedTasks.length;
+  const completedTasksCount = todayScopedTasks.filter(
+    (task) => task.completed && task.completedAt === today,
+  ).length;
+  const activeTaskCount = todayScopedTasks.filter(
+    (task) => !task.completed,
+  ).length;
+  const overdueTaskCount = tasks.filter(
+    (task) => !task.completed && task.date && task.date < today,
+  ).length;
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) || null;
-  const overdueTaskCount = tasks.filter(
-    (task) => !task.completed && task.date < today,
-  ).length;
-  const todayTasks = tasks.filter((task) => task.date === today);
+  const todayTasks = todayScopedTasks;
   const todayTasksCount = todayTasks.length;
   const completedTodayTasksCount = todayTasks.filter(
-    (tasks) => tasks.completed,
+    (task) => task.completed && task.completedAt === today,
   ).length;
   const todayCompletionPercent =
     todayTasksCount === 0
@@ -469,29 +488,21 @@ function App() {
   }
 
   const filteredTasks = tasks.filter((task) => {
-    const isDateless = !task.date;
-    const isTodayDated = task.date === today;
-    const belongsToToday = isDateless || isTodayDated;
+  if (!isVisibleInToday(task)) {
+    return false;
+  }
 
-    if (!belongsToToday) {
-      return false;
-    }
+  const matchesSearch = task.title
+    .toLowerCase()
+    .includes(searchText.toLowerCase());
 
-    if (task.completed && task.completedAt !== today) {
-      return false;
-    }
+  const matchesFilter =
+    filter === "all" ||
+    (filter === "active" && !task.completed) ||
+    (filter === "completed" && task.completed);
 
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "active" && !task.completed) ||
-      (filter === "completed" && task.completed);
-
-    return matchesSearch && matchesFilter;
-  });
+  return matchesSearch && matchesFilter;
+});
 
   const filteredArchiveTasks = tasks.filter((task) => {
     const matchesStatus =
@@ -729,7 +740,7 @@ function App() {
             </div>
 
             <section className="stats">
-              <Statcard title="All Tasks" value={allTaskCount} />
+              <Statcard title="Today's Task" value={allTaskCount} />
               <Statcard title="Completed" value={completedTasksCount} />
               <Statcard title="In Progress" value={activeTaskCount} />
               <Statcard title="Overdue" value={overdueTaskCount} />
