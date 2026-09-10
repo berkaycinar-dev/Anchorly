@@ -295,20 +295,20 @@ function App() {
   }, []);
   const today = new Date().toISOString().slice(0, 10);
   function isVisibleInToday(task) {
-  const isDateless = !task.date;
-  const isTodayDated = task.date === today;
-  const belongsToToday = isDateless || isTodayDated;
+    const isDateless = !task.date;
+    const isTodayDated = task.date === today;
+    const belongsToToday = isDateless || isTodayDated;
 
-  if (!belongsToToday) {
-    return false;
+    if (!belongsToToday) {
+      return false;
+    }
+
+    if (task.completed && task.completedAt !== today) {
+      return false;
+    }
+
+    return true;
   }
-
-  if (task.completed && task.completedAt !== today) {
-    return false;
-  }
-
-  return true;
-}
   const todayScopedTasks = tasks.filter(isVisibleInToday);
   const allTaskCount = todayScopedTasks.length;
   const completedTasksCount = todayScopedTasks.filter(
@@ -403,7 +403,7 @@ function App() {
     const day = date.getDate();
     return `${year}-${month}-${routineId}-${day}`;
   }
-
+  const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
   function getWeeklyProductivity() {
     const days = [];
 
@@ -423,6 +423,12 @@ function App() {
 
       days.push({
         label: date.toLocaleDateString("tr-TR", { weekday: "short" }),
+        fullDate: date.toLocaleDateString("tr-TR", {
+          day: "numeric",
+          month: "long",
+        }),
+        completed: completedRoutines,
+        total: totalRoutines,
         percent,
       });
     }
@@ -488,21 +494,21 @@ function App() {
   }
 
   const filteredTasks = tasks.filter((task) => {
-  if (!isVisibleInToday(task)) {
-    return false;
-  }
+    if (!isVisibleInToday(task)) {
+      return false;
+    }
 
-  const matchesSearch = task.title
-    .toLowerCase()
-    .includes(searchText.toLowerCase());
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
 
-  const matchesFilter =
-    filter === "all" ||
-    (filter === "active" && !task.completed) ||
-    (filter === "completed" && task.completed);
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "active" && !task.completed) ||
+      (filter === "completed" && task.completed);
 
-  return matchesSearch && matchesFilter;
-});
+    return matchesSearch && matchesFilter;
+  });
 
   const filteredArchiveTasks = tasks.filter((task) => {
     const matchesStatus =
@@ -772,7 +778,22 @@ function App() {
 
                 <div className="weekly-chart">
                   {weeklyProductivity.map((day, index) => (
-                    <div className="weekly-bar-wrapper" key={index}>
+                    <div
+                      className="weekly-bar-wrapper"
+                      key={index}
+                      onMouseEnter={() => setHoveredDayIndex(index)}
+                      onMouseLeave={() => setHoveredDayIndex(null)}
+                    >
+                      {hoveredDayIndex === index && (
+                        <div className="weekly-bar-tooltip">
+                          <strong>{day.fullDate}</strong>
+                          <span>
+                            {day.completed} / {day.total} rutin
+                          </span>
+                          <span>%{day.percent}</span>
+                        </div>
+                      )}
+
                       <div
                         className="weekly-bar"
                         style={{ height: `${day.percent}%` }}
