@@ -8,6 +8,8 @@ function TaskDetailModal({
   onToggleStep,
   onDeleteStep,
   onUpdateRepeat,
+  onAddAttachment,
+  onDeleteAttachment,
 }) {
   const [newStepText, setNewStepText] = useState("");
 
@@ -19,6 +21,37 @@ function TaskDetailModal({
     event.preventDefault();
     onAddStep(task.id, newStepText);
     setNewStepText("");
+  }
+  function handleFileUpload(event) {
+    const file = event.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const maxSizeInBytes = 1024 * 1024; // 1 MB
+
+    if (file.size > maxSizeInBytes) {
+      alert(
+        "Bu dosya çok büyük (1MB üzeri). Tarayıcı depolama alanı sınırlı olduğu için daha küçük bir dosya seçmelisin.",
+      );
+      event.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      onAddAttachment(task.id, {
+        id: crypto.randomUUID(),
+        name: file.name,
+        type: file.type,
+        data: reader.result,
+      });
+    };
+
+    reader.readAsDataURL(file);
+    event.target.value = "";
   }
 
   return (
@@ -46,6 +79,35 @@ function TaskDetailModal({
           <option value="daily">Her gün</option>
           <option value="weekly">Her hafta</option>
         </select>
+
+        <label>Dosyalar</label>
+        <div className="attachments-list">
+          {task.attachments.map((attachment) => (
+            <div className="attachment-item" key={attachment.id}>
+              {attachment.type.startsWith("image/") ? (
+                <img
+                  src={attachment.data}
+                  alt={attachment.name}
+                  className="attachment-preview"
+                />
+              ) : (
+                <span className="attachment-name">📄 {attachment.name}</span>
+              )}
+
+              <button
+                onClick={() => onDeleteAttachment(task.id, attachment.id)}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <input
+          type="file"
+          onChange={handleFileUpload}
+          className="attachment-input"
+        />
 
         <label>Adımlar</label>
         <ul className="task-steps-list">

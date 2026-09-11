@@ -1127,3 +1127,57 @@ body {
   border: 5px solid transparent;
   border-top-color: #1f2937;
 }
+
+.attachments-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.attachment-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.attachment-preview {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.attachment-name {
+  font-size: 13px;
+  color: #374151;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-item button {
+  border: none;
+  background: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.attachment-input {
+  margin-bottom: 16px;
+}
+
+.theme-dark .attachment-item {
+  background-color: #111827;
+}
+
+.theme-dark .attachment-name {
+  color: #e0f2fe;
+}

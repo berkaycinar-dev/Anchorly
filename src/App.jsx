@@ -22,6 +22,7 @@ const initialTasks = [
     order: 0,
     repeat: "none",
     repeatGroupId: null,
+    attachments: [],
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ const initialTasks = [
     order: 1,
     repeat: "none",
     repeatGroupId: null,
+    attachments: [],
   },
   {
     id: 3,
@@ -50,6 +52,7 @@ const initialTasks = [
     order: 2,
     repeat: "none",
     repeatGroupId: null,
+    attachments: [],
   },
   {
     id: 4,
@@ -64,6 +67,7 @@ const initialTasks = [
     order: 3,
     repeat: "none",
     repeatGroupId: null,
+    attachments: [],
   },
   {
     id: 5,
@@ -78,6 +82,7 @@ const initialTasks = [
     order: 4,
     repeat: "none",
     repeatGroupId: null,
+    attachments: [],
   },
 ];
 const initialRoutines = [
@@ -149,6 +154,7 @@ function getInitialTasks() {
       order: index,
       repeat: "none",
       repeatGroupId: null,
+      attachments: [],
       ...task,
     }));
   }
@@ -562,6 +568,7 @@ function App() {
       order: Date.now(),
       repeat: "none",
       repeatGroupId: null,
+      attachments: [],
     };
 
     setTasks([newTask, ...tasks]);
@@ -636,6 +643,31 @@ function App() {
           repeatGroupId: task.repeatGroupId || crypto.randomUUID(),
         };
       }),
+    );
+  }
+
+  function addTaskAttachment(taskId, attachment) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? { ...task, attachments: [...task.attachments, attachment] }
+          : task,
+      ),
+    );
+  }
+
+  function deleteTaskAttachment(taskId, attachmentId) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              attachments: task.attachments.filter(
+                (attachment) => attachment.id !== attachmentId,
+              ),
+            }
+          : task,
+      ),
     );
   }
 
@@ -720,6 +752,7 @@ function App() {
       description: "",
       steps: [],
       completedAt: null,
+      attachments: [],
     };
 
     setTasks([...tasks, newTask]);
@@ -1327,6 +1360,8 @@ function App() {
         onToggleStep={toggleTaskStep}
         onDeleteStep={deleteTaskStep}
         onUpdateRepeat={updateTaskRepeat}
+        onAddAttachment={addTaskAttachment}
+        onDeleteAttachment={deleteTaskAttachment}
       />
     </div>
   );
