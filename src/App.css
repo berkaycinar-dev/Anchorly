@@ -4,7 +4,6 @@
 
 body {
   margin: 0;
-  font-family: var(--font-main);
   background-color: #f4f6fb;
   color: #1f2937;
 }
@@ -12,6 +11,7 @@ body {
 .app {
   display: flex;
   min-height: 100vh;
+  font-family: var(--font-main);
 }
 
 .sidebar {
@@ -1180,4 +1180,16 @@ body {
 
 .theme-dark .attachment-name {
   color: #e0f2fe;
+}
+.attachment-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }

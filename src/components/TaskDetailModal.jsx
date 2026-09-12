@@ -22,6 +22,7 @@ function TaskDetailModal({
     onAddStep(task.id, newStepText);
     setNewStepText("");
   }
+
   function handleFileUpload(event) {
     const file = event.target.files[0];
 
@@ -65,7 +66,9 @@ function TaskDetailModal({
         <label>Açıklama</label>
         <textarea
           value={task.description || ""}
-          onChange={(event) => onUpdateDescription(task.id, event.target.value)}
+          onChange={(event) =>
+            onUpdateDescription(task.id, event.target.value)
+          }
           placeholder="Bu görev hakkında not ekle..."
         />
 
@@ -73,6 +76,7 @@ function TaskDetailModal({
         <select
           className="task-repeat-select"
           value={task.repeat || "none"}
+          disabled={!task.date}
           onChange={(event) => onUpdateRepeat(task.id, event.target.value)}
         >
           <option value="none">Tekrarlanmaz</option>
@@ -80,19 +84,35 @@ function TaskDetailModal({
           <option value="weekly">Her hafta</option>
         </select>
 
+        {!task.date && (
+          <p className="task-repeat-hint">
+            Tekrar ayarlamak için önce göreve bir tarih eklemelisin.
+          </p>
+        )}
+
         <label>Dosyalar</label>
         <div className="attachments-list">
           {task.attachments.map((attachment) => (
             <div className="attachment-item" key={attachment.id}>
-              {attachment.type.startsWith("image/") ? (
-                <img
-                  src={attachment.data}
-                  alt={attachment.name}
-                  className="attachment-preview"
-                />
-              ) : (
-                <span className="attachment-name">📄 {attachment.name}</span>
-              )}
+              <a
+                href={attachment.data}
+                download={attachment.name}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="attachment-link"
+              >
+                {attachment.type.startsWith("image/") ? (
+                  <img
+                    src={attachment.data}
+                    alt={attachment.name}
+                    className="attachment-preview"
+                  />
+                ) : (
+                  <span className="attachment-name">
+                    📄 {attachment.name}
+                  </span>
+                )}
+              </a>
 
               <button
                 onClick={() => onDeleteAttachment(task.id, attachment.id)}
@@ -118,7 +138,9 @@ function TaskDetailModal({
                 checked={step.done}
                 onChange={() => onToggleStep(task.id, step.id)}
               />
-              <span className={step.done ? "step-done" : ""}>{step.text}</span>
+              <span className={step.done ? "step-done" : ""}>
+                {step.text}
+              </span>
               <button onClick={() => onDeleteStep(task.id, step.id)}>
                 Sil
               </button>

@@ -176,7 +176,13 @@ function App() {
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "tr";
   });
+  const [fontFamily, setFontFamily] = useState(() => {
+    return localStorage.getItem("fontFamily") || "Inter";
+  });
 
+  useEffect(() => {
+    localStorage.setItem("fontFamily", fontFamily);
+  }, [fontFamily]);
   useEffect(() => {
     localStorage.setItem("language", language);
   }, [language]);
@@ -761,7 +767,10 @@ function App() {
   }
 
   return (
-    <div className={`app theme-${theme}`}>
+    <div
+      className={`app theme-${theme}`}
+      style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
+    >
       <Sidebar activePage={activePage} setActivePage={setActivePage} t={t} />
 
       <main className="main-content">
@@ -1344,6 +1353,27 @@ function App() {
                     onClick={() => setLanguage(languageOption)}
                   >
                     {languageOption.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="settings-section">
+              <h3>Font</h3>
+
+              <div className="theme-options">
+                {["Inter", "Poppins", "Manrope"].map((fontOption) => (
+                  <button
+                    key={fontOption}
+                    className={
+                      fontFamily === fontOption
+                        ? "theme-option active-theme"
+                        : "theme-option"
+                    }
+                    style={{ fontFamily: `'${fontOption}', sans-serif` }}
+                    onClick={() => setFontFamily(fontOption)}
+                  >
+                    {fontOption}
                   </button>
                 ))}
               </div>
