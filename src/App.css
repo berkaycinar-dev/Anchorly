@@ -1193,3 +1193,90 @@ select,
 textarea {
   font-family: inherit;
 }
+.calendar-cell {
+  position: relative;
+}
+
+.calendar-cell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-add-button {
+  opacity: 0;
+  border: none;
+  background-color: #ede9fe;
+  color: #7c3aed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.calendar-cell:hover .calendar-add-button {
+  opacity: 1;
+}
+
+.calendar-task {
+  cursor: pointer;
+}
+
+.calendar-task:hover {
+  text-decoration: underline;
+}
+
+.quick-add-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 200px;
+}
+
+.quick-add-panel input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  font-family: inherit;
+}
+
+.quick-add-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.quick-add-actions button {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.quick-add-actions button[type="submit"] {
+  background-color: #7c3aed;
+  color: white;
+}
+
+.quick-add-actions button[type="button"] {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.theme-dark .quick-add-panel {
+  background-color: #1e293b;
+  border-color: #374151;
+}

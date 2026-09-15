@@ -335,6 +335,8 @@ function App() {
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
+  const [quickAddDate, setQuickAddDate] = useState(null);
+  const [quickAddTitle, setQuickAddTitle] = useState("");
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) || null;
   const todayTasks = todayScopedTasks;
@@ -766,6 +768,34 @@ function App() {
     setNewProjectTaskDate(today);
   }
 
+  function submitQuickAdd(event) {
+    event.preventDefault();
+
+    if (quickAddTitle.trim() === "") {
+      return;
+    }
+
+    const newTask = {
+      id: crypto.randomUUID(),
+      title: quickAddTitle,
+      category: "Work",
+      date: quickAddDate,
+      completed: false,
+      projectId: null,
+      description: "",
+      steps: [],
+      completedAt: null,
+      order: Date.now(),
+      repeat: "none",
+      repeatGroupId: null,
+      attachments: [],
+    };
+
+    setTasks([newTask, ...tasks]);
+    setQuickAddTitle("");
+    setQuickAddDate(null);
+  }
+
   return (
     <div
       className={`app theme-${theme}`}
@@ -1103,32 +1133,70 @@ function App() {
                   ></div>
                 ))}
 
-                {calendarDays.map((day) => (
-                  <div
-                    className="calendar-cell"
-                    key={day}
-                    onClick={() => {
-                      const selectedDate = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                      setNewTaskDate(selectedDate);
-                      setActivePage("Today");
-                    }}
-                  >
-                    <strong>{day}</strong>
+                {calendarDays.map((day) => {
+                  const dateString = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                  const dayTasks = tasks.filter(
+                    (task) => task.date === dateString,
+                  );
 
-                    <div className="calendar-tasks">
-                      {tasks
-                        .filter((task) => {
-                          const date = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                          return task.date === date;
-                        })
-                        .map((task) => (
-                          <div className="calendar-task" key={task.id}>
+                  return (
+                    <div className="calendar-cell" key={day}>
+                      <div className="calendar-cell-header">
+                        <strong>{day}</strong>
+                        <button
+                          className="calendar-add-button"
+                          aria-label="Bu güne görev ekle"
+                          onClick={() => {
+                            setQuickAddDate(dateString);
+                            setQuickAddTitle("");
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div className="calendar-tasks">
+                        {dayTasks.map((task) => (
+                          <div
+                            className="calendar-task"
+                            key={task.id}
+                            onClick={() => setSelectedTaskId(task.id)}
+                          >
                             {task.title}
                           </div>
                         ))}
+                      </div>
+
+                      {quickAddDate === dateString && (
+                        <div
+                          className="quick-add-panel"
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          <form onSubmit={submitQuickAdd}>
+                            <input
+                              type="text"
+                              autoFocus
+                              placeholder="Görev başlığı..."
+                              value={quickAddTitle}
+                              onChange={(event) =>
+                                setQuickAddTitle(event.target.value)
+                              }
+                            />
+                            <div className="quick-add-actions">
+                              <button type="submit">Ekle</button>
+                              <button
+                                type="button"
+                                onClick={() => setQuickAddDate(null)}
+                              >
+                                İptal
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
@@ -1142,27 +1210,65 @@ function App() {
 
                 {weekDays.map((day) => {
                   const dateString = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
+                  const dayTasks = tasks.filter(
+                    (task) => task.date === dateString,
+                  );
 
                   return (
-                    <div
-                      className="calendar-cell"
-                      key={dateString}
-                      onClick={() => {
-                        setNewTaskDate(dateString);
-                        setActivePage("Today");
-                      }}
-                    >
-                      <strong>{day.getDate()}</strong>
+                    <div className="calendar-cell" key={dateString}>
+                      <div className="calendar-cell-header">
+                        <strong>{day.getDate()}</strong>
+                        <button
+                          className="calendar-add-button"
+                          aria-label="Bu güne görev ekle"
+                          onClick={() => {
+                            setQuickAddDate(dateString);
+                            setQuickAddTitle("");
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
 
                       <div className="calendar-tasks">
-                        {tasks
-                          .filter((task) => task.date === dateString)
-                          .map((task) => (
-                            <div className="calendar-task" key={task.id}>
-                              {task.title}
-                            </div>
-                          ))}
+                        {dayTasks.map((task) => (
+                          <div
+                            className="calendar-task"
+                            key={task.id}
+                            onClick={() => setSelectedTaskId(task.id)}
+                          >
+                            {task.title}
+                          </div>
+                        ))}
                       </div>
+
+                      {quickAddDate === dateString && (
+                        <div
+                          className="quick-add-panel"
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          <form onSubmit={submitQuickAdd}>
+                            <input
+                              type="text"
+                              autoFocus
+                              placeholder="Görev başlığı..."
+                              value={quickAddTitle}
+                              onChange={(event) =>
+                                setQuickAddTitle(event.target.value)
+                              }
+                            />
+                            <div className="quick-add-actions">
+                              <button type="submit">Ekle</button>
+                              <button
+                                type="button"
+                                onClick={() => setQuickAddDate(null)}
+                              >
+                                İptal
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
