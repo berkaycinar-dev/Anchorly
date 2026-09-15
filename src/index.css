@@ -11,9 +11,15 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --font-main: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-main: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
   --heading: var(--font-main);
   --mono: ui-monospace, Consolas, monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --spacing-card: 20px;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -50,7 +56,8 @@
   }
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 

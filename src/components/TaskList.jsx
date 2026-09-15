@@ -11,8 +11,16 @@ function TaskList({
   const [draggedTaskId, setDraggedTaskId] = useState(null);
 
   if (tasks.length === 0) {
-    return <p className="empty-message">Görev bulunamadı.</p>;
-  }
+  return (
+    <div className="empty-state">
+      <span className="empty-state-icon">📋</span>
+      <p className="empty-state-title">Henüz görev yok</p>
+      <p className="empty-state-subtitle">
+        Yeni bir görev ekleyerek başla.
+      </p>
+    </div>
+  );
+}
 
   const activeTasks = tasks
     .filter((task) => !task.completed)

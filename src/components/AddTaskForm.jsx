@@ -34,7 +34,7 @@ function AddTaskForm({
         onChange={(event) => setNewTaskDate(event.target.value)}
       />
 
-      <button type="submit">Ekle</button>
+      <button type="submit" className="btn btn-primary">Ekle</button>
     </form>
   );
 }

@@ -899,7 +899,7 @@ function App() {
                   value={newRoutineTitle}
                   onChange={(event) => setNewRoutineTitle(event.target.value)}
                 />
-                <button type="submit">Rutin Ekle</button>
+                <button type="submit" className="btn btn-primary">Rutin Ekle</button>
               </form>
 
               <div className="routine-month-actions">
@@ -1183,10 +1183,11 @@ function App() {
                               }
                             />
                             <div className="quick-add-actions">
-                              <button type="submit">Ekle</button>
+                              <button type="submit" className="btn btn-primary">Ekle</button>
                               <button
                                 type="button"
                                 onClick={() => setQuickAddDate(null)}
+                                className="btn btn-secondary"
                               >
                                 İptal
                               </button>
@@ -1345,7 +1346,7 @@ function App() {
                 onChange={(event) => setNewProjectsName(event.target.value)}
               />
 
-              <button type="submit">Proje Ekle</button>
+              <button type="submit" className="btn btn-primary">Proje Ekle</button>
             </form>
             <div className="project-list">
               {projects.map((project) => (
@@ -1402,7 +1403,7 @@ function App() {
                 onChange={(event) => setNewProjectTaskDate(event.target.value)}
               />
 
-              <button type="submit">Görev Ekle</button>
+              <button type="submit" className="btn btn-primary">Görev Ekle</button>
             </form>
 
             <TaskList

@@ -60,7 +60,7 @@ function TaskDetailModal({
       <div className="modal-box" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
           <h2>{task.title}</h2>
-          <button onClick={onClose}>Kapat</button>
+          <button className="btn btn-secondary"  onClick={onClose}>Kapat</button>
         </div>
 
         <label>Açıklama</label>
