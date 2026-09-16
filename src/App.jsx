@@ -1,12 +1,16 @@
 import "./App.css";
 import { useEffect, useState, useRef } from "react";
-import Statcard from "./components/Statcard";
-import TaskList from "./components/TaskList";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import AddTaskForm from "./components/AddTaskForm";
 import TaskDetailModal from "./components/TaskDetailModal";
+import DashboardPage from "./pages/DashboardPage";
+import TodayPage from "./pages/TodayPage";
 import { strings } from "./strings";
+import DailyRoutinePage from "./pages/DailyRoutinePage";
+import CalendarPage from "./pages/CalendarPage";
+import ArchivePage from "./pages/ArchivePage";
+import ProjectsPage from "./pages/ProjectsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 const initialTasks = [
   {
@@ -190,7 +194,7 @@ function App() {
   const t = strings[language];
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
-  const [activePage, setActivePage] = useState("DashBoard");
+  const [activePage, setActivePage] = useState("Dashboard");
   const [routines, setRoutines] = useState(getInitialRoutines);
   const [routineChecks, setRoutineChecks] = useState(getInitialRoutineChecks);
   const [routineMonth, setRoutineMounth] = useState(new Date());
@@ -808,684 +812,133 @@ function App() {
         <h2 className="page-title">{activePage}</h2>
 
         {activePage === "Dashboard" && (
-          <section className="dashboard-page">
-            <div className="dashboard-welcome">
-              <h2>{getGreeting()}</h2>
-              <p>
-                Bugünkü {todayTasksCount} görevin var.{" "}
-                {completedTodayTasksCount} tanesini tamamladın.
-              </p>
-            </div>
-
-            <section className="stats">
-              <Statcard title="Today's Task" value={allTaskCount} />
-              <Statcard title="Completed" value={completedTasksCount} />
-              <Statcard title="In Progress" value={activeTaskCount} />
-              <Statcard title="Overdue" value={overdueTaskCount} />
-            </section>
-
-            <section className="dashboard-grid">
-              <div className="chart-card">
-                <h3>Bugünkü Görev Durumu</h3>
-
-                <div
-                  className="pie-chart"
-                  style={{
-                    background: `conic-gradient(#7c3aed ${todayCompletionPercent}%, #e5e7eb 0)`,
-                  }}
-                >
-                  <span>{todayCompletionPercent}%</span>
-                </div>
-
-                <p>
-                  {completedTodayTasksCount} / {todayTasksCount} tamamlandı
-                </p>
-                <div className="chart-legend">
-                  <span className="legend-dot legend-done"></span> Tamamlanan
-                  <span className="legend-dot legend-pending"></span> Bekleyen
-                </div>
-              </div>
-              <div className="chart-card">
-                <h3>Haftalık Productivity</h3>
-
-                <div className="weekly-chart">
-                  {weeklyProductivity.map((day, index) => (
-                    <div
-                      className="weekly-bar-wrapper"
-                      key={index}
-                      onMouseEnter={() => setHoveredDayIndex(index)}
-                      onMouseLeave={() => setHoveredDayIndex(null)}
-                    >
-                      {hoveredDayIndex === index && (
-                        <div className="weekly-bar-tooltip">
-                          <strong>{day.fullDate}</strong>
-                          <span>
-                            {day.completed} / {day.total} rutin
-                          </span>
-                          <span>%{day.percent}</span>
-                        </div>
-                      )}
-
-                      <div
-                        className="weekly-bar"
-                        style={{ height: `${day.percent}%` }}
-                      ></div>
-                      <span>{day.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          </section>
-        )}
-
-        {activePage === "Daily Routine" && (
-          <section className="routine-page">
-            <div className="routine-header">
-              <div>
-                <h2>Günlük Rutin</h2>
-                <p>
-                  {routineMonth.toLocaleDateString("tr-TR", {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </p>
-              </div>
-
-              <form className="routine-form" onSubmit={addRoutine}>
-                <input
-                  type="text"
-                  placeholder="Yeni rutin ekle..."
-                  value={newRoutineTitle}
-                  onChange={(event) => setNewRoutineTitle(event.target.value)}
-                />
-                <button type="submit" className="btn btn-primary">Rutin Ekle</button>
-              </form>
-
-              <div className="routine-month-actions">
-                <button
-                  onClick={() =>
-                    setRoutineMounth(
-                      new Date(routineYear, routineMonthIndex - 1, 1),
-                    )
-                  }
-                >
-                  Önceki Ay
-                </button>
-
-                <button
-                  onClick={() =>
-                    setRoutineMounth(
-                      new Date(routineYear, routineMonthIndex + 1, 1),
-                    )
-                  }
-                >
-                  Sonraki Ay
-                </button>
-              </div>
-            </div>
-
-            <div className="routine-table-wrapper">
-              <table className="routine-table">
-                <thead>
-                  <tr>
-                    <th>Rutin</th>
-                    {routineDays.map((day) => (
-                      <th key={day}>{day}</th>
-                    ))}
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {routines.map((routine) => (
-                    <tr key={routine.id}>
-                      <td>
-                        <div className="routine-name-cell">
-                          <span>{routine.title}</span>
-                          <button
-                            className="routine-delete-button"
-                            aria-label="Rutini sil"
-                            onClick={() => deleteRoutine(routine.id)}
-                          >
-                            x
-                          </button>
-                        </div>
-                      </td>
-
-                      {routineDays.map((day) => (
-                        <td key={day}>
-                          <input
-                            type="checkbox"
-                            checked={Boolean(
-                              routineChecks[getRoutineKey(routine.id, day)],
-                            )}
-                            onChange={() => toggleRoutineCheck(routine.id, day)}
-                          />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          <DashboardPage
+            greeting={getGreeting()}
+            todayTasksCount={todayTasksCount}
+            completedTodayTasksCount={completedTodayTasksCount}
+            allTaskCount={allTaskCount}
+            completedTasksCount={completedTasksCount}
+            activeTaskCount={activeTaskCount}
+            overdueTaskCount={overdueTaskCount}
+            todayCompletionPercent={todayCompletionPercent}
+            weeklyProductivity={weeklyProductivity}
+            hoveredDayIndex={hoveredDayIndex}
+            setHoveredDayIndex={setHoveredDayIndex}
+          />
         )}
 
         {activePage === "Today" && (
-          <>
-            <div className="search-box">
-              <input
-                type="text"
-                placeholder="Görev ara..."
-                value={searchText}
-                onChange={(event) => setSearchText(event.target.value)}
-              />
-            </div>
+          <TodayPage
+            searchText={searchText}
+            setSearchText={setSearchText}
+            newTaskTitle={newTaskTitle}
+            setNewTaskTitle={setNewTaskTitle}
+            newTaskCategory={newTaskCategory}
+            setNewTaskCategory={setNewTaskCategory}
+            newTaskDate={newTaskDate}
+            setNewTaskDate={setNewTaskDate}
+            addTask={addTask}
+            titleInputRef={newTaskTitleInputRef}
+            filter={filter}
+            setFilter={setFilter}
+            filteredTasks={filteredTasks}
+            toggleTask={toggleTask}
+            deleteTask={deleteTask}
+            setSelectedTaskId={setSelectedTaskId}
+            reorderTasks={reorderTasks}
+          />
+        )}
 
-            <AddTaskForm
-              newTaskTitle={newTaskTitle}
-              setNewTaskTitle={setNewTaskTitle}
-              newTaskCategory={newTaskCategory}
-              setNewTaskCategory={setNewTaskCategory}
-              newTaskDate={newTaskDate}
-              setNewTaskDate={setNewTaskDate}
-              addTask={addTask}
-              titleInputRef={newTaskTitleInputRef}
-            />
-
-            <section className="task-section">
-              <div className="task-section-header">
-                <h2>Today's Tasks</h2>
-
-                <div className="filters">
-                  <button
-                    className={filter === "all" ? "active-filter" : ""}
-                    onClick={() => setFilter("all")}
-                  >
-                    All
-                  </button>
-
-                  <button
-                    className={filter === "active" ? "active-filter" : ""}
-                    onClick={() => setFilter("active")}
-                  >
-                    Active
-                  </button>
-
-                  <button
-                    className={filter === "completed" ? "active-filter" : ""}
-                    onClick={() => setFilter("completed")}
-                  >
-                    Completed
-                  </button>
-                </div>
-              </div>
-
-              <TaskList
-                tasks={filteredTasks}
-                toggleTask={toggleTask}
-                deleteTask={deleteTask}
-                onSelectTask={setSelectedTaskId}
-                onReorderTasks={reorderTasks}
-              />
-            </section>
-          </>
+        {activePage === "Daily Routine" && (
+          <DailyRoutinePage
+            routineMonth={routineMonth}
+            addRoutine={addRoutine}
+            newRoutineTitle={newRoutineTitle}
+            setNewRoutineTitle={setNewRoutineTitle}
+            setRoutineMounth={setRoutineMounth}
+            routineYear={routineYear}
+            routineMonthIndex={routineMonthIndex}
+            routineDays={routineDays}
+            routines={routines}
+            deleteRoutine={deleteRoutine}
+            routineChecks={routineChecks}
+            getRoutineKey={getRoutineKey}
+            toggleRoutineCheck={toggleRoutineCheck}
+          />
         )}
 
         {activePage === "Calendar" && (
-          <section className="calendar-page">
-            <div className="routine-header">
-              <div>
-                <h2>Takvim</h2>
-                <p>
-                  {calendarViewMode === "month"
-                    ? calendarMonth.toLocaleDateString("tr-TR", {
-                        month: "long",
-                        year: "numeric",
-                      })
-                    : `${weekDays[0].toLocaleDateString("tr-TR", { day: "numeric", month: "short" })} - ${weekDays[6].toLocaleDateString("tr-TR", { day: "numeric", month: "short" })}`}
-                </p>
-              </div>
-
-              <div className="routine-month-actions">
-                <button
-                  className={
-                    calendarViewMode === "month" ? "active-view-toggle" : ""
-                  }
-                  onClick={() => setCalendarViewMode("month")}
-                >
-                  Aylık
-                </button>
-
-                <button
-                  className={
-                    calendarViewMode === "week" ? "active-view-toggle" : ""
-                  }
-                  onClick={() => setCalendarViewMode("week")}
-                >
-                  Haftalık
-                </button>
-
-                {calendarViewMode === "month" && (
-                  <>
-                    <button
-                      onClick={() =>
-                        setCalendarMonth(
-                          new Date(calendarYear, calendarMonthIndex - 1, 1),
-                        )
-                      }
-                    >
-                      Önceki Ay
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        setCalendarMonth(
-                          new Date(calendarYear, calendarMonthIndex + 1, 1),
-                        )
-                      }
-                    >
-                      Sonraki Ay
-                    </button>
-                  </>
-                )}
-
-                {calendarViewMode === "week" && (
-                  <>
-                    <button
-                      onClick={() => {
-                        const newDate = new Date(calendarWeekStart);
-                        newDate.setDate(newDate.getDate() - 7);
-                        setCalendarWeekStart(newDate);
-                      }}
-                    >
-                      Önceki Hafta
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        const newDate = new Date(calendarWeekStart);
-                        newDate.setDate(newDate.getDate() + 7);
-                        setCalendarWeekStart(newDate);
-                      }}
-                    >
-                      Sonraki Hafta
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {calendarViewMode === "month" && (
-              <div className="calendar-grid">
-                {["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"].map(
-                  (dayName) => (
-                    <div className="calendar-day-name" key={dayName}>
-                      {dayName}
-                    </div>
-                  ),
-                )}
-
-                {Array.from({ length: calendarStartDay }).map((_, index) => (
-                  <div
-                    className="calendar-cell empty"
-                    key={`empty-${index}`}
-                  ></div>
-                ))}
-
-                {calendarDays.map((day) => {
-                  const dateString = `${calendarYear}-${String(calendarMonthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                  const dayTasks = tasks.filter(
-                    (task) => task.date === dateString,
-                  );
-
-                  return (
-                    <div className="calendar-cell" key={day}>
-                      <div className="calendar-cell-header">
-                        <strong>{day}</strong>
-                        <button
-                          className="calendar-add-button"
-                          aria-label="Bu güne görev ekle"
-                          onClick={() => {
-                            setQuickAddDate(dateString);
-                            setQuickAddTitle("");
-                          }}
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <div className="calendar-tasks">
-                        {dayTasks.map((task) => (
-                          <div
-                            className="calendar-task"
-                            key={task.id}
-                            onClick={() => setSelectedTaskId(task.id)}
-                          >
-                            {task.title}
-                          </div>
-                        ))}
-                      </div>
-
-                      {quickAddDate === dateString && (
-                        <div
-                          className="quick-add-panel"
-                          onClick={(event) => event.stopPropagation()}
-                        >
-                          <form onSubmit={submitQuickAdd}>
-                            <input
-                              type="text"
-                              autoFocus
-                              placeholder="Görev başlığı..."
-                              value={quickAddTitle}
-                              onChange={(event) =>
-                                setQuickAddTitle(event.target.value)
-                              }
-                            />
-                            <div className="quick-add-actions">
-                              <button type="submit" className="btn btn-primary">Ekle</button>
-                              <button
-                                type="button"
-                                onClick={() => setQuickAddDate(null)}
-                                className="btn btn-secondary"
-                              >
-                                İptal
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {calendarViewMode === "week" && (
-              <div className="calendar-grid calendar-grid-week">
-                {weekDays.map((day) => (
-                  <div className="calendar-day-name" key={`name-${day}`}>
-                    {day.toLocaleDateString("tr-TR", { weekday: "short" })}
-                  </div>
-                ))}
-
-                {weekDays.map((day) => {
-                  const dateString = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
-                  const dayTasks = tasks.filter(
-                    (task) => task.date === dateString,
-                  );
-
-                  return (
-                    <div className="calendar-cell" key={dateString}>
-                      <div className="calendar-cell-header">
-                        <strong>{day.getDate()}</strong>
-                        <button
-                          className="calendar-add-button"
-                          aria-label="Bu güne görev ekle"
-                          onClick={() => {
-                            setQuickAddDate(dateString);
-                            setQuickAddTitle("");
-                          }}
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <div className="calendar-tasks">
-                        {dayTasks.map((task) => (
-                          <div
-                            className="calendar-task"
-                            key={task.id}
-                            onClick={() => setSelectedTaskId(task.id)}
-                          >
-                            {task.title}
-                          </div>
-                        ))}
-                      </div>
-
-                      {quickAddDate === dateString && (
-                        <div
-                          className="quick-add-panel"
-                          onClick={(event) => event.stopPropagation()}
-                        >
-                          <form onSubmit={submitQuickAdd}>
-                            <input
-                              type="text"
-                              autoFocus
-                              placeholder="Görev başlığı..."
-                              value={quickAddTitle}
-                              onChange={(event) =>
-                                setQuickAddTitle(event.target.value)
-                              }
-                            />
-                            <div className="quick-add-actions">
-                              <button type="submit">Ekle</button>
-                              <button
-                                type="button"
-                                onClick={() => setQuickAddDate(null)}
-                              >
-                                İptal
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </section>
+          <CalendarPage
+            calendarViewMode={calendarViewMode}
+            setCalendarViewMode={setCalendarViewMode}
+            calendarMonth={calendarMonth}
+            weekDays={weekDays}
+            setCalendarMonth={setCalendarMonth}
+            calendarYear={calendarYear}
+            calendarMonthIndex={calendarMonthIndex}
+            calendarWeekStart={calendarWeekStart}
+            setCalendarWeekStart={setCalendarWeekStart}
+            calendarStartDay={calendarStartDay}
+            calendarDays={calendarDays}
+            tasks={tasks}
+            setQuickAddDate={setQuickAddDate}
+            setQuickAddTitle={setQuickAddTitle}
+            quickAddDate={quickAddDate}
+            submitQuickAdd={submitQuickAdd}
+            quickAddTitle={quickAddTitle}
+            setSelectedTaskId={setSelectedTaskId}
+          />
         )}
 
         {activePage === "Archive" && (
-          <section className="archive-page">
-            <div className="dashboard-welcome">
-              <h2>Arşiv</h2>
-              <p>
-                Bugüne kadar eklenmiş ve silinmemiş tüm görevler burada
-                listelenir.
-              </p>
-            </div>
-
-            <div className="archive-filters">
-              <select
-                value={archiveStatusFilter}
-                onChange={(event) => setArchiveStatusFilter(event.target.value)}
-              >
-                <option value="all">Tüm Durumlar</option>
-                <option value="active">Devam Eden</option>
-                <option value="completed">Tamamlanan</option>
-              </select>
-
-              <input
-                type="date"
-                value={archiveStartDate}
-                onChange={(event) => setArchiveStartDate(event.target.value)}
-              />
-
-              <input
-                type="date"
-                value={archiveEndDate}
-                onChange={(event) => setArchiveEndDate(event.target.value)}
-              />
-
-              <button
-                onClick={() => {
-                  setArchiveStatusFilter("all");
-                  setArchiveStartDate("");
-                  setArchiveEndDate("");
-                }}
-              >
-                Temizle
-              </button>
-            </div>
-
-            <TaskList
-              tasks={filteredArchiveTasks}
-              toggleTask={toggleTask}
-              deleteTask={deleteTask}
-              onSelectTask={setSelectedTaskId}
-              onReorderTasks={reorderTasks}
-            />
-          </section>
+          <ArchivePage
+            archiveStatusFilter={archiveStatusFilter}
+            setArchiveStatusFilter={setArchiveStatusFilter}
+            archiveStartDate={archiveStartDate}
+            setArchiveStartDate={setArchiveStartDate}
+            archiveEndDate={archiveEndDate}
+            setArchiveEndDate={setArchiveEndDate}
+            filteredArchiveTasks={filteredArchiveTasks}
+            toggleTask={toggleTask}
+            deleteTask={deleteTask}
+            setSelectedTaskId={setSelectedTaskId}
+            reorderTasks={reorderTasks}
+          />
         )}
 
-        {activePage === "Projects" && !selectedProject && (
-          <section className="projects-page">
-            <div className="dashboard-welcome">
-              <h2>Projeler</h2>
-              <p>Projelerine özel görev klasörleri oluşturabilirsin.</p>
-            </div>
-
-            <form className="project-form" onSubmit={addProject}>
-              <input
-                type="text"
-                placeholder="Yeni proje adı..."
-                value={newProjectName}
-                onChange={(event) => setNewProjectsName(event.target.value)}
-              />
-
-              <button type="submit" className="btn btn-primary">Proje Ekle</button>
-            </form>
-            <div className="project-list">
-              {projects.map((project) => (
-                <div
-                  className="project-card"
-                  key={project.id}
-                  onClick={() => setSelectedProjectId(project.id)}
-                >
-                  <div className="project-card-header">
-                    <h3>{project.name}</h3>
-                    <button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        deleteProject(project.id);
-                      }}
-                    >
-                      Sil
-                    </button>
-                  </div>
-
-                  <p>
-                    {
-                      tasks.filter((task) => task.projectId === project.id)
-                        .length
-                    }{" "}
-                    görev
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {activePage === "Projects" && selectedProject && (
-          <section className="project-detail">
-            <div className="dashboard-welcome">
-              <button onClick={() => setSelectedProjectId(null)}>
-                ← Projelere Dön
-              </button>
-              <h2>{selectedProject.name}</h2>
-            </div>
-
-            <form className="project-task-form" onSubmit={addProjectTask}>
-              <input
-                type="text"
-                placeholder="Proje görevi ekle..."
-                value={newProjectTaskTitle}
-                onChange={(event) => setNewProjectTaskTitle(event.target.value)}
-              />
-
-              <input
-                type="date"
-                value={newProjectTaskDate}
-                onChange={(event) => setNewProjectTaskDate(event.target.value)}
-              />
-
-              <button type="submit" className="btn btn-primary">Görev Ekle</button>
-            </form>
-
-            <TaskList
-              tasks={tasks.filter(
-                (task) => task.projectId === selectedProjectId,
-              )}
-              toggleTask={toggleTask}
-              deleteTask={deleteTask}
-              onSelectTask={setSelectedTaskId}
-              onReorderTasks={reorderTasks}
-            />
-          </section>
+        {activePage === "Projects" && (
+          <ProjectsPage
+            selectedProject={selectedProject}
+            setSelectedProjectId={setSelectedProjectId}
+            addProject={addProject}
+            newProjectName={newProjectName}
+            setNewProjectsName={setNewProjectsName}
+            projects={projects}
+            deleteProject={deleteProject}
+            tasks={tasks}
+            addProjectTask={addProjectTask}
+            newProjectTaskTitle={newProjectTaskTitle}
+            setNewProjectTaskTitle={setNewProjectTaskTitle}
+            newProjectTaskDate={newProjectTaskDate}
+            setNewProjectTaskDate={setNewProjectTaskDate}
+            selectedProjectId={selectedProjectId}
+            toggleTask={toggleTask}
+            deleteTask={deleteTask}
+            setSelectedTaskId={setSelectedTaskId}
+            reorderTasks={reorderTasks}
+          />
         )}
 
         {activePage === "Settings" && (
-          <section className="settings-page">
-            <div className="dashboard-welcome">
-              <h2>{t.settingsTitle}</h2>
-              <p>{t.settingsDescription}</p>
-            </div>
-
-            <div className="settings-section">
-              <h3>{t.themeLabel}</h3>
-
-              <div className="theme-options">
-                {["light", "dark", "ocean"].map((themeOption) => (
-                  <button
-                    key={themeOption}
-                    className={
-                      theme === themeOption
-                        ? "theme-option active-theme"
-                        : "theme-option"
-                    }
-                    onClick={() => setTheme(themeOption)}
-                  >
-                    {themeOption}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="settings-section">
-              <h3>{t.languageLabel}</h3>
-
-              <div className="theme-options">
-                {["tr", "en"].map((languageOption) => (
-                  <button
-                    key={languageOption}
-                    className={
-                      language === languageOption
-                        ? "theme-option active-theme"
-                        : "theme-option"
-                    }
-                    onClick={() => setLanguage(languageOption)}
-                  >
-                    {languageOption.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="settings-section">
-              <h3>Font</h3>
-
-              <div className="theme-options">
-                {["Inter", "Poppins", "Manrope"].map((fontOption) => (
-                  <button
-                    key={fontOption}
-                    className={
-                      fontFamily === fontOption
-                        ? "theme-option active-theme"
-                        : "theme-option"
-                    }
-                    style={{ fontFamily: `'${fontOption}', sans-serif` }}
-                    onClick={() => setFontFamily(fontOption)}
-                  >
-                    {fontOption}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </section>
+          <SettingsPage
+            t={t}
+            theme={theme}
+            setTheme={setTheme}
+            language={language}
+            setLanguage={setLanguage}
+            fontFamily={fontFamily}
+            setFontFamily={setFontFamily}
+          />
         )}
       </main>
 
