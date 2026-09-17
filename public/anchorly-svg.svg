@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Halka -->
+  <circle cx="50" cy="18" r="8" fill="none" stroke="#7c3aed" stroke-width="6" />
+  
+  <!-- Gövde -->
+  <line x1="50" y1="26" x2="50" y2="78" stroke="#7c3aed" stroke-width="7" stroke-linecap="round" />
+  
+  <!-- Yatay Bar -->
+  <line x1="32" y1="40" x2="68" y2="40" stroke="#7c3aed" stroke-width="6" stroke-linecap="round" />
+  
+  <!-- Çapa & Tik Yayı -->
+  <path d="M 22 55 L 22 66 Q 48 88 50 88 Q 52 88 80 44" fill="none" stroke="#7c3aed" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Sol Ok Başı -->
+  <polygon points="14,57 22,46 30,57" fill="#7c3aed" />
+</svg>
