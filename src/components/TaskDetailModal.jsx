@@ -3,6 +3,7 @@ import { useState } from "react";
 function TaskDetailModal({
   task,
   onClose,
+  onToggleTask,
   onUpdateDescription,
   onAddStep,
   onToggleStep,
@@ -59,16 +60,25 @@ function TaskDetailModal({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-box" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
-          <h2>{task.title}</h2>
-          <button className="btn btn-secondary"  onClick={onClose}>Kapat</button>
+          <label className="modal-complete-toggle">
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => onToggleTask(task.id)}
+            />
+            <h2 className={task.completed ? "modal-title-done" : ""}>
+              {task.title}
+            </h2>
+          </label>
+          <button className="btn btn-secondary" onClick={onClose}>
+            Kapat
+          </button>
         </div>
 
         <label>Açıklama</label>
         <textarea
           value={task.description || ""}
-          onChange={(event) =>
-            onUpdateDescription(task.id, event.target.value)
-          }
+          onChange={(event) => onUpdateDescription(task.id, event.target.value)}
           placeholder="Bu görev hakkında not ekle..."
         />
 
@@ -108,9 +118,7 @@ function TaskDetailModal({
                     className="attachment-preview"
                   />
                 ) : (
-                  <span className="attachment-name">
-                    📄 {attachment.name}
-                  </span>
+                  <span className="attachment-name">📄 {attachment.name}</span>
                 )}
               </a>
 
@@ -138,9 +146,7 @@ function TaskDetailModal({
                 checked={step.done}
                 onChange={() => onToggleStep(task.id, step.id)}
               />
-              <span className={step.done ? "step-done" : ""}>
-                {step.text}
-              </span>
+              <span className={step.done ? "step-done" : ""}>{step.text}</span>
               <button onClick={() => onDeleteStep(task.id, step.id)}>
                 Sil
               </button>

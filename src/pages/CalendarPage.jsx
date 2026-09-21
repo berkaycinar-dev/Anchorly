@@ -209,7 +209,11 @@ function CalendarCell({
       <div className="calendar-tasks">
         {dayTasks.map((task) => (
           <div
-            className="calendar-task"
+            className={
+              task.completed
+                ? "calendar-task calendar-task-done"
+                : "calendar-task"
+            }
             key={task.id}
             onClick={() => setSelectedTaskId(task.id)}
           >

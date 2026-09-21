@@ -470,7 +470,10 @@ body {
   gap: 6px;
   margin-top: 8px;
 }
-
+.calendar-task-done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
 .calendar-task {
   padding: 6px 8px;
   border-radius: 6px;
@@ -1346,4 +1349,22 @@ textarea {
 .empty-state-subtitle {
   font-size: 13px;
   margin: 4px 0 0;
+}
+.modal-complete-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.modal-complete-toggle input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.modal-title-done {
+  text-decoration: line-through;
+  color: #9ca3af;
 }

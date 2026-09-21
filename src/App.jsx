@@ -945,6 +945,7 @@ function App() {
       <TaskDetailModal
         task={selectedTask}
         onClose={() => setSelectedTaskId(null)}
+        onToggleTask={toggleTask}
         onUpdateDescription={updateTaskDescription}
         onAddStep={addTaskStep}
         onToggleStep={toggleTaskStep}
