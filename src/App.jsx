@@ -890,6 +890,7 @@ function App() {
             submitQuickAdd={submitQuickAdd}
             quickAddTitle={quickAddTitle}
             setSelectedTaskId={setSelectedTaskId}
+            today={today}
           />
         )}
 

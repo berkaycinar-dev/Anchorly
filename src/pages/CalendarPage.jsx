@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function CalendarPage({
   calendarViewMode,
   setCalendarViewMode,
@@ -17,91 +19,66 @@ export default function CalendarPage({
   submitQuickAdd,
   quickAddTitle,
   setSelectedTaskId,
+  today,
 }) {
+  const [expandedDayDate, setExpandedDayDate] = useState(null);
+  function goToPrevious() {
+    if (calendarViewMode === "month") {
+      setCalendarMonth(new Date(calendarYear, calendarMonthIndex - 1, 1));
+    } else {
+      const newDate = new Date(calendarWeekStart);
+      newDate.setDate(newDate.getDate() - 7);
+      setCalendarWeekStart(newDate);
+    }
+  }
+
+  function goToNext() {
+    if (calendarViewMode === "month") {
+      setCalendarMonth(new Date(calendarYear, calendarMonthIndex + 1, 1));
+    } else {
+      const newDate = new Date(calendarWeekStart);
+      newDate.setDate(newDate.getDate() + 7);
+      setCalendarWeekStart(newDate);
+    }
+  }
+
+  function toggleViewMode() {
+    setCalendarViewMode(calendarViewMode === "month" ? "week" : "month");
+  }
+
   return (
     <section className="calendar-page">
-      <div className="routine-header">
-        <div>
-          <h2>Takvim</h2>
-          <p>
-            {calendarViewMode === "month"
-              ? calendarMonth.toLocaleDateString("tr-TR", {
-                  month: "long",
-                  year: "numeric",
-                })
-              : `${weekDays[0].toLocaleDateString("tr-TR", {
-                  day: "numeric",
-                  month: "short",
-                })} - ${weekDays[6].toLocaleDateString("tr-TR", {
-                  day: "numeric",
-                  month: "short",
-                })}`}
-          </p>
-        </div>
+      <div className="calendar-nav">
+        <button
+          className="calendar-nav-arrow"
+          aria-label="Önceki"
+          onClick={goToPrevious}
+        >
+          ‹
+        </button>
 
-        <div className="routine-month-actions">
-          <button
-            className={calendarViewMode === "month" ? "active-view-toggle" : ""}
-            onClick={() => setCalendarViewMode("month")}
-          >
-            Aylık
-          </button>
+        <button className="calendar-nav-label" onClick={toggleViewMode}>
+          {calendarViewMode === "month"
+            ? calendarMonth.toLocaleDateString("tr-TR", {
+              month: "long",
+              year: "numeric",
+            })
+            : `${weekDays[0].toLocaleDateString("tr-TR", {
+              day: "numeric",
+              month: "short",
+            })} - ${weekDays[6].toLocaleDateString("tr-TR", {
+              day: "numeric",
+              month: "short",
+            })}`}
+        </button>
 
-          <button
-            className={calendarViewMode === "week" ? "active-view-toggle" : ""}
-            onClick={() => setCalendarViewMode("week")}
-          >
-            Haftalık
-          </button>
-
-          {calendarViewMode === "month" && (
-            <>
-              <button
-                onClick={() =>
-                  setCalendarMonth(
-                    new Date(calendarYear, calendarMonthIndex - 1, 1),
-                  )
-                }
-              >
-                Önceki Ay
-              </button>
-
-              <button
-                onClick={() =>
-                  setCalendarMonth(
-                    new Date(calendarYear, calendarMonthIndex + 1, 1),
-                  )
-                }
-              >
-                Sonraki Ay
-              </button>
-            </>
-          )}
-
-          {calendarViewMode === "week" && (
-            <>
-              <button
-                onClick={() => {
-                  const newDate = new Date(calendarWeekStart);
-                  newDate.setDate(newDate.getDate() - 7);
-                  setCalendarWeekStart(newDate);
-                }}
-              >
-                Önceki Hafta
-              </button>
-
-              <button
-                onClick={() => {
-                  const newDate = new Date(calendarWeekStart);
-                  newDate.setDate(newDate.getDate() + 7);
-                  setCalendarWeekStart(newDate);
-                }}
-              >
-                Sonraki Hafta
-              </button>
-            </>
-          )}
-        </div>
+        <button
+          className="calendar-nav-arrow"
+          aria-label="Sonraki"
+          onClick={goToNext}
+        >
+          ›
+        </button>
       </div>
 
       {calendarViewMode === "month" && (
@@ -136,6 +113,8 @@ export default function CalendarPage({
                 setSelectedTaskId={setSelectedTaskId}
                 primaryButtonClassName="btn btn-primary"
                 cancelButtonClassName="btn btn-secondary"
+                isToday={dateString === today}
+                onShowMore={setExpandedDayDate}
               />
             );
           })}
@@ -168,11 +147,19 @@ export default function CalendarPage({
                 setQuickAddTitle={setQuickAddTitle}
                 submitQuickAdd={submitQuickAdd}
                 setSelectedTaskId={setSelectedTaskId}
+                isToday={dateString === today}
+                onShowMore={setExpandedDayDate}
               />
             );
           })}
         </div>
       )}
+      <DayTasksModal
+        dateString={expandedDayDate}
+        tasks={tasks.filter((task) => task.date === expandedDayDate)}
+        onClose={() => setExpandedDayDate(null)}
+        onSelectTask={setSelectedTaskId}
+      />
     </section>
   );
 }
@@ -189,9 +176,20 @@ function CalendarCell({
   setSelectedTaskId,
   primaryButtonClassName,
   cancelButtonClassName,
+  isToday,
+  onShowMore,
 }) {
+  const overflowThreshold = 4;
+  const isOverflowing = dayTasks.length > overflowThreshold;
+  const visibleTasks = isOverflowing ? dayTasks.slice(0, 3) : dayTasks.slice(0, 4);
+  const hiddenCount = isOverflowing ? dayTasks.length - 3 : 0;
+
   return (
-    <div className="calendar-cell">
+    <div
+      className={
+        isToday ? "calendar-cell calendar-cell-today" : "calendar-cell"
+      }
+    >
       <div className="calendar-cell-header">
         <strong>{dayLabel}</strong>
         <button
@@ -207,7 +205,7 @@ function CalendarCell({
       </div>
 
       <div className="calendar-tasks">
-        {dayTasks.map((task) => (
+        {visibleTasks.map((task) => (
           <div
             className={
               task.completed
@@ -220,6 +218,15 @@ function CalendarCell({
             {task.title}
           </div>
         ))}
+
+        {hiddenCount > 0 && (
+          <div
+            className="calendar-task calendar-task-overflow"
+            onClick={() => onShowMore(dateString)}
+          >
+            +{hiddenCount}
+          </div>
+        )}
       </div>
 
       {quickAddDate === dateString && (
@@ -250,6 +257,43 @@ function CalendarCell({
           </form>
         </div>
       )}
+    </div>
+  );
+}
+function DayTasksModal({ dateString, tasks, onClose, onSelectTask }) {
+  if (!dateString) {
+    return null;
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" onClick={(event) => event.stopPropagation()}>
+        <div className="modal-header">
+          <h2>{dateString}</h2>
+          <button className="btn btn-secondary" onClick={onClose}>
+            Kapat
+          </button>
+        </div>
+
+        <ul className="day-tasks-list">
+          {tasks.map((task) => (
+            <li
+              key={task.id}
+              className={
+                task.completed
+                  ? "day-tasks-list-item day-tasks-list-item-done"
+                  : "day-tasks-list-item"
+              }
+              onClick={() => {
+                onSelectTask(task.id);
+                onClose();
+              }}
+            >
+              {task.title}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
