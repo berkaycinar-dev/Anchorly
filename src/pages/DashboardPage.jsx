@@ -37,7 +37,7 @@ function DashboardPage({
           <div
             className="pie-chart"
             style={{
-              background: `conic-gradient(#7c3aed ${todayCompletionPercent}%, #e5e7eb 0)`,
+              background: `conic-gradient(var(--color-accent) ${todayCompletionPercent}%, var(--color-border) 0)`,
             }}
           >
             <span>{todayCompletionPercent}%</span>

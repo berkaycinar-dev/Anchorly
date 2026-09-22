@@ -174,8 +174,11 @@ function App() {
   const newTaskTitleInputRef = useRef(null);
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
+  const validThemes = ["gray", "purple", "blue", "red", "green", "pink"];
+
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light";
+    const savedTheme = localStorage.getItem("theme");
+    return validThemes.includes(savedTheme) ? savedTheme : "gray";
   });
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "tr";

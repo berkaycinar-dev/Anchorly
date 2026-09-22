@@ -18,7 +18,9 @@ export default function SettingsPage({
         <h3>{t.themeLabel}</h3>
 
         <div className="theme-options">
-          {["light", "dark", "ocean"].map((themeOption) => (
+          
+            {["gray", "purple", "blue", "red", "green", "pink"].map((themeOption) => (
+
             <button
               key={themeOption}
               className={
