@@ -867,6 +867,7 @@ function App() {
             routineChecks={routineChecks}
             getRoutineKey={getRoutineKey}
             toggleRoutineCheck={toggleRoutineCheck}
+            today={today}
           />
         )}
 

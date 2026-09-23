@@ -1365,3 +1365,16 @@ textarea {
   text-decoration: line-through;
   color: var(--color-text-muted);
 }
+.routine-today-col {
+  background-color: var(--color-bg-subtle);
+  position: relative;
+}
+
+.routine-table thead .routine-today-col {
+  color: var(--color-accent);
+  font-weight: 800;
+}
+
+.routine-nav-label {
+  cursor: default;
+}

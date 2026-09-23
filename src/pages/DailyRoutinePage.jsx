@@ -12,50 +12,59 @@ export default function DailyRoutinePage({
   routineChecks,
   getRoutineKey,
   toggleRoutineCheck,
+  today,
 }) {
+  const now = new Date();
+  const isCurrentMonth =
+    routineYear === now.getFullYear() && routineMonthIndex === now.getMonth();
+  const todayDayNumber = now.getDate();
+
+  function goToPrevious() {
+    setRoutineMounth(new Date(routineYear, routineMonthIndex - 1, 1));
+  }
+
+  function goToNext() {
+    setRoutineMounth(new Date(routineYear, routineMonthIndex + 1, 1));
+  }
+
   return (
     <section className="routine-page">
-      <div className="routine-header">
-        <div>
-          <h2>Günlük Rutin</h2>
-          <p>
-            {routineMonth.toLocaleDateString("tr-TR", {
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-        </div>
+      <div className="calendar-nav">
+        <button
+          className="calendar-nav-arrow"
+          aria-label="Önceki Ay"
+          onClick={goToPrevious}
+        >
+          ‹
+        </button>
 
-        <form className="routine-form" onSubmit={addRoutine}>
-          <input
-            type="text"
-            placeholder="Yeni rutin ekle..."
-            value={newRoutineTitle}
-            onChange={(event) => setNewRoutineTitle(event.target.value)}
-          />
-          <button type="submit" className="btn btn-primary">
-            Rutin Ekle
-          </button>
-        </form>
+        <span className="calendar-nav-label routine-nav-label">
+          {routineMonth.toLocaleDateString("tr-TR", {
+            month: "long",
+            year: "numeric",
+          })}
+        </span>
 
-        <div className="routine-month-actions">
-          <button
-            onClick={() =>
-              setRoutineMounth(new Date(routineYear, routineMonthIndex - 1, 1))
-            }
-          >
-            Önceki Ay
-          </button>
-
-          <button
-            onClick={() =>
-              setRoutineMounth(new Date(routineYear, routineMonthIndex + 1, 1))
-            }
-          >
-            Sonraki Ay
-          </button>
-        </div>
+        <button
+          className="calendar-nav-arrow"
+          aria-label="Sonraki Ay"
+          onClick={goToNext}
+        >
+          ›
+        </button>
       </div>
+
+      <form className="routine-form" onSubmit={addRoutine}>
+        <input
+          type="text"
+          placeholder="Yeni rutin ekle..."
+          value={newRoutineTitle}
+          onChange={(event) => setNewRoutineTitle(event.target.value)}
+        />
+        <button type="submit" className="btn btn-primary">
+          Rutin Ekle
+        </button>
+      </form>
 
       <div className="routine-table-wrapper">
         <table className="routine-table">
@@ -63,7 +72,16 @@ export default function DailyRoutinePage({
             <tr>
               <th>Rutin</th>
               {routineDays.map((day) => (
-                <th key={day}>{day}</th>
+                <th
+                  key={day}
+                  className={
+                    isCurrentMonth && day === todayDayNumber
+                      ? "routine-today-col"
+                      : ""
+                  }
+                >
+                  {day}
+                </th>
               ))}
             </tr>
           </thead>
@@ -85,7 +103,14 @@ export default function DailyRoutinePage({
                 </td>
 
                 {routineDays.map((day) => (
-                  <td key={day}>
+                  <td
+                    key={day}
+                    className={
+                      isCurrentMonth && day === todayDayNumber
+                        ? "routine-today-col"
+                        : ""
+                    }
+                  >
                     <input
                       type="checkbox"
                       checked={Boolean(
