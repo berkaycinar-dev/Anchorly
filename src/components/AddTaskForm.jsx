@@ -7,12 +7,13 @@ function AddTaskForm({
   setNewTaskDate,
   addTask,
   titleInputRef,
+  t,
 }) {
   return (
     <form className="add-task-form" onSubmit={addTask}>
       <input
         type="text"
-        placeholder="Yeni görev ekle..."
+        placeholder={t.newTaskPlaceholder}
         value={newTaskTitle}
         onChange={(event) => setNewTaskTitle(event.target.value)}
         ref={titleInputRef}
@@ -22,10 +23,10 @@ function AddTaskForm({
         value={newTaskCategory}
         onChange={(event) => setNewTaskCategory(event.target.value)}
       >
-        <option value="Work">Work</option>
-        <option value="Personal">Personal</option>
-        <option value="Self Development">Self Development</option>
-        <option value="Other">Other</option>
+        <option value="Work">{t.categoryWork}</option>
+        <option value="Personal">{t.categoryPersonal}</option>
+        <option value="Self Development">{t.categorySelfDevelopment}</option>
+        <option value="Other">{t.categoryOther}</option>
       </select>
 
       <input
@@ -34,7 +35,9 @@ function AddTaskForm({
         onChange={(event) => setNewTaskDate(event.target.value)}
       />
 
-      <button type="submit" className="btn btn-primary">Ekle</button>
+      <button type="submit" className="btn btn-primary">
+        {t.addButton}
+      </button>
     </form>
   );
 }

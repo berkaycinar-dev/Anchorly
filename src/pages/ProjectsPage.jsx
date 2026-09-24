@@ -19,13 +19,14 @@ export default function ProjectsPage({
   deleteTask,
   setSelectedTaskId,
   reorderTasks,
+  t,
 }) {
   if (selectedProject) {
     return (
       <section className="project-detail">
         <div className="dashboard-welcome">
           <button onClick={() => setSelectedProjectId(null)}>
-            ← Projelere Dön
+            {t.backToProjects}
           </button>
           <h2>{selectedProject.name}</h2>
         </div>
@@ -33,7 +34,7 @@ export default function ProjectsPage({
         <form className="project-task-form" onSubmit={addProjectTask}>
           <input
             type="text"
-            placeholder="Proje görevi ekle..."
+            placeholder={t.newProjectTaskPlaceholder}
             value={newProjectTaskTitle}
             onChange={(event) => setNewProjectTaskTitle(event.target.value)}
           />
@@ -45,7 +46,7 @@ export default function ProjectsPage({
           />
 
           <button type="submit" className="btn btn-primary">
-            Görev Ekle
+            {t.addProjectTaskButton}
           </button>
         </form>
 
@@ -55,6 +56,7 @@ export default function ProjectsPage({
           deleteTask={deleteTask}
           onSelectTask={setSelectedTaskId}
           onReorderTasks={reorderTasks}
+          t={t}
         />
       </section>
     );
@@ -63,20 +65,20 @@ export default function ProjectsPage({
   return (
     <section className="projects-page">
       <div className="dashboard-welcome">
-        <h2>Projeler</h2>
-        <p>Projelerine özel görev klasörleri oluşturabilirsin.</p>
+        <h2>{t.projectsPageTitle}</h2>
+        <p>{t.projectsPageDescription}</p>
       </div>
 
       <form className="project-form" onSubmit={addProject}>
         <input
           type="text"
-          placeholder="Yeni proje adı..."
+          placeholder={t.newProjectPlaceholder}
           value={newProjectName}
           onChange={(event) => setNewProjectsName(event.target.value)}
         />
 
         <button type="submit" className="btn btn-primary">
-          Proje Ekle
+          {t.addProjectButton}
         </button>
       </form>
 
@@ -95,13 +97,13 @@ export default function ProjectsPage({
                   deleteProject(project.id);
                 }}
               >
-                Sil
+                {t.deleteButton}
               </button>
             </div>
 
             <p>
               {tasks.filter((task) => task.projectId === project.id).length}{" "}
-              görev
+              {t.taskCountSuffix}
             </p>
           </div>
         ))}

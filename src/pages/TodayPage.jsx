@@ -19,13 +19,14 @@ function TodayPage({
   deleteTask,
   setSelectedTaskId,
   reorderTasks,
+  t,
 }) {
   return (
     <>
       <div className="search-box">
         <input
           type="text"
-          placeholder="Görev ara..."
+          placeholder={t.searchPlaceholder}
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
         />
@@ -40,32 +41,33 @@ function TodayPage({
         setNewTaskDate={setNewTaskDate}
         addTask={addTask}
         titleInputRef={titleInputRef}
+        t={t}
       />
 
       <section className="task-section">
         <div className="task-section-header">
-          <h2>Today's Tasks</h2>
+          <h2>{t.todaysTasksTitle}</h2>
 
           <div className="filters">
             <button
               className={filter === "all" ? "active-filter" : ""}
               onClick={() => setFilter("all")}
             >
-              All
+              {t.filterAll}
             </button>
 
             <button
               className={filter === "active" ? "active-filter" : ""}
               onClick={() => setFilter("active")}
             >
-              Active
+              {t.filterActive}
             </button>
 
             <button
               className={filter === "completed" ? "active-filter" : ""}
               onClick={() => setFilter("completed")}
             >
-              Completed
+              {t.filterCompleted}
             </button>
           </div>
         </div>
@@ -76,6 +78,7 @@ function TodayPage({
           deleteTask={deleteTask}
           onSelectTask={setSelectedTaskId}
           onReorderTasks={reorderTasks}
+          t={t}
         />
       </section>
     </>

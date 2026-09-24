@@ -12,12 +12,13 @@ export default function ArchivePage({
   deleteTask,
   setSelectedTaskId,
   reorderTasks,
+  t,
 }) {
   return (
     <section className="archive-page">
       <div className="dashboard-welcome">
-        <h2>Arşiv</h2>
-        <p>Bugüne kadar eklenmiş ve silinmemiş tüm görevler burada listelenir.</p>
+        <h2>{t.archivePageTitle}</h2>
+        <p>{t.archivePageDescription}</p>
       </div>
 
       <div className="archive-filters">
@@ -25,9 +26,9 @@ export default function ArchivePage({
           value={archiveStatusFilter}
           onChange={(event) => setArchiveStatusFilter(event.target.value)}
         >
-          <option value="all">Tüm Durumlar</option>
-          <option value="active">Devam Eden</option>
-          <option value="completed">Tamamlanan</option>
+          <option value="all">{t.statusAll}</option>
+          <option value="active">{t.statusActive}</option>
+          <option value="completed">{t.statusCompleted}</option>
         </select>
 
         <input
@@ -49,7 +50,7 @@ export default function ArchivePage({
             setArchiveEndDate("");
           }}
         >
-          Temizle
+          {t.clearFilters}
         </button>
       </div>
 
@@ -59,6 +60,7 @@ export default function ArchivePage({
         deleteTask={deleteTask}
         onSelectTask={setSelectedTaskId}
         onReorderTasks={reorderTasks}
+        t={t}
       />
     </section>
   );

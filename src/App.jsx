@@ -849,6 +849,7 @@ function App() {
             deleteTask={deleteTask}
             setSelectedTaskId={setSelectedTaskId}
             reorderTasks={reorderTasks}
+            t={t}
           />
         )}
 
@@ -908,6 +909,7 @@ function App() {
             deleteTask={deleteTask}
             setSelectedTaskId={setSelectedTaskId}
             reorderTasks={reorderTasks}
+            t={t}
           />
         )}
 
@@ -931,6 +933,7 @@ function App() {
             deleteTask={deleteTask}
             setSelectedTaskId={setSelectedTaskId}
             reorderTasks={reorderTasks}
+            t={t}
           />
         )}
 
@@ -958,6 +961,7 @@ function App() {
         onUpdateRepeat={updateTaskRepeat}
         onAddAttachment={addTaskAttachment}
         onDeleteAttachment={deleteTaskAttachment}
+        t={t}
       />
     </div>
   );

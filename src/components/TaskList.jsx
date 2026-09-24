@@ -6,6 +6,7 @@ function TaskList({
   deleteTask,
   onSelectTask,
   onReorderTasks,
+  t
 }) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
   const [draggedTaskId, setDraggedTaskId] = useState(null);
@@ -14,13 +15,12 @@ function TaskList({
   return (
     <div className="empty-state">
       <span className="empty-state-icon">📋</span>
-      <p className="empty-state-title">Henüz görev yok</p>
-      <p className="empty-state-subtitle">
-        Yeni bir görev ekleyerek başla.
-      </p>
+      <p className="empty-state-title">{t.emptyTaskTitle}</p>
+      <p className="empty-state-subtitle">{t.emptyTaskSubtitle}</p>
     </div>
   );
 }
+
 
   const activeTasks = tasks
     .filter((task) => !task.completed)
@@ -100,7 +100,7 @@ function TaskList({
 
         <button
           className="task-delete-button"
-          aria-label="Görevi sil"
+          aria-label={t.deleteButton}
           onClick={(event) => {
             event.stopPropagation();
             deleteTask(task.id);
@@ -129,7 +129,7 @@ function TaskList({
             >
               ▸
             </span>
-            Tamamlandı ({completedTasks.length})
+            {t.completedSection} ({completedTasks.length})
           </button>
 
           {isCompletedOpen && (
