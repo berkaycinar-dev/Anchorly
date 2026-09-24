@@ -11,6 +11,9 @@ function TaskDetailModal({
   onUpdateRepeat,
   onAddAttachment,
   onDeleteAttachment,
+  projects, 
+  onAssignProject,
+  t,
 }) {
   const [newStepText, setNewStepText] = useState("");
 
@@ -136,6 +139,22 @@ function TaskDetailModal({
           onChange={handleFileUpload}
           className="attachment-input"
         />
+
+        <div className="detail-field">
+          <label htmlFor="task-project">{t.project}</label>
+          <select
+            id="task-project"
+            value={task.projectId ?? ""}
+            onChange={(e) => onAssignProject(task.id, e.target.value || null)}
+          >
+            <option value="">{t.noProject}</option>
+            {projects.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <label>Adımlar</label>
         <ul className="task-steps-list">

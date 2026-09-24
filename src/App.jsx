@@ -572,11 +572,11 @@ function App() {
 
     const newTask = {
       id: crypto.randomUUID(),
-      title: newTaskTitle,
-      category: newTaskCategory,
-      date: newTaskDate,
+      title: newProjectTaskTitle,
+      category: "Project",
+      date: newProjectTaskDate,
       completed: false,
-      projectId: null,
+      projectId: selectedProjectId,
       description: "",
       steps: [],
       completedAt: null,
@@ -748,6 +748,25 @@ function App() {
   function deleteProject(id) {
     const filteredProjects = projects.filter((project) => project.id !== id);
     setProjects(filteredProjects);
+
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.projectId === id ? { ...task, projectId: null } : task,
+      ),
+    );
+  }
+
+  function handleAssignProject(taskId, projectId) {
+    const targetProject = projects.find(
+      (project) => String(project.id) === String(projectId),
+    );
+    const realProjectId = targetProject ? targetProject.id : null;
+
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, projectId: realProjectId } : task,
+      ),
+    );
   }
 
   function addProjectTask(event) {
@@ -962,6 +981,8 @@ function App() {
         onAddAttachment={addTaskAttachment}
         onDeleteAttachment={deleteTaskAttachment}
         t={t}
+        projects={projects}
+        onAssignProject={handleAssignProject}
       />
     </div>
   );

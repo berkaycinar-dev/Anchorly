@@ -79,6 +79,8 @@ export const strings = {
     attachmentsLabel: "Dosyalar",
     stepsLabel: "Adımlar",
     newStepPlaceholder: "Yeni adım ekle...",
+    project: "Proje",
+    noProject: "Proje yok",
   },
   en: {
     dashboard: "Dashboard",
@@ -159,5 +161,7 @@ export const strings = {
     attachmentsLabel: "Attachments",
     stepsLabel: "Steps",
     newStepPlaceholder: "Add a new step...",
+    project: "Project",
+    noProject: "No project",
   },
 };
