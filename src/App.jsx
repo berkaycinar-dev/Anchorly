@@ -12,6 +12,8 @@ import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
 
+const REPEAT_HORIZON_DAYS = 120;
+
 const initialTasks = [
   {
     id: 1,
@@ -244,40 +246,20 @@ function App() {
       }
     });
 
-    const newTasks = [];
+    let allNewOccurrences = [];
 
     Object.values(latestByGroup).forEach((latestTask) => {
-      let nextDate = latestTask.date;
-      let safetyCounter = 0;
+      const occurrences = generateRepeatOccurrences(latestTask, [
+        ...tasks,
+        ...allNewOccurrences,
+      ]);
 
-      while (nextDate < today && safetyCounter < 60) {
-        nextDate = getNextRepeatDate(nextDate, latestTask.repeat);
-        safetyCounter++;
-      }
-
-      const alreadyExists = tasks.some(
-        (task) =>
-          task.repeatGroupId === latestTask.repeatGroupId &&
-          task.date === nextDate,
-      );
-
-      if (nextDate !== latestTask.date && !alreadyExists) {
-        newTasks.push({
-          ...latestTask,
-          id: crypto.randomUUID(),
-          date: nextDate,
-          completed: false,
-          completedAt: null,
-          order: Date.now(),
-          steps: latestTask.steps.map((step) => ({ ...step, done: false })),
-        });
-      }
+      allNewOccurrences = [...allNewOccurrences, ...occurrences];
     });
 
-    if (newTasks.length > 0) {
-      setTasks((currentTasks) => [...currentTasks, ...newTasks]);
+    if (allNewOccurrences.length > 0) {
+      setTasks((currentTasks) => [...currentTasks, ...allNewOccurrences]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -313,10 +295,13 @@ function App() {
     };
   }, []);
   const today = new Date().toISOString().slice(0, 10);
+
   function isVisibleInToday(task) {
     const isDateless = !task.date;
     const isTodayDated = task.date === today;
-    const belongsToToday = isDateless || isTodayDated;
+    const belongsToProject = Boolean(task.projectId);
+
+    const belongsToToday = isTodayDated || (isDateless && !belongsToProject);
 
     if (!belongsToToday) {
       return false;
@@ -328,6 +313,7 @@ function App() {
 
     return true;
   }
+
   const todayScopedTasks = tasks.filter(isVisibleInToday);
   const allTaskCount = todayScopedTasks.length;
   const completedTasksCount = todayScopedTasks.filter(
@@ -469,6 +455,52 @@ function App() {
     return date.toISOString().slice(0, 10);
   }
 
+  function generateRepeatOccurrences(baseTask, existingTasks) {
+    if (
+      baseTask.repeat === "none" ||
+      !baseTask.date ||
+      !baseTask.repeatGroupId
+    ) {
+      return [];
+    }
+
+    const horizon = new Date();
+    horizon.setDate(horizon.getDate() + REPEAT_HORIZON_DAYS);
+    const horizonDate = horizon.toISOString().slice(0, 10);
+
+    const existingDatesInGroup = new Set(
+      existingTasks
+        .filter((task) => task.repeatGroupId === baseTask.repeatGroupId)
+        .map((task) => task.date),
+    );
+
+    const newOccurrences = [];
+    let nextDate = getNextRepeatDate(baseTask.date, baseTask.repeat);
+    let safetyCounter = 0;
+
+    while (nextDate <= horizonDate && safetyCounter < 400) {
+      if (!existingDatesInGroup.has(nextDate)) {
+        newOccurrences.push({
+          ...baseTask,
+          id: crypto.randomUUID(),
+          date: nextDate,
+          completed: false,
+          completedAt: null,
+          order: Date.now() + safetyCounter,
+          steps: baseTask.steps.map((step) => ({ ...step, done: false })),
+          attachments: [],
+        });
+
+        existingDatesInGroup.add(nextDate);
+      }
+
+      nextDate = getNextRepeatDate(nextDate, baseTask.repeat);
+      safetyCounter++;
+    }
+
+    return newOccurrences;
+  }
+
   const weeklyProductivity = getWeeklyProductivity();
 
   function toggleRoutineCheck(routineId, day) {
@@ -572,11 +604,11 @@ function App() {
 
     const newTask = {
       id: crypto.randomUUID(),
-      title: newProjectTaskTitle,
-      category: "Project",
-      date: newProjectTaskDate,
+      title: newTaskTitle,
+      category: newTaskCategory,
+      date: newTaskDate,
       completed: false,
-      projectId: selectedProjectId,
+      projectId: null,
       description: "",
       steps: [],
       completedAt: null,
@@ -598,6 +630,40 @@ function App() {
         task.id === taskId ? { ...task, description: newDescription } : task,
       ),
     );
+  }
+
+  function updateTaskTitle(taskId, newTitle) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, title: newTitle } : task,
+      ),
+    );
+  }
+
+  function updateTaskDate(taskId, newDate) {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id !== taskId) {
+          return task;
+        }
+
+        if (newDate === "") {
+          return {
+            ...task,
+            date: "",
+            repeat: "none",
+            repeatGroupId: null,
+          };
+        }
+
+        return { ...task, date: newDate };
+      }),
+    );
+  }
+
+  function handleDeleteTaskFromModal(taskId) {
+    deleteTask(taskId);
+    setSelectedTaskId(null);
   }
 
   function addTaskStep(taskId, stepText) {
@@ -642,8 +708,27 @@ function App() {
   }
 
   function updateTaskRepeat(taskId, newRepeat) {
-    setTasks(
-      tasks.map((task) => {
+    setTasks((currentTasks) => {
+      const targetTask = currentTasks.find((task) => task.id === taskId);
+
+      if (!targetTask) {
+        return currentTasks;
+      }
+
+      const oldGroupId = targetTask.repeatGroupId;
+      const targetDate = targetTask.date;
+
+      const tasksWithoutStaleFuture = currentTasks.filter((task) => {
+        const isStaleFutureSibling =
+          oldGroupId &&
+          task.repeatGroupId === oldGroupId &&
+          task.id !== taskId &&
+          task.date > targetDate;
+
+        return !isStaleFutureSibling;
+      });
+
+      const updatedTasks = tasksWithoutStaleFuture.map((task) => {
         if (task.id !== taskId) {
           return task;
         }
@@ -655,10 +740,23 @@ function App() {
         return {
           ...task,
           repeat: newRepeat,
-          repeatGroupId: task.repeatGroupId || crypto.randomUUID(),
+          repeatGroupId: oldGroupId || crypto.randomUUID(),
         };
-      }),
-    );
+      });
+
+      const updatedTask = updatedTasks.find((task) => task.id === taskId);
+
+      if (!updatedTask || updatedTask.repeat === "none") {
+        return updatedTasks;
+      }
+
+      const newOccurrences = generateRepeatOccurrences(
+        updatedTask,
+        updatedTasks,
+      );
+
+      return [...updatedTasks, ...newOccurrences];
+    });
   }
 
   function addTaskAttachment(taskId, attachment) {
@@ -974,6 +1072,9 @@ function App() {
         onClose={() => setSelectedTaskId(null)}
         onToggleTask={toggleTask}
         onUpdateDescription={updateTaskDescription}
+        onUpdateTitle={updateTaskTitle}
+        onUpdateDate={updateTaskDate}
+        onDeleteTask={handleDeleteTaskFromModal}
         onAddStep={addTaskStep}
         onToggleStep={toggleTaskStep}
         onDeleteStep={deleteTaskStep}

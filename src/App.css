@@ -1275,11 +1275,14 @@ textarea {
   font-size: 13px;
   margin: 4px 0 0;
 }
+
 .modal-complete-toggle {
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  flex: 1;
+  min-width: 0;
 }
 
 .modal-complete-toggle input {
@@ -1292,6 +1295,20 @@ textarea {
 .modal-title-done {
   text-decoration: line-through;
   color: var(--color-text-muted);
+}
+
+.modal-title-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 15px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-family: var(--font-main);
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
+  box-sizing: border-box;
 }
 
 .calendar-nav {
@@ -1382,4 +1399,69 @@ textarea {
 
 .routine-nav-label {
   cursor: default;
+}
+
+.detail-date-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.detail-date-row input[type="date"] {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-family: var(--font-main);
+  box-sizing: border-box;
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
+}
+
+.modal-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.confirm-box {
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  width: 320px;
+  max-width: 90%;
+}
+
+.confirm-message {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }

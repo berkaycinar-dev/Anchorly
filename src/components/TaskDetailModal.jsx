@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function TaskDetailModal({
   task,
   onClose,
   onToggleTask,
+  onUpdateTitle,
+  onUpdateDate,
   onUpdateDescription,
   onAddStep,
   onToggleStep,
@@ -11,11 +13,24 @@ function TaskDetailModal({
   onUpdateRepeat,
   onAddAttachment,
   onDeleteAttachment,
-  projects, 
+  projects,
   onAssignProject,
+  onDeleteTask,
   t,
 }) {
+  
   const [newStepText, setNewStepText] = useState("");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editedTitle, setEditedTitle] = useState("");
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+
+  useEffect(() => {
+    if (task) {
+      setEditedTitle(task.title);
+      setIsEditingTitle(false);
+      setIsDeleteConfirmOpen(false);
+    }
+  }, [task?.id]);
 
   if (!task) {
     return null;
@@ -59,23 +74,96 @@ function TaskDetailModal({
     event.target.value = "";
   }
 
+  function startEditingTitle() {
+    setEditedTitle(task.title);
+    setIsEditingTitle(true);
+  }
+
+  function saveTitle() {
+    const trimmedTitle = editedTitle.trim();
+
+    if (trimmedTitle === "") {
+      setEditedTitle(task.title);
+      setIsEditingTitle(false);
+      return;
+    }
+
+    onUpdateTitle(task.id, trimmedTitle);
+    setIsEditingTitle(false);
+  }
+
+  function handleTitleKeyDown(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      saveTitle();
+    }
+
+    if (event.key === "Escape") {
+      setEditedTitle(task.title);
+      setIsEditingTitle(false);
+    }
+  }
+
+    function handleDeleteTask() {
+    setIsDeleteConfirmOpen(true);
+  }
+
+  function confirmDeleteTask() {
+    onDeleteTask(task.id);
+    onClose();
+  }
+
+  function cancelDeleteTask() {
+    setIsDeleteConfirmOpen(false);
+  }
+
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-box" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
-          <label className="modal-complete-toggle">
+          <div className="modal-complete-toggle">
             <input
               type="checkbox"
               checked={task.completed}
               onChange={() => onToggleTask(task.id)}
             />
-            <h2 className={task.completed ? "modal-title-done" : ""}>
-              {task.title}
-            </h2>
-          </label>
-          <button className="btn btn-secondary" onClick={onClose}>
-            Kapat
-          </button>
+
+            {isEditingTitle ? (
+              <input
+                type="text"
+                className="modal-title-input"
+                value={editedTitle}
+                autoFocus
+                onChange={(event) => setEditedTitle(event.target.value)}
+                onBlur={saveTitle}
+                onKeyDown={handleTitleKeyDown}
+              />
+            ) : (
+              <h2
+                className={task.completed ? "modal-title-done" : ""}
+                onDoubleClick={startEditingTitle}
+                title="Değiştirmek için çift tıkla"
+              >
+                {task.title}
+              </h2>
+            )}
+          </div>
+
+                   <div className="modal-header-actions">
+            <button
+              className="btn btn-danger"
+              onClick={handleDeleteTask}
+              aria-label="Görevi sil"
+            >
+              Sil
+            </button>
+
+            <button className="btn btn-secondary" onClick={onClose}>
+              Kapat
+            </button>
+          </div>
+        
         </div>
 
         <label>Açıklama</label>
@@ -84,6 +172,25 @@ function TaskDetailModal({
           onChange={(event) => onUpdateDescription(task.id, event.target.value)}
           placeholder="Bu görev hakkında not ekle..."
         />
+
+        <label>Tarih</label>
+        <div className="detail-date-row">
+          <input
+            type="date"
+            value={task.date || ""}
+            onChange={(event) => onUpdateDate(task.id, event.target.value)}
+          />
+
+          {task.date && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => onUpdateDate(task.id, "")}
+            >
+              Tarihi kaldır
+            </button>
+          )}
+        </div>
 
         <label>Tekrar</label>
         <select
@@ -173,7 +280,7 @@ function TaskDetailModal({
           ))}
         </ul>
 
-        <form className="task-step-form" onSubmit={handleAddStep}>
+                <form className="task-step-form" onSubmit={handleAddStep}>
           <input
             type="text"
             placeholder="Yeni adım ekle..."
@@ -183,6 +290,29 @@ function TaskDetailModal({
           <button type="submit">Ekle</button>
         </form>
       </div>
+
+      {isDeleteConfirmOpen && (
+        <div className="confirm-overlay" onClick={cancelDeleteTask}>
+          <div
+            className="confirm-box"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="confirm-message">
+              "{task.title}" görevini silmek istediğine emin misin? Bu işlem
+              geri alınamaz.
+            </p>
+
+            <div className="confirm-actions">
+              <button className="btn btn-secondary" onClick={cancelDeleteTask}>
+                Vazgeç
+              </button>
+              <button className="btn btn-danger" onClick={confirmDeleteTask}>
+                Evet, Sil
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
