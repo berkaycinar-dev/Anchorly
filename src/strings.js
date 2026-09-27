@@ -51,6 +51,23 @@ export const strings = {
     taskCountSuffix: "görev",
 
     greeting: "Merhaba",
+        dashboardQuotes: [
+      "Mükemmellik değil, ilerleme önemli.",
+      "Bir seferde bir görev, yeter.",
+      "Süreklilik, yoğunluktan daha güçlüdür.",
+      "Küçük adımlar da seni ileri taşır.",
+      "Bugün yepyeni bir başlangıç.",
+      "Yapılmış, mükemmelden iyidir.",
+      "Attığın her onay işareti değerlidir.",
+      "Her adımla ivme kazanırsın.",
+      "Bugüne odaklan, sürece güven.",
+      "Mükemmel olmana gerek yok, sadece düzenli ol.",
+    ],
+    yesterdayCompletedMessage: (count) => `Dün ${count} görev tamamladın.`,
+    weekCompletedMessage: (count) => `Bu hafta ${count} görev tamamladın.`,
+    routineStreakMessage: (routineName, days) =>
+      `${routineName} rutinini ${days} gündür aksatmıyorsun.`,
+
     statToday: "Bugünkü Görevler",
     statCompleted: "Tamamlanan",
     statInProgress: "Kalan",
@@ -133,6 +150,25 @@ export const strings = {
     taskCountSuffix: "tasks",
 
     greeting: "Hello",
+        dashboardQuotes: [
+      "Progress, not perfection.",
+      "One task at a time.",
+      "Consistency beats intensity.",
+      "Small steps still move you forward.",
+      "Today is a fresh start.",
+      "Done is better than perfect.",
+      "Every checkbox counts.",
+      "Momentum builds with every step.",
+      "Focus on today, trust the process.",
+      "You don't have to be perfect, just consistent.",
+    ],
+    yesterdayCompletedMessage: (count) =>
+      `You completed ${count} task${count !== 1 ? "s" : ""} yesterday.`,
+    weekCompletedMessage: (count) =>
+      `You've completed ${count} task${count !== 1 ? "s" : ""} this week.`,
+    routineStreakMessage: (routineName, days) =>
+      `You've kept up ${routineName} for ${days} days.`,
+
     statToday: "Today's Tasks",
     statCompleted: "Completed",
     statInProgress: "In Progress",

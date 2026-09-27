@@ -2,6 +2,7 @@ import Statcard from "../components/Statcard";
 
 function DashboardPage({
   greeting,
+  dashboardMessage,
   todayTasksCount,
   completedTodayTasksCount,
   allTaskCount,
@@ -17,10 +18,7 @@ function DashboardPage({
     <section className="dashboard-page">
       <div className="dashboard-welcome">
         <h2>{greeting}</h2>
-        <p>
-          Bugünkü {todayTasksCount} görevin var. {completedTodayTasksCount}{" "}
-          tanesini tamamladın.
-        </p>
+        <p>{dashboardMessage}</p>
       </div>
 
       <section className="stats">

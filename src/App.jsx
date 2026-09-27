@@ -341,6 +341,32 @@ function App() {
     todayTasksCount === 0
       ? 0
       : Math.round((completedTodayTasksCount / todayTasksCount) * 100);
+    
+    const yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+  const yesterday = yesterdayDate.toISOString().slice(0, 10);
+
+  const yesterdayCompletedCount = tasks.filter(
+    (task) => task.completed && task.completedAt === yesterday,
+  ).length;
+
+  function getMondayOfWeek(date) {
+    const day = date.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    const monday = new Date(date);
+    monday.setDate(date.getDate() + diff);
+    return monday;
+  }
+
+  const weekStart = getMondayOfWeek(new Date()).toISOString().slice(0, 10);
+
+  const weekCompletedCount = tasks.filter(
+    (task) =>
+      task.completed &&
+      task.completedAt &&
+      task.completedAt >= weekStart &&
+      task.completedAt <= today,
+  ).length;
 
   const routineYear = routineMonth.getFullYear();
   const routineMonthIndex = routineMonth.getMonth();
@@ -410,6 +436,26 @@ function App() {
     const day = date.getDate();
     return `${year}-${month}-${routineId}-${day}`;
   }
+
+    function getRoutineStreak(routineId) {
+    let streak = 0;
+    const checkDate = new Date();
+
+    const isTodayChecked =
+      routineChecks[getRoutineKeyForDate(routineId, checkDate)];
+
+    if (!isTodayChecked) {
+      checkDate.setDate(checkDate.getDate() - 1);
+    }
+
+    while (routineChecks[getRoutineKeyForDate(routineId, checkDate)]) {
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    }
+
+    return streak;
+  }
+
   const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
   function getWeeklyProductivity() {
     const days = [];
@@ -503,6 +549,50 @@ function App() {
 
   const weeklyProductivity = getWeeklyProductivity();
 
+    function getGreetingSegment() {
+    const hour = new Date().getHours();
+
+    if (hour < 12) {
+      return "morning";
+    }
+
+    if (hour < 18) {
+      return "afternoon";
+    }
+
+    return "evening";
+  }
+
+  function getDashboardMessage() {
+    const pool = [...t.dashboardQuotes];
+
+    
+    if (yesterdayCompletedCount > 0) {
+      pool.push(t.yesterdayCompletedMessage(yesterdayCompletedCount));
+    }
+
+    if (weekCompletedCount > 0) {
+      pool.push(t.weekCompletedMessage(weekCompletedCount));
+    }
+
+    routines.forEach((routine) => {
+      const streak = getRoutineStreak(routine.id);
+
+      if (streak > 1) {
+        pool.push(t.routineStreakMessage(routine.title, streak));
+      }
+    });
+
+    const seedString = `${today}-${getGreetingSegment()}`;
+    let hash = 0;
+
+    for (let i = 0; i < seedString.length; i++) {
+      hash = (hash * 31 + seedString.charCodeAt(i)) % pool.length;
+    }
+
+    return pool[hash];
+  }
+
   function toggleRoutineCheck(routineId, day) {
     const key = getRoutineKey(routineId, day);
 
@@ -585,7 +675,7 @@ function App() {
         return {
           ...task,
           completed: isNowCompleted,
-          completedAt: isNowCompleted ? today : null,
+          completedAt: isNowCompleted ? task.date || today : null,
         };
       }
 
@@ -934,6 +1024,7 @@ function App() {
         {activePage === "Dashboard" && (
           <DashboardPage
             greeting={getGreeting()}
+            dashboardMessage={getDashboardMessage()}
             todayTasksCount={todayTasksCount}
             completedTodayTasksCount={completedTodayTasksCount}
             allTaskCount={allTaskCount}
