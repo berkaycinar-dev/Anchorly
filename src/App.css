@@ -8,6 +8,7 @@
   --color-text-secondary: #6b7280;
   --color-text-muted: #9ca3af;
   --color-border: #e5e7eb;
+  --color-accent-contrast: #ffffff;
 }
 
 .theme-gray {
@@ -20,6 +21,7 @@
   --color-text-secondary: #6b7280;
   --color-text-muted: #9ca3af;
   --color-border: #e5e7eb;
+  --color-accent-contrast: #ffffff;
 }
 
 .theme-purple {
@@ -32,6 +34,7 @@
   --color-text-secondary: #c4b5fd;
   --color-text-muted: #9c8cc4;
   --color-border: #4c3d70;
+  --color-accent-contrast: #ffffff;
 }
 
 .theme-blue {
@@ -44,6 +47,7 @@
   --color-text-secondary: #94a3b8;
   --color-text-muted: #64748b;
   --color-border: #334155;
+  --color-accent-contrast: #0f172a;
 }
 
 .theme-red {
@@ -56,6 +60,7 @@
   --color-text-secondary: #b91c1c;
   --color-text-muted: #b48787;
   --color-border: #fecaca;
+  --color-accent-contrast: #ffffff;
 }
 
 .theme-green {
@@ -68,6 +73,7 @@
   --color-text-secondary: #86efac;
   --color-text-muted: #6b9c7d;
   --color-border: #1f5c38;
+  --color-accent-contrast: #052e13;
 }
 
 .theme-pink {
@@ -80,6 +86,7 @@
   --color-text-secondary: #9d174d;
   --color-text-muted: #c17ba0;
   --color-border: #fbcfe8;
+  --color-accent-contrast: #ffffff;
 }
 
 * {
@@ -1075,8 +1082,8 @@ body {
   left: 50%;
   transform: translateX(-50%);
   margin-bottom: 8px;
-  background-color: #0e1318;
-  color: white;
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 12px;
@@ -1085,7 +1092,6 @@ body {
   flex-direction: column;
   gap: 2px;
   z-index: 10;
-  pointer-events: none;
 }
 
 .weekly-bar-tooltip::after {
@@ -1095,7 +1101,12 @@ body {
   left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
-  border-top-color: #0e1318;
+  border-top-color: var(--color-accent);
+}
+
+.weekly-bar-tooltip span,
+.weekly-bar-tooltip strong {
+  color: inherit;
 }
 
 .attachments-list {
