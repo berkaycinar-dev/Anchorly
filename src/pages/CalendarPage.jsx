@@ -1,5 +1,23 @@
 import { useState } from "react";
 
+function getWeekdayNames(language, weekStartDay) {
+  const localeCode = language === "tr" ? "tr-TR" : "en-US";
+  const formatter = new Intl.DateTimeFormat(localeCode, { weekday: "short" });
+  const baseMonday = new Date(2024, 0, 1);
+
+  const mondayFirst = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(baseMonday);
+    d.setDate(baseMonday.getDate() + i);
+    return formatter.format(d);
+  });
+
+  if (weekStartDay === "monday") {
+    return mondayFirst;
+  }
+
+  return [mondayFirst[6], ...mondayFirst.slice(0, 6)];
+}
+
 export default function CalendarPage({
   calendarViewMode,
   setCalendarViewMode,
@@ -21,6 +39,8 @@ export default function CalendarPage({
   setSelectedTaskId,
   today,
   weekStartDay,
+  t,
+  language,
 }) {
   const [expandedDayDate, setExpandedDayDate] = useState(null);
   function goToPrevious() {
@@ -52,7 +72,7 @@ export default function CalendarPage({
       <div className="calendar-nav">
         <button
           className="calendar-nav-arrow"
-          aria-label="Önceki"
+          aria-label={t.previousLabel}
           onClick={goToPrevious}
         >
           ‹
@@ -60,22 +80,31 @@ export default function CalendarPage({
 
         <button className="calendar-nav-label" onClick={toggleViewMode}>
           {calendarViewMode === "month"
-            ? calendarMonth.toLocaleDateString("tr-TR", {
-                month: "long",
-                year: "numeric",
-              })
-            : `${weekDays[0].toLocaleDateString("tr-TR", {
-                day: "numeric",
-                month: "short",
-              })} - ${weekDays[6].toLocaleDateString("tr-TR", {
-                day: "numeric",
-                month: "short",
-              })}`}
+            ? calendarMonth.toLocaleDateString(
+                language === "tr" ? "tr-TR" : "en-US",
+                {
+                  month: "long",
+                  year: "numeric",
+                },
+              )
+            : `${weekDays[0].toLocaleDateString(
+                language === "tr" ? "tr-TR" : "en-US",
+                {
+                  day: "numeric",
+                  month: "short",
+                },
+              )} - ${weekDays[6].toLocaleDateString(
+                language === "tr" ? "tr-TR" : "en-US",
+                {
+                  day: "numeric",
+                  month: "short",
+                },
+              )}`}
         </button>
 
         <button
           className="calendar-nav-arrow"
-          aria-label="Sonraki"
+          aria-label={t.nextLabel}
           onClick={goToNext}
         >
           ›
@@ -84,10 +113,7 @@ export default function CalendarPage({
 
       {calendarViewMode === "month" && (
         <div className="calendar-grid">
-          {(weekStartDay === "monday"
-            ? ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"]
-            : ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"]
-          ).map((dayName) => (
+          {getWeekdayNames(language, weekStartDay).map((dayName) => (
             <div className="calendar-day-name" key={dayName}>
               {dayName}
             </div>
@@ -126,6 +152,7 @@ export default function CalendarPage({
                 isToday={dateString === today}
                 isWeekend={isWeekend}
                 onShowMore={setExpandedDayDate}
+                t={t}
               />
             );
           })}
@@ -136,7 +163,9 @@ export default function CalendarPage({
         <div className="calendar-grid calendar-grid-week">
           {weekDays.map((day) => (
             <div className="calendar-day-name" key={`name-${day}`}>
-              {day.toLocaleDateString("tr-TR", { weekday: "short" })}
+              {day.toLocaleDateString(language === "tr" ? "tr-TR" : "en-US", {
+                weekday: "short",
+              })}
             </div>
           ))}
 
@@ -192,6 +221,7 @@ function CalendarCell({
   isToday,
   isWeekend,
   onShowMore,
+  t,
 }) {
   const overflowThreshold = 4;
   const isOverflowing = dayTasks.length > overflowThreshold;
@@ -214,7 +244,7 @@ function CalendarCell({
         <strong>{dayLabel}</strong>
         <button
           className="calendar-add-button"
-          aria-label="Bu güne görev ekle"
+          aria-label={t.addTaskToDay}
           onClick={() => {
             setQuickAddDate(dateString);
             setQuickAddTitle("");
@@ -258,20 +288,20 @@ function CalendarCell({
             <input
               type="text"
               autoFocus
-              placeholder="Görev başlığı..."
+              placeholder={t.taskTitlePlaceholder}
               value={quickAddTitle}
               onChange={(event) => setQuickAddTitle(event.target.value)}
             />
             <div className="quick-add-actions">
               <button type="submit" className={primaryButtonClassName}>
-                Ekle
+                {t.addButton}
               </button>
               <button
                 type="button"
                 className={cancelButtonClassName}
                 onClick={() => setQuickAddDate(null)}
               >
-                İptal
+                {t.cancelButton}
               </button>
             </div>
           </form>
@@ -291,7 +321,7 @@ function DayTasksModal({ dateString, tasks, onClose, onSelectTask }) {
         <div className="modal-header">
           <h2>{dateString}</h2>
           <button className="btn btn-secondary" onClick={onClose}>
-            Kapat
+            {t.closeButton}
           </button>
         </div>
 

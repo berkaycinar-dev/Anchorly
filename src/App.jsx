@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar";
 import TaskDetailModal from "./components/TaskDetailModal";
 import DashboardPage from "./pages/DashboardPage";
 import TodayPage from "./pages/TodayPage";
-import { strings } from "./strings";
+import { strings, pageTitleKeyMap } from "./strings";
 import DailyRoutinePage from "./pages/DailyRoutinePage";
 import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
@@ -434,16 +434,9 @@ function App() {
 
   function getGreeting() {
     const hour = new Date().getHours();
-
-    if (hour < 12) {
-      return "Günaydın";
-    }
-
-    if (hour < 18) {
-      return "İyi günler";
-    }
-
-    return "İyi akşamlar";
+    if (hour < 12) return t.greetingMorning;
+    if (hour < 18) return t.greetingAfternoon;
+    return t.greetingEvening;
   }
 
   function getRoutineKey(routineId, day) {
@@ -480,11 +473,11 @@ function App() {
   const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
   function getWeeklyProductivity() {
     const days = [];
-
+    const localeCode = language === "tr" ? "tr-TR" : "en-US";
     for (let i = 6; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-
+      
       const totalRoutines = routines.length;
       const completedRoutines = routines.filter(
         (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
@@ -496,8 +489,8 @@ function App() {
           : Math.round((completedRoutines / totalRoutines) * 100);
 
       days.push({
-        label: date.toLocaleDateString("tr-TR", { weekday: "short" }),
-        fullDate: date.toLocaleDateString("tr-TR", {
+        label: date.toLocaleDateString(localeCode, { weekday: "short" }),
+        fullDate: date.toLocaleDateString(localeCode, {
           day: "numeric",
           month: "long",
         }),
@@ -1039,7 +1032,7 @@ function App() {
 
       <main className="main-content">
         <Header />
-        <h2 className="page-title">{activePage}</h2>
+        <h2 className="page-title">{t[pageTitleKeyMap[activePage]]}</h2>
 
         {activePage === "Dashboard" && (
           <DashboardPage
@@ -1055,6 +1048,7 @@ function App() {
             weeklyProductivity={weeklyProductivity}
             hoveredDayIndex={hoveredDayIndex}
             setHoveredDayIndex={setHoveredDayIndex}
+            t={t}
           />
         )}
 
@@ -1097,6 +1091,7 @@ function App() {
             getRoutineKey={getRoutineKey}
             toggleRoutineCheck={toggleRoutineCheck}
             today={today}
+            t={t}
           />
         )}
 
@@ -1122,6 +1117,8 @@ function App() {
             setSelectedTaskId={setSelectedTaskId}
             today={today}
             weekStartDay={weekStartDay}
+            t={t}
+            language={language}
           />
         )}
 

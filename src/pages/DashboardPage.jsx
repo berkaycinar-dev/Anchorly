@@ -13,6 +13,7 @@ function DashboardPage({
   weeklyProductivity,
   hoveredDayIndex,
   setHoveredDayIndex,
+  t,
 }) {
   return (
     <section className="dashboard-page">
@@ -22,15 +23,15 @@ function DashboardPage({
       </div>
 
       <section className="stats">
-        <Statcard title="Today's Task" value={allTaskCount} />
-        <Statcard title="Completed" value={completedTasksCount} />
-        <Statcard title="In Progress" value={activeTaskCount} />
-        <Statcard title="Overdue" value={overdueTaskCount} />
+        <Statcard title={t.statToday}value={allTaskCount} />
+        <Statcard title={t.statCompleted} value={completedTasksCount} />
+        <Statcard title={t.statInProgress} value={activeTaskCount} />
+        <Statcard title={t.statOverdue} value={overdueTaskCount} />
       </section>
 
       <section className="dashboard-grid">
         <div className="chart-card">
-          <h3>Bugünkü Görev Durumu</h3>
+          <h3>{t.todayStatusChart}</h3>
 
           <div
             className="pie-chart"
@@ -42,16 +43,16 @@ function DashboardPage({
           </div>
 
           <p>
-            {completedTodayTasksCount} / {todayTasksCount} tamamlandı
+            {completedTodayTasksCount} / {todayTasksCount} {t.completedOfTotal}
           </p>
           <div className="chart-legend">
-            <span className="legend-dot legend-done"></span> Tamamlanan
-            <span className="legend-dot legend-pending"></span> Bekleyen
+            <span className="legend-dot legend-done"></span> {t.completedLegend}
+            <span className="legend-dot legend-pending"></span> {t.pendingLegend}
           </div>
         </div>
 
         <div className="chart-card">
-          <h3>Haftalık Productivity</h3>
+          <h3>{t.weeklyProductivity}</h3>
 
           <div className="weekly-chart">
             {weeklyProductivity.map((day, index) => (
@@ -65,7 +66,7 @@ function DashboardPage({
                   <div className="weekly-bar-tooltip">
                     <strong>{day.fullDate}</strong>
                     <span>
-                      {day.completed} / {day.total} rutin
+                      {day.completed} / {day.total} {t.routineTooltipSuffix}
                     </span>
                     <span>%{day.percent}</span>
                   </div>

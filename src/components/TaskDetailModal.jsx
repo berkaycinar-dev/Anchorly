@@ -53,7 +53,7 @@ function TaskDetailModal({
 
     if (file.size > maxSizeInBytes) {
       alert(
-        "Bu dosya çok büyük (1MB üzeri). Tarayıcı depolama alanı sınırlı olduğu için daha küçük bir dosya seçmelisin.",
+        t.fileTooLargeWarning
       );
       event.target.value = "";
       return;
@@ -143,7 +143,7 @@ function TaskDetailModal({
               <h2
                 className={task.completed ? "modal-title-done" : ""}
                 onDoubleClick={startEditingTitle}
-                title="Değiştirmek için çift tıkla"
+                title= {t.editTitleHint}
               >
                 {task.title}
               </h2>
@@ -154,26 +154,25 @@ function TaskDetailModal({
             <button
               className="btn btn-danger"
               onClick={handleDeleteTask}
-              aria-label="Görevi sil"
+              aria-label={t.deleteButtonAria}
             >
-              Sil
+              {t.deleteButton}
             </button>
 
             <button className="btn btn-secondary" onClick={onClose}>
-              Kapat
+              {t.closeButton}
             </button>
           </div>
         
         </div>
 
-        <label>Açıklama</label>
+        <label>{t.descriptionLabel}</label>
         <textarea
           value={task.description || ""}
           onChange={(event) => onUpdateDescription(task.id, event.target.value)}
-          placeholder="Bu görev hakkında not ekle..."
+          placeholder= {t.descriptionPlaceholder}
         />
-
-        <label>Tarih</label>
+<label>{t.dateLabel}</label>
         <div className="detail-date-row">
           <input
             type="date"
@@ -187,30 +186,30 @@ function TaskDetailModal({
               className="btn btn-secondary"
               onClick={() => onUpdateDate(task.id, "")}
             >
-              Tarihi kaldır
+              {t.removeDateButton}
             </button>
           )}
         </div>
 
-        <label>Tekrar</label>
+        <label>{t.repeatLabel}</label>
         <select
           className="task-repeat-select"
           value={task.repeat || "none"}
           disabled={!task.date}
           onChange={(event) => onUpdateRepeat(task.id, event.target.value)}
         >
-          <option value="none">Tekrarlanmaz</option>
-          <option value="daily">Her gün</option>
-          <option value="weekly">Her hafta</option>
+          <option value="none">{t.repeatNone}</option>
+          <option value="daily">{t.repeatDaily}</option>
+          <option value="weekly">{t.repeatWeekly}</option>
         </select>
 
         {!task.date && (
           <p className="task-repeat-hint">
-            Tekrar ayarlamak için önce göreve bir tarih eklemelisin.
+            {t.repeatHint}
           </p>
         )}
 
-        <label>Dosyalar</label>
+        <label>{t.attachmentsLabel}</label>
         <div className="attachments-list">
           {task.attachments.map((attachment) => (
             <div className="attachment-item" key={attachment.id}>
@@ -263,7 +262,7 @@ function TaskDetailModal({
           </select>
         </div>
 
-        <label>Adımlar</label>
+        <label>{t.stepsLabel}</label>
         <ul className="task-steps-list">
           {(task.steps || []).map((step) => (
             <li key={step.id}>
@@ -274,7 +273,7 @@ function TaskDetailModal({
               />
               <span className={step.done ? "step-done" : ""}>{step.text}</span>
               <button onClick={() => onDeleteStep(task.id, step.id)}>
-                Sil
+                {t.deleteButton}
               </button>
             </li>
           ))}
@@ -283,11 +282,11 @@ function TaskDetailModal({
                 <form className="task-step-form" onSubmit={handleAddStep}>
           <input
             type="text"
-            placeholder="Yeni adım ekle..."
+            placeholder= {t.newStepPlaceholder}
             value={newStepText}
             onChange={(event) => setNewStepText(event.target.value)}
           />
-          <button type="submit">Ekle</button>
+          <button type="submit">{t.addButton}</button>
         </form>
       </div>
 
@@ -298,16 +297,15 @@ function TaskDetailModal({
             onClick={(event) => event.stopPropagation()}
           >
             <p className="confirm-message">
-              "{task.title}" görevini silmek istediğine emin misin? Bu işlem
-              geri alınamaz.
+              {t.confirmDeleteMessage(task.title)}
             </p>
 
             <div className="confirm-actions">
               <button className="btn btn-secondary" onClick={cancelDeleteTask}>
-                Vazgeç
+                {t.confirmDeleteCancel}
               </button>
               <button className="btn btn-danger" onClick={confirmDeleteTask}>
-                Evet, Sil
+                 {t.confirmDeleteConfirm}
               </button>
             </div>
           </div>

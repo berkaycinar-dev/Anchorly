@@ -6,7 +6,7 @@ function TaskList({
   deleteTask,
   onSelectTask,
   onReorderTasks,
-  t
+  t,
 }) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
   const [draggedTaskId, setDraggedTaskId] = useState(null);
@@ -88,8 +88,8 @@ function TaskList({
                 className="task-badge task-badge-repeat"
                 title={
                   task.repeat === "daily"
-                    ? "Her gün tekrarlanır"
-                    : "Her hafta tekrarlanır"
+                    ? t.repeatDailyHint
+                    : t.repeatWeeklyHint
                 }
               >
                 🔁

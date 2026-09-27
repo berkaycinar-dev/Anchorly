@@ -13,6 +13,8 @@ export default function DailyRoutinePage({
   getRoutineKey,
   toggleRoutineCheck,
   today,
+  t,
+  language,
 }) {
   const now = new Date();
   const isCurrentMonth =
@@ -32,14 +34,14 @@ export default function DailyRoutinePage({
       <div className="calendar-nav">
         <button
           className="calendar-nav-arrow"
-          aria-label="Önceki Ay"
+          aria-label= {t.previousLabel}
           onClick={goToPrevious}
         >
           ‹
         </button>
 
         <span className="calendar-nav-label routine-nav-label">
-          {routineMonth.toLocaleDateString("tr-TR", {
+          {routineMonth.toLocaleDateString(language === "tr" ? "tr-TR" : "en-US",  {
             month: "long",
             year: "numeric",
           })}
@@ -47,7 +49,7 @@ export default function DailyRoutinePage({
 
         <button
           className="calendar-nav-arrow"
-          aria-label="Sonraki Ay"
+          aria-label= {t.nextLabel}
           onClick={goToNext}
         >
           ›
@@ -57,12 +59,12 @@ export default function DailyRoutinePage({
       <form className="routine-form" onSubmit={addRoutine}>
         <input
           type="text"
-          placeholder="Yeni rutin ekle..."
+          placeholder= {t.newRoutinePlaceholder}
           value={newRoutineTitle}
           onChange={(event) => setNewRoutineTitle(event.target.value)}
         />
         <button type="submit" className="btn btn-primary">
-          Rutin Ekle
+          {t.addRoutineButton}
         </button>
       </form>
 
@@ -70,7 +72,7 @@ export default function DailyRoutinePage({
         <table className="routine-table">
           <thead>
             <tr>
-              <th>Rutin</th>
+              <th>{t.routineColumnHeader}</th>
               {routineDays.map((day) => (
                 <th
                   key={day}

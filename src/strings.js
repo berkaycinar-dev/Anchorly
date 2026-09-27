@@ -1,12 +1,12 @@
 export const strings = {
   tr: {
-    dashboard: "Dashboard",
-    today: "Today",
-    dailyRoutine: "Daily Routine",
-    calendar: "Calendar",
-    archive: "Archive",
-    projects: "Projects",
-    settings: "Settings",
+    dashboard: "Panel",
+    today: "Bugün",
+    dailyRoutine: "Günlük Rutin",
+    calendar: "Takvim",
+    archive: "Arşiv",
+    projects: "Projeler",
+    settings: "Ayarlar",
     settingsTitle: "Ayarlar",
     settingsDescription: "Temayı ve dili buradan yönetebilirsin.",
     themeLabel: "Tema",
@@ -15,6 +15,16 @@ export const strings = {
     weekStartLabel: "Haftanın Başlangıcı",
     weekStartMonday: "Pazartesi",
     weekStartSunday: "Pazar",
+    greetingMorning: "Günaydın",
+    greetingAfternoon: "İyi günler",
+    greetingEvening: "İyi akşamlar",
+    editTitleHint: "Değiştirmek için çift tıkla",
+    dateLabel: "Tarih",
+    removeDateButton: "Tarihi kaldır",
+    repeatDailyHint: "Her gün tekrarlanır",
+    repeatWeeklyHint: "Her hafta tekrarlanır",
+    previousLabel: "Önceki",
+    nextLabel: "Sonraki",
 
     searchPlaceholder: "Görev ara...",
     todaysTasksTitle: "Bugünün Görevleri",
@@ -54,7 +64,7 @@ export const strings = {
     taskCountSuffix: "görev",
 
     greeting: "Merhaba",
-        dashboardQuotes: [
+    dashboardQuotes: [
       "Mükemmellik değil, ilerleme önemli.",
       "Bir seferde bir görev, yeter.",
       "Süreklilik, yoğunluktan daha güçlüdür.",
@@ -79,7 +89,7 @@ export const strings = {
     completedLegend: "Tamamlanan",
     pendingLegend: "Bekleyen",
     completedOfTotal: "tamamlandı",
-    weeklyProductivity: "Haftalık Productivity",
+    weeklyProductivity: "Haftalık Verimlilik",
     routineTooltipSuffix: "rutin",
 
     addTaskToDay: "Bu güne görev ekle",
@@ -101,6 +111,14 @@ export const strings = {
     newStepPlaceholder: "Yeni adım ekle...",
     project: "Proje",
     noProject: "Proje yok",
+    deleteButtonAria: "Görevi sil",
+    confirmDeleteMessage: (title) =>
+      `"${title}" görevini silmek istediğine emin misin? Bu işlem geri alınamaz.`,
+    confirmDeleteCancel: "Vazgeç",
+    confirmDeleteConfirm: "Evet, Sil",
+    fileTooLargeWarning:
+      "Bu dosya çok büyük (1MB üzeri). Tarayıcı depolama alanı sınırlı olduğu için daha küçük bir dosya seçmelisin.",
+    deleteStepAria: "Adımı sil",
   },
   en: {
     dashboard: "Dashboard",
@@ -118,6 +136,16 @@ export const strings = {
     weekStartLabel: "Week Starts On",
     weekStartMonday: "Monday",
     weekStartSunday: "Sunday",
+    greetingMorning: "Good morning",
+    greetingAfternoon: "Good afternoon",
+    greetingEvening: "Good evening",
+    editTitleHint: "Double-click to edit",
+    dateLabel: "Date",
+    removeDateButton: "Remove date",
+    repeatDailyHint: "Repeats daily",
+    repeatWeeklyHint: "Repeats weekly",
+    previousLabel: "Previous",
+    nextLabel: "Next",
 
     searchPlaceholder: "Search tasks...",
     todaysTasksTitle: "Today's Tasks",
@@ -156,7 +184,7 @@ export const strings = {
     taskCountSuffix: "tasks",
 
     greeting: "Hello",
-        dashboardQuotes: [
+    dashboardQuotes: [
       "Progress, not perfection.",
       "One task at a time.",
       "Consistency beats intensity.",
@@ -205,5 +233,22 @@ export const strings = {
     newStepPlaceholder: "Add a new step...",
     project: "Project",
     noProject: "No project",
+    deleteButtonAria: "Delete task",
+    confirmDeleteMessage: (title) =>
+      `Are you sure you want to delete "${title}"? This action cannot be undone.`,
+    confirmDeleteCancel: "Cancel",
+    confirmDeleteConfirm: "Yes, Delete",
+    fileTooLargeWarning:
+      "This file is too large (over 1MB). Since browser storage is limited, please choose a smaller file.",
+    deleteStepAria: "Delete step",
   },
+};
+export const pageTitleKeyMap = {
+  Dashboard: "dashboard",
+  Today: "today",
+  "Daily Routine": "dailyRoutine",
+  Calendar: "calendar",
+  Archive: "archive",
+  Projects: "projects",
+  Settings: "settings",
 };
