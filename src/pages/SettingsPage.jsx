@@ -6,6 +6,8 @@ export default function SettingsPage({
   setLanguage,
   fontFamily,
   setFontFamily,
+  weekStartDay,
+  setWeekStartDay,
 }) {
   return (
     <section className="settings-page">
@@ -76,6 +78,31 @@ export default function SettingsPage({
           ))}
         </div>
       </div>
+
+            <div className="settings-section">
+        <h3>{t.weekStartLabel}</h3>
+
+        <div className="theme-options">
+          {[
+            { value: "monday", label: t.weekStartMonday },
+            { value: "sunday", label: t.weekStartSunday },
+          ].map((option) => (
+            <button
+              key={option.value}
+              className={
+                weekStartDay === option.value
+                  ? "theme-option active-theme"
+                  : "theme-option"
+              }
+              onClick={() => setWeekStartDay(option.value)}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
     </section>
+
+
   );
 }

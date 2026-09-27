@@ -494,6 +494,25 @@ body {
 .calendar-cell.empty {
   background-color: var(--color-bg-subtle);
 }
+
+.theme-purple .calendar-cell-weekend {
+  background-color: #130e2d;
+}
+.theme-blue .calendar-cell-weekend {
+  background-color: #1b1732ab;
+}
+.theme-gray .calendar-cell-weekend {
+  background-color: #eaeaea;
+}
+.theme-red .calendar-cell-weekend {
+  background-color: #fbe0e0ae;
+}
+.theme-green .calendar-cell-weekend {
+  background-color: #202e21;
+}
+.theme-pink .calendar-cell-weekend {
+  background-color: #fbeef9;
+}
 .calendar-tasks {
   display: grid;
   gap: 6px;

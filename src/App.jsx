@@ -189,12 +189,20 @@ function App() {
     return localStorage.getItem("fontFamily") || "Inter";
   });
 
+  const [weekStartDay, setWeekStartDay] = useState(() => {
+    return localStorage.getItem("weekStartDay") || "monday";
+  });
+
   useEffect(() => {
     localStorage.setItem("fontFamily", fontFamily);
   }, [fontFamily]);
   useEffect(() => {
     localStorage.setItem("language", language);
   }, [language]);
+
+  useEffect(() => {
+    localStorage.setItem("weekStartDay", weekStartDay);
+  }, [weekStartDay]);
 
   const t = strings[language];
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -341,8 +349,8 @@ function App() {
     todayTasksCount === 0
       ? 0
       : Math.round((completedTodayTasksCount / todayTasksCount) * 100);
-    
-    const yesterdayDate = new Date();
+
+  const yesterdayDate = new Date();
   yesterdayDate.setDate(yesterdayDate.getDate() - 1);
   const yesterday = yesterdayDate.toISOString().slice(0, 10);
 
@@ -350,15 +358,26 @@ function App() {
     (task) => task.completed && task.completedAt === yesterday,
   ).length;
 
-  function getMondayOfWeek(date) {
+  function getWeekStartOffset(date, startDay) {
     const day = date.getDay();
-    const diff = day === 0 ? -6 : 1 - day;
-    const monday = new Date(date);
-    monday.setDate(date.getDate() + diff);
-    return monday;
+
+    if (startDay === "monday") {
+      return day === 0 ? 6 : day - 1;
+    }
+
+    return day;
   }
 
-  const weekStart = getMondayOfWeek(new Date()).toISOString().slice(0, 10);
+  function getWeekStartDate(date, startDay) {
+    const offset = getWeekStartOffset(date, startDay);
+    const start = new Date(date);
+    start.setDate(date.getDate() - offset);
+    return start;
+  }
+
+  const weekStart = getWeekStartDate(new Date(), weekStartDay)
+    .toISOString()
+    .slice(0, 10);
 
   const weekCompletedCount = tasks.filter(
     (task) =>
@@ -392,15 +411,17 @@ function App() {
     0,
   ).getDate();
 
-  const calendarStartDay = firstDayOfCalendarMonth.getDay();
+  const calendarStartDay = getWeekStartOffset(
+    firstDayOfCalendarMonth,
+    weekStartDay,
+  );
 
   const calendarDays = Array.from(
     { length: daysInCalendarMonth },
     (_, index) => index + 1,
   );
   function getWeekDays(anchorDate) {
-    const startOfWeek = new Date(anchorDate);
-    startOfWeek.setDate(anchorDate.getDate() - anchorDate.getDay());
+    const startOfWeek = getWeekStartDate(anchorDate, weekStartDay);
 
     return Array.from({ length: 7 }, (_, index) => {
       const day = new Date(startOfWeek);
@@ -437,7 +458,7 @@ function App() {
     return `${year}-${month}-${routineId}-${day}`;
   }
 
-    function getRoutineStreak(routineId) {
+  function getRoutineStreak(routineId) {
     let streak = 0;
     const checkDate = new Date();
 
@@ -549,7 +570,7 @@ function App() {
 
   const weeklyProductivity = getWeeklyProductivity();
 
-    function getGreetingSegment() {
+  function getGreetingSegment() {
     const hour = new Date().getHours();
 
     if (hour < 12) {
@@ -566,7 +587,6 @@ function App() {
   function getDashboardMessage() {
     const pool = [...t.dashboardQuotes];
 
-    
     if (yesterdayCompletedCount > 0) {
       pool.push(t.yesterdayCompletedMessage(yesterdayCompletedCount));
     }
@@ -1101,6 +1121,7 @@ function App() {
             quickAddTitle={quickAddTitle}
             setSelectedTaskId={setSelectedTaskId}
             today={today}
+            weekStartDay={weekStartDay}
           />
         )}
 
@@ -1154,6 +1175,8 @@ function App() {
             setLanguage={setLanguage}
             fontFamily={fontFamily}
             setFontFamily={setFontFamily}
+            weekStartDay={weekStartDay}
+            setWeekStartDay={setWeekStartDay}
           />
         )}
       </main>

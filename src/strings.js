@@ -12,6 +12,9 @@ export const strings = {
     themeLabel: "Tema",
     languageLabel: "Dil",
     fontLabel: "Font",
+    weekStartLabel: "Haftanın Başlangıcı",
+    weekStartMonday: "Pazartesi",
+    weekStartSunday: "Pazar",
 
     searchPlaceholder: "Görev ara...",
     todaysTasksTitle: "Bugünün Görevleri",
@@ -112,6 +115,9 @@ export const strings = {
     themeLabel: "Theme",
     languageLabel: "Language",
     fontLabel: "Font",
+    weekStartLabel: "Week Starts On",
+    weekStartMonday: "Monday",
+    weekStartSunday: "Sunday",
 
     searchPlaceholder: "Search tasks...",
     todaysTasksTitle: "Today's Tasks",

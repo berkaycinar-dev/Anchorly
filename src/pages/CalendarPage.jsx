@@ -20,6 +20,7 @@ export default function CalendarPage({
   quickAddTitle,
   setSelectedTaskId,
   today,
+  weekStartDay,
 }) {
   const [expandedDayDate, setExpandedDayDate] = useState(null);
   function goToPrevious() {
@@ -60,16 +61,16 @@ export default function CalendarPage({
         <button className="calendar-nav-label" onClick={toggleViewMode}>
           {calendarViewMode === "month"
             ? calendarMonth.toLocaleDateString("tr-TR", {
-              month: "long",
-              year: "numeric",
-            })
+                month: "long",
+                year: "numeric",
+              })
             : `${weekDays[0].toLocaleDateString("tr-TR", {
-              day: "numeric",
-              month: "short",
-            })} - ${weekDays[6].toLocaleDateString("tr-TR", {
-              day: "numeric",
-              month: "short",
-            })}`}
+                day: "numeric",
+                month: "short",
+              })} - ${weekDays[6].toLocaleDateString("tr-TR", {
+                day: "numeric",
+                month: "short",
+              })}`}
         </button>
 
         <button
@@ -83,7 +84,10 @@ export default function CalendarPage({
 
       {calendarViewMode === "month" && (
         <div className="calendar-grid">
-          {["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"].map((dayName) => (
+          {(weekStartDay === "monday"
+            ? ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"]
+            : ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"]
+          ).map((dayName) => (
             <div className="calendar-day-name" key={dayName}>
               {dayName}
             </div>
@@ -98,6 +102,12 @@ export default function CalendarPage({
               calendarMonthIndex + 1,
             ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
             const dayTasks = tasks.filter((task) => task.date === dateString);
+            const dayOfWeek = new Date(
+              calendarYear,
+              calendarMonthIndex,
+              day,
+            ).getDay();
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
             return (
               <CalendarCell
@@ -114,6 +124,7 @@ export default function CalendarPage({
                 primaryButtonClassName="btn btn-primary"
                 cancelButtonClassName="btn btn-secondary"
                 isToday={dateString === today}
+                isWeekend={isWeekend}
                 onShowMore={setExpandedDayDate}
               />
             );
@@ -134,6 +145,7 @@ export default function CalendarPage({
               day.getMonth() + 1,
             ).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
             const dayTasks = tasks.filter((task) => task.date === dateString);
+            const isWeekend = day.getDay() === 0 || day.getDay() === 6;
 
             return (
               <CalendarCell
@@ -148,6 +160,7 @@ export default function CalendarPage({
                 submitQuickAdd={submitQuickAdd}
                 setSelectedTaskId={setSelectedTaskId}
                 isToday={dateString === today}
+                isWeekend={isWeekend}
                 onShowMore={setExpandedDayDate}
               />
             );
@@ -177,18 +190,25 @@ function CalendarCell({
   primaryButtonClassName,
   cancelButtonClassName,
   isToday,
+  isWeekend,
   onShowMore,
 }) {
   const overflowThreshold = 4;
   const isOverflowing = dayTasks.length > overflowThreshold;
-  const visibleTasks = isOverflowing ? dayTasks.slice(0, 3) : dayTasks.slice(0, 4);
+  const visibleTasks = isOverflowing
+    ? dayTasks.slice(0, 3)
+    : dayTasks.slice(0, 4);
   const hiddenCount = isOverflowing ? dayTasks.length - 3 : 0;
 
   return (
     <div
-      className={
-        isToday ? "calendar-cell calendar-cell-today" : "calendar-cell"
-      }
+      className={[
+        "calendar-cell",
+        isToday ? "calendar-cell-today" : "",
+        isWeekend ? "calendar-cell-weekend" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       <div className="calendar-cell-header">
         <strong>{dayLabel}</strong>
