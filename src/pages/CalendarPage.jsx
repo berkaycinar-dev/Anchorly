@@ -43,6 +43,7 @@ export default function CalendarPage({
   language,
 }) {
   const [expandedDayDate, setExpandedDayDate] = useState(null);
+  console.log("weekDays:", weekDays);
   function goToPrevious() {
     if (calendarViewMode === "month") {
       setCalendarMonth(new Date(calendarYear, calendarMonthIndex - 1, 1));
@@ -136,8 +137,8 @@ export default function CalendarPage({
             const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
             return (
-              <CalendarCell
-                key={day}
+                <CalendarCell
+                key={dateString}
                 dayLabel={day}
                 dateString={dateString}
                 dayTasks={dayTasks}
@@ -188,9 +189,12 @@ export default function CalendarPage({
                 setQuickAddTitle={setQuickAddTitle}
                 submitQuickAdd={submitQuickAdd}
                 setSelectedTaskId={setSelectedTaskId}
+                primaryButtonClassName="btn btn-primary"
+                cancelButtonClassName="btn btn-secondary"
                 isToday={dateString === today}
                 isWeekend={isWeekend}
                 onShowMore={setExpandedDayDate}
+                t={t}
               />
             );
           })}

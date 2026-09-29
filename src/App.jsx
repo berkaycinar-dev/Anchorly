@@ -11,111 +11,20 @@ import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
-
-const REPEAT_HORIZON_DAYS = 120;
-
-const initialTasks = [
-  {
-    id: 1,
-    title: "Finish React Project",
-    category: "Work",
-    date: "2026-08-05",
-    completed: false,
-    projectId: null,
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: 0,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-  },
-  {
-    id: 2,
-    title: "Buy groceries",
-    category: "Personal",
-    date: "2026-08-05",
-    completed: false,
-    projectId: null,
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: 1,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-  },
-  {
-    id: 3,
-    title: "Read 30 pages of a book",
-    category: "Self Development",
-    date: "2026-08-05",
-    completed: false,
-    projectId: null,
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: 2,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-  },
-  {
-    id: 4,
-    title: "Go to the gym",
-    category: "Health",
-    date: "2026-08-05",
-    completed: true,
-    projectId: null,
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: 3,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-  },
-  {
-    id: 5,
-    title: "Call mom",
-    category: "Personal",
-    date: "2026-08-06",
-    completed: false,
-    projectId: null,
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: 4,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-  },
-];
-const initialRoutines = [
-  {
-    id: 1,
-    title: "water",
-  },
-  {
-    id: 2,
-    title: "Read",
-  },
-  {
-    id: 3,
-    title: "Exercise",
-  },
-];
-
-const initialProjects = [
-  {
-    id: 1,
-    name: "ToDoApp",
-  },
-  {
-    id: 2,
-    name: "Portfolio",
-  },
-];
+import {
+  REPEAT_HORIZON_DAYS,
+  initialTasks,
+  initialRoutines,
+  initialProjects,
+} from "./constants/initialData";
+import {
+  getWeekStartOffset,
+  getWeekStartDate,
+  getWeekDays,
+  getRoutineKey,
+  getRoutineKeyForDate,
+  getNextRepeatDate,
+} from "./utils/dateHelpers";
 
 function getInitialProjects() {
   const savedProjects = localStorage.getItem("projects");
@@ -358,23 +267,6 @@ function App() {
     (task) => task.completed && task.completedAt === yesterday,
   ).length;
 
-  function getWeekStartOffset(date, startDay) {
-    const day = date.getDay();
-
-    if (startDay === "monday") {
-      return day === 0 ? 6 : day - 1;
-    }
-
-    return day;
-  }
-
-  function getWeekStartDate(date, startDay) {
-    const offset = getWeekStartOffset(date, startDay);
-    const start = new Date(date);
-    start.setDate(date.getDate() - offset);
-    return start;
-  }
-
   const weekStart = getWeekStartDate(new Date(), weekStartDay)
     .toISOString()
     .slice(0, 10);
@@ -389,6 +281,10 @@ function App() {
 
   const routineYear = routineMonth.getFullYear();
   const routineMonthIndex = routineMonth.getMonth();
+
+  function getRoutineKeyForMonth(routineId, day) {
+    return getRoutineKey(routineId, day, routineYear, routineMonthIndex);
+  }
 
   const daysInRoutineMonth = new Date(
     routineYear,
@@ -420,35 +316,14 @@ function App() {
     { length: daysInCalendarMonth },
     (_, index) => index + 1,
   );
-  function getWeekDays(anchorDate) {
-    const startOfWeek = getWeekStartDate(anchorDate, weekStartDay);
 
-    return Array.from({ length: 7 }, (_, index) => {
-      const day = new Date(startOfWeek);
-      day.setDate(startOfWeek.getDate() + index);
-      return day;
-    });
-  }
-
-  const weekDays = getWeekDays(calendarWeekStart);
+  const weekDays = getWeekDays(calendarWeekStart, weekStartDay);
 
   function getGreeting() {
     const hour = new Date().getHours();
     if (hour < 12) return t.greetingMorning;
     if (hour < 18) return t.greetingAfternoon;
     return t.greetingEvening;
-  }
-
-  function getRoutineKey(routineId, day) {
-    const monthKey = `${routineYear}-${routineMonthIndex + 1}`;
-    return `${monthKey}-${routineId}-${day}`;
-  }
-
-  function getRoutineKeyForDate(routineId, date) {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${year}-${month}-${routineId}-${day}`;
   }
 
   function getRoutineStreak(routineId) {
@@ -477,7 +352,7 @@ function App() {
     for (let i = 6; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-      
+
       const totalRoutines = routines.length;
       const completedRoutines = routines.filter(
         (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
@@ -501,18 +376,6 @@ function App() {
     }
 
     return days;
-  }
-
-  function getNextRepeatDate(dateString, repeat) {
-    const date = new Date(dateString);
-
-    if (repeat === "daily") {
-      date.setDate(date.getDate() + 1);
-    } else if (repeat === "weekly") {
-      date.setDate(date.getDate() + 7);
-    }
-
-    return date.toISOString().slice(0, 10);
   }
 
   function generateRepeatOccurrences(baseTask, existingTasks) {
@@ -607,7 +470,7 @@ function App() {
   }
 
   function toggleRoutineCheck(routineId, day) {
-    const key = getRoutineKey(routineId, day);
+    const key = getRoutineKeyForMonth(routineId, day);
 
     setRoutineChecks({
       ...routineChecks,
@@ -1088,7 +951,7 @@ function App() {
             routines={routines}
             deleteRoutine={deleteRoutine}
             routineChecks={routineChecks}
-            getRoutineKey={getRoutineKey}
+            getRoutineKey={getRoutineKeyForMonth}
             toggleRoutineCheck={toggleRoutineCheck}
             today={today}
             t={t}
