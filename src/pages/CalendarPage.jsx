@@ -43,7 +43,7 @@ export default function CalendarPage({
   language,
 }) {
   const [expandedDayDate, setExpandedDayDate] = useState(null);
-  console.log("weekDays:", weekDays);
+  
   function goToPrevious() {
     if (calendarViewMode === "month") {
       setCalendarMonth(new Date(calendarYear, calendarMonthIndex - 1, 1));

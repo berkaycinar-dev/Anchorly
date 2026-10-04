@@ -25,100 +25,63 @@ import {
   getRoutineKeyForDate,
   getNextRepeatDate,
 } from "./utils/dateHelpers";
+import useLocalStorageState from "./hooks/useLocalStorageState";
 
-function getInitialProjects() {
-  const savedProjects = localStorage.getItem("projects");
+const VALID_THEMES = ["gray", "purple", "blue", "red", "green", "pink"];
 
-  if (savedProjects) {
-    return JSON.parse(savedProjects);
-  }
-
-  return initialProjects;
-}
-
-function getInitialRoutines() {
-  const savedRoutines = localStorage.getItem("routines");
-
-  if (savedRoutines) {
-    return JSON.parse(savedRoutines);
-  }
-
-  return initialRoutines;
-}
-
-function getInitialRoutineChecks() {
-  const savedChecks = localStorage.getItem("routineChecks");
-
-  if (savedChecks) {
-    return JSON.parse(savedChecks);
-  }
-
-  return {};
-}
-
-function getInitialTasks() {
-  const savedTasks = localStorage.getItem("tasks");
-
-  if (savedTasks) {
-    const parsedTasks = JSON.parse(savedTasks);
-
-    return parsedTasks.map((task, index) => ({
-      description: "",
-      steps: [],
-      completedAt: null,
-      order: index,
-      repeat: "none",
-      repeatGroupId: null,
-      attachments: [],
-      ...task,
-    }));
-  }
-
-  return initialTasks;
+function normalizeStoredTasks(storedTasks) {
+  return storedTasks.map((task, index) => ({
+    description: "",
+    steps: [],
+    completedAt: null,
+    order: index,
+    repeat: "none",
+    repeatGroupId: null,
+    attachments: [],
+    ...task,
+  }));
 }
 
 function App() {
-  const [tasks, setTasks] = useState(getInitialTasks);
+  const [tasks, setTasks] = useLocalStorageState(
+    "tasks",
+    initialTasks,
+    normalizeStoredTasks,
+  );
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
   const [newTaskDate, setNewTaskDate] = useState("");
   const newTaskTitleInputRef = useRef(null);
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
-  const validThemes = ["gray", "purple", "blue", "red", "green", "pink"];
 
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return validThemes.includes(savedTheme) ? savedTheme : "gray";
-  });
-  const [language, setLanguage] = useState(() => {
-    return localStorage.getItem("language") || "tr";
-  });
-  const [fontFamily, setFontFamily] = useState(() => {
-    return localStorage.getItem("fontFamily") || "Inter";
-  });
-
-  const [weekStartDay, setWeekStartDay] = useState(() => {
-    return localStorage.getItem("weekStartDay") || "monday";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("fontFamily", fontFamily);
-  }, [fontFamily]);
-  useEffect(() => {
-    localStorage.setItem("language", language);
-  }, [language]);
-
-  useEffect(() => {
-    localStorage.setItem("weekStartDay", weekStartDay);
-  }, [weekStartDay]);
+  const [theme, setTheme] = useLocalStorageState(
+    "theme",
+    "gray",
+    (savedTheme) => (VALID_THEMES.includes(savedTheme) ? savedTheme : "gray"),
+  );
+  const [language, setLanguage] = useLocalStorageState("language", "tr");
+  const [fontFamily, setFontFamily] = useLocalStorageState(
+    "fontFamily",
+    "Inter",
+  );
+  const [weekStartDay, setWeekStartDay] = useLocalStorageState(
+    "weekStartDay",
+    "monday",
+  );
 
   const t = strings[language];
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
   const [activePage, setActivePage] = useState("Dashboard");
-  const [routines, setRoutines] = useState(getInitialRoutines);
-  const [routineChecks, setRoutineChecks] = useState(getInitialRoutineChecks);
+  const [routines, setRoutines] = useLocalStorageState(
+    "routines",
+    initialRoutines,
+  );
+  const [routineChecks, setRoutineChecks] = useLocalStorageState(
+    "routineChecks",
+    {},
+  );
   const [routineMonth, setRoutineMounth] = useState(new Date());
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
@@ -127,28 +90,11 @@ function App() {
   const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
   const [archiveStartDate, setArchiveStartDate] = useState("");
   const [archiveEndDate, setArchiveEndDate] = useState("");
-  const [projects, setProjects] = useState(getInitialProjects);
+  const [projects, setProjects] = useLocalStorageState(
+    "projects",
+    initialProjects,
+  );
   const [newProjectName, setNewProjectsName] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  useEffect(() => {
-    localStorage.setItem("routineChecks", JSON.stringify(routineChecks));
-  }, [routineChecks]);
-
-  useEffect(() => {
-    localStorage.setItem("routines", JSON.stringify(routines));
-  }, [routines]);
-
-  useEffect(() => {
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }, [projects]);
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     const latestByGroup = {};
