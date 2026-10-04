@@ -11,16 +11,15 @@ import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
-import { initialRoutines, initialProjects } from "./constants/initialData";
 import {
   getWeekStartOffset,
   getWeekStartDate,
   getWeekDays,
-  getRoutineKey,
-  getRoutineKeyForDate,
 } from "./utils/dateHelpers";
 import useLocalStorageState from "./hooks/useLocalStorageState";
 import useTasks from "./hooks/useTasks";
+import useRoutines from "./hooks/useRoutines";
+import useProjects from "./hooks/useProjects";
 
 const VALID_THEMES = ["gray", "purple", "blue", "red", "green", "pink"];
 
@@ -44,6 +43,32 @@ function App() {
     assignTaskToProject,
     clearProjectFromTasks,
   } = useTasks(today);
+
+  const {
+    routines,
+    routineChecks,
+    routineMonth,
+    setRoutineMonth,
+    routineYear,
+    routineMonthIndex,
+    routineDays,
+    getRoutineKeyForMonth,
+    toggleRoutineCheck,
+    addRoutine,
+    deleteRoutine,
+    getRoutineStreak,
+    getWeeklyProductivity,
+  } = useRoutines();
+
+  const {
+    projects,
+    selectedProjectId,
+    setSelectedProjectId,
+    selectedProject,
+    addProject,
+    deleteProject,
+  } = useProjects();
+
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
   const [newTaskDate, setNewTaskDate] = useState("");
@@ -70,15 +95,6 @@ function App() {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
   const [activePage, setActivePage] = useState("Dashboard");
-  const [routines, setRoutines] = useLocalStorageState(
-    "routines",
-    initialRoutines,
-  );
-  const [routineChecks, setRoutineChecks] = useLocalStorageState(
-    "routineChecks",
-    {},
-  );
-  const [routineMonth, setRoutineMounth] = useState(new Date());
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [calendarViewMode, setCalendarViewMode] = useState("month");
@@ -86,10 +102,6 @@ function App() {
   const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
   const [archiveStartDate, setArchiveStartDate] = useState("");
   const [archiveEndDate, setArchiveEndDate] = useState("");
-  const [projects, setProjects] = useLocalStorageState(
-    "projects",
-    initialProjects,
-  );
   const [newProjectName, setNewProjectsName] = useState("");
 
   useEffect(() => {
@@ -154,13 +166,10 @@ function App() {
   const overdueTaskCount = tasks.filter(
     (task) => !task.completed && task.date && task.date < today,
   ).length;
-  const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
   const [quickAddDate, setQuickAddDate] = useState(null);
   const [quickAddTitle, setQuickAddTitle] = useState("");
-  const selectedProject =
-    projects.find((project) => project.id === selectedProjectId) || null;
   const todayTasks = todayScopedTasks;
   const todayTasksCount = todayTasks.length;
   const completedTodayTasksCount = todayTasks.filter(
@@ -190,25 +199,7 @@ function App() {
       task.completedAt >= weekStart &&
       task.completedAt <= today,
   ).length;
-
-  const routineYear = routineMonth.getFullYear();
-  const routineMonthIndex = routineMonth.getMonth();
-
-  function getRoutineKeyForMonth(routineId, day) {
-    return getRoutineKey(routineId, day, routineYear, routineMonthIndex);
-  }
-
-  const daysInRoutineMonth = new Date(
-    routineYear,
-    routineMonthIndex + 1,
-    0,
-  ).getDate();
-
-  const routineDays = Array.from(
-    { length: daysInRoutineMonth },
-    (_, index) => index + 1,
-  );
-
+  
   const calendarYear = calendarMonth.getFullYear();
   const calendarMonthIndex = calendarMonth.getMonth();
 
@@ -236,62 +227,10 @@ function App() {
     if (hour < 12) return t.greetingMorning;
     if (hour < 18) return t.greetingAfternoon;
     return t.greetingEvening;
-  }
-
-  function getRoutineStreak(routineId) {
-    let streak = 0;
-    const checkDate = new Date();
-
-    const isTodayChecked =
-      routineChecks[getRoutineKeyForDate(routineId, checkDate)];
-
-    if (!isTodayChecked) {
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
-
-    while (routineChecks[getRoutineKeyForDate(routineId, checkDate)]) {
-      streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
-
-    return streak;
-  }
+  } 
 
   const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
-  function getWeeklyProductivity() {
-    const days = [];
-    const localeCode = language === "tr" ? "tr-TR" : "en-US";
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-
-      const totalRoutines = routines.length;
-      const completedRoutines = routines.filter(
-        (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
-      ).length;
-
-      const percent =
-        totalRoutines === 0
-          ? 0
-          : Math.round((completedRoutines / totalRoutines) * 100);
-
-      days.push({
-        label: date.toLocaleDateString(localeCode, { weekday: "short" }),
-        fullDate: date.toLocaleDateString(localeCode, {
-          day: "numeric",
-          month: "long",
-        }),
-        completed: completedRoutines,
-        total: totalRoutines,
-        percent,
-      });
-    }
-
-    return days;
-    const weeklyProductivity = getWeeklyProductivity();
-  }
-
-  const weeklyProductivity = getWeeklyProductivity();
+  const weeklyProductivity = getWeeklyProductivity(language);
 
   function getGreetingSegment() {
     const hour = new Date().getHours();
@@ -335,50 +274,7 @@ function App() {
 
     return pool[hash];
   }
-
-  function toggleRoutineCheck(routineId, day) {
-    const key = getRoutineKeyForMonth(routineId, day);
-
-    setRoutineChecks({
-      ...routineChecks,
-      [key]: !routineChecks[key],
-    });
-  }
-
-  function addRoutine(event) {
-    event.preventDefault();
-
-    if (newRoutineTitle.trim() === "") {
-      return;
-    }
-
-    const newRoutine = {
-      id: crypto.randomUUID(),
-      title: newRoutineTitle,
-    };
-
-    setRoutines([...routines, newRoutine]);
-    setNewRoutineTitle("");
-  }
-
-  function deleteRoutine(id) {
-    const filteredRoutines = routines.filter((routine) => routine.id !== id);
-    setRoutines(filteredRoutines);
-
-    const updatedChecks = {};
-
-    Object.keys(routineChecks).forEach((key) => {
-      const keyParts = key.split("-");
-      const routineIdFromKey = Number(keyParts[2]);
-
-      if (routineIdFromKey !== id) {
-        updatedChecks[key] = routineChecks[key];
-      }
-    });
-
-    setRoutineChecks(updatedChecks);
-  }
-
+ 
   const filteredTasks = tasks.filter((task) => {
     if (!isVisibleInToday(task)) {
       return false;
@@ -427,30 +323,37 @@ function App() {
     setNewTaskCategory("Work");
     setNewTaskDate("");
   }
-  function handleDeleteTaskFromModal(taskId) {
-    deleteTask(taskId);
-    setSelectedTaskId(null);
+
+  function handleAddRoutine(event) {
+    event.preventDefault();
+
+    if (newRoutineTitle.trim() === "") {
+      return;
+    }
+
+    addRoutine(newRoutineTitle);
+    setNewRoutineTitle("");
   }
 
-  function addProject(event) {
+  function handleAddProject(event) {
     event.preventDefault();
 
     if (newProjectName.trim() === "") {
       return;
     }
 
-    const newProject = {
-      id: crypto.randomUUID(),
-      name: newProjectName,
-    };
-
-    setProjects([...projects, newProject]);
+    addProject(newProjectName);
     setNewProjectsName("");
   }
 
-  function deleteProject(id) {
-    setProjects(projects.filter((project) => project.id !== id));
+  function handleDeleteProject(id) {
+    deleteProject(id);
     clearProjectFromTasks(id);
+  }
+
+  function handleDeleteTaskFromModal(taskId) {
+    deleteTask(taskId);
+    setSelectedTaskId(null);
   }
 
   function handleAssignProject(taskId, projectId) {
@@ -551,10 +454,10 @@ function App() {
         {activePage === "Daily Routine" && (
           <DailyRoutinePage
             routineMonth={routineMonth}
-            addRoutine={addRoutine}
+            addRoutine={handleAddRoutine}
             newRoutineTitle={newRoutineTitle}
             setNewRoutineTitle={setNewRoutineTitle}
-            setRoutineMounth={setRoutineMounth}
+            setRoutineMounth={setRoutineMonth}
             routineYear={routineYear}
             routineMonthIndex={routineMonthIndex}
             routineDays={routineDays}
@@ -616,11 +519,11 @@ function App() {
           <ProjectsPage
             selectedProject={selectedProject}
             setSelectedProjectId={setSelectedProjectId}
-            addProject={addProject}
+            addProject={handleAddProject}
             newProjectName={newProjectName}
             setNewProjectsName={setNewProjectsName}
             projects={projects}
-            deleteProject={deleteProject}
+            deleteProject={handleDeleteProject}
             tasks={tasks}
             addProjectTask={addProjectTask}
             newProjectTaskTitle={newProjectTaskTitle}

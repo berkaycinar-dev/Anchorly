@@ -50,3 +50,11 @@ export function getNextRepeatDate(dateString, repeat) {
 
   return date.toISOString().slice(0, 10);
 }
+
+export function getRoutineIdFromKey(key) {
+  const firstDash = key.indexOf("-");
+  const secondDash = key.indexOf("-", firstDash + 1);
+  const lastDash = key.lastIndexOf("-");
+
+  return key.slice(secondDash + 1, lastDash);
+}
