@@ -11,43 +11,39 @@ import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
-import {
-  REPEAT_HORIZON_DAYS,
-  initialTasks,
-  initialRoutines,
-  initialProjects,
-} from "./constants/initialData";
+import { initialRoutines, initialProjects } from "./constants/initialData";
 import {
   getWeekStartOffset,
   getWeekStartDate,
   getWeekDays,
   getRoutineKey,
   getRoutineKeyForDate,
-  getNextRepeatDate,
 } from "./utils/dateHelpers";
 import useLocalStorageState from "./hooks/useLocalStorageState";
+import useTasks from "./hooks/useTasks";
 
 const VALID_THEMES = ["gray", "purple", "blue", "red", "green", "pink"];
 
-function normalizeStoredTasks(storedTasks) {
-  return storedTasks.map((task, index) => ({
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: index,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-    ...task,
-  }));
-}
-
 function App() {
-  const [tasks, setTasks] = useLocalStorageState(
-    "tasks",
-    initialTasks,
-    normalizeStoredTasks,
-  );
+  const today = new Date().toISOString().slice(0, 10);
+  const {
+    tasks,
+    addTask,
+    toggleTask,
+    deleteTask,
+    updateTaskTitle,
+    updateTaskDescription,
+    updateTaskDate,
+    updateTaskRepeat,
+    addTaskStep,
+    toggleTaskStep,
+    deleteTaskStep,
+    addTaskAttachment,
+    deleteTaskAttachment,
+    reorderTasks,
+    assignTaskToProject,
+    clearProjectFromTasks,
+  } = useTasks(today);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
   const [newTaskDate, setNewTaskDate] = useState("");
@@ -97,35 +93,6 @@ function App() {
   const [newProjectName, setNewProjectsName] = useState("");
 
   useEffect(() => {
-    const latestByGroup = {};
-
-    tasks.forEach((task) => {
-      if (task.repeat !== "none" && task.repeatGroupId && task.date) {
-        const current = latestByGroup[task.repeatGroupId];
-
-        if (!current || task.date > current.date) {
-          latestByGroup[task.repeatGroupId] = task;
-        }
-      }
-    });
-
-    let allNewOccurrences = [];
-
-    Object.values(latestByGroup).forEach((latestTask) => {
-      const occurrences = generateRepeatOccurrences(latestTask, [
-        ...tasks,
-        ...allNewOccurrences,
-      ]);
-
-      allNewOccurrences = [...allNewOccurrences, ...occurrences];
-    });
-
-    if (allNewOccurrences.length > 0) {
-      setTasks((currentTasks) => [...currentTasks, ...allNewOccurrences]);
-    }
-  }, []);
-
-  useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === "Escape") {
         setSelectedTaskId(null);
@@ -157,7 +124,6 @@ function App() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-  const today = new Date().toISOString().slice(0, 10);
 
   function isVisibleInToday(task) {
     const isDateless = !task.date;
@@ -322,52 +288,7 @@ function App() {
     }
 
     return days;
-  }
-
-  function generateRepeatOccurrences(baseTask, existingTasks) {
-    if (
-      baseTask.repeat === "none" ||
-      !baseTask.date ||
-      !baseTask.repeatGroupId
-    ) {
-      return [];
-    }
-
-    const horizon = new Date();
-    horizon.setDate(horizon.getDate() + REPEAT_HORIZON_DAYS);
-    const horizonDate = horizon.toISOString().slice(0, 10);
-
-    const existingDatesInGroup = new Set(
-      existingTasks
-        .filter((task) => task.repeatGroupId === baseTask.repeatGroupId)
-        .map((task) => task.date),
-    );
-
-    const newOccurrences = [];
-    let nextDate = getNextRepeatDate(baseTask.date, baseTask.repeat);
-    let safetyCounter = 0;
-
-    while (nextDate <= horizonDate && safetyCounter < 400) {
-      if (!existingDatesInGroup.has(nextDate)) {
-        newOccurrences.push({
-          ...baseTask,
-          id: crypto.randomUUID(),
-          date: nextDate,
-          completed: false,
-          completedAt: null,
-          order: Date.now() + safetyCounter,
-          steps: baseTask.steps.map((step) => ({ ...step, done: false })),
-          attachments: [],
-        });
-
-        existingDatesInGroup.add(nextDate);
-      }
-
-      nextDate = getNextRepeatDate(nextDate, baseTask.repeat);
-      safetyCounter++;
-    }
-
-    return newOccurrences;
+    const weeklyProductivity = getWeeklyProductivity();
   }
 
   const weeklyProductivity = getWeeklyProductivity();
@@ -489,254 +410,26 @@ function App() {
     return matchesStatus && matchesStartDate && matchesEndDate;
   });
 
-  function toggleTask(id) {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        const isNowCompleted = !task.completed;
-
-        return {
-          ...task,
-          completed: isNowCompleted,
-          completedAt: isNowCompleted ? task.date || today : null,
-        };
-      }
-
-      return task;
-    });
-
-    setTasks(updatedTasks);
-  }
-
-  function addTask(event) {
+  function handleAddTask(event) {
     event.preventDefault();
 
     if (newTaskTitle.trim() === "") {
       return;
     }
 
-    const newTask = {
-      id: crypto.randomUUID(),
+    addTask({
       title: newTaskTitle,
       category: newTaskCategory,
       date: newTaskDate,
-      completed: false,
-      projectId: null,
-      description: "",
-      steps: [],
-      completedAt: null,
-      order: Date.now(),
-      repeat: "none",
-      repeatGroupId: null,
-      attachments: [],
-    };
+    });
 
-    setTasks([newTask, ...tasks]);
     setNewTaskTitle("");
     setNewTaskCategory("Work");
     setNewTaskDate("");
   }
-
-  function updateTaskDescription(taskId, newDescription) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, description: newDescription } : task,
-      ),
-    );
-  }
-
-  function updateTaskTitle(taskId, newTitle) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, title: newTitle } : task,
-      ),
-    );
-  }
-
-  function updateTaskDate(taskId, newDate) {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id !== taskId) {
-          return task;
-        }
-
-        if (newDate === "") {
-          return {
-            ...task,
-            date: "",
-            repeat: "none",
-            repeatGroupId: null,
-          };
-        }
-
-        return { ...task, date: newDate };
-      }),
-    );
-  }
-
   function handleDeleteTaskFromModal(taskId) {
     deleteTask(taskId);
     setSelectedTaskId(null);
-  }
-
-  function addTaskStep(taskId, stepText) {
-    if (stepText.trim() === "") {
-      return;
-    }
-
-    const newStep = { id: crypto.randomUUID(), text: stepText, done: false };
-
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, steps: [...task.steps, newStep] }
-          : task,
-      ),
-    );
-  }
-
-  function toggleTaskStep(taskId, stepId) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              steps: task.steps.map((step) =>
-                step.id === stepId ? { ...step, done: !step.done } : step,
-              ),
-            }
-          : task,
-      ),
-    );
-  }
-
-  function deleteTaskStep(taskId, stepId) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, steps: task.steps.filter((step) => step.id !== stepId) }
-          : task,
-      ),
-    );
-  }
-
-  function updateTaskRepeat(taskId, newRepeat) {
-    setTasks((currentTasks) => {
-      const targetTask = currentTasks.find((task) => task.id === taskId);
-
-      if (!targetTask) {
-        return currentTasks;
-      }
-
-      const oldGroupId = targetTask.repeatGroupId;
-      const targetDate = targetTask.date;
-
-      const tasksWithoutStaleFuture = currentTasks.filter((task) => {
-        const isStaleFutureSibling =
-          oldGroupId &&
-          task.repeatGroupId === oldGroupId &&
-          task.id !== taskId &&
-          task.date > targetDate;
-
-        return !isStaleFutureSibling;
-      });
-
-      const updatedTasks = tasksWithoutStaleFuture.map((task) => {
-        if (task.id !== taskId) {
-          return task;
-        }
-
-        if (newRepeat === "none") {
-          return { ...task, repeat: "none", repeatGroupId: null };
-        }
-
-        return {
-          ...task,
-          repeat: newRepeat,
-          repeatGroupId: oldGroupId || crypto.randomUUID(),
-        };
-      });
-
-      const updatedTask = updatedTasks.find((task) => task.id === taskId);
-
-      if (!updatedTask || updatedTask.repeat === "none") {
-        return updatedTasks;
-      }
-
-      const newOccurrences = generateRepeatOccurrences(
-        updatedTask,
-        updatedTasks,
-      );
-
-      return [...updatedTasks, ...newOccurrences];
-    });
-  }
-
-  function addTaskAttachment(taskId, attachment) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, attachments: [...task.attachments, attachment] }
-          : task,
-      ),
-    );
-  }
-
-  function deleteTaskAttachment(taskId, attachmentId) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              attachments: task.attachments.filter(
-                (attachment) => attachment.id !== attachmentId,
-              ),
-            }
-          : task,
-      ),
-    );
-  }
-
-  function deleteTask(id) {
-    const filteredTasks = tasks.filter((task) => task.id !== id);
-    setTasks(filteredTasks);
-  }
-
-  function reorderTasks(draggedId, targetId) {
-    if (draggedId === String(targetId)) {
-      return;
-    }
-
-    const activeTasksSorted = tasks
-      .filter((task) => !task.completed)
-      .sort((a, b) => a.order - b.order);
-
-    const draggedIndex = activeTasksSorted.findIndex(
-      (task) => String(task.id) === draggedId,
-    );
-    const targetIndex = activeTasksSorted.findIndex(
-      (task) => task.id === targetId,
-    );
-
-    if (draggedIndex === -1 || targetIndex === -1) {
-      return;
-    }
-
-    const reordered = [...activeTasksSorted];
-    const [draggedTask] = reordered.splice(draggedIndex, 1);
-    reordered.splice(targetIndex, 0, draggedTask);
-
-    const orderMap = {};
-    reordered.forEach((task, index) => {
-      orderMap[task.id] = index;
-    });
-
-    setTasks(
-      tasks.map((task) =>
-        orderMap[task.id] !== undefined
-          ? { ...task, order: orderMap[task.id] }
-          : task,
-      ),
-    );
   }
 
   function addProject(event) {
@@ -756,27 +449,16 @@ function App() {
   }
 
   function deleteProject(id) {
-    const filteredProjects = projects.filter((project) => project.id !== id);
-    setProjects(filteredProjects);
-
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.projectId === id ? { ...task, projectId: null } : task,
-      ),
-    );
+    setProjects(projects.filter((project) => project.id !== id));
+    clearProjectFromTasks(id);
   }
 
   function handleAssignProject(taskId, projectId) {
     const targetProject = projects.find(
       (project) => String(project.id) === String(projectId),
     );
-    const realProjectId = targetProject ? targetProject.id : null;
 
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, projectId: realProjectId } : task,
-      ),
-    );
+    assignTaskToProject(taskId, targetProject ? targetProject.id : null);
   }
 
   function addProjectTask(event) {
@@ -786,20 +468,13 @@ function App() {
       return;
     }
 
-    const newTask = {
-      id: crypto.randomUUID(),
+    addTask({
       title: newProjectTaskTitle,
       category: "Project",
       date: newProjectTaskDate,
-      completed: false,
       projectId: selectedProjectId,
-      description: "",
-      steps: [],
-      completedAt: null,
-      attachments: [],
-    };
+    });
 
-    setTasks([...tasks, newTask]);
     setNewProjectTaskTitle("");
     setNewProjectTaskDate(today);
   }
@@ -811,23 +486,12 @@ function App() {
       return;
     }
 
-    const newTask = {
-      id: crypto.randomUUID(),
+    addTask({
       title: quickAddTitle,
       category: "Work",
       date: quickAddDate,
-      completed: false,
-      projectId: null,
-      description: "",
-      steps: [],
-      completedAt: null,
-      order: Date.now(),
-      repeat: "none",
-      repeatGroupId: null,
-      attachments: [],
-    };
+    });
 
-    setTasks([newTask, ...tasks]);
     setQuickAddTitle("");
     setQuickAddDate(null);
   }
@@ -871,7 +535,7 @@ function App() {
             setNewTaskCategory={setNewTaskCategory}
             newTaskDate={newTaskDate}
             setNewTaskDate={setNewTaskDate}
-            addTask={addTask}
+            addTask={handleAddTask}
             titleInputRef={newTaskTitleInputRef}
             filter={filter}
             setFilter={setFilter}

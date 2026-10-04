@@ -12,7 +12,6 @@ function readStoredValue(key, fallback, transform) {
   try {
     parsed = JSON.parse(saved);
   } catch {
-    // Eski sürümde düz string olarak kaydedilmiş değerler (örn. purple) için
     parsed = saved;
   }
 
