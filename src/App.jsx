@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import TaskDetailModal from "./components/TaskDetailModal";
@@ -20,8 +20,23 @@ import useLocalStorageState from "./hooks/useLocalStorageState";
 import useTasks from "./hooks/useTasks";
 import useRoutines from "./hooks/useRoutines";
 import useProjects from "./hooks/useProjects";
+import { isTaskVisibleToday } from "./utils/taskHelpers";
 
 const VALID_THEMES = ["gray", "purple", "blue", "red", "green", "pink"];
+
+function getGreetingSegment() {
+  const hour = new Date().getHours();
+
+  if (hour < 12) {
+    return "morning";
+  }
+
+  if (hour < 18) {
+    return "afternoon";
+  }
+
+  return "evening";
+}
 
 function App() {
   const today = new Date().toISOString().slice(0, 10);
@@ -137,69 +152,127 @@ function App() {
     };
   }, []);
 
-  function isVisibleInToday(task) {
-    const isDateless = !task.date;
-    const isTodayDated = task.date === today;
-    const belongsToProject = Boolean(task.projectId);
-
-    const belongsToToday = isTodayDated || (isDateless && !belongsToProject);
-
-    if (!belongsToToday) {
-      return false;
-    }
-
-    if (task.completed && task.completedAt !== today) {
-      return false;
-    }
-
-    return true;
-  }
-
-  const todayScopedTasks = tasks.filter(isVisibleInToday);
-  const allTaskCount = todayScopedTasks.length;
-  const completedTasksCount = todayScopedTasks.filter(
-    (task) => task.completed && task.completedAt === today,
-  ).length;
-  const activeTaskCount = todayScopedTasks.filter(
-    (task) => !task.completed,
-  ).length;
-  const overdueTaskCount = tasks.filter(
-    (task) => !task.completed && task.date && task.date < today,
-  ).length;
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
   const [quickAddDate, setQuickAddDate] = useState(null);
   const [quickAddTitle, setQuickAddTitle] = useState("");
-  const todayTasks = todayScopedTasks;
-  const todayTasksCount = todayTasks.length;
-  const completedTodayTasksCount = todayTasks.filter(
-    (task) => task.completed && task.completedAt === today,
-  ).length;
-  const todayCompletionPercent =
-    todayTasksCount === 0
-      ? 0
-      : Math.round((completedTodayTasksCount / todayTasksCount) * 100);
+  const todayScopedTasks = useMemo(
+    () => tasks.filter((task) => isTaskVisibleToday(task, today)),
+    [tasks, today],
+  );
 
-  const yesterdayDate = new Date();
-  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-  const yesterday = yesterdayDate.toISOString().slice(0, 10);
+  const todayStats = useMemo(() => {
+    const total = todayScopedTasks.length;
+    const completed = todayScopedTasks.filter(
+      (task) => task.completed && task.completedAt === today,
+    ).length;
+    const active = todayScopedTasks.filter((task) => !task.completed).length;
+    const overdue = tasks.filter(
+      (task) => !task.completed && task.date && task.date < today,
+    ).length;
+    const completionPercent =
+      total === 0 ? 0 : Math.round((completed / total) * 100);
 
-  const yesterdayCompletedCount = tasks.filter(
-    (task) => task.completed && task.completedAt === yesterday,
-  ).length;
+    return { total, completed, active, overdue, completionPercent };
+  }, [tasks, todayScopedTasks, today]);
 
-  const weekStart = getWeekStartDate(new Date(), weekStartDay)
-    .toISOString()
-    .slice(0, 10);
+  const filteredTasks = useMemo(() => {
+    const searchLower = searchText.toLowerCase();
 
-  const weekCompletedCount = tasks.filter(
-    (task) =>
-      task.completed &&
-      task.completedAt &&
-      task.completedAt >= weekStart &&
-      task.completedAt <= today,
-  ).length;
-  
+    return todayScopedTasks.filter((task) => {
+      const matchesSearch = task.title.toLowerCase().includes(searchLower);
+
+      const matchesFilter =
+        filter === "all" ||
+        (filter === "active" && !task.completed) ||
+        (filter === "completed" && task.completed);
+
+      return matchesSearch && matchesFilter;
+    });
+  }, [todayScopedTasks, searchText, filter]);
+
+  const filteredArchiveTasks = useMemo(
+    () =>
+      tasks.filter((task) => {
+        const matchesStatus =
+          archiveStatusFilter === "all" ||
+          (archiveStatusFilter === "completed" && task.completed) ||
+          (archiveStatusFilter === "active" && !task.completed);
+
+        const matchesStartDate =
+          archiveStartDate === "" || task.date >= archiveStartDate;
+
+        const matchesEndDate =
+          archiveEndDate === "" || task.date <= archiveEndDate;
+
+        return matchesStatus && matchesStartDate && matchesEndDate;
+      }),
+    [tasks, archiveStatusFilter, archiveStartDate, archiveEndDate],
+  );
+
+  const weeklyProductivity = useMemo(
+    () => getWeeklyProductivity(language),
+    [getWeeklyProductivity, language],
+  );
+
+  const greetingSegment = getGreetingSegment();
+
+  const dashboardMessage = useMemo(() => {
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterday = yesterdayDate.toISOString().slice(0, 10);
+
+    const weekStart = getWeekStartDate(new Date(), weekStartDay)
+      .toISOString()
+      .slice(0, 10);
+
+    const yesterdayCompletedCount = tasks.filter(
+      (task) => task.completed && task.completedAt === yesterday,
+    ).length;
+
+    const weekCompletedCount = tasks.filter(
+      (task) =>
+        task.completed &&
+        task.completedAt &&
+        task.completedAt >= weekStart &&
+        task.completedAt <= today,
+    ).length;
+
+    const pool = [...t.dashboardQuotes];
+
+    if (yesterdayCompletedCount > 0) {
+      pool.push(t.yesterdayCompletedMessage(yesterdayCompletedCount));
+    }
+
+    if (weekCompletedCount > 0) {
+      pool.push(t.weekCompletedMessage(weekCompletedCount));
+    }
+
+    routines.forEach((routine) => {
+      const streak = getRoutineStreak(routine.id);
+
+      if (streak > 1) {
+        pool.push(t.routineStreakMessage(routine.title, streak));
+      }
+    });
+
+    const seedString = `${today}-${greetingSegment}`;
+    let hash = 0;
+
+    for (let i = 0; i < seedString.length; i++) {
+      hash = (hash * 31 + seedString.charCodeAt(i)) % pool.length;
+    }
+
+    return pool[hash];
+  }, [
+    tasks,
+    routines,
+    getRoutineStreak,
+    t,
+    today,
+    weekStartDay,
+    greetingSegment,
+  ]);
   const calendarYear = calendarMonth.getFullYear();
   const calendarMonthIndex = calendarMonth.getMonth();
 
@@ -227,84 +300,9 @@ function App() {
     if (hour < 12) return t.greetingMorning;
     if (hour < 18) return t.greetingAfternoon;
     return t.greetingEvening;
-  } 
+  }
 
   const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
-  const weeklyProductivity = getWeeklyProductivity(language);
-
-  function getGreetingSegment() {
-    const hour = new Date().getHours();
-
-    if (hour < 12) {
-      return "morning";
-    }
-
-    if (hour < 18) {
-      return "afternoon";
-    }
-
-    return "evening";
-  }
-
-  function getDashboardMessage() {
-    const pool = [...t.dashboardQuotes];
-
-    if (yesterdayCompletedCount > 0) {
-      pool.push(t.yesterdayCompletedMessage(yesterdayCompletedCount));
-    }
-
-    if (weekCompletedCount > 0) {
-      pool.push(t.weekCompletedMessage(weekCompletedCount));
-    }
-
-    routines.forEach((routine) => {
-      const streak = getRoutineStreak(routine.id);
-
-      if (streak > 1) {
-        pool.push(t.routineStreakMessage(routine.title, streak));
-      }
-    });
-
-    const seedString = `${today}-${getGreetingSegment()}`;
-    let hash = 0;
-
-    for (let i = 0; i < seedString.length; i++) {
-      hash = (hash * 31 + seedString.charCodeAt(i)) % pool.length;
-    }
-
-    return pool[hash];
-  }
- 
-  const filteredTasks = tasks.filter((task) => {
-    if (!isVisibleInToday(task)) {
-      return false;
-    }
-
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "active" && !task.completed) ||
-      (filter === "completed" && task.completed);
-
-    return matchesSearch && matchesFilter;
-  });
-
-  const filteredArchiveTasks = tasks.filter((task) => {
-    const matchesStatus =
-      archiveStatusFilter === "all" ||
-      (archiveStatusFilter === "completed" && task.completed) ||
-      (archiveStatusFilter === "active" && !task.completed);
-
-    const matchesStartDate =
-      archiveStartDate === "" || task.date >= archiveStartDate;
-
-    const matchesEndDate = archiveEndDate === "" || task.date <= archiveEndDate;
-
-    return matchesStatus && matchesStartDate && matchesEndDate;
-  });
 
   function handleAddTask(event) {
     event.preventDefault();
@@ -413,14 +411,14 @@ function App() {
         {activePage === "Dashboard" && (
           <DashboardPage
             greeting={getGreeting()}
-            dashboardMessage={getDashboardMessage()}
-            todayTasksCount={todayTasksCount}
-            completedTodayTasksCount={completedTodayTasksCount}
-            allTaskCount={allTaskCount}
-            completedTasksCount={completedTasksCount}
-            activeTaskCount={activeTaskCount}
-            overdueTaskCount={overdueTaskCount}
-            todayCompletionPercent={todayCompletionPercent}
+            dashboardMessage={dashboardMessage}
+            todayTasksCount={todayStats.total}
+            completedTodayTasksCount={todayStats.completed}
+            allTaskCount={todayStats.total}
+            completedTasksCount={todayStats.completed}
+            activeTaskCount={todayStats.active}
+            overdueTaskCount={todayStats.overdue}
+            todayCompletionPercent={todayStats.completionPercent}
             weeklyProductivity={weeklyProductivity}
             hoveredDayIndex={hoveredDayIndex}
             setHoveredDayIndex={setHoveredDayIndex}

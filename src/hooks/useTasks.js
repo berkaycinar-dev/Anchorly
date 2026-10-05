@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
 import { initialTasks } from "../constants/initialData";
 import { generateRepeatOccurrences } from "../utils/taskHelpers";
@@ -52,11 +52,14 @@ export default function useTasks(today) {
     }
   }, []);
 
-  function updateTask(taskId, updater) {
-    setTasks((currentTasks) =>
-      currentTasks.map((task) => (task.id === taskId ? updater(task) : task)),
-    );
-  }
+  const updateTask = useCallback(
+    (taskId, updater) => {
+      setTasks((currentTasks) =>
+        currentTasks.map((task) => (task.id === taskId ? updater(task) : task)),
+      );
+    },
+    [setTasks],
+  );
 
   function addTask(taskData) {
     const newTask = {
@@ -78,21 +81,27 @@ export default function useTasks(today) {
     setTasks((currentTasks) => [newTask, ...currentTasks]);
   }
 
-  function toggleTask(id) {
-    updateTask(id, (task) => {
-      const isNowCompleted = !task.completed;
+  const toggleTask = useCallback(
+    (id) => {
+      updateTask(id, (task) => {
+        const isNowCompleted = !task.completed;
 
-      return {
-        ...task,
-        completed: isNowCompleted,
-        completedAt: isNowCompleted ? task.date || today : null,
-      };
-    });
-  }
+        return {
+          ...task,
+          completed: isNowCompleted,
+          completedAt: isNowCompleted ? task.date || today : null,
+        };
+      });
+    },
+    [updateTask, today],
+  );
 
-  function deleteTask(id) {
-    setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id));
-  }
+  const deleteTask = useCallback(
+    (id) => {
+      setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id));
+    },
+    [setTasks],
+  );
 
   function updateTaskTitle(taskId, newTitle) {
     updateTask(taskId, (task) => ({ ...task, title: newTitle }));
@@ -209,43 +218,46 @@ export default function useTasks(today) {
     });
   }
 
-  function reorderTasks(draggedId, targetId) {
-    if (draggedId === String(targetId)) {
-      return;
-    }
+  const reorderTasks = useCallback(
+    (draggedId, targetId) => {
+      if (draggedId === String(targetId)) {
+        return;
+      }
 
-    const activeTasksSorted = tasks
-      .filter((task) => !task.completed)
-      .sort((a, b) => a.order - b.order);
+      setTasks((currentTasks) => {
+        const activeTasksSorted = currentTasks
+          .filter((task) => !task.completed)
+          .sort((a, b) => a.order - b.order);
 
-    const draggedIndex = activeTasksSorted.findIndex(
-      (task) => String(task.id) === draggedId,
-    );
-    const targetIndex = activeTasksSorted.findIndex(
-      (task) => task.id === targetId,
-    );
+        const draggedIndex = activeTasksSorted.findIndex(
+          (task) => String(task.id) === draggedId,
+        );
+        const targetIndex = activeTasksSorted.findIndex(
+          (task) => task.id === targetId,
+        );
 
-    if (draggedIndex === -1 || targetIndex === -1) {
-      return;
-    }
+        if (draggedIndex === -1 || targetIndex === -1) {
+          return currentTasks;
+        }
 
-    const reordered = [...activeTasksSorted];
-    const [draggedTask] = reordered.splice(draggedIndex, 1);
-    reordered.splice(targetIndex, 0, draggedTask);
+        const reordered = [...activeTasksSorted];
+        const [draggedTask] = reordered.splice(draggedIndex, 1);
+        reordered.splice(targetIndex, 0, draggedTask);
 
-    const orderMap = {};
-    reordered.forEach((task, index) => {
-      orderMap[task.id] = index;
-    });
+        const orderMap = {};
+        reordered.forEach((task, index) => {
+          orderMap[task.id] = index;
+        });
 
-    setTasks(
-      tasks.map((task) =>
-        orderMap[task.id] !== undefined
-          ? { ...task, order: orderMap[task.id] }
-          : task,
-      ),
-    );
-  }
+        return currentTasks.map((task) =>
+          orderMap[task.id] !== undefined
+            ? { ...task, order: orderMap[task.id] }
+            : task,
+        );
+      });
+    },
+    [setTasks],
+  );
 
   function assignTaskToProject(taskId, projectId) {
     updateTask(taskId, (task) => ({ ...task, projectId }));

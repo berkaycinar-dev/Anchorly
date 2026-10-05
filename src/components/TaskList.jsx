@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , memo } from "react";
 
 function TaskList({
   tasks,
@@ -143,4 +143,4 @@ function TaskList({
   );
 }
 
-export default TaskList;
+export default memo(TaskList);

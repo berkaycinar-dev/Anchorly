@@ -1,4 +1,5 @@
 import TaskList from "../components/TaskList";
+import { useMemo } from "react";
 
 export default function ProjectsPage({
   selectedProject,
@@ -21,6 +22,12 @@ export default function ProjectsPage({
   reorderTasks,
   t,
 }) {
+  
+  const selectedProjectTasks = useMemo(
+    () => tasks.filter((task) => task.projectId === selectedProjectId),
+    [tasks, selectedProjectId],
+  );
+
   if (selectedProject) {
     return (
       <section className="project-detail">
@@ -51,7 +58,7 @@ export default function ProjectsPage({
         </form>
 
         <TaskList
-          tasks={tasks.filter((task) => task.projectId === selectedProjectId)}
+          tasks={selectedProjectTasks}
           toggleTask={toggleTask}
           deleteTask={deleteTask}
           onSelectTask={setSelectedTaskId}

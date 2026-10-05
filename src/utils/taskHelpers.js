@@ -46,3 +46,21 @@ export function generateRepeatOccurrences(baseTask, existingTasks) {
 
   return newOccurrences;
 }
+
+export function isTaskVisibleToday(task, today) {
+  const isDateless = !task.date;
+  const isTodayDated = task.date === today;
+  const belongsToProject = Boolean(task.projectId);
+
+  const belongsToToday = isTodayDated || (isDateless && !belongsToProject);
+
+  if (!belongsToToday) {
+    return false;
+  }
+
+  if (task.completed && task.completedAt !== today) {
+    return false;
+  }
+
+  return true;
+}

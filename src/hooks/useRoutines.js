@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
 import { initialRoutines } from "../constants/initialData";
 import {
@@ -70,57 +70,65 @@ export default function useRoutines() {
     });
   }
 
-  function getRoutineStreak(routineId) {
-    let streak = 0;
-    const checkDate = new Date();
+    const getRoutineStreak = useCallback(
+    (routineId) => {
+      let streak = 0;
+      const checkDate = new Date();
 
-    const isTodayChecked =
-      routineChecks[getRoutineKeyForDate(routineId, checkDate)];
+      const isTodayChecked =
+        routineChecks[getRoutineKeyForDate(routineId, checkDate)];
 
-    if (!isTodayChecked) {
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
+      if (!isTodayChecked) {
+        checkDate.setDate(checkDate.getDate() - 1);
+      }
 
-    while (routineChecks[getRoutineKeyForDate(routineId, checkDate)]) {
-      streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    }
+      while (routineChecks[getRoutineKeyForDate(routineId, checkDate)]) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      }
 
-    return streak;
-  }
+      return streak;
+    },
+    [routineChecks],
+  );
 
-  function getWeeklyProductivity(language) {
-    const days = [];
-    const localeCode = language === "tr" ? "tr-TR" : "en-US";
+    const getWeeklyProductivity = useCallback(
+    (language) => {
+      const days = [];
+      const localeCode = language === "tr" ? "tr-TR" : "en-US";
 
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
 
-      const totalRoutines = routines.length;
-      const completedRoutines = routines.filter(
-        (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
-      ).length;
+        const totalRoutines = routines.length;
+        const completedRoutines = routines.filter(
+          (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
+        ).length;
 
-      const percent =
-        totalRoutines === 0
-          ? 0
-          : Math.round((completedRoutines / totalRoutines) * 100);
+        const percent =
+          totalRoutines === 0
+            ? 0
+            : Math.round((completedRoutines / totalRoutines) * 100);
 
-      days.push({
-        label: date.toLocaleDateString(localeCode, { weekday: "short" }),
-        fullDate: date.toLocaleDateString(localeCode, {
-          day: "numeric",
-          month: "long",
-        }),
-        completed: completedRoutines,
-        total: totalRoutines,
-        percent,
-      });
-    }
+        days.push({
+          label: date.toLocaleDateString(localeCode, { weekday: "short" }),
+          fullDate: date.toLocaleDateString(localeCode, {
+            day: "numeric",
+            month: "long",
+          }),
+          completed: completedRoutines,
+          total: totalRoutines,
+          percent,
+        });
+      }
 
-    return days;
-  }
+      return days;
+    },
+    [routines, routineChecks],
+  );
+
+    
 
   return {
     routines,
