@@ -1,4 +1,4 @@
-import Statcard from "../components/Statcard";
+import StatCard from "../components/StatCard";
 
 function DashboardPage({
   greeting,
@@ -23,10 +23,10 @@ function DashboardPage({
       </div>
 
       <section className="stats">
-        <Statcard title={t.statToday}value={allTaskCount} />
-        <Statcard title={t.statCompleted} value={completedTasksCount} />
-        <Statcard title={t.statInProgress} value={activeTaskCount} />
-        <Statcard title={t.statOverdue} value={overdueTaskCount} />
+        <StatCard title={t.statToday} value={allTaskCount} />
+        <StatCard title={t.statCompleted} value={completedTasksCount} />
+        <StatCard title={t.statInProgress} value={activeTaskCount} />
+        <StatCard title={t.statOverdue} value={overdueTaskCount} />
       </section>
 
       <section className="dashboard-grid">

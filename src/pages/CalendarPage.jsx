@@ -205,6 +205,7 @@ export default function CalendarPage({
         tasks={tasks.filter((task) => task.date === expandedDayDate)}
         onClose={() => setExpandedDayDate(null)}
         onSelectTask={setSelectedTaskId}
+        t={t}
       />
     </section>
   );
@@ -314,7 +315,7 @@ function CalendarCell({
     </div>
   );
 }
-function DayTasksModal({ dateString, tasks, onClose, onSelectTask }) {
+function DayTasksModal({ dateString, tasks, onClose, onSelectTask, t }) {
   if (!dateString) {
     return null;
   }

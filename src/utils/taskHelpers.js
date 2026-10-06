@@ -64,3 +64,30 @@ export function isTaskVisibleToday(task, today) {
 
   return true;
 }
+
+export function addFutureOccurrences(tasks) {
+  const latestByGroup = {};
+
+  tasks.forEach((task) => {
+    if (task.repeat !== "none" && task.repeatGroupId && task.date) {
+      const current = latestByGroup[task.repeatGroupId];
+
+      if (!current || task.date > current.date) {
+        latestByGroup[task.repeatGroupId] = task;
+      }
+    }
+  });
+
+  let allNewOccurrences = [];
+
+  Object.values(latestByGroup).forEach((latestTask) => {
+    const occurrences = generateRepeatOccurrences(latestTask, [
+      ...tasks,
+      ...allNewOccurrences,
+    ]);
+
+    allNewOccurrences = [...allNewOccurrences, ...occurrences];
+  });
+
+  return [...tasks, ...allNewOccurrences];
+}

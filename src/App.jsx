@@ -117,7 +117,7 @@ function App() {
   const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
   const [archiveStartDate, setArchiveStartDate] = useState("");
   const [archiveEndDate, setArchiveEndDate] = useState("");
-  const [newProjectName, setNewProjectsName] = useState("");
+  const [newProjectName, setNewProjectName] = useState("");
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -341,7 +341,7 @@ function App() {
     }
 
     addProject(newProjectName);
-    setNewProjectsName("");
+    setNewProjectName("");
   }
 
   function handleDeleteProject(id) {
@@ -455,7 +455,7 @@ function App() {
             addRoutine={handleAddRoutine}
             newRoutineTitle={newRoutineTitle}
             setNewRoutineTitle={setNewRoutineTitle}
-            setRoutineMounth={setRoutineMonth}
+            setRoutineMonth={setRoutineMonth}
             routineYear={routineYear}
             routineMonthIndex={routineMonthIndex}
             routineDays={routineDays}
@@ -464,7 +464,7 @@ function App() {
             routineChecks={routineChecks}
             getRoutineKey={getRoutineKeyForMonth}
             toggleRoutineCheck={toggleRoutineCheck}
-            today={today}
+            language={language}
             t={t}
           />
         )}
@@ -519,7 +519,7 @@ function App() {
             setSelectedProjectId={setSelectedProjectId}
             addProject={handleAddProject}
             newProjectName={newProjectName}
-            setNewProjectsName={setNewProjectsName}
+            setNewProjectName={setNewProjectName}
             projects={projects}
             deleteProject={handleDeleteProject}
             tasks={tasks}
@@ -553,6 +553,7 @@ function App() {
       </main>
 
       <TaskDetailModal
+        key={selectedTaskId ?? "none"}
         task={selectedTask}
         onClose={() => setSelectedTaskId(null)}
         onToggleTask={toggleTask}

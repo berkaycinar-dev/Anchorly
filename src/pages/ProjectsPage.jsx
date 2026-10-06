@@ -6,7 +6,7 @@ export default function ProjectsPage({
   setSelectedProjectId,
   addProject,
   newProjectName,
-  setNewProjectsName,
+  setNewProjectName,
   projects,
   deleteProject,
   tasks,
@@ -81,7 +81,7 @@ export default function ProjectsPage({
           type="text"
           placeholder={t.newProjectPlaceholder}
           value={newProjectName}
-          onChange={(event) => setNewProjectsName(event.target.value)}
+          onChange={(event) => setNewProjectName(event.target.value)}
         />
 
         <button type="submit" className="btn btn-primary">

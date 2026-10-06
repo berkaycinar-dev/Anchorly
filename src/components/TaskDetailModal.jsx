@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function TaskDetailModal({
   task,
@@ -23,15 +23,7 @@ function TaskDetailModal({
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-
-  useEffect(() => {
-    if (task) {
-      setEditedTitle(task.title);
-      setIsEditingTitle(false);
-      setIsDeleteConfirmOpen(false);
-    }
-  }, [task?.id]);
-
+ 
   if (!task) {
     return null;
   }

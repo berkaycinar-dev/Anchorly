@@ -1,7 +1,10 @@
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
 import { initialTasks } from "../constants/initialData";
-import { generateRepeatOccurrences } from "../utils/taskHelpers";
+import {
+  addFutureOccurrences,
+  generateRepeatOccurrences,
+} from "../utils/taskHelpers";
 
 function normalizeStoredTasks(storedTasks) {
   return storedTasks.map((task, index) => ({
@@ -20,37 +23,8 @@ export default function useTasks(today) {
   const [tasks, setTasks] = useLocalStorageState(
     "tasks",
     initialTasks,
-    normalizeStoredTasks,
+    (storedTasks) => addFutureOccurrences(normalizeStoredTasks(storedTasks)),
   );
-
-  useEffect(() => {
-    const latestByGroup = {};
-
-    tasks.forEach((task) => {
-      if (task.repeat !== "none" && task.repeatGroupId && task.date) {
-        const current = latestByGroup[task.repeatGroupId];
-
-        if (!current || task.date > current.date) {
-          latestByGroup[task.repeatGroupId] = task;
-        }
-      }
-    });
-
-    let allNewOccurrences = [];
-
-    Object.values(latestByGroup).forEach((latestTask) => {
-      const occurrences = generateRepeatOccurrences(latestTask, [
-        ...tasks,
-        ...allNewOccurrences,
-      ]);
-
-      allNewOccurrences = [...allNewOccurrences, ...occurrences];
-    });
-
-    if (allNewOccurrences.length > 0) {
-      setTasks((currentTasks) => [...currentTasks, ...allNewOccurrences]);
-    }
-  }, []);
 
   const updateTask = useCallback(
     (taskId, updater) => {

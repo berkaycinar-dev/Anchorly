@@ -3,7 +3,7 @@ export default function DailyRoutinePage({
   addRoutine,
   newRoutineTitle,
   setNewRoutineTitle,
-  setRoutineMounth,
+  setRoutineMonth,
   routineYear,
   routineMonthIndex,
   routineDays,
@@ -11,8 +11,7 @@ export default function DailyRoutinePage({
   deleteRoutine,
   routineChecks,
   getRoutineKey,
-  toggleRoutineCheck,
-  today,
+  toggleRoutineCheck, 
   t,
   language,
 }) {
@@ -22,11 +21,11 @@ export default function DailyRoutinePage({
   const todayDayNumber = now.getDate();
 
   function goToPrevious() {
-    setRoutineMounth(new Date(routineYear, routineMonthIndex - 1, 1));
+    setRoutineMonth(new Date(routineYear, routineMonthIndex - 1, 1));
   }
 
   function goToNext() {
-    setRoutineMounth(new Date(routineYear, routineMonthIndex + 1, 1));
+    setRoutineMonth(new Date(routineYear, routineMonthIndex + 1, 1));
   }
 
   return (
