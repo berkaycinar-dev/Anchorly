@@ -525,7 +525,6 @@ body {
   gap: 6px;
   margin-top: 8px;
   min-height: 0;
- 
 }
 .calendar-task-done {
   text-decoration: line-through;

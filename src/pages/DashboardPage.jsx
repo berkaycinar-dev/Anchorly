@@ -47,7 +47,8 @@ function DashboardPage({
           </p>
           <div className="chart-legend">
             <span className="legend-dot legend-done"></span> {t.completedLegend}
-            <span className="legend-dot legend-pending"></span> {t.pendingLegend}
+            <span className="legend-dot legend-pending"></span>{" "}
+            {t.pendingLegend}
           </div>
         </div>
 

@@ -11,7 +11,7 @@ export default function DailyRoutinePage({
   deleteRoutine,
   routineChecks,
   getRoutineKey,
-  toggleRoutineCheck, 
+  toggleRoutineCheck,
   t,
   language,
 }) {
@@ -33,22 +33,25 @@ export default function DailyRoutinePage({
       <div className="calendar-nav">
         <button
           className="calendar-nav-arrow"
-          aria-label= {t.previousLabel}
+          aria-label={t.previousLabel}
           onClick={goToPrevious}
         >
           ‹
         </button>
 
         <span className="calendar-nav-label routine-nav-label">
-          {routineMonth.toLocaleDateString(language === "tr" ? "tr-TR" : "en-US",  {
-            month: "long",
-            year: "numeric",
-          })}
+          {routineMonth.toLocaleDateString(
+            language === "tr" ? "tr-TR" : "en-US",
+            {
+              month: "long",
+              year: "numeric",
+            },
+          )}
         </span>
 
         <button
           className="calendar-nav-arrow"
-          aria-label= {t.nextLabel}
+          aria-label={t.nextLabel}
           onClick={goToNext}
         >
           ›
@@ -58,7 +61,7 @@ export default function DailyRoutinePage({
       <form className="routine-form" onSubmit={addRoutine}>
         <input
           type="text"
-          placeholder= {t.newRoutinePlaceholder}
+          placeholder={t.newRoutinePlaceholder}
           value={newRoutineTitle}
           onChange={(event) => setNewRoutineTitle(event.target.value)}
         />

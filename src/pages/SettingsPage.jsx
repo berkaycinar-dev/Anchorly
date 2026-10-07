@@ -20,21 +20,21 @@ export default function SettingsPage({
         <h3>{t.themeLabel}</h3>
 
         <div className="theme-options">
-          
-            {["gray", "purple", "blue", "red", "green", "pink"].map((themeOption) => (
-
-            <button
-              key={themeOption}
-              className={
-                theme === themeOption
-                  ? "theme-option active-theme"
-                  : "theme-option"
-              }
-              onClick={() => setTheme(themeOption)}
-            >
-              {themeOption}
-            </button>
-          ))}
+          {["gray", "purple", "blue", "red", "green", "pink"].map(
+            (themeOption) => (
+              <button
+                key={themeOption}
+                className={
+                  theme === themeOption
+                    ? "theme-option active-theme"
+                    : "theme-option"
+                }
+                onClick={() => setTheme(themeOption)}
+              >
+                {themeOption}
+              </button>
+            ),
+          )}
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export default function SettingsPage({
         </div>
       </div>
 
-            <div className="settings-section">
+      <div className="settings-section">
         <h3>{t.weekStartLabel}</h3>
 
         <div className="theme-options">
@@ -102,7 +102,5 @@ export default function SettingsPage({
         </div>
       </div>
     </section>
-
-
   );
 }

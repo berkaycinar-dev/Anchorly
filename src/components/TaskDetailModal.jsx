@@ -18,12 +18,11 @@ function TaskDetailModal({
   onDeleteTask,
   t,
 }) {
-  
   const [newStepText, setNewStepText] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
- 
+
   if (!task) {
     return null;
   }
@@ -44,9 +43,7 @@ function TaskDetailModal({
     const maxSizeInBytes = 1024 * 1024; // 1 MB
 
     if (file.size > maxSizeInBytes) {
-      alert(
-        t.fileTooLargeWarning
-      );
+      alert(t.fileTooLargeWarning);
       event.target.value = "";
       return;
     }
@@ -96,7 +93,7 @@ function TaskDetailModal({
     }
   }
 
-    function handleDeleteTask() {
+  function handleDeleteTask() {
     setIsDeleteConfirmOpen(true);
   }
 
@@ -108,7 +105,6 @@ function TaskDetailModal({
   function cancelDeleteTask() {
     setIsDeleteConfirmOpen(false);
   }
-
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -135,14 +131,14 @@ function TaskDetailModal({
               <h2
                 className={task.completed ? "modal-title-done" : ""}
                 onDoubleClick={startEditingTitle}
-                title= {t.editTitleHint}
+                title={t.editTitleHint}
               >
                 {task.title}
               </h2>
             )}
           </div>
 
-                   <div className="modal-header-actions">
+          <div className="modal-header-actions">
             <button
               className="btn btn-danger"
               onClick={handleDeleteTask}
@@ -155,16 +151,15 @@ function TaskDetailModal({
               {t.closeButton}
             </button>
           </div>
-        
         </div>
 
         <label>{t.descriptionLabel}</label>
         <textarea
           value={task.description || ""}
           onChange={(event) => onUpdateDescription(task.id, event.target.value)}
-          placeholder= {t.descriptionPlaceholder}
+          placeholder={t.descriptionPlaceholder}
         />
-<label>{t.dateLabel}</label>
+        <label>{t.dateLabel}</label>
         <div className="detail-date-row">
           <input
             type="date"
@@ -195,11 +190,7 @@ function TaskDetailModal({
           <option value="weekly">{t.repeatWeekly}</option>
         </select>
 
-        {!task.date && (
-          <p className="task-repeat-hint">
-            {t.repeatHint}
-          </p>
-        )}
+        {!task.date && <p className="task-repeat-hint">{t.repeatHint}</p>}
 
         <label>{t.attachmentsLabel}</label>
         <div className="attachments-list">
@@ -271,10 +262,10 @@ function TaskDetailModal({
           ))}
         </ul>
 
-                <form className="task-step-form" onSubmit={handleAddStep}>
+        <form className="task-step-form" onSubmit={handleAddStep}>
           <input
             type="text"
-            placeholder= {t.newStepPlaceholder}
+            placeholder={t.newStepPlaceholder}
             value={newStepText}
             onChange={(event) => setNewStepText(event.target.value)}
           />
@@ -297,7 +288,7 @@ function TaskDetailModal({
                 {t.confirmDeleteCancel}
               </button>
               <button className="btn btn-danger" onClick={confirmDeleteTask}>
-                 {t.confirmDeleteConfirm}
+                {t.confirmDeleteConfirm}
               </button>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { useState , useCallback } from "react";
+import { useState, useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
 import { initialRoutines } from "../constants/initialData";
 import {
@@ -70,7 +70,7 @@ export default function useRoutines() {
     });
   }
 
-    const getRoutineStreak = useCallback(
+  const getRoutineStreak = useCallback(
     (routineId) => {
       let streak = 0;
       const checkDate = new Date();
@@ -92,7 +92,7 @@ export default function useRoutines() {
     [routineChecks],
   );
 
-    const getWeeklyProductivity = useCallback(
+  const getWeeklyProductivity = useCallback(
     (language) => {
       const days = [];
       const localeCode = language === "tr" ? "tr-TR" : "en-US";
@@ -127,8 +127,6 @@ export default function useRoutines() {
     },
     [routines, routineChecks],
   );
-
-    
 
   return {
     routines,

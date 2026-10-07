@@ -1,4 +1,4 @@
-import { useState , memo } from "react";
+import { useState, memo } from "react";
 
 function TaskList({
   tasks,
@@ -12,15 +12,14 @@ function TaskList({
   const [draggedTaskId, setDraggedTaskId] = useState(null);
 
   if (tasks.length === 0) {
-  return (
-    <div className="empty-state">
-      <span className="empty-state-icon">📋</span>
-      <p className="empty-state-title">{t.emptyTaskTitle}</p>
-      <p className="empty-state-subtitle">{t.emptyTaskSubtitle}</p>
-    </div>
-  );
-}
-
+    return (
+      <div className="empty-state">
+        <span className="empty-state-icon">📋</span>
+        <p className="empty-state-title">{t.emptyTaskTitle}</p>
+        <p className="empty-state-subtitle">{t.emptyTaskSubtitle}</p>
+      </div>
+    );
+  }
 
   const activeTasks = tasks
     .filter((task) => !task.completed)

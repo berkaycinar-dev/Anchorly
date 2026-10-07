@@ -22,7 +22,6 @@ export default function ProjectsPage({
   reorderTasks,
   t,
 }) {
-  
   const selectedProjectTasks = useMemo(
     () => tasks.filter((task) => task.projectId === selectedProjectId),
     [tasks, selectedProjectId],

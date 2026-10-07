@@ -43,7 +43,7 @@ export default function CalendarPage({
   language,
 }) {
   const [expandedDayDate, setExpandedDayDate] = useState(null);
-  
+
   function goToPrevious() {
     if (calendarViewMode === "month") {
       setCalendarMonth(new Date(calendarYear, calendarMonthIndex - 1, 1));
@@ -137,7 +137,7 @@ export default function CalendarPage({
             const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
             return (
-                <CalendarCell
+              <CalendarCell
                 key={dateString}
                 dayLabel={day}
                 dateString={dateString}

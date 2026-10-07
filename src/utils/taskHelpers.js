@@ -2,11 +2,7 @@ import { REPEAT_HORIZON_DAYS } from "../constants/initialData";
 import { getNextRepeatDate } from "./dateHelpers";
 
 export function generateRepeatOccurrences(baseTask, existingTasks) {
-  if (
-    baseTask.repeat === "none" ||
-    !baseTask.date ||
-    !baseTask.repeatGroupId
-  ) {
+  if (baseTask.repeat === "none" || !baseTask.date || !baseTask.repeatGroupId) {
     return [];
   }
 
