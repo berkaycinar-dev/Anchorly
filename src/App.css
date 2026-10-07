@@ -141,6 +141,7 @@ body {
 }
 
 .sidebar nav {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -161,10 +162,18 @@ body {
   font-weight: 500;
   cursor: pointer;
   font-size: 16px;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.12s ease;
 }
 
 .sidebar .nav-item:hover {
   background-color: var(--nav-hover-bg);
+}
+
+.sidebar .nav-item:active {
+  transform: scale(0.97);
 }
 
 .sidebar .nav-item.active-nav {
@@ -173,24 +182,36 @@ body {
   font-weight: 700;
 }
 
-.sidebar .nav-item.active-nav::before {
-  content: "";
+.nav-indicator {
   position: absolute;
   left: 0;
-  top: 11px;
-  bottom: 11px;
   width: 3px;
   border-radius: 3px;
   background-color: var(--color-accent);
+  pointer-events: none;
+}
+
+.nav-indicator[data-direction="down"] {
+  transition:
+    bottom 0.22s cubic-bezier(0.3, 0, 0.2, 1),
+    top 0.22s cubic-bezier(0.3, 0, 0.2, 1) 0.1s;
+}
+
+.nav-indicator[data-direction="up"] {
+  transition:
+    top 0.22s cubic-bezier(0.3, 0, 0.2, 1),
+    bottom 0.22s cubic-bezier(0.3, 0, 0.2, 1) 0.1s;
 }
 
 .nav-icon {
   flex-shrink: 0;
   color: var(--color-accent);
+  transition: color 0.18s ease;
 }
 
 .active-nav .nav-icon {
   color: var(--nav-tone-active);
+  animation: nav-icon-pop 0.32s ease;
 }
 
 .nav-label {
@@ -216,6 +237,50 @@ body {
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  animation: nav-badge-pop 0.3s ease;
+}
+
+.nav-separator {
+  flex-shrink: 0;
+  height: 1px;
+  margin: 8px 12px;
+  background-color: var(--color-border);
+}
+
+@keyframes nav-icon-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes nav-badge-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar .nav-item,
+  .sidebar .nav-indicator,
+  .sidebar .nav-icon,
+  .sidebar .nav-badge {
+    transition: none;
+    animation: none;
+  }
 }
 
 .nav-separator {

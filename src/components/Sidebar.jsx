@@ -1,7 +1,13 @@
-import { Fragment } from "react";
+import { Fragment, useLayoutEffect, useRef } from "react";
 import NavIcon from "./NavIcon";
 
+const INDICATOR_INSET = 11;
+
 function Sidebar({ activePage, setActivePage, t, badges = {} }) {
+  const navRef = useRef(null);
+  const indicatorRef = useRef(null);
+  const previousTopRef = useRef(null);
+
   const pages = [
     { key: "Dashboard", label: t.dashboard },
     { key: "Today", label: t.today },
@@ -12,11 +18,39 @@ function Sidebar({ activePage, setActivePage, t, badges = {} }) {
     { key: "Settings", label: t.settings, hasSeparator: true },
   ];
 
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    const indicator = indicatorRef.current;
+    const activeItem = nav.querySelector(".active-nav");
+
+    if (!activeItem) {
+      return;
+    }
+
+    const top = activeItem.offsetTop + INDICATOR_INSET;
+    const bottom =
+      nav.offsetHeight -
+      activeItem.offsetTop -
+      activeItem.offsetHeight +
+      INDICATOR_INSET;
+
+    if (previousTopRef.current !== null && previousTopRef.current !== top) {
+      indicator.dataset.direction =
+        top > previousTopRef.current ? "down" : "up";
+    }
+
+    indicator.style.top = `${top}px`;
+    indicator.style.bottom = `${bottom}px`;
+    previousTopRef.current = top;
+  }, [activePage]);
+
   return (
     <aside className="sidebar">
       <h2>Anchorly</h2>
 
-      <nav>
+      <nav ref={navRef}>
+        <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
+
         {pages.map((page) => {
           const isActive = activePage === page.key;
           const badgeCount = badges[page.key] || 0;
@@ -33,7 +67,9 @@ function Sidebar({ activePage, setActivePage, t, badges = {} }) {
                 <NavIcon name={page.key} />
                 <span className="nav-label">{page.label}</span>
                 {badgeCount > 0 && (
-                  <span className="nav-badge">{badgeCount}</span>
+                  <span key={badgeCount} className="nav-badge">
+                    {badgeCount}
+                  </span>
                 )}
               </button>
             </Fragment>
