@@ -15,6 +15,7 @@ import {
   getWeekStartOffset,
   getWeekStartDate,
   getWeekDays,
+  getRoutineKeyForDate,
 } from "./utils/dateHelpers";
 import useLocalStorageState from "./hooks/useLocalStorageState";
 import useTasks from "./hooks/useTasks";
@@ -175,6 +176,18 @@ function App() {
 
     return { total, completed, active, overdue, completionPercent };
   }, [tasks, todayScopedTasks, today]);
+
+  const routineCheckDate = new Date();
+  const remainingRoutineCount = routines.filter(
+    (routine) =>
+      !routineChecks[getRoutineKeyForDate(routine.id, routineCheckDate)],
+  ).length;
+
+  const sidebarBadges = {
+    Today: todayStats.active,
+    "Daily Routine": remainingRoutineCount,
+    Projects: projects.length,
+  };
 
   const filteredTasks = useMemo(() => {
     const searchLower = searchText.toLowerCase();
@@ -402,7 +415,12 @@ function App() {
       className={`app theme-${theme}`}
       style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
     >
-      <Sidebar activePage={activePage} setActivePage={setActivePage} t={t} />
+      <Sidebar
+        activePage={activePage}
+        setActivePage={setActivePage}
+        t={t}
+        badges={sidebarBadges}
+      />
 
       <main className="main-content">
         <Header />
@@ -575,4 +593,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
