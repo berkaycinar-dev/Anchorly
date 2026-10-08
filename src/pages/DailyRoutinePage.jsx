@@ -117,6 +117,7 @@ export default function DailyRoutinePage({
                   >
                     <input
                       type="checkbox"
+                      className="themed-checkbox"
                       checked={Boolean(
                         routineChecks[getRoutineKey(routine.id, day)],
                       )}
@@ -131,4 +132,4 @@ export default function DailyRoutinePage({
       </div>
     </section>
   );
-}
+}  

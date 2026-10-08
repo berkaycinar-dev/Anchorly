@@ -1,4 +1,4 @@
-:root {
+ :root {
   --color-accent: #64748b;
   --color-bg-page: #f4f6fb;
   --color-bg-card: #ffffff;
@@ -603,6 +603,78 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* --- Routine tablosu: hücre hover --- */
+
+/* Hücrenin üzerine gelince tema rengine hafif kayan bir ton */
+.routine-table td:not(:first-child) {
+  transition: background-color 0.15s ease;
+}
+
+.routine-table td:not(:first-child):hover {
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+/* --- Paylaşımlı özel checkbox (Routine tablosu + Görev detay modalı) --- */
+.themed-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+/* Boş kutunun üzerine gelince: kenarlık accent'e döner, içi hafif tonlanır */
+.themed-checkbox:not(:checked):hover {
+  border-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  transform: scale(1.08);
+}
+
+.themed-checkbox:checked {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* Varsayılan mavi tik yerine tema renginde çizilmiş tik */
+.themed-checkbox::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 5px;
+  height: 10px;
+  border: solid var(--color-accent-contrast);
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -50%) rotate(45deg) scale(0);
+  transition: transform 0.15s ease;
+}
+
+.themed-checkbox:checked::after {
+  transform: translate(-50%, -50%) rotate(45deg) scale(1);
+}
+
+.themed-checkbox:checked:hover {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+.themed-checkbox:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
 .calendar-page {
   display: flex;
   flex-direction: column;
@@ -1468,6 +1540,12 @@ textarea {
   flex-shrink: 0;
 }
 
+/* Modaldaki özel checkbox: yukarıdaki 18px kuralını ezip diğer yerlerle aynı boyutta tut */
+.modal-complete-toggle .themed-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
 .modal-title-done {
   text-decoration: line-through;
   color: var(--color-text-muted);
@@ -1640,4 +1718,4 @@ textarea {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-}
+} 
