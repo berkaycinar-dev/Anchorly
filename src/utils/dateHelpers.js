@@ -15,7 +15,6 @@ export function getWeekStartDate(date, startDay) {
   return start;
 }
 
-// DEĞİŞTİ: artık weekStartDay parametre olarak alınıyor
 export function getWeekDays(anchorDate, weekStartDay) {
   const startOfWeek = getWeekStartDate(anchorDate, weekStartDay);
 
@@ -26,7 +25,6 @@ export function getWeekDays(anchorDate, weekStartDay) {
   });
 }
 
-// DEĞİŞTİ: artık year ve monthIndex parametre olarak alınıyor
 export function getRoutineKey(routineId, day, year, monthIndex) {
   const monthKey = `${year}-${monthIndex + 1}`;
   return `${monthKey}-${routineId}-${day}`;
@@ -39,16 +37,37 @@ export function getRoutineKeyForDate(routineId, date) {
   return `${year}-${month}-${routineId}-${day}`;
 }
 
-export function getNextRepeatDate(dateString, repeat) {
-  const date = new Date(dateString);
+export function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
 
+  return `${year}-${month}-${day}`;
+}
+
+export function parseLocalDate(dateString) {
+  const [year, month, day] = dateString.split("-").map(Number);
+
+  return new Date(year, month - 1, day);
+}
+
+export function addDaysToDateString(dateString, days) {
+  const date = parseLocalDate(dateString);
+  date.setDate(date.getDate() + days);
+
+  return getLocalDateString(date);
+}
+
+export function getNextRepeatDate(dateString, repeat) {
   if (repeat === "daily") {
-    date.setDate(date.getDate() + 1);
-  } else if (repeat === "weekly") {
-    date.setDate(date.getDate() + 7);
+    return addDaysToDateString(dateString, 1);
   }
 
-  return date.toISOString().slice(0, 10);
+  if (repeat === "weekly") {
+    return addDaysToDateString(dateString, 7);
+  }
+
+  return dateString;
 }
 
 export function getRoutineIdFromKey(key) {
