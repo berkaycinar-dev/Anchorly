@@ -807,12 +807,14 @@ body {
 
 .project-card {
   padding: 20px;
-  border-radius: var(--shadow-md);
   background-color: var(--color-bg-card);
   border-radius: 10px;
+  transition: box-shadow 0.15s ease;
 }
 .project-card:hover {
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 45%, var(--color-border)),
+    0 2px 10px color-mix(in srgb, var(--color-accent) 22%, transparent);
 }
 
 .project-card h3 {
@@ -1017,9 +1019,18 @@ body {
   color: var(--color-text-primary);
   cursor: pointer;
   text-transform: capitalize;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 .theme-option:hover {
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent) 45%,
+    var(--color-border)
+  );
+  box-shadow: 0 2px 10px
+    color-mix(in srgb, var(--color-accent) 22%, transparent);
 }
 
 .active-theme {
@@ -1129,7 +1140,13 @@ body {
 }
 
 .task-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent) 45%,
+    var(--color-border)
+  );
+  box-shadow: 0 2px 10px
+    color-mix(in srgb, var(--color-accent) 22%, transparent);
 }
 
 .task-checkbox {
