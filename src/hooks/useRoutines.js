@@ -5,9 +5,10 @@ import {
   getRoutineKey,
   getRoutineKeyForDate,
   getRoutineIdFromKey,
+  parseLocalDate,
 } from "../utils/dateHelpers";
 
-export default function useRoutines() {
+export default function useRoutines(today) {
   const [routines, setRoutines] = useLocalStorageState(
     "routines",
     initialRoutines,
@@ -73,7 +74,7 @@ export default function useRoutines() {
   const getRoutineStreak = useCallback(
     (routineId) => {
       let streak = 0;
-      const checkDate = new Date();
+      const checkDate = parseLocalDate(today);
 
       const isTodayChecked =
         routineChecks[getRoutineKeyForDate(routineId, checkDate)];
@@ -89,7 +90,7 @@ export default function useRoutines() {
 
       return streak;
     },
-    [routineChecks],
+    [routineChecks, today],
   );
 
   const getWeeklyProductivity = useCallback(
@@ -98,7 +99,7 @@ export default function useRoutines() {
       const localeCode = language === "tr" ? "tr-TR" : "en-US";
 
       for (let i = 6; i >= 0; i--) {
-        const date = new Date();
+        const date = parseLocalDate(today);
         date.setDate(date.getDate() - i);
 
         const totalRoutines = routines.length;
@@ -125,7 +126,7 @@ export default function useRoutines() {
 
       return days;
     },
-    [routines, routineChecks],
+    [routines, routineChecks, today],
   );
 
   return {

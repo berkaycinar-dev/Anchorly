@@ -1,3 +1,5 @@
+import { parseLocalDate } from "../utils/dateHelpers";
+
 export default function DailyRoutinePage({
   routineMonth,
   addRoutine,
@@ -14,11 +16,13 @@ export default function DailyRoutinePage({
   toggleRoutineCheck,
   t,
   language,
+  today,
 }) {
-  const now = new Date();
+  const todayDate = parseLocalDate(today);
   const isCurrentMonth =
-    routineYear === now.getFullYear() && routineMonthIndex === now.getMonth();
-  const todayDayNumber = now.getDate();
+    routineYear === todayDate.getFullYear() &&
+    routineMonthIndex === todayDate.getMonth();
+  const todayDayNumber = todayDate.getDate();
 
   function goToPrevious() {
     setRoutineMonth(new Date(routineYear, routineMonthIndex - 1, 1));
@@ -132,4 +136,4 @@ export default function DailyRoutinePage({
       </div>
     </section>
   );
-}  
+}

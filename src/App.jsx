@@ -12,12 +12,16 @@ import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
 import {
+  addDaysToDateString,
+  getLocalDateString,
   getWeekStartOffset,
   getWeekStartDate,
   getWeekDays,
   getRoutineKeyForDate,
+  parseLocalDate,
 } from "./utils/dateHelpers";
 import useLocalStorageState from "./hooks/useLocalStorageState";
+import useToday from "./hooks/useToday";
 import useTasks from "./hooks/useTasks";
 import useRoutines from "./hooks/useRoutines";
 import useProjects from "./hooks/useProjects";
@@ -40,7 +44,7 @@ function getGreetingSegment() {
 }
 
 function App() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = useToday();
   const {
     tasks,
     addTask,
@@ -74,7 +78,7 @@ function App() {
     deleteRoutine,
     getRoutineStreak,
     getWeeklyProductivity,
-  } = useRoutines();
+  } = useRoutines(today);
 
   const {
     projects,
@@ -177,7 +181,7 @@ function App() {
     return { total, completed, active, overdue, completionPercent };
   }, [tasks, todayScopedTasks, today]);
 
-  const routineCheckDate = new Date();
+  const routineCheckDate = parseLocalDate(today);
   const remainingRoutineCount = routines.filter(
     (routine) =>
       !routineChecks[getRoutineKeyForDate(routine.id, routineCheckDate)],
@@ -231,13 +235,11 @@ function App() {
   const greetingSegment = getGreetingSegment();
 
   const dashboardMessage = useMemo(() => {
-    const yesterdayDate = new Date();
-    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-    const yesterday = yesterdayDate.toISOString().slice(0, 10);
+    const yesterday = addDaysToDateString(today, -1);
 
-    const weekStart = getWeekStartDate(new Date(), weekStartDay)
-      .toISOString()
-      .slice(0, 10);
+    const weekStart = getLocalDateString(
+      getWeekStartDate(parseLocalDate(today), weekStartDay),
+    );
 
     const yesterdayCompletedCount = tasks.filter(
       (task) => task.completed && task.completedAt === yesterday,
@@ -483,6 +485,7 @@ function App() {
             getRoutineKey={getRoutineKeyForMonth}
             toggleRoutineCheck={toggleRoutineCheck}
             language={language}
+            today={today}
             t={t}
           />
         )}
@@ -593,4 +596,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;
