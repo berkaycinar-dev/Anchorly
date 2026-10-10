@@ -23,7 +23,8 @@ export default function useTasks(today) {
   const [tasks, setTasks] = useLocalStorageState(
     "tasks",
     initialTasks,
-    (storedTasks) => addFutureOccurrences(normalizeStoredTasks(storedTasks)),
+    (storedTasks) =>
+      addFutureOccurrences(normalizeStoredTasks(storedTasks), today),
   );
 
   const updateTask = useCallback(
@@ -186,6 +187,7 @@ export default function useTasks(today) {
       const newOccurrences = generateRepeatOccurrences(
         updatedTask,
         updatedTasks,
+        today,
       );
 
       return [...updatedTasks, ...newOccurrences];

@@ -1,14 +1,20 @@
 import { REPEAT_HORIZON_DAYS } from "../constants/initialData";
-import { getNextRepeatDate } from "./dateHelpers";
+import {
+  addDaysToDateString,
+  getLocalDateString,
+  getNextRepeatDate,
+} from "./dateHelpers";
 
-export function generateRepeatOccurrences(baseTask, existingTasks) {
+export function generateRepeatOccurrences(
+  baseTask,
+  existingTasks,
+  today = getLocalDateString(),
+) {
   if (baseTask.repeat === "none" || !baseTask.date || !baseTask.repeatGroupId) {
     return [];
   }
 
-  const horizon = new Date();
-  horizon.setDate(horizon.getDate() + REPEAT_HORIZON_DAYS);
-  const horizonDate = horizon.toISOString().slice(0, 10);
+  const horizonDate = addDaysToDateString(today, REPEAT_HORIZON_DAYS);
 
   const existingDatesInGroup = new Set(
     existingTasks
@@ -61,7 +67,7 @@ export function isTaskVisibleToday(task, today) {
   return true;
 }
 
-export function addFutureOccurrences(tasks) {
+export function addFutureOccurrences(tasks, today = getLocalDateString()) {
   const latestByGroup = {};
 
   tasks.forEach((task) => {
@@ -77,10 +83,11 @@ export function addFutureOccurrences(tasks) {
   let allNewOccurrences = [];
 
   Object.values(latestByGroup).forEach((latestTask) => {
-    const occurrences = generateRepeatOccurrences(latestTask, [
-      ...tasks,
-      ...allNewOccurrences,
-    ]);
+    const occurrences = generateRepeatOccurrences(
+      latestTask,
+      [...tasks, ...allNewOccurrences],
+      today,
+    );
 
     allNewOccurrences = [...allNewOccurrences, ...occurrences];
   });
