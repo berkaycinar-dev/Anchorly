@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState, useRef, useMemo } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import StorageWarning from "./components/StorageWarning";
 import TaskDetailModal from "./components/TaskDetailModal";
 import DashboardPage from "./pages/DashboardPage";
 import TodayPage from "./pages/TodayPage";
@@ -423,8 +424,8 @@ function App() {
         t={t}
         badges={sidebarBadges}
       />
-
       <main className="main-content">
+        <StorageWarning t={t} />
         <Header />
         <h2 className="page-title">{t[pageTitleKeyMap[activePage]]}</h2>
 

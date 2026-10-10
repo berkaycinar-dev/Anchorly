@@ -119,6 +119,12 @@ export const strings = {
     fileTooLargeWarning:
       "Bu dosya çok büyük (1MB üzeri). Tarayıcı depolama alanı sınırlı olduğu için daha küçük bir dosya seçmelisin.",
     deleteStepAria: "Adımı sil",
+        storageQuotaWarning:
+      "Depolama alanı dolu; son değişiklikler kaydedilemedi. Büyük dosya eklerini silerek yer aç.",
+    storageUnavailableWarning:
+      "Tarayıcı depolamasına erişilemiyor; yaptığın değişiklikler sayfayı yenileyince kaybolacak. Gizli sekmeyi veya tarayıcı izinlerini kontrol et.",
+    storageReadWarning:
+      "Kayıtlı verilerin bir kısmı okunamadı, varsayılan değerler yüklendi. Okunamayan veri tarayıcı depolamasında yedek olarak saklandı.",
   },
   en: {
     dashboard: "Dashboard",
@@ -241,6 +247,12 @@ export const strings = {
     fileTooLargeWarning:
       "This file is too large (over 1MB). Since browser storage is limited, please choose a smaller file.",
     deleteStepAria: "Delete step",
+        storageQuotaWarning:
+      "Storage is full; your latest changes could not be saved. Remove large attachments to free up space.",
+    storageUnavailableWarning:
+      "Browser storage is not available; your changes will be lost when you reload the page. Check private browsing mode or browser permissions.",
+    storageReadWarning:
+      "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
   },
 };
 export const pageTitleKeyMap = {
