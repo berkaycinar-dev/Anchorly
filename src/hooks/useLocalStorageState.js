@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
-import { reportStorageError } from "../lib/storageStatus";
+import { getStorageErrorKind, reportStorageError } from "../lib/storageStatus";
 
 const CORRUPT_KEY_SUFFIX = ":corrupt";
-
-function isQuotaError(error) {
-  return (
-    error?.name === "QuotaExceededError" ||
-    error?.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
-    error?.code === 22 ||
-    error?.code === 1014
-  );
-}
 
 function readStoredValue(key, fallback, transform) {
   let saved;
@@ -68,10 +59,7 @@ export default function useLocalStorageState(key, fallback, transform) {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.warn(`Could not save "${key}" to localStorage.`, error);
-      reportStorageError({
-        key,
-        kind: isQuotaError(error) ? "quota" : "unavailable",
-      });
+      reportStorageError({ key, kind: getStorageErrorKind(error) });
     }
   }, [key, value]);
 

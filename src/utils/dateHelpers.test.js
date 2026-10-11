@@ -3,6 +3,9 @@ import {
   addDaysToDateString,
   getLocalDateString,
   getNextRepeatDate,
+  getRoutineIdFromKey,
+  getRoutineKey,
+  getRoutineKeyForDate,
   getWeekDays,
   getWeekStartDate,
   getWeekStartOffset,
@@ -113,5 +116,36 @@ describe("getNextRepeatDate", () => {
 
   it("keeps the date unchanged when there is no repeat", () => {
     expect(getNextRepeatDate("2026-10-09", "none")).toBe("2026-10-09");
+  });
+});
+
+describe("routine keys", () => {
+  const routineUuid = "42a8fe5c-29ef-47b1-a3f3-1af09f7b5a20";
+
+  it("builds a key from the year, month number, routine id and day", () => {
+    expect(getRoutineKey("abc", 5, 2026, 8)).toBe("2026-9-abc-5");
+    expect(getRoutineKeyForDate("abc", new Date(2026, 8, 5))).toBe(
+      "2026-9-abc-5",
+    );
+  });
+
+  it("reads a short numeric routine id from a key", () => {
+    expect(getRoutineIdFromKey("2026-9-1-3")).toBe("1");
+  });
+
+  it("reads a long timestamp routine id from a key", () => {
+    expect(getRoutineIdFromKey("2026-10-1788807397799-31")).toBe(
+      "1788807397799",
+    );
+  });
+
+  it("reads a routine id that contains hyphens from a key", () => {
+    expect(getRoutineIdFromKey(`2026-10-${routineUuid}-31`)).toBe(routineUuid);
+  });
+
+  it("reads back the id of a key it built", () => {
+    const key = getRoutineKey(routineUuid, 7, 2026, 11);
+
+    expect(getRoutineIdFromKey(key)).toBe(routineUuid);
   });
 });

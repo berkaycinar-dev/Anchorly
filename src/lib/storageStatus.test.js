@@ -3,6 +3,7 @@ import {
   dismiss,
   getPrimaryIssueKind,
   getSnapshot,
+  getStorageErrorKind,
   reportStorageError,
   subscribe,
 } from "./storageStatus";
@@ -127,5 +128,40 @@ describe("storageStatus", () => {
 
   it("returns read as the primary kind when it is the only issue", () => {
     expect(getPrimaryIssueKind([{ key: "tasks", kind: "read" }])).toBe("read");
+  });
+});
+
+describe("getStorageErrorKind", () => {
+  it("returns quota for the QuotaExceededError name", () => {
+    const error = new DOMException("Storage failure", "QuotaExceededError");
+
+    expect(getStorageErrorKind(error)).toBe("quota");
+  });
+
+  it("returns quota for the Firefox quota error name", () => {
+    const error = Object.assign(new Error("Storage failure"), {
+      name: "NS_ERROR_DOM_QUOTA_REACHED",
+    });
+
+    expect(getStorageErrorKind(error)).toBe("quota");
+  });
+
+  it.each([22, 1014])("returns quota for the legacy code %i", (code) => {
+    const error = Object.assign(new Error("Storage failure"), { code });
+
+    expect(getStorageErrorKind(error)).toBe("quota");
+  });
+
+  it("returns unavailable for any other error", () => {
+    expect(
+      getStorageErrorKind(new DOMException("Denied", "SecurityError")),
+    ).toBe("unavailable");
+    expect(getStorageErrorKind(new Error("Unknown"))).toBe("unavailable");
+  });
+
+  it("returns unavailable when the error is not an object", () => {
+    expect(getStorageErrorKind(undefined)).toBe("unavailable");
+    expect(getStorageErrorKind(null)).toBe("unavailable");
+    expect(getStorageErrorKind("failure")).toBe("unavailable");
   });
 });

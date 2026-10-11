@@ -48,3 +48,13 @@ export function getPrimaryIssueKind(currentIssues) {
     ) ?? null
   );
 }
+
+export function getStorageErrorKind(error) {
+  const isQuotaError =
+    error?.name === "QuotaExceededError" ||
+    error?.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+    error?.code === 22 ||
+    error?.code === 1014;
+
+  return isQuotaError ? "quota" : "unavailable";
+}

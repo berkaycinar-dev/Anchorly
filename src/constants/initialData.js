@@ -2,7 +2,7 @@ export const REPEAT_HORIZON_DAYS = 120;
 
 export const initialTasks = [
   {
-    id: 1,
+    id: "4cbd7450-6231-43eb-96a2-3be6d2b1d532",
     title: "Finish React Project",
     category: "Work",
     date: "2026-08-05",
@@ -17,7 +17,7 @@ export const initialTasks = [
     attachments: [],
   },
   {
-    id: 2,
+    id: "7847517c-0da1-474d-8f46-fb2f9fc009fc",
     title: "Buy groceries",
     category: "Personal",
     date: "2026-08-05",
@@ -32,7 +32,7 @@ export const initialTasks = [
     attachments: [],
   },
   {
-    id: 3,
+    id: "cf94cf95-c8f9-47e4-92fb-f82c30bf7e56",
     title: "Read 30 pages of a book",
     category: "Self Development",
     date: "2026-08-05",
@@ -47,7 +47,7 @@ export const initialTasks = [
     attachments: [],
   },
   {
-    id: 4,
+    id: "3e89aeee-8bb5-4bc2-baee-ee41f44c23d9",
     title: "Go to the gym",
     category: "Health",
     date: "2026-08-05",
@@ -62,7 +62,7 @@ export const initialTasks = [
     attachments: [],
   },
   {
-    id: 5,
+    id: "0ddd41bd-4d45-4fa4-8c46-5cf610c1f634",
     title: "Call mom",
     category: "Personal",
     date: "2026-08-06",
@@ -79,26 +79,26 @@ export const initialTasks = [
 ];
 export const initialRoutines = [
   {
-    id: 1,
+    id: "88444dfd-8be1-4578-956f-037a0b71e8b7",
     title: "water",
   },
   {
-    id: 2,
+    id: "7ac7256e-fcd5-48f3-afe4-4d0e821f16be",
     title: "Read",
   },
   {
-    id: 3,
+    id: "594903e0-17f9-4999-b28a-2812da40123f",
     title: "Exercise",
   },
 ];
 
 export const initialProjects = [
   {
-    id: 1,
+    id: "678e4529-fa35-432c-8baa-6a1298ba43f1",
     name: "ToDoApp",
   },
   {
-    id: 2,
+    id: "f9eeef00-3cc4-4b6f-9f33-29dc56ba3508",
     name: "Portfolio",
   },
 ];
