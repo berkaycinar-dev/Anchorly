@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
+import { createId } from "../lib/id";
 import { initialRoutines } from "../constants/initialData";
 import {
   getRoutineKey,
@@ -49,7 +50,7 @@ export default function useRoutines(today) {
   function addRoutine(title) {
     setRoutines((currentRoutines) => [
       ...currentRoutines,
-      { id: crypto.randomUUID(), title },
+      { id: createId(), title },
     ]);
   }
 
@@ -62,7 +63,7 @@ export default function useRoutines(today) {
       const updatedChecks = {};
 
       Object.keys(currentChecks).forEach((key) => {
-        if (getRoutineIdFromKey(key) !== String(id)) {
+        if (getRoutineIdFromKey(key) !== id) {
           updatedChecks[key] = currentChecks[key];
         }
       });

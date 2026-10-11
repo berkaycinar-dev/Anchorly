@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
+import { createId } from "../lib/id";
 import { initialTasks } from "../constants/initialData";
 import {
   addFutureOccurrences,
@@ -38,7 +39,7 @@ export default function useTasks(today) {
 
   function addTask(taskData) {
     const newTask = {
-      id: crypto.randomUUID(),
+      id: createId(),
       category: "Work",
       date: "",
       completed: false,
@@ -101,7 +102,7 @@ export default function useTasks(today) {
       return;
     }
 
-    const newStep = { id: crypto.randomUUID(), text: stepText, done: false };
+    const newStep = { id: createId(), text: stepText, done: false };
 
     updateTask(taskId, (task) => ({
       ...task,
@@ -174,7 +175,7 @@ export default function useTasks(today) {
         return {
           ...task,
           repeat: newRepeat,
-          repeatGroupId: oldGroupId || crypto.randomUUID(),
+          repeatGroupId: oldGroupId || createId(),
         };
       });
 
@@ -196,7 +197,7 @@ export default function useTasks(today) {
 
   const reorderTasks = useCallback(
     (draggedId, targetId) => {
-      if (draggedId === String(targetId)) {
+      if (draggedId === targetId) {
         return;
       }
 
@@ -206,7 +207,7 @@ export default function useTasks(today) {
           .sort((a, b) => a.order - b.order);
 
         const draggedIndex = activeTasksSorted.findIndex(
-          (task) => String(task.id) === draggedId,
+          (task) => task.id === draggedId,
         );
         const targetIndex = activeTasksSorted.findIndex(
           (task) => task.id === targetId,

@@ -1,4 +1,5 @@
 import { REPEAT_HORIZON_DAYS } from "../constants/initialData";
+import { createId } from "../lib/id";
 import {
   addDaysToDateString,
   getLocalDateString,
@@ -30,7 +31,7 @@ export function generateRepeatOccurrences(
     if (!existingDatesInGroup.has(nextDate)) {
       newOccurrences.push({
         ...baseTask,
-        id: crypto.randomUUID(),
+        id: createId(),
         date: nextDate,
         completed: false,
         completedAt: null,

@@ -34,15 +34,15 @@ function TaskList({
         className={
           task.completed
             ? "task-card completed-task"
-            : draggedTaskId === String(task.id)
+            : draggedTaskId === task.id
               ? "task-card task-card-dragging"
               : "task-card"
         }
         draggable={isDraggable}
         onClick={() => onSelectTask(task.id)}
         onDragStart={(event) => {
-          event.dataTransfer.setData("text/plain", String(task.id));
-          setDraggedTaskId(String(task.id));
+          event.dataTransfer.setData("text/plain", task.id);
+          setDraggedTaskId(task.id);
         }}
         onDragEnd={() => setDraggedTaskId(null)}
         onDragOver={(event) => {

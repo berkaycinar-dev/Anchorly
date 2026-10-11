@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createId } from "../lib/id";
  
 function TaskDetailModal({
   task,
@@ -52,7 +53,7 @@ function TaskDetailModal({
  
     reader.onload = () => {
       onAddAttachment(task.id, {
-        id: crypto.randomUUID(),
+        id: createId(),
         name: file.name,
         type: file.type,
         data: reader.result,

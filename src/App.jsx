@@ -371,9 +371,7 @@ function App() {
   }
 
   function handleAssignProject(taskId, projectId) {
-    const targetProject = projects.find(
-      (project) => String(project.id) === String(projectId),
-    );
+    const targetProject = projects.find((project) => project.id === projectId);
 
     assignTaskToProject(taskId, targetProject ? targetProject.id : null);
   }

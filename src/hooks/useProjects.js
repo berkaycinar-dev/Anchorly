@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useLocalStorageState from "./useLocalStorageState";
+import { createId } from "../lib/id";
 import { initialProjects } from "../constants/initialData";
 
 export default function useProjects() {
@@ -15,7 +16,7 @@ export default function useProjects() {
   function addProject(name) {
     setProjects((currentProjects) => [
       ...currentProjects,
-      { id: crypto.randomUUID(), name },
+      { id: createId(), name },
     ]);
   }
 
