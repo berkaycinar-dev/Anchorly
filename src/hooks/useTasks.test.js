@@ -74,3 +74,28 @@ describe("useTasks reorderTasks", () => {
     expect(getOrderedIds(result.current.tasks)).toEqual(IDS);
   });
 });
+
+describe("useTasks first launch", () => {
+  it("seeds demo tasks dated relative to today", () => {
+    const { result } = renderHook(() => useTasks("2026-10-11"));
+
+    const datesByTitle = Object.fromEntries(
+      result.current.tasks.map((task) => [task.title, task.date]),
+    );
+
+    expect(result.current.tasks).toHaveLength(5);
+    expect(datesByTitle["Finish React Project"]).toBe("2026-10-11");
+    expect(datesByTitle["Call mom"]).toBe("2026-10-12");
+  });
+
+  it("keeps the stored seed dates on a later launch", () => {
+    const first = renderHook(() => useTasks("2026-10-11"));
+
+    expect(first.result.current.tasks[0].date).toBe("2026-10-11");
+    first.unmount();
+
+    const second = renderHook(() => useTasks("2026-10-20"));
+
+    expect(second.result.current.tasks[0].date).toBe("2026-10-11");
+  });
+});

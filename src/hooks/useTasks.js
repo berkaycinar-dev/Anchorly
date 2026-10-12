@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import useLocalStorageState from "./useLocalStorageState";
 import { createId } from "../lib/id";
-import { initialTasks } from "../constants/initialData";
+import { createInitialTasks } from "../constants/initialData";
 import {
   addFutureOccurrences,
   generateRepeatOccurrences,
@@ -23,7 +23,7 @@ function normalizeStoredTasks(storedTasks) {
 export default function useTasks(today) {
   const [tasks, setTasks] = useLocalStorageState(
     "tasks",
-    initialTasks,
+    createInitialTasks(today),
     (storedTasks) =>
       addFutureOccurrences(normalizeStoredTasks(storedTasks), today),
   );
