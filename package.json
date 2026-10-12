@@ -1,7 +1,8 @@
 {
   "name": "Anchorly",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A task and habit dashboard built with React 19 and Vite. Daily tasks, routines, calendar and projects; data stays in the browser.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -34,4 +35,4 @@
     "vite": "^8.2.0",
     "vitest": "^5.0.3"
   }
-} 
+}
