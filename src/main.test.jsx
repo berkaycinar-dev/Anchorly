@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { beforeEach, describe, it, expect, vi } from "vitest";
 import { isUuid } from "./lib/id";
 
 function createLegacyTask() {
@@ -20,10 +20,15 @@ function createLegacyTask() {
   };
 }
 
+beforeEach(() => {
+  vi.resetModules();
+  document.body.innerHTML = '<div id="root"></div>';
+  window.history.pushState({}, "", "/");
+  localStorage.setItem("language", JSON.stringify("en"));
+});
+
 describe("main", () => {
   it("migrates legacy ids when the app starts", async () => {
-    document.body.innerHTML = '<div id="root"></div>';
-    localStorage.setItem("language", JSON.stringify("en"));
     localStorage.setItem("tasks", JSON.stringify([createLegacyTask()]));
 
     await import("./main.jsx");
@@ -37,5 +42,18 @@ describe("main", () => {
     expect(tasks).toHaveLength(1);
     expect(isUuid(tasks[0].id)).toBe(true);
     expect(localStorage.getItem("schemaVersion")).toBe("2");
+  });
+
+  it("opens the page that matches the address bar", async () => {
+    window.history.pushState({}, "", "/calendar");
+
+    await import("./main.jsx");
+
+    await waitFor(() => {
+      expect(document.querySelector(".page-title")).toHaveTextContent(
+        "Calendar",
+      );
+    });
+    expect(window.location.pathname).toBe("/calendar");
   });
 });

@@ -255,12 +255,4 @@ export const strings = {
       "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
   },
 };
-export const pageTitleKeyMap = {
-  Dashboard: "dashboard",
-  Today: "today",
-  "Daily Routine": "dailyRoutine",
-  Calendar: "calendar",
-  Archive: "archive",
-  Projects: "projects",
-  Settings: "settings",
-};
+

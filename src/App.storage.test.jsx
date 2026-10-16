@@ -1,7 +1,7 @@
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, it, expect, vi } from "vitest";
-import App from "./App";
+import { renderApp } from "./test/renderApp";
 import { strings } from "./strings";
 
 const t = strings.en;
@@ -13,7 +13,7 @@ beforeEach(() => {
 
 describe("App and unsafe storage", () => {
   it("does not show a warning when storage is healthy", () => {
-    render(<App />);
+    renderApp();
 
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
@@ -21,7 +21,7 @@ describe("App and unsafe storage", () => {
   it("opens and warns when the stored tasks are corrupt JSON", () => {
     localStorage.setItem("tasks", "{broken");
 
-    render(<App />);
+    renderApp();
 
     expect(screen.getByRole("alert")).toHaveTextContent(t.storageReadWarning);
     expect(localStorage.getItem("tasks:corrupt")).toBe("{broken");
@@ -31,7 +31,7 @@ describe("App and unsafe storage", () => {
     const rawValue = JSON.stringify({ not: "an array" });
     localStorage.setItem("tasks", rawValue);
 
-    render(<App />);
+    renderApp();
 
     expect(screen.getByRole("alert")).toHaveTextContent(t.storageReadWarning);
     expect(localStorage.getItem("tasks:corrupt")).toBe(rawValue);
@@ -42,7 +42,7 @@ describe("App and unsafe storage", () => {
       throw new DOMException("Access denied", "SecurityError");
     });
 
-    render(<App />);
+    renderApp();
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       strings.tr.storageUnavailableWarning,
@@ -54,7 +54,7 @@ describe("App and unsafe storage", () => {
       throw new DOMException("Quota reached", "QuotaExceededError");
     });
 
-    render(<App />);
+    renderApp();
 
     expect(screen.getByRole("alert")).toHaveTextContent(t.storageQuotaWarning);
   });
@@ -63,7 +63,7 @@ describe("App and unsafe storage", () => {
     const user = userEvent.setup();
     localStorage.setItem("tasks", "{broken");
 
-    render(<App />);
+    renderApp();
 
     await user.click(
       within(screen.getByRole("alert")).getByRole("button", {

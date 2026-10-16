@@ -1,12 +1,21 @@
 import "./App.css";
 import { useEffect, useState, useRef, useMemo } from "react";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useMatch,
+  useNavigate,
+} from "react-router";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import StorageWarning from "./components/StorageWarning";
 import TaskDetailModal from "./components/TaskDetailModal";
 import DashboardPage from "./pages/DashboardPage";
 import TodayPage from "./pages/TodayPage";
-import { strings, pageTitleKeyMap } from "./strings";
+import { strings } from "./strings";
+import { routes, PROJECT_DETAIL_PATH, getRouteForPathname } from "./routes";
 import DailyRoutinePage from "./pages/DailyRoutinePage";
 import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
@@ -81,14 +90,15 @@ function App() {
     getWeeklyProductivity,
   } = useRoutines(today);
 
-  const {
-    projects,
-    selectedProjectId,
-    setSelectedProjectId,
-    selectedProject,
-    addProject,
-    deleteProject,
-  } = useProjects();
+  const { projects, addProject, deleteProject } = useProjects();
+
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const currentRoute = getRouteForPathname(pathname) ?? routes[0];
+  const projectMatch = useMatch(PROJECT_DETAIL_PATH);
+  const selectedProjectId = projectMatch ? projectMatch.params.projectId : null;
+  const selectedProject =
+    projects.find((project) => project.id === selectedProjectId) || null;
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
@@ -115,7 +125,6 @@ function App() {
   const t = strings[language];
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
-  const [activePage, setActivePage] = useState("Dashboard");
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [calendarViewMode, setCalendarViewMode] = useState("month");
@@ -143,7 +152,7 @@ function App() {
 
       if (event.key === "n" || event.key === "N") {
         event.preventDefault();
-        setActivePage("Today");
+        navigate("/today");
 
         setTimeout(() => {
           newTaskTitleInputRef.current?.focus();
@@ -156,7 +165,11 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+    }, [navigate]);
+
+  useEffect(() => {
+    document.title = `Anchorly — ${t[currentRoute.titleKey]}`;
+  }, [t, currentRoute]);
 
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
@@ -410,166 +423,176 @@ function App() {
     setQuickAddTitle("");
     setQuickAddDate(null);
   }
+      const pages = {
+    Dashboard: (
+      <DashboardPage
+        greeting={getGreeting()}
+        dashboardMessage={dashboardMessage}
+        todayTasksCount={todayStats.total}
+        completedTodayTasksCount={todayStats.completed}
+        allTaskCount={todayStats.total}
+        completedTasksCount={todayStats.completed}
+        activeTaskCount={todayStats.active}
+        overdueTaskCount={todayStats.overdue}
+        todayCompletionPercent={todayStats.completionPercent}
+        weeklyProductivity={weeklyProductivity}
+        hoveredDayIndex={hoveredDayIndex}
+        setHoveredDayIndex={setHoveredDayIndex}
+        t={t}
+      />
+    ),
+    Today: (
+      <TodayPage
+        searchText={searchText}
+        setSearchText={setSearchText}
+        newTaskTitle={newTaskTitle}
+        setNewTaskTitle={setNewTaskTitle}
+        newTaskCategory={newTaskCategory}
+        setNewTaskCategory={setNewTaskCategory}
+        newTaskDate={newTaskDate}
+        setNewTaskDate={setNewTaskDate}
+        addTask={handleAddTask}
+        titleInputRef={newTaskTitleInputRef}
+        filter={filter}
+        setFilter={setFilter}
+        filteredTasks={filteredTasks}
+        toggleTask={toggleTask}
+        deleteTask={deleteTask}
+        setSelectedTaskId={setSelectedTaskId}
+        reorderTasks={reorderTasks}
+        t={t}
+      />
+    ),
+    "Daily Routine": (
+      <DailyRoutinePage
+        routineMonth={routineMonth}
+        addRoutine={handleAddRoutine}
+        newRoutineTitle={newRoutineTitle}
+        setNewRoutineTitle={setNewRoutineTitle}
+        setRoutineMonth={setRoutineMonth}
+        routineYear={routineYear}
+        routineMonthIndex={routineMonthIndex}
+        routineDays={routineDays}
+        routines={routines}
+        deleteRoutine={deleteRoutine}
+        routineChecks={routineChecks}
+        getRoutineKey={getRoutineKeyForMonth}
+        toggleRoutineCheck={toggleRoutineCheck}
+        language={language}
+        today={today}
+        t={t}
+      />
+    ),
+    Calendar: (
+      <CalendarPage
+        calendarViewMode={calendarViewMode}
+        setCalendarViewMode={setCalendarViewMode}
+        calendarMonth={calendarMonth}
+        weekDays={weekDays}
+        setCalendarMonth={setCalendarMonth}
+        calendarYear={calendarYear}
+        calendarMonthIndex={calendarMonthIndex}
+        calendarWeekStart={calendarWeekStart}
+        setCalendarWeekStart={setCalendarWeekStart}
+        calendarStartDay={calendarStartDay}
+        calendarDays={calendarDays}
+        tasks={tasks}
+        setQuickAddDate={setQuickAddDate}
+        setQuickAddTitle={setQuickAddTitle}
+        quickAddDate={quickAddDate}
+        submitQuickAdd={submitQuickAdd}
+        quickAddTitle={quickAddTitle}
+        setSelectedTaskId={setSelectedTaskId}
+        today={today}
+        weekStartDay={weekStartDay}
+        t={t}
+        language={language}
+      />
+    ),
+    Archive: (
+      <ArchivePage
+        archiveStatusFilter={archiveStatusFilter}
+        setArchiveStatusFilter={setArchiveStatusFilter}
+        archiveStartDate={archiveStartDate}
+        setArchiveStartDate={setArchiveStartDate}
+        archiveEndDate={archiveEndDate}
+        setArchiveEndDate={setArchiveEndDate}
+        filteredArchiveTasks={filteredArchiveTasks}
+        toggleTask={toggleTask}
+        deleteTask={deleteTask}
+        setSelectedTaskId={setSelectedTaskId}
+        reorderTasks={reorderTasks}
+        t={t}
+      />
+    ),
+    Projects: (
+      <ProjectsPage
+        selectedProject={selectedProject}
+        addProject={handleAddProject}
+        newProjectName={newProjectName}
+        setNewProjectName={setNewProjectName}
+        projects={projects}
+        deleteProject={handleDeleteProject}
+        tasks={tasks}
+        addProjectTask={addProjectTask}
+        newProjectTaskTitle={newProjectTaskTitle}
+        setNewProjectTaskTitle={setNewProjectTaskTitle}
+        newProjectTaskDate={newProjectTaskDate}
+        setNewProjectTaskDate={setNewProjectTaskDate}
+        selectedProjectId={selectedProjectId}
+        toggleTask={toggleTask}
+        deleteTask={deleteTask}
+        setSelectedTaskId={setSelectedTaskId}
+        reorderTasks={reorderTasks}
+        t={t}
+      />
+    ),
+    Settings: (
+      <SettingsPage
+        t={t}
+        theme={theme}
+        setTheme={setTheme}
+        language={language}
+        setLanguage={setLanguage}
+        fontFamily={fontFamily}
+        setFontFamily={setFontFamily}
+        weekStartDay={weekStartDay}
+        setWeekStartDay={setWeekStartDay}
+      />
+    ),
+  };
 
   return (
     <div
       className={`app theme-${theme}`}
       style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
     >
-      <Sidebar
-        activePage={activePage}
-        setActivePage={setActivePage}
-        t={t}
-        badges={sidebarBadges}
-      />
+            <Sidebar t={t} badges={sidebarBadges} />
       <main className="main-content">
         <StorageWarning t={t} />
         <Header />
-        <h2 className="page-title">{t[pageTitleKeyMap[activePage]]}</h2>
+        <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
 
-        {activePage === "Dashboard" && (
-          <DashboardPage
-            greeting={getGreeting()}
-            dashboardMessage={dashboardMessage}
-            todayTasksCount={todayStats.total}
-            completedTodayTasksCount={todayStats.completed}
-            allTaskCount={todayStats.total}
-            completedTasksCount={todayStats.completed}
-            activeTaskCount={todayStats.active}
-            overdueTaskCount={todayStats.overdue}
-            todayCompletionPercent={todayStats.completionPercent}
-            weeklyProductivity={weeklyProductivity}
-            hoveredDayIndex={hoveredDayIndex}
-            setHoveredDayIndex={setHoveredDayIndex}
-            t={t}
+        <Routes>
+          {routes.map((route) => (
+            <Route
+              key={route.key}
+              path={route.path}
+              element={pages[route.key]}
+            />
+          ))}
+          <Route
+            path={PROJECT_DETAIL_PATH}
+            element={
+              selectedProject ? (
+                pages.Projects
+              ) : (
+                <Navigate to="/projects" replace />
+              )
+            }
           />
-        )}
-
-        {activePage === "Today" && (
-          <TodayPage
-            searchText={searchText}
-            setSearchText={setSearchText}
-            newTaskTitle={newTaskTitle}
-            setNewTaskTitle={setNewTaskTitle}
-            newTaskCategory={newTaskCategory}
-            setNewTaskCategory={setNewTaskCategory}
-            newTaskDate={newTaskDate}
-            setNewTaskDate={setNewTaskDate}
-            addTask={handleAddTask}
-            titleInputRef={newTaskTitleInputRef}
-            filter={filter}
-            setFilter={setFilter}
-            filteredTasks={filteredTasks}
-            toggleTask={toggleTask}
-            deleteTask={deleteTask}
-            setSelectedTaskId={setSelectedTaskId}
-            reorderTasks={reorderTasks}
-            t={t}
-          />
-        )}
-
-        {activePage === "Daily Routine" && (
-          <DailyRoutinePage
-            routineMonth={routineMonth}
-            addRoutine={handleAddRoutine}
-            newRoutineTitle={newRoutineTitle}
-            setNewRoutineTitle={setNewRoutineTitle}
-            setRoutineMonth={setRoutineMonth}
-            routineYear={routineYear}
-            routineMonthIndex={routineMonthIndex}
-            routineDays={routineDays}
-            routines={routines}
-            deleteRoutine={deleteRoutine}
-            routineChecks={routineChecks}
-            getRoutineKey={getRoutineKeyForMonth}
-            toggleRoutineCheck={toggleRoutineCheck}
-            language={language}
-            today={today}
-            t={t}
-          />
-        )}
-
-        {activePage === "Calendar" && (
-          <CalendarPage
-            calendarViewMode={calendarViewMode}
-            setCalendarViewMode={setCalendarViewMode}
-            calendarMonth={calendarMonth}
-            weekDays={weekDays}
-            setCalendarMonth={setCalendarMonth}
-            calendarYear={calendarYear}
-            calendarMonthIndex={calendarMonthIndex}
-            calendarWeekStart={calendarWeekStart}
-            setCalendarWeekStart={setCalendarWeekStart}
-            calendarStartDay={calendarStartDay}
-            calendarDays={calendarDays}
-            tasks={tasks}
-            setQuickAddDate={setQuickAddDate}
-            setQuickAddTitle={setQuickAddTitle}
-            quickAddDate={quickAddDate}
-            submitQuickAdd={submitQuickAdd}
-            quickAddTitle={quickAddTitle}
-            setSelectedTaskId={setSelectedTaskId}
-            today={today}
-            weekStartDay={weekStartDay}
-            t={t}
-            language={language}
-          />
-        )}
-
-        {activePage === "Archive" && (
-          <ArchivePage
-            archiveStatusFilter={archiveStatusFilter}
-            setArchiveStatusFilter={setArchiveStatusFilter}
-            archiveStartDate={archiveStartDate}
-            setArchiveStartDate={setArchiveStartDate}
-            archiveEndDate={archiveEndDate}
-            setArchiveEndDate={setArchiveEndDate}
-            filteredArchiveTasks={filteredArchiveTasks}
-            toggleTask={toggleTask}
-            deleteTask={deleteTask}
-            setSelectedTaskId={setSelectedTaskId}
-            reorderTasks={reorderTasks}
-            t={t}
-          />
-        )}
-
-        {activePage === "Projects" && (
-          <ProjectsPage
-            selectedProject={selectedProject}
-            setSelectedProjectId={setSelectedProjectId}
-            addProject={handleAddProject}
-            newProjectName={newProjectName}
-            setNewProjectName={setNewProjectName}
-            projects={projects}
-            deleteProject={handleDeleteProject}
-            tasks={tasks}
-            addProjectTask={addProjectTask}
-            newProjectTaskTitle={newProjectTaskTitle}
-            setNewProjectTaskTitle={setNewProjectTaskTitle}
-            newProjectTaskDate={newProjectTaskDate}
-            setNewProjectTaskDate={setNewProjectTaskDate}
-            selectedProjectId={selectedProjectId}
-            toggleTask={toggleTask}
-            deleteTask={deleteTask}
-            setSelectedTaskId={setSelectedTaskId}
-            reorderTasks={reorderTasks}
-            t={t}
-          />
-        )}
-
-        {activePage === "Settings" && (
-          <SettingsPage
-            t={t}
-            theme={theme}
-            setTheme={setTheme}
-            language={language}
-            setLanguage={setLanguage}
-            fontFamily={fontFamily}
-            setFontFamily={setFontFamily}
-            weekStartDay={weekStartDay}
-            setWeekStartDay={setWeekStartDay}
-          />
-        )}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       <TaskDetailModal

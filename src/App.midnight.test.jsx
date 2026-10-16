@@ -1,6 +1,6 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
-import App from "./App";
+import { renderApp } from "./test/renderApp";
 
 function createTask(id, title, date) {
   return {
@@ -18,12 +18,6 @@ function createTask(id, title, date) {
     repeatGroupId: null,
     attachments: [],
   };
-}
-
-function openTodayPage() {
-  act(() => {
-    screen.getAllByRole("button", { name: /^Today/ })[0].click();
-  });
 }
 
 beforeEach(() => {
@@ -46,8 +40,7 @@ describe("App and day changes", () => {
       ]),
     );
 
-    render(<App />);
-    openTodayPage();
+    renderApp("/today");
 
     expect(screen.queryByText("Tomorrow task")).not.toBeInTheDocument();
     expect(screen.getByText("Today task")).toBeInTheDocument();
@@ -67,8 +60,7 @@ describe("App and day changes", () => {
       JSON.stringify([createTask("a", "October 9 task", "2026-10-09")]),
     );
 
-    render(<App />);
-    openTodayPage();
+    renderApp("/today");
 
     expect(screen.getByText("October 9 task")).toBeInTheDocument();
   });

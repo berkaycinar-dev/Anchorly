@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useLocalStorageState from "./useLocalStorageState";
 import { createId } from "../lib/id";
 import { initialProjects } from "../constants/initialData";
@@ -8,10 +7,6 @@ export default function useProjects() {
     "projects",
     initialProjects,
   );
-  const [selectedProjectId, setSelectedProjectId] = useState(null);
-
-  const selectedProject =
-    projects.find((project) => project.id === selectedProjectId) || null;
 
   function addProject(name) {
     setProjects((currentProjects) => [
@@ -28,9 +23,6 @@ export default function useProjects() {
 
   return {
     projects,
-    selectedProjectId,
-    setSelectedProjectId,
-    selectedProject,
     addProject,
     deleteProject,
   };

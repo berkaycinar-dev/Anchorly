@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
-import App from "./App";
+import { renderApp } from "./test/renderApp";
 import { getLocalDateString } from "./utils/dateHelpers";
 
 const TASK_ID = "11111111-1111-4111-8111-111111111111";
@@ -40,9 +40,8 @@ async function openTaskModal(user) {
     JSON.stringify([{ id: PROJECT_ID, name: "Project 1" }]),
   );
 
-  render(<App />);
+  renderApp("/today");
 
-  await user.click(screen.getAllByRole("button", { name: /^Today/ })[0]);
   await user.click(screen.getByText("Task 1"));
 }
 

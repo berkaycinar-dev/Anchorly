@@ -1,9 +1,10 @@
 import TaskList from "../components/TaskList";
 import { useMemo } from "react";
+import { useNavigate } from "react-router";
+import { getProjectPath } from "../routes";
 
 export default function ProjectsPage({
   selectedProject,
-  setSelectedProjectId,
   addProject,
   newProjectName,
   setNewProjectName,
@@ -22,6 +23,7 @@ export default function ProjectsPage({
   reorderTasks,
   t,
 }) {
+  const navigate = useNavigate();
   const selectedProjectTasks = useMemo(
     () => tasks.filter((task) => task.projectId === selectedProjectId),
     [tasks, selectedProjectId],
@@ -31,7 +33,7 @@ export default function ProjectsPage({
     return (
       <section className="project-detail">
         <div className="dashboard-welcome">
-          <button onClick={() => setSelectedProjectId(null)}>
+                    <button onClick={() => navigate("/projects")}>
             {t.backToProjects}
           </button>
           <h2>{selectedProject.name}</h2>
@@ -93,8 +95,7 @@ export default function ProjectsPage({
           <div
             className="project-card"
             key={project.id}
-            onClick={() => setSelectedProjectId(project.id)}
-          >
+            onClick={() => navigate(getProjectPath(project.id))}          >
             <div className="project-card-header">
               <h3>{project.name}</h3>
               <button
