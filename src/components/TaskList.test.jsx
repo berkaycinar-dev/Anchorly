@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import TaskList from "./TaskList";
 import { strings } from "../strings";
+import { getTaskItem } from "../test/queries";
 
 const FIRST_ID = "11111111-1111-4111-8111-111111111111";
 const SECOND_ID = "22222222-2222-4222-8222-222222222222";
@@ -40,8 +41,8 @@ function renderTaskList(onReorderTasks = vi.fn()) {
   );
 
   return {
-    firstCard: screen.getByText("Task 1").closest("li"),
-    secondCard: screen.getByText("Task 2").closest("li"),
+    firstCard: getTaskItem("Task 1"),
+    secondCard: getTaskItem("Task 2"),
   };
 }
 
