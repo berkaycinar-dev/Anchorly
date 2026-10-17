@@ -33,7 +33,7 @@ export default function ProjectsPage({
     return (
       <section className="project-detail">
         <div className="dashboard-welcome">
-                    <button onClick={() => navigate("/projects")}>
+          <button onClick={() => navigate("/projects")}>
             {t.backToProjects}
           </button>
           <h2>{selectedProject.name}</h2>
@@ -95,7 +95,8 @@ export default function ProjectsPage({
           <div
             className="project-card"
             key={project.id}
-            onClick={() => navigate(getProjectPath(project.id))}          >
+            onClick={() => navigate(getProjectPath(project.id))}
+          >
             <div className="project-card-header">
               <h3>{project.name}</h3>
               <button
@@ -117,4 +118,4 @@ export default function ProjectsPage({
       </div>
     </section>
   );
-}
+} 
