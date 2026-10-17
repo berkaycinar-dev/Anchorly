@@ -37,6 +37,11 @@ describe("getWeekStartDate", () => {
     expect(getWeekStartDate(saturday, "monday").getDate()).toBe(5);
     expect(getWeekStartDate(saturday, "sunday").getDate()).toBe(4);
   });
+  
+  it("keeps a Sunday as the start of a Sunday week and goes back 6 days for a Monday week", () => {
+    expect(getWeekStartDate(sunday, "sunday").getDate()).toBe(11);
+    expect(getWeekStartDate(sunday, "monday").getDate()).toBe(5);
+  });
 });
 
 describe("getWeekDays", () => {
@@ -46,6 +51,14 @@ describe("getWeekDays", () => {
     expect(days).toHaveLength(7);
     expect(days[0].getDate()).toBe(5);
     expect(days[6].getDate()).toBe(11);
+  });
+  
+  it("returns 7 consecutive days starting on Sunday when the week starts on Sunday", () => {
+    const days = getWeekDays(saturday, "sunday");
+
+    expect(days).toHaveLength(7);
+    expect(days[0].getDate()).toBe(4);
+    expect(days[6].getDate()).toBe(10);
   });
 });
 

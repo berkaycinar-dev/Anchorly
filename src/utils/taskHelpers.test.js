@@ -1,5 +1,9 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
-import { addFutureOccurrences, generateRepeatOccurrences } from "./taskHelpers";
+import {
+  addFutureOccurrences,
+  generateRepeatOccurrences,
+  isTaskVisibleToday,
+} from "./taskHelpers";
 
 function createRepeatingTask(overrides = {}) {
   return {
@@ -26,7 +30,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("generateRepeatOccurrences", () => {
+describe("addFutureOccurrences", () => {
   it("generates a daily task up to the 120-day horizon from today", () => {
     const baseTask = createRepeatingTask();
 
@@ -104,6 +108,73 @@ describe("generateRepeatOccurrences", () => {
     const result = generateRepeatOccurrences(baseTask, [baseTask]);
 
     expect(result[result.length - 1].date).toBe("2027-02-06");
+  });
+});
+
+describe("isTaskVisibleToday", () => {
+  const today = "2026-10-10";
+
+  function createTask(overrides = {}) {
+    return {
+      id: "task-1",
+      title: "Write report",
+      date: today,
+      completed: false,
+      completedAt: null,
+      projectId: null,
+      ...overrides,
+    };
+  }
+
+  it("shows an incomplete task dated today", () => {
+    expect(isTaskVisibleToday(createTask(), today)).toBe(true);
+  });
+
+  it("hides a task dated tomorrow", () => {
+    expect(isTaskVisibleToday(createTask({ date: "2026-10-11" }), today)).toBe(
+      false,
+    );
+  });
+
+  it("hides an incomplete task dated yesterday", () => {
+    expect(isTaskVisibleToday(createTask({ date: "2026-10-09" }), today)).toBe(
+      false,
+    );
+  });
+
+  it("shows a dateless task that has no project", () => {
+    expect(isTaskVisibleToday(createTask({ date: "" }), today)).toBe(true);
+  });
+
+  it("hides a dateless task that belongs to a project", () => {
+    expect(
+      isTaskVisibleToday(
+        createTask({ date: "", projectId: "project-1" }),
+        today,
+      ),
+    ).toBe(false);
+  });
+
+  it("shows a task dated today that belongs to a project", () => {
+    expect(
+      isTaskVisibleToday(createTask({ projectId: "project-1" }), today),
+    ).toBe(true);
+  });
+
+  it("shows a task that was completed today", () => {
+    const task = createTask({ completed: true, completedAt: today });
+
+    expect(isTaskVisibleToday(task, today)).toBe(true);
+  });
+
+  it("hides a task that was completed yesterday", () => {
+    const task = createTask({
+      date: "",
+      completed: true,
+      completedAt: "2026-10-09",
+    });
+
+    expect(isTaskVisibleToday(task, today)).toBe(false);
   });
 });
 
