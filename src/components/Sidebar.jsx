@@ -2,6 +2,7 @@ import { Fragment, useLayoutEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router";
 import NavIcon from "./NavIcon";
 import { routes } from "../routes";
+import Logo from "./Logo";
 
 const INDICATOR_INSET = 11;
 
@@ -43,7 +44,10 @@ function Sidebar({ t, badges = {} }) {
 
   return (
     <aside className="sidebar">
-      <h2>Anchorly</h2>
+      <div className="sidebar-brand">
+        <Logo />
+        <h2>Anchorly</h2>
+      </div>
 
       <nav ref={navRef}>
         <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />

@@ -1771,3 +1771,30 @@ textarea {
   color: var(--color-text-primary);
   font-size: 13px;
 }
+.app-logo {
+  flex-shrink: 0;
+  color: var(--color-text-primary);
+}
+
+.app-logo-outline {
+  fill: none;
+  stroke: currentColor;
+}
+
+.app-logo-inner {
+  fill: currentColor;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 18px;
+  margin-bottom: 24px;
+}
+
+.sidebar-brand > :not(.app-logo) {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
