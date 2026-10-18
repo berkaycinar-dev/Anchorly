@@ -21,8 +21,10 @@
   justify-content: center;
 }
 
-.calendar-nav-arrow:hover {
-  background-color: var(--color-bg-subtle);
+@media (hover: hover) {
+  .calendar-nav-arrow:hover {
+    background-color: var(--color-bg-subtle);
+  }
 }
 
 .calendar-nav-label {
@@ -39,6 +41,19 @@
   text-align: center;
 }
 
-.calendar-nav-label:hover {
-  background-color: var(--color-bg-subtle);
+@media (hover: hover) {
+  .calendar-nav-label:hover {
+    background-color: var(--color-bg-subtle);
+  }
+}
+
+@media (pointer: coarse) {
+  .calendar-nav-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .calendar-nav-label {
+    min-height: 44px;
+  }
 }

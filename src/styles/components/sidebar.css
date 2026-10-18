@@ -59,8 +59,10 @@
     transform 0.12s ease;
 }
 
-.sidebar .nav-item:hover {
-  background-color: var(--nav-hover-bg);
+@media (hover: hover) {
+  .sidebar .nav-item:hover {
+    background-color: var(--nav-hover-bg);
+  }
 }
 
 .sidebar .nav-item:active {

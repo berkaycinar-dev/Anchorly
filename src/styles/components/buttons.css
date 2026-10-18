@@ -16,8 +16,10 @@
   color: var(--color-accent-contrast);
 }
 
-.btn-primary:hover {
-  opacity: 0.9;
+@media (hover: hover) {
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
 }
 
 .btn-secondary {
@@ -25,8 +27,10 @@
   color: var(--color-text-primary);
 }
 
-.btn-secondary:hover {
-  background-color: var(--color-border);
+@media (hover: hover) {
+  .btn-secondary:hover {
+    background-color: var(--color-border);
+  }
 }
 
 .btn-danger {
@@ -35,6 +39,14 @@
   border: none;
 }
 
-.btn-danger:hover {
-  background-color: #b91c1c;
+@media (hover: hover) {
+  .btn-danger:hover {
+    background-color: #b91c1c;
+  }
+}
+
+@media (pointer: coarse) {
+  .btn {
+    min-height: 44px;
+  }
 }

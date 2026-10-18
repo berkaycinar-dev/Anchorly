@@ -15,6 +15,7 @@
   background-color: var(--color-bg-card);
   font-weight: 600;
 }
+
 .routine-table-wrapper {
   overflow-x: auto;
   padding: 16px;
@@ -40,12 +41,14 @@
 .routine-table td:first-child {
   position: sticky;
   left: 0;
+  z-index: 2;
   min-width: 160px;
   text-align: left;
   padding-left: 12px;
   background-color: var(--color-bg-card);
   font-weight: bold;
 }
+
 .routine-form {
   display: flex;
   gap: 12px;
@@ -70,6 +73,7 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .routine-name-cell {
   display: flex;
   align-items: center;
@@ -91,12 +95,13 @@
   transition: background-color 0.15s ease;
 }
 
-.routine-table td:not(:first-child):hover {
-  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+@media (hover: hover) {
+  .routine-table td:not(:first-child):hover {
+    background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
 }
 
 .routine-delete-button {
-  opacity: 0;
   border: none;
   background: none;
   color: #ef4444;
@@ -112,13 +117,19 @@
     background-color 0.15s ease;
 }
 
-.routine-name-cell:hover .routine-delete-button,
-.routine-name-cell:focus-within .routine-delete-button {
-  opacity: 1;
-}
+@media (hover: hover) {
+  .routine-delete-button {
+    opacity: 0;
+  }
 
-.routine-delete-button:hover {
-  background-color: #fee2e2;
+  .routine-name-cell:hover .routine-delete-button,
+  .routine-name-cell:focus-within .routine-delete-button {
+    opacity: 1;
+  }
+
+  .routine-delete-button:hover {
+    background-color: #fee2e2;
+  }
 }
 
 .routine-today-col {
@@ -133,4 +144,24 @@
 
 .routine-nav-label {
   cursor: default;
+}
+
+@media (pointer: coarse) {
+  .routine-delete-button {
+    position: relative;
+  }
+
+  .routine-table .themed-checkbox::before,
+  .routine-delete-button::before {
+    content: "";
+    position: absolute;
+  }
+
+  .routine-table .themed-checkbox::before {
+    inset: -14px;
+  }
+
+  .routine-delete-button::before {
+    inset: -11px;
+  }
 }

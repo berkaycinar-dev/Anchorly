@@ -18,10 +18,12 @@
     transform 0.1s ease;
 }
 
-.themed-checkbox:not(:checked):hover {
-  border-color: var(--color-accent);
-  background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
-  transform: scale(1.08);
+@media (hover: hover) {
+  .themed-checkbox:not(:checked):hover {
+    border-color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    transform: scale(1.08);
+  }
 }
 
 .themed-checkbox:checked {
@@ -46,8 +48,11 @@
   transform: translate(-50%, -50%) rotate(45deg) scale(1);
 }
 
-.themed-checkbox:checked:hover {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+@media (hover: hover) {
+  .themed-checkbox:checked:hover {
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-accent) 25%, transparent);
+  }
 }
 
 .themed-checkbox:focus-visible {

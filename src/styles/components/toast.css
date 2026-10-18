@@ -55,9 +55,11 @@
   cursor: pointer;
 }
 
-.toast-close:hover {
-  background-color: var(--color-bg-subtle);
-  color: var(--color-text-primary);
+@media (hover: hover) {
+  .toast-close:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
 }
 
 .toast-close:focus-visible {
@@ -85,5 +87,17 @@
 @media (min-width: 768px) {
   .toast-region {
     bottom: 16px;
+  }
+}
+
+@media (pointer: coarse) {
+  .toast-close {
+    position: relative;
+  }
+
+  .toast-close::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
   }
 }

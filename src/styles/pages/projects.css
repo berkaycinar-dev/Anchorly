@@ -16,10 +16,13 @@
   border-radius: 10px;
   transition: box-shadow 0.15s ease;
 }
-.project-card:hover {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-accent) 45%, var(--color-border)),
-    0 2px 10px color-mix(in srgb, var(--color-accent) 22%, transparent);
+
+@media (hover: hover) {
+  .project-card:hover {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 45%, var(--color-border)),
+      0 2px 10px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
 }
 
 .project-card h3 {
@@ -29,6 +32,7 @@
 .project-card p {
   color: var(--color-text-secondary);
 }
+
 .project-form {
   display: flex;
   gap: 12px;
@@ -53,6 +57,7 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .project-card-header {
   display: flex;
   align-items: center;

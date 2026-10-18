@@ -47,31 +47,39 @@
 .theme-purple .calendar-cell-weekend {
   background-color: #130e2d;
 }
+
 .theme-blue .calendar-cell-weekend {
   background-color: #1b1732ab;
 }
+
 .theme-gray .calendar-cell-weekend {
   background-color: #eaeaea;
 }
+
 .theme-red .calendar-cell-weekend {
   background-color: #fbe0e0ae;
 }
+
 .theme-green .calendar-cell-weekend {
   background-color: #202e21;
 }
+
 .theme-pink .calendar-cell-weekend {
   background-color: #fbeef9;
 }
+
 .calendar-tasks {
   display: grid;
   gap: 6px;
   margin-top: 8px;
   min-height: 0;
 }
+
 .calendar-task.calendar-task-done {
   text-decoration: line-through;
   color: var(--color-text-muted);
 }
+
 .calendar-task {
   padding: 6px 8px;
   border-radius: 6px;
@@ -80,12 +88,15 @@
   font-size: 13px;
   font-weight: bold;
 }
+
 .calendar-cell:not(.empty) {
   cursor: pointer;
 }
 
-.calendar-cell:not(.empty):hover {
-  background-color: var(--color-bg-subtle);
+@media (hover: hover) {
+  .calendar-cell:not(.empty):hover {
+    background-color: var(--color-bg-subtle);
+  }
 }
 
 .active-view-toggle {
@@ -109,7 +120,6 @@
 }
 
 .calendar-add-button {
-  opacity: 0;
   border: none;
   background-color: var(--color-bg-subtle);
   color: var(--color-accent-text);
@@ -122,17 +132,25 @@
   transition: opacity 0.15s ease;
 }
 
-.calendar-cell:hover .calendar-add-button,
-.calendar-cell:focus-within .calendar-add-button {
-  opacity: 1;
+@media (hover: hover) {
+  .calendar-add-button {
+    opacity: 0;
+  }
+
+  .calendar-cell:hover .calendar-add-button,
+  .calendar-cell:focus-within .calendar-add-button {
+    opacity: 1;
+  }
 }
 
 .calendar-task {
   cursor: pointer;
 }
 
-.calendar-task:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .calendar-task:hover {
+    text-decoration: underline;
+  }
 }
 
 .quick-add-panel {
@@ -208,8 +226,10 @@
   color: var(--color-text-primary);
 }
 
-.day-tasks-list-item:hover {
-  background-color: var(--color-border);
+@media (hover: hover) {
+  .day-tasks-list-item:hover {
+    background-color: var(--color-border);
+  }
 }
 
 .day-tasks-list-item-done {
@@ -220,5 +240,21 @@
 @media (max-width: 767.98px) {
   .calendar-grid {
     font-size: 12px;
+  }
+}
+
+@media (pointer: coarse) {
+  .calendar-add-button {
+    position: relative;
+  }
+
+  .calendar-add-button::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+  }
+
+  .quick-add-actions button {
+    min-height: 44px;
   }
 }

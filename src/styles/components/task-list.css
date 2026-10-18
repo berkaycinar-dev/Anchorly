@@ -15,10 +15,12 @@
   border-bottom: 1px solid var(--color-border);
   grid-template-columns: 30px 1fr 160px 130px 70px;
 }
+
 .completed-task span:nth-child(2) {
   text-decoration: line-through;
   color: var(--color-text-muted);
 }
+
 .add-task-form {
   display: flex;
   gap: 12px;
@@ -35,6 +37,7 @@
   background-color: var(--color-bg-input);
   color: var(--color-text-primary);
 }
+
 .add-task-form select {
   max-width: 190px;
 }
@@ -48,9 +51,11 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .add-task-form input[type="date"] {
   max-width: 160px;
 }
+
 .task-list li button {
   border: none;
   padding: 8px 10px;
@@ -60,6 +65,7 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .task-section-header {
   display: flex;
   justify-content: space-between;
@@ -87,6 +93,7 @@
   background-color: var(--color-accent);
   color: var(--color-accent-contrast);
 }
+
 .search-box {
   margin-bottom: 16px;
 }
@@ -131,14 +138,16 @@
     border-color 0.15s ease;
 }
 
-.task-card:hover {
-  border-color: color-mix(
-    in srgb,
-    var(--color-accent) 45%,
-    var(--color-border)
-  );
-  box-shadow: 0 2px 10px
-    color-mix(in srgb, var(--color-accent) 22%, transparent);
+@media (hover: hover) {
+  .task-card:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent) 45%,
+      var(--color-border)
+    );
+    box-shadow: 0 2px 10px
+      color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
 }
 
 .task-checkbox {
@@ -208,7 +217,6 @@
 }
 
 .task-delete-button {
-  opacity: 0;
   border: none;
   background: none;
   color: #ef4444;
@@ -224,14 +232,21 @@
     background-color 0.15s ease;
 }
 
-.task-card:hover .task-delete-button,
-.task-card:focus-within .task-delete-button {
-  opacity: 1;
+@media (hover: hover) {
+  .task-delete-button {
+    opacity: 0;
+  }
+
+  .task-card:hover .task-delete-button,
+  .task-card:focus-within .task-delete-button {
+    opacity: 1;
+  }
+
+  .task-delete-button:hover {
+    background-color: #fee2e2;
+  }
 }
 
-.task-delete-button:hover {
-  background-color: #fee2e2;
-}
 .completed-section {
   margin-top: 8px;
 }
@@ -266,6 +281,7 @@
 .task-card-dragging {
   opacity: 0.4;
 }
+
 .task-badge-repeat {
   background-color: #dbeafe;
   color: #2563eb;
@@ -321,13 +337,18 @@
   flex-direction: column;
   gap: 2px;
   flex-shrink: 0;
-  opacity: 0;
   transition: opacity 0.15s ease;
 }
 
-.task-card:hover .task-move-controls,
-.task-card:focus-within .task-move-controls {
-  opacity: 1;
+@media (hover: hover) {
+  .task-card .task-move-controls {
+    opacity: 0;
+  }
+
+  .task-card:hover .task-move-controls,
+  .task-card:focus-within .task-move-controls {
+    opacity: 1;
+  }
 }
 
 .task-card .task-move-button {
@@ -346,13 +367,15 @@
   cursor: pointer;
 }
 
-.task-card .task-move-button:hover:not(:disabled) {
-  background-color: color-mix(
-    in srgb,
-    var(--color-accent) 18%,
-    var(--color-bg-subtle)
-  );
-  color: var(--color-accent);
+@media (hover: hover) {
+  .task-card .task-move-button:hover:not(:disabled) {
+    background-color: color-mix(
+      in srgb,
+      var(--color-accent) 18%,
+      var(--color-bg-subtle)
+    );
+    color: var(--color-accent);
+  }
 }
 
 .task-card .task-move-button:disabled {
@@ -360,9 +383,32 @@
   cursor: default;
 }
 
-@media (hover: none) {
-  .task-card .task-move-controls,
-  .task-card .task-delete-button {
-    opacity: 1;
+@media (pointer: coarse) {
+  .task-card .task-checkbox::before,
+  .task-card .task-delete-button::before,
+  .task-card .task-move-button::before {
+    content: "";
+    position: absolute;
+  }
+
+  .task-card .task-checkbox::before {
+    inset: -14px;
+  }
+
+  .task-card .task-delete-button::before {
+    inset: -10px;
+  }
+
+  .task-card .task-move-button {
+    position: relative;
+  }
+
+  .task-card .task-move-button::before {
+    inset: -1px -10px;
+  }
+
+  .filters button,
+  .completed-toggle {
+    min-height: 44px;
   }
 }

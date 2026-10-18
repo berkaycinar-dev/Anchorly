@@ -21,18 +21,27 @@
     box-shadow 0.15s ease,
     border-color 0.15s ease;
 }
-.theme-option:hover {
-  border-color: color-mix(
-    in srgb,
-    var(--color-accent) 45%,
-    var(--color-border)
-  );
-  box-shadow: 0 2px 10px
-    color-mix(in srgb, var(--color-accent) 22%, transparent);
+
+@media (hover: hover) {
+  .theme-option:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent) 45%,
+      var(--color-border)
+    );
+    box-shadow: 0 2px 10px
+      color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
 }
 
 .active-theme {
   border-color: var(--color-accent);
   background-color: var(--color-accent);
   color: var(--color-accent-contrast);
-} 
+}
+
+@media (pointer: coarse) {
+  .theme-option {
+    min-height: 44px;
+  }
+}
