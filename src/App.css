@@ -5,10 +5,11 @@
   --color-bg-subtle: #f3f4f6;
   --color-bg-input: #ffffff;
   --color-text-primary: #1f2937;
-  --color-text-secondary: #6b7280;
-  --color-text-muted: #9ca3af;
+  --color-text-secondary: #5b6371;
+  --color-text-muted: #656c79;
   --color-border: #e5e7eb;
   --color-accent-contrast: #ffffff;
+  --color-accent-text: #58667b;
 }
 
 .theme-gray {
@@ -18,10 +19,11 @@
   --color-bg-subtle: #f3f4f6;
   --color-bg-input: #ffffff;
   --color-text-primary: #1f2937;
-  --color-text-secondary: #6b7280;
-  --color-text-muted: #9ca3af;
+  --color-text-secondary: #5b6371;
+  --color-text-muted: #656c79;
   --color-border: #e5e7eb;
   --color-accent-contrast: #ffffff;
+  --color-accent-text: #58667b;
 }
 
 .theme-purple {
@@ -35,6 +37,7 @@
   --color-text-muted: #9c8cc4;
   --color-border: #4c3d70;
   --color-accent-contrast: #ffffff;
+  --color-accent-text: #bb7ff2;
 }
 
 .theme-blue {
@@ -45,9 +48,10 @@
   --color-bg-input: #0f172a;
   --color-text-primary: #e0f2fe;
   --color-text-secondary: #94a3b8;
-  --color-text-muted: #64748b;
+  --color-text-muted: #8896a9;
   --color-border: #334155;
   --color-accent-contrast: #0f172a;
+  --color-accent-text: #629bf8;
 }
 
 .theme-red {
@@ -58,9 +62,10 @@
   --color-bg-input: #ffffff;
   --color-text-primary: #7f1d1d;
   --color-text-secondary: #b91c1c;
-  --color-text-muted: #b48787;
+  --color-text-muted: #895656;
   --color-border: #fecaca;
   --color-accent-contrast: #ffffff;
+  --color-accent-text: #b91e1e;
 }
 
 .theme-green {
@@ -71,9 +76,10 @@
   --color-bg-input: #0f2418;
   --color-text-primary: #dcfce7;
   --color-text-secondary: #86efac;
-  --color-text-muted: #6b9c7d;
+  --color-text-muted: #73a184;
   --color-border: #1f5c38;
   --color-accent-contrast: #052e13;
+  --color-accent-text: #22c55e;
 }
 
 .theme-pink {
@@ -84,9 +90,10 @@
   --color-bg-input: #ffffff;
   --color-text-primary: #831843;
   --color-text-secondary: #9d174d;
-  --color-text-muted: #c17ba0;
+  --color-text-muted: #9e4a76;
   --color-border: #fbcfe8;
   --color-accent-contrast: #ffffff;
+  --color-accent-text: #b81f63;
 }
 
 * {
@@ -108,7 +115,7 @@ body {
 .sidebar {
   --nav-tone-active: color-mix(
     in oklab,
-    var(--color-accent) 68%,
+    var(--color-accent) 56%,
     var(--color-text-primary)
   );
   --nav-hover-bg: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
@@ -316,7 +323,7 @@ body {
   padding: 12px 20px;
   border-radius: 8px;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
 }
@@ -391,7 +398,7 @@ body {
   padding: 12px 20px;
   border-radius: 8px;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
 }
@@ -403,7 +410,7 @@ body {
   padding: 8px 10px;
   border-radius: 6px;
   background-color: #fee2e2;
-  color: #dc2626;
+  color: #b91c1c;
   font-weight: bold;
   cursor: pointer;
 }
@@ -432,7 +439,7 @@ body {
 
 .filters .active-filter {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
 }
 .search-box {
   margin-bottom: 16px;
@@ -582,7 +589,7 @@ body {
   padding: 12px 18px;
   border-radius: 8px;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
 }
@@ -598,7 +605,7 @@ body {
   padding: 6px 8px;
   border-radius: 6px;
   background-color: #fee2e2;
-  color: #dc2626;
+  color: #b91c1c;
   font-weight: bold;
   cursor: pointer;
 }
@@ -706,7 +713,7 @@ body {
 }
 
 .calendar-cell-today strong {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .calendar-day-name {
@@ -744,15 +751,15 @@ body {
   margin-top: 8px;
   min-height: 0;
 }
-.calendar-task-done {
+.calendar-task.calendar-task-done {
   text-decoration: line-through;
-  opacity: 0.6;
+  color: var(--color-text-muted);
 }
 .calendar-task {
   padding: 6px 8px;
   border-radius: 6px;
   background-color: var(--color-bg-subtle);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-size: 13px;
   font-weight: bold;
 }
@@ -790,7 +797,7 @@ body {
   padding: 10px 14px;
   border-radius: 8px;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
 }
@@ -845,7 +852,7 @@ body {
   padding: 12px 18px;
   border-radius: 8px;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
 }
@@ -861,7 +868,7 @@ body {
   padding: 8px 10px;
   border-radius: 6px;
   background-color: #fee2e2;
-  color: #dc2626;
+  color: #b91c1c;
   font-weight: bold;
   cursor: pointer;
 }
@@ -1037,11 +1044,11 @@ body {
 .active-theme {
   border-color: var(--color-accent);
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
 }
 .active-view-toggle {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   border-color: var(--color-accent);
 }
 
@@ -1071,7 +1078,7 @@ body {
   padding: 12px 18px;
   border-radius: 8px;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
 }
@@ -1176,7 +1183,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: var(--color-accent-contrast);
   font-size: 12px;
 }
 
@@ -1214,7 +1221,7 @@ body {
 
 .task-badge-category {
   background-color: var(--color-bg-subtle);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .task-delete-button {
@@ -1285,7 +1292,8 @@ body {
     background-color 0.15s ease;
 }
 
-.routine-name-cell:hover .routine-delete-button {
+.routine-name-cell:hover .routine-delete-button,
+.routine-name-cell:focus-within .routine-delete-button {
   opacity: 1;
 }
 
@@ -1424,7 +1432,7 @@ textarea {
   opacity: 0;
   border: none;
   background-color: var(--color-bg-subtle);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -1434,7 +1442,8 @@ textarea {
   transition: opacity 0.15s ease;
 }
 
-.calendar-cell:hover .calendar-add-button {
+.calendar-cell:hover .calendar-add-button,
+.calendar-cell:focus-within .calendar-add-button {
   opacity: 1;
 }
 
@@ -1487,7 +1496,7 @@ textarea {
 
 .quick-add-actions button[type="submit"] {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
 }
 
 .quick-add-actions button[type="button"] {
@@ -1509,7 +1518,7 @@ textarea {
 
 .btn-primary {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-accent-contrast);
 }
 
 .btn-primary:hover {
@@ -1673,7 +1682,7 @@ textarea {
 }
 
 .routine-table thead .routine-today-col {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-weight: 800;
 }
 
@@ -1713,15 +1722,6 @@ textarea {
 
 .btn-danger:hover {
   background-color: #b91c1c;
-}
-.confirm-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
 }
 .confirm-box {
   background-color: var(--color-bg-card);
@@ -1771,6 +1771,7 @@ textarea {
   padding: 0;
   line-height: 1;
 }
+
 .toast-region {
   position: fixed;
   right: 16px;
@@ -1854,6 +1855,7 @@ textarea {
     animation: none;
   }
 }
+
 .modal-dialog,
 .confirm-dialog {
   padding: 0;
@@ -1904,6 +1906,7 @@ textarea {
 .modal-box h2:focus {
   outline: none;
 }
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1978,14 +1981,14 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
   border-radius: 4px;
   background-color: var(--color-bg-subtle);
   color: var(--color-text-secondary);
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1;
   cursor: pointer;
 }
@@ -2010,6 +2013,12 @@ textarea {
     opacity: 1;
   }
 }
+
 .detail-field label {
   display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-text);
+  outline-offset: 2px;
 }
