@@ -268,17 +268,19 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  .modal-dialog {
-    width: 95vw;
-  }
-}
-
 .modal-box h2:focus {
   outline: none;
 }
 
-@media (max-width: 768px) {
+.detail-field label {
+  display: block;
+}
+
+@media (max-width: 767.98px) {
+  .modal-dialog {
+    width: 95vw;
+  }
+
   .modal-box {
     width: 95%;
     padding: 16px;
@@ -287,8 +289,4 @@
   .task-step-form {
     flex-direction: column;
   }
-}
-
-.detail-field label {
-  display: block;
 }

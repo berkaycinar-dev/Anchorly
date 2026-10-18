@@ -1,6 +1,10 @@
 .app {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--safe-area-top) var(--safe-area-right) var(--safe-area-bottom)
+    var(--safe-area-left);
   font-family: var(--font-main);
   background-color: var(--color-bg-page);
   color: var(--color-text-primary);
@@ -9,14 +13,14 @@
 .main-content {
   flex: 1;
   min-width: 0;
-  padding: 32px;
+  padding: 16px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .header h1 {
@@ -43,8 +47,16 @@
   color: var(--color-text-primary);
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .app {
-    flex-direction: column;
+    flex-direction: row;
+  }
+
+  .main-content {
+    padding: 32px;
+  }
+
+  .header {
+    margin-bottom: 32px;
   }
 }

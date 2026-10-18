@@ -9,16 +9,10 @@
   --nav-badge-bg: color-mix(in srgb, var(--color-accent) 18%, transparent);
   --nav-badge-text: var(--nav-tone-active);
 
-  width: 240px;
-  flex-shrink: 0;
+  width: 100%;
   padding: 24px 12px;
   background-color: var(--color-bg-card);
-  border-right: 1px solid var(--color-border);
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  align-self: flex-start;
-  overflow-y: auto;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .theme-purple .sidebar,
@@ -210,17 +204,17 @@
   line-height: 1;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .sidebar {
-    width: 100%;
-    flex-shrink: 1;
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .sidebar nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    width: 240px;
+    flex-shrink: 0;
+    border-bottom: none;
+    border-right: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    align-self: flex-start;
+    overflow-y: auto;
   }
 }
