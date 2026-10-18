@@ -424,6 +424,10 @@ function App() {
     setQuickAddTitle("");
     setQuickAddDate(null);
   }
+  function addTaskToDate(title, date) {
+    addTask({ title, category: "Work", date });
+  }
+
   const pages = {
     Dashboard: (
       <DashboardPage
@@ -503,6 +507,7 @@ function App() {
         quickAddDate={quickAddDate}
         submitQuickAdd={submitQuickAdd}
         quickAddTitle={quickAddTitle}
+        addTaskToDate={addTaskToDate}
         setSelectedTaskId={setSelectedTaskId}
         today={today}
         weekStartDay={weekStartDay}

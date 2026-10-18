@@ -109,6 +109,9 @@ export const strings = {
     routineTooltipSuffix: "rutin",
 
     addTaskToDay: "Bu güne görev ekle",
+    calendarDayPickerLabel: "Gün seç",
+    calendarDayTaskCount: (count) => `${count} görev`,
+    calendarNoTasks: "Bu gün için görev yok.",
     taskTitlePlaceholder: "Görev başlığı...",
 
     routineColumnHeader: "Rutin",
@@ -266,6 +269,10 @@ export const strings = {
     routineTooltipSuffix: "routines",
 
     addTaskToDay: "Add task to this day",
+    calendarDayPickerLabel: "Choose a day",
+    calendarDayTaskCount: (count) =>
+      count === 1 ? "1 task" : `${count} tasks`,
+    calendarNoTasks: "No tasks on this day.",
     taskTitlePlaceholder: "Task title...",
 
     routineColumnHeader: "Routine",

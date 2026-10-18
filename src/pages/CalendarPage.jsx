@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CalendarAgenda from "../components/CalendarAgenda";
 
 function getWeekdayNames(language, weekStartDay) {
   const localeCode = language === "tr" ? "tr-TR" : "en-US";
@@ -36,6 +37,7 @@ export default function CalendarPage({
   quickAddDate,
   submitQuickAdd,
   quickAddTitle,
+  addTaskToDate,
   setSelectedTaskId,
   today,
   weekStartDay,
@@ -63,6 +65,15 @@ export default function CalendarPage({
       setCalendarWeekStart(newDate);
     }
   }
+
+  const weekdayNames = getWeekdayNames(language, weekStartDay);
+  const isMonthView = calendarViewMode === "month";
+  const agendaDates = isMonthView
+    ? calendarDays.map((day) => new Date(calendarYear, calendarMonthIndex, day))
+    : weekDays;
+  const agendaRangeKey = isMonthView
+    ? `month-${calendarYear}-${calendarMonthIndex}`
+    : `week-${weekDays[0].toDateString()}`;
 
   function toggleViewMode() {
     setCalendarViewMode(calendarViewMode === "month" ? "week" : "month");
@@ -114,7 +125,7 @@ export default function CalendarPage({
 
       {calendarViewMode === "month" && (
         <div className="calendar-grid">
-          {getWeekdayNames(language, weekStartDay).map((dayName) => (
+          {weekdayNames.map((dayName) => (
             <div className="calendar-day-name" key={dayName}>
               {dayName}
             </div>
@@ -200,6 +211,19 @@ export default function CalendarPage({
           })}
         </div>
       )}
+      <CalendarAgenda
+        key={agendaRangeKey}
+        dates={agendaDates}
+        leadingBlankCount={isMonthView ? calendarStartDay : 0}
+        weekdayNames={weekdayNames}
+        tasks={tasks}
+        today={today}
+        onSelectTask={setSelectedTaskId}
+        onAddTask={addTaskToDate}
+        t={t}
+        language={language}
+      />
+
       <DayTasksModal
         dateString={expandedDayDate}
         tasks={tasks.filter((task) => task.date === expandedDayDate)}
