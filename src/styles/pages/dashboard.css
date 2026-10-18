@@ -1,12 +1,11 @@
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 32px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .stat-card {
-  padding: 20px;
+  padding: 16px;
   border-radius: var(--radius-lg);
   background-color: var(--color-bg-card);
   box-shadow: var(--shadow-sm);
@@ -19,7 +18,7 @@
 
 .stat-card h3 {
   margin: 8px 0 0;
-  font-size: 32px;
+  font-size: 28px;
 }
 
 .dashboard-page {
@@ -29,7 +28,7 @@
 }
 
 .dashboard-welcome {
-  padding: 24px;
+  padding: 16px;
   border-radius: 12px;
   background-color: var(--color-bg-card);
 }
@@ -44,7 +43,7 @@
 }
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
 }
 
@@ -176,8 +175,26 @@
   color: inherit;
 }
 
-@media (max-width: 767.98px) {
+@media (min-width: 768px) {
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-card h3 {
+    font-size: 32px;
+  }
+
+  .dashboard-welcome {
+    padding: 24px;
+  }
+
   .dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }

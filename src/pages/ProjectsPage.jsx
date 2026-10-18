@@ -33,7 +33,11 @@ export default function ProjectsPage({
     return (
       <section className="project-detail">
         <div className="dashboard-welcome">
-          <button onClick={() => navigate("/projects")}>
+          <button
+            type="button"
+            className="btn btn-secondary project-back-button"
+            onClick={() => navigate("/projects")}
+          >
             {t.backToProjects}
           </button>
           <h2>{selectedProject.name}</h2>
@@ -42,6 +46,7 @@ export default function ProjectsPage({
         <form className="project-task-form" onSubmit={addProjectTask}>
           <input
             type="text"
+            aria-label={t.newProjectTaskLabel}
             placeholder={t.newProjectTaskPlaceholder}
             value={newProjectTaskTitle}
             onChange={(event) => setNewProjectTaskTitle(event.target.value)}
@@ -49,6 +54,7 @@ export default function ProjectsPage({
 
           <input
             type="date"
+            aria-label={t.dateLabel}
             value={newProjectTaskDate}
             onChange={(event) => setNewProjectTaskDate(event.target.value)}
           />
@@ -80,6 +86,7 @@ export default function ProjectsPage({
       <form className="project-form" onSubmit={addProject}>
         <input
           type="text"
+          aria-label={t.newProjectLabel}
           placeholder={t.newProjectPlaceholder}
           value={newProjectName}
           onChange={(event) => setNewProjectName(event.target.value)}
@@ -118,4 +125,4 @@ export default function ProjectsPage({
       </div>
     </section>
   );
-} 
+}

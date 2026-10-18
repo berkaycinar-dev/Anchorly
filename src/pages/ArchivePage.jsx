@@ -23,6 +23,7 @@ export default function ArchivePage({
 
       <div className="archive-filters">
         <select
+          aria-label={t.archiveStatusLabel}
           value={archiveStatusFilter}
           onChange={(event) => setArchiveStatusFilter(event.target.value)}
         >
@@ -33,17 +34,20 @@ export default function ArchivePage({
 
         <input
           type="date"
+          aria-label={t.archiveStartDateLabel}
           value={archiveStartDate}
           onChange={(event) => setArchiveStartDate(event.target.value)}
         />
 
         <input
           type="date"
+          aria-label={t.archiveEndDateLabel}
           value={archiveEndDate}
           onChange={(event) => setArchiveEndDate(event.target.value)}
         />
 
         <button
+          type="button"
           onClick={() => {
             setArchiveStatusFilter("all");
             setArchiveStartDate("");
@@ -64,4 +68,4 @@ export default function ArchivePage({
       />
     </section>
   );
-}
+} 

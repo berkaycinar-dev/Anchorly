@@ -4,7 +4,8 @@
   gap: 20px;
 }
 .archive-filters {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   padding: 16px;
   border-radius: 12px;
@@ -13,14 +14,24 @@
 
 .archive-filters select,
 .archive-filters input {
+  width: 100%;
+  min-width: 0;
   padding: 10px 12px;
+  font: inherit;
+  font-size: 16px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background-color: var(--color-bg-input);
   color: var(--color-text-primary);
 }
 
+.archive-filters select,
 .archive-filters button {
+  grid-column: 1 / -1;
+}
+
+.archive-filters button {
+  min-height: 44px;
   border: none;
   padding: 10px 14px;
   border-radius: 8px;
@@ -28,4 +39,15 @@
   color: var(--color-accent-contrast);
   font-weight: bold;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .archive-filters {
+    display: flex;
+  }
+
+  .archive-filters select,
+  .archive-filters input {
+    width: auto;
+  }
 }

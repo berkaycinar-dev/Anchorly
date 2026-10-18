@@ -68,6 +68,11 @@ export const strings = {
     statusActive: "Devam Eden",
     statusCompleted: "Tamamlanan",
     clearFilters: "Temizle",
+    archiveStatusLabel: "Durum",
+    archiveStartDateLabel: "Başlangıç tarihi",
+    archiveEndDateLabel: "Bitiş tarihi",
+    newProjectLabel: "Yeni proje",
+    newProjectTaskLabel: "Yeni proje görevi",
 
     projectsPageTitle: "Projeler",
     projectsPageDescription:
@@ -227,6 +232,11 @@ export const strings = {
     statusActive: "Active",
     statusCompleted: "Completed",
     clearFilters: "Clear",
+    archiveStatusLabel: "Status",
+    archiveStartDateLabel: "Start date",
+    archiveEndDateLabel: "End date",
+    newProjectLabel: "New project",
+    newProjectTaskLabel: "New project task",
 
     projectsPageTitle: "Projects",
     projectsPageDescription: "Create dedicated task folders for your projects.",
