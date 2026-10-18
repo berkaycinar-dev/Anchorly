@@ -1,35 +1,20 @@
 .task-section {
-  padding: 24px;
+  padding: 16px;
   border-radius: 12px;
   background-color: var(--color-bg-card);
 }
 
-.task-list {
-  padding: 0;
-  margin: 16px 0 0;
-  list-style: none;
-}
-
-.task-list li {
-  padding: 16px 0;
-  border-bottom: 1px solid var(--color-border);
-  grid-template-columns: 30px 1fr 160px 130px 70px;
-}
-
-.completed-task span:nth-child(2) {
-  text-decoration: line-through;
-  color: var(--color-text-muted);
-}
-
 .add-task-form {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .add-task-form input,
 .add-task-form select {
-  flex: 1;
+  width: 100%;
+  min-width: 0;
   padding: 12px 16px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -38,8 +23,9 @@
   color: var(--color-text-primary);
 }
 
-.add-task-form select {
-  max-width: 190px;
+.add-task-form input[type="text"],
+.add-task-form button {
+  grid-column: 1 / -1;
 }
 
 .add-task-form button {
@@ -52,25 +38,11 @@
   cursor: pointer;
 }
 
-.add-task-form input[type="date"] {
-  max-width: 160px;
-}
-
-.task-list li button {
-  border: none;
-  padding: 8px 10px;
-  border-radius: 6px;
-  background-color: #fee2e2;
-  color: #b91c1c;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 .task-section-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -80,6 +52,7 @@
 }
 
 .filters button {
+  flex: 1;
   border: none;
   padding: 8px 12px;
   border-radius: 6px;
@@ -92,6 +65,41 @@
 .filters .active-filter {
   background-color: var(--color-accent);
   color: var(--color-accent-contrast);
+}
+
+@media (min-width: 768px) {
+  .task-section {
+    padding: 24px;
+  }
+
+  .add-task-form {
+    display: flex;
+    margin-bottom: 32px;
+  }
+
+  .add-task-form input,
+  .add-task-form select {
+    flex: 1;
+  }
+
+  .add-task-form select {
+    max-width: 190px;
+  }
+
+  .add-task-form input[type="date"] {
+    max-width: 160px;
+  }
+
+  .task-section-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .filters button {
+    flex: none;
+  }
 }
 
 .search-box {
@@ -200,10 +208,12 @@
 
 .task-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .task-badge {
+  white-space: nowrap;
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 999px;
