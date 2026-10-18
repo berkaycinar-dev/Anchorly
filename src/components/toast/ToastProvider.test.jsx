@@ -268,7 +268,7 @@ describe("ToastProvider", () => {
     expect(screen.queryByText("Second message")).not.toBeInTheDocument();
   });
 
-    it("renders toasts inside a registered host element", () => {
+  it("renders toasts inside a registered host element", () => {
     function HostProbe() {
       const toast = useToast();
       const setHost = useToastHost();
@@ -326,6 +326,96 @@ describe("ToastProvider", () => {
 
     expect(screen.queryByTestId("host")).not.toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Hosted message");
+  });
+
+  it("drops the oldest regular toast before a persistent one", () => {
+    const handle = renderWithToast();
+
+    act(() => {
+      handle.current.error("Persistent message", { persistent: true });
+      handle.current.info("Message 1");
+      handle.current.info("Message 2");
+      handle.current.info("Message 3");
+    });
+
+    expect(screen.getByText("Persistent message")).toBeInTheDocument();
+    expect(screen.queryByText("Message 1")).not.toBeInTheDocument();
+    expect(screen.getByText("Message 2")).toBeInTheDocument();
+    expect(screen.getByText("Message 3")).toBeInTheDocument();
+  });
+
+  it("drops the oldest toast when every toast is persistent", () => {
+    const handle = renderWithToast();
+
+    act(() => {
+      handle.current.info("Message 1", { persistent: true });
+      handle.current.info("Message 2", { persistent: true });
+      handle.current.info("Message 3", { persistent: true });
+      handle.current.info("Message 4", { persistent: true });
+    });
+
+    expect(screen.queryByText("Message 1")).not.toBeInTheDocument();
+    expect(screen.getByText("Message 4")).toBeInTheDocument();
+  });
+
+  it("keeps a persistent toast until it is closed", () => {
+    const handle = renderWithToast();
+
+    act(() => {
+      handle.current.error("Stays", { persistent: true });
+    });
+
+    advance(600000);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Stays");
+
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("calls onClose when the close button is pressed", () => {
+    const handle = renderWithToast();
+    const onClose = vi.fn();
+
+    act(() => {
+      handle.current.info("Info message", { onClose });
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not call onClose when the toast is dismissed in code", () => {
+    const handle = renderWithToast();
+    const onClose = vi.fn();
+    let id;
+
+    act(() => {
+      id = handle.current.info("Info message", { onClose });
+    });
+
+    act(() => {
+      handle.current.dismiss(id);
+    });
+
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("does not call onClose when the toast times out", () => {
+    const handle = renderWithToast();
+    const onClose = vi.fn();
+
+    act(() => {
+      handle.current.info("Info message", { onClose });
+    });
+
+    advance(5000);
+
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   it("throws a clear error when useToast is used outside the provider", () => {

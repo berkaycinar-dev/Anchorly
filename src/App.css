@@ -1127,6 +1127,7 @@ body {
 }
 
 .task-card {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1233,7 +1234,8 @@ body {
     background-color 0.15s ease;
 }
 
-.task-card:hover .task-delete-button {
+.task-card:hover .task-delete-button,
+.task-card:focus-within .task-delete-button {
   opacity: 1;
 }
 
@@ -1741,35 +1743,6 @@ textarea {
   justify-content: flex-end;
   gap: 8px;
 }
-.storage-warning {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 12px 16px;
-  border: 1px solid #dc2626;
-  border-radius: var(--radius-md);
-  background-color: color-mix(in srgb, #dc2626 12%, var(--color-bg-card));
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
-}
-
-.storage-warning-message {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.storage-warning-close {
-  flex-shrink: 0;
-  padding: 6px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background-color: var(--color-bg-card);
-  color: var(--color-text-primary);
-  font-size: 13px;
-}
 .app-logo {
   flex-shrink: 0;
   color: var(--color-text-primary);
@@ -1929,4 +1902,110 @@ textarea {
 
 .modal-box h2:focus {
   outline: none;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.task-card .task-title {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.task-card .task-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+}
+
+.task-card .task-title:focus-visible {
+  outline: none;
+}
+
+.task-card .task-title:focus-visible::after {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.task-card.completed-task .task-title {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+.task-card .task-checkbox,
+.task-card .task-delete-button,
+.task-card .task-move-controls,
+.task-card .task-badge-repeat {
+  position: relative;
+  z-index: 1;
+}
+
+.task-card .task-move-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.task-card:hover .task-move-controls,
+.task-card:focus-within .task-move-controls {
+  opacity: 1;
+}
+
+.task-card .task-move-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.task-card .task-move-button:hover:not(:disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) 18%,
+    var(--color-bg-subtle)
+  );
+  color: var(--color-accent);
+}
+
+.task-card .task-move-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (hover: none) {
+  .task-card .task-move-controls,
+  .task-card .task-delete-button {
+    opacity: 1;
+  }
 }

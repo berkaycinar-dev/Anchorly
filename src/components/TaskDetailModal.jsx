@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createId } from "../lib/id";
-import { useToastHost } from "./toast/useToast";
+import { useToast, useToastHost } from "./toast/useToast";
 
 function useBackdropClose(dialogRef) {
   const pressStartedOnBackdrop = useRef(false);
@@ -99,6 +99,7 @@ function TaskDetailModal({
   const titleRef = useRef(null);
   const titleId = useId();
   const setToastHost = useToastHost();
+  const toast = useToast();
   const backdropClose = useBackdropClose(dialogRef);
   const hasTask = Boolean(task);
 
@@ -144,7 +145,7 @@ function TaskDetailModal({
     const maxSizeInBytes = 1024 * 1024;
 
     if (file.size > maxSizeInBytes) {
-      alert(t.fileTooLargeWarning);
+      toast.error(t.fileTooLargeWarning);
       event.target.value = "";
       return;
     }

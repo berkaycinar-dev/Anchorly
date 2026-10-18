@@ -15,7 +15,9 @@ export function getTaskCheckbox(title) {
 }
 
 export function getDeleteButton(title) {
-  return within(getTaskItem(title)).getByRole("button", { name: "Delete" });
+  return within(getTaskItem(title)).getByRole("button", {
+    name: `Delete "${title}"`,
+  });
 }
 
 export function getFilterButton(name) {
@@ -32,4 +34,14 @@ export function getSidebarLink(name) {
 
 export function getSidebarBadge(name) {
   return getSidebarLink(name).querySelector(".nav-badge");
+}
+
+export function getTaskTitleButton(title) {
+  return screen.getByRole("button", { name: title });
+}
+
+export function getMoveButton(title, direction) {
+  return screen.getByRole("button", {
+    name: `Move "${title}" ${direction}`,
+  });
 }

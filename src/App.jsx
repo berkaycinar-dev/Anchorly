@@ -10,7 +10,7 @@ import {
 } from "react-router";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import StorageWarning from "./components/StorageWarning";
+import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
 import ToastProvider from "./components/toast/ToastProvider";
 import DashboardPage from "./pages/DashboardPage";
@@ -568,53 +568,53 @@ function App() {
       style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
     >
       <ToastProvider closeLabel={t.closeButton}>
-      <Sidebar t={t} badges={sidebarBadges} />
-      <main className="main-content">
-        <StorageWarning t={t} />
-        <Header />
-        <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
+        <StorageToasts t={t} />
+        <Sidebar t={t} badges={sidebarBadges} />
+        <main className="main-content">
+          <Header />
+          <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
 
-        <Routes>
-          {routes.map((route) => (
+          <Routes>
+            {routes.map((route) => (
+              <Route
+                key={route.key}
+                path={route.path}
+                element={pages[route.key]}
+              />
+            ))}
             <Route
-              key={route.key}
-              path={route.path}
-              element={pages[route.key]}
+              path={PROJECT_DETAIL_PATH}
+              element={
+                selectedProject ? (
+                  pages.Projects
+                ) : (
+                  <Navigate to="/projects" replace />
+                )
+              }
             />
-          ))}
-          <Route
-            path={PROJECT_DETAIL_PATH}
-            element={
-              selectedProject ? (
-                pages.Projects
-              ) : (
-                <Navigate to="/projects" replace />
-              )
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
 
-      <TaskDetailModal
-        key={selectedTaskId ?? "none"}
-        task={selectedTask}
-        onClose={() => setSelectedTaskId(null)}
-        onToggleTask={toggleTask}
-        onUpdateDescription={updateTaskDescription}
-        onUpdateTitle={updateTaskTitle}
-        onUpdateDate={updateTaskDate}
-        onDeleteTask={handleDeleteTaskFromModal}
-        onAddStep={addTaskStep}
-        onToggleStep={toggleTaskStep}
-        onDeleteStep={deleteTaskStep}
-        onUpdateRepeat={updateTaskRepeat}
-        onAddAttachment={addTaskAttachment}
-        onDeleteAttachment={deleteTaskAttachment}
-        t={t}
-        projects={projects}
-        onAssignProject={handleAssignProject}
-      />
+        <TaskDetailModal
+          key={selectedTaskId ?? "none"}
+          task={selectedTask}
+          onClose={() => setSelectedTaskId(null)}
+          onToggleTask={toggleTask}
+          onUpdateDescription={updateTaskDescription}
+          onUpdateTitle={updateTaskTitle}
+          onUpdateDate={updateTaskDate}
+          onDeleteTask={handleDeleteTaskFromModal}
+          onAddStep={addTaskStep}
+          onToggleStep={toggleTaskStep}
+          onDeleteStep={deleteTaskStep}
+          onUpdateRepeat={updateTaskRepeat}
+          onAddAttachment={addTaskAttachment}
+          onDeleteAttachment={deleteTaskAttachment}
+          t={t}
+          projects={projects}
+          onAssignProject={handleAssignProject}
+        />
       </ToastProvider>
     </div>
   );

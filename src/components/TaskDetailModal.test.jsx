@@ -1,4 +1,11 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 import { useEffect } from "react";
@@ -319,5 +326,66 @@ describe("TaskDetailModal toasts", () => {
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByRole("alert")).toHaveTextContent("Something went wrong");
+  });
+});
+
+describe("TaskDetailModal attachments", () => {
+  const ONE_MEGABYTE = 1024 * 1024;
+
+  function getFileInput() {
+    return getDialog().querySelector('input[type="file"]');
+  }
+
+  function createFile(name, type, size) {
+    return new File([new Uint8Array(size)], name, { type });
+  }
+
+  it("rejects a file over 1 MB with a toast inside the dialog", async () => {
+    const user = userEvent.setup();
+    const alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const { props } = renderModal();
+
+    await user.upload(
+      getFileInput(),
+      createFile("big.png", "image/png", ONE_MEGABYTE + 1),
+    );
+
+    expect(within(getDialog()).getByRole("alert")).toHaveTextContent(
+      strings.en.fileTooLargeWarning,
+    );
+    expect(alertSpy).not.toHaveBeenCalled();
+    expect(props.onAddAttachment).not.toHaveBeenCalled();
+  });
+
+  it("accepts a file of exactly 1 MB without a warning", async () => {
+    const user = userEvent.setup();
+    const { props } = renderModal();
+
+    await user.upload(
+      getFileInput(),
+      createFile("limit.txt", "text/plain", ONE_MEGABYTE),
+    );
+
+    await waitFor(() => expect(props.onAddAttachment).toHaveBeenCalledTimes(1));
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("adds a small file to the task", async () => {
+    const user = userEvent.setup();
+    const { props } = renderModal();
+
+    await user.upload(getFileInput(), createFile("note.txt", "text/plain", 10));
+
+    await waitFor(() => expect(props.onAddAttachment).toHaveBeenCalledTimes(1));
+
+    expect(props.onAddAttachment).toHaveBeenCalledWith(
+      TASK_ID,
+      expect.objectContaining({
+        name: "note.txt",
+        type: "text/plain",
+        data: expect.stringMatching(/^data:/),
+      }),
+    );
   });
 });

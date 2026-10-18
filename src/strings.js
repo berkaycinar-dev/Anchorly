@@ -112,6 +112,12 @@ export const strings = {
     project: "Proje",
     noProject: "Proje yok",
     deleteButtonAria: "Görevi sil",
+    completeTaskLabel: (title) => `"${title}" görevini tamamla`,
+    deleteTaskLabel: (title) => `"${title}" görevini sil`,
+    moveTaskUpLabel: (title) => `"${title}" görevini yukarı taşı`,
+    moveTaskDownLabel: (title) => `"${title}" görevini aşağı taşı`,
+    taskMovedAnnouncement: (title, position, total) =>
+      `${title}: ${total} görevden ${position}. sıraya taşındı`,
     confirmDeleteMessage: (title) =>
       `"${title}" görevini silmek istediğine emin misin? Bu işlem geri alınamaz.`,
     confirmDeleteCancel: "Vazgeç",
@@ -240,6 +246,12 @@ export const strings = {
     project: "Project",
     noProject: "No project",
     deleteButtonAria: "Delete task",
+    completeTaskLabel: (title) => `Complete "${title}"`,
+    deleteTaskLabel: (title) => `Delete "${title}"`,
+    moveTaskUpLabel: (title) => `Move "${title}" up`,
+    moveTaskDownLabel: (title) => `Move "${title}" down`,
+    taskMovedAnnouncement: (title, position, total) =>
+      `${title}: moved to position ${position} of ${total}`,
     confirmDeleteMessage: (title) =>
       `Are you sure you want to delete "${title}"? This action cannot be undone.`,
     confirmDeleteCancel: "Cancel",

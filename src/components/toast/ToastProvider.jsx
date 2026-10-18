@@ -6,20 +6,33 @@ import { ToastContext } from "./ToastContext";
 const TOAST_DURATION_MS = 5000;
 const MAX_VISIBLE_TOASTS = 3;
 
-function ToastItem({ toast, closeLabel, onDismiss }) {
+function limitToasts(list) {
+  let result = list;
+
+  while (result.length > MAX_VISIBLE_TOASTS) {
+    const regularIndex = result.findIndex((toast) => !toast.persistent);
+    const removeIndex = regularIndex === -1 ? 0 : regularIndex;
+
+    result = result.filter((_, index) => index !== removeIndex);
+  }
+
+  return result;
+}
+
+function ToastItem({ toast, closeLabel, onDismiss, onUserClose }) {
   const [isHovered, setIsHovered] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   const isPaused = isHovered || hasFocus;
 
   useEffect(() => {
-    if (isPaused) {
+    if (isPaused || toast.persistent) {
       return undefined;
     }
 
     const timer = setTimeout(() => onDismiss(toast.id), TOAST_DURATION_MS);
 
     return () => clearTimeout(timer);
-  }, [isPaused, toast.id, onDismiss]);
+  }, [isPaused, toast.id, toast.persistent, onDismiss]);
 
   return (
     <div
@@ -35,7 +48,7 @@ function ToastItem({ toast, closeLabel, onDismiss }) {
         type="button"
         className="toast-close"
         aria-label={closeLabel}
-        onClick={() => onDismiss(toast.id)}
+        onClick={() => onUserClose(toast)}
       >
         <span aria-hidden="true">×</span>
       </button>
@@ -51,11 +64,20 @@ function ToastProvider({ children, closeLabel }) {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }, []);
 
-  const show = useCallback((kind, message) => {
+  const userClose = useCallback(
+    (toast) => {
+      dismiss(toast.id);
+      toast.onClose?.();
+    },
+    [dismiss],
+  );
+
+  const show = useCallback((kind, message, options = {}) => {
     const id = createId();
+    const { persistent = false, onClose } = options;
 
     setToasts((current) =>
-      [...current, { id, kind, message }].slice(-MAX_VISIBLE_TOASTS),
+      limitToasts([...current, { id, kind, message, persistent, onClose }]),
     );
 
     return id;
@@ -63,9 +85,9 @@ function ToastProvider({ children, closeLabel }) {
 
   const api = useMemo(
     () => ({
-      info: (message) => show("info", message),
-      success: (message) => show("success", message),
-      error: (message) => show("error", message),
+      info: (message, options) => show("info", message, options),
+      success: (message, options) => show("success", message, options),
+      error: (message, options) => show("error", message, options),
       dismiss,
       setHost,
     }),
@@ -80,6 +102,7 @@ function ToastProvider({ children, closeLabel }) {
           toast={toast}
           closeLabel={closeLabel}
           onDismiss={dismiss}
+          onUserClose={userClose}
         />
       ))}
     </div>

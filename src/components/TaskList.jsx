@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useLayoutEffect, useRef, useState, memo } from "react";
 
 function TaskList({
   tasks,
@@ -10,6 +10,35 @@ function TaskList({
 }) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
   const [draggedTaskId, setDraggedTaskId] = useState(null);
+  const [announcement, setAnnouncement] = useState("");
+  const pendingFocus = useRef(null);
+  const listRef = useRef(null);
+
+  const activeTasks = tasks
+    .filter((task) => !task.completed)
+    .sort((a, b) => a.order - b.order);
+
+  useLayoutEffect(() => {
+    const pending = pendingFocus.current;
+
+    if (!pending || !listRef.current) {
+      return;
+    }
+
+    pendingFocus.current = null;
+
+    const card = listRef.current.querySelector(
+      `[data-task-id="${pending.taskId}"]`,
+    );
+    const target = card?.querySelector(`[data-focus="${pending.focus}"]`);
+    const fallback = card?.querySelector(`[data-focus="${pending.fallback}"]`);
+
+    if (target && !target.disabled) {
+      target.focus();
+    } else if (fallback) {
+      fallback.focus();
+    }
+  });
 
   if (tasks.length === 0) {
     return (
@@ -21,16 +50,54 @@ function TaskList({
     );
   }
 
-  const activeTasks = tasks
-    .filter((task) => !task.completed)
-    .sort((a, b) => a.order - b.order);
-
   const completedTasks = tasks.filter((task) => task.completed);
 
+  function moveTask(task, direction, focus) {
+    const index = activeTasks.findIndex((item) => item.id === task.id);
+    const neighbour = activeTasks[index + direction];
+
+    if (!neighbour) {
+      return;
+    }
+
+    pendingFocus.current = {
+      taskId: task.id,
+      focus,
+      fallback: direction === 1 ? "up" : "down",
+    };
+    onReorderTasks(task.id, neighbour.id);
+    setAnnouncement(
+      t.taskMovedAnnouncement(
+        task.title,
+        index + direction + 1,
+        activeTasks.length,
+      ),
+    );
+  }
+
+  function handleKeyDown(event, task) {
+    if (task.completed || !event.altKey) {
+      return;
+    }
+
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") {
+      return;
+    }
+
+    event.preventDefault();
+
+    const focus = event.target.dataset.focus ?? "title";
+
+    moveTask(task, event.key === "ArrowDown" ? 1 : -1, focus);
+  }
+
   function renderTaskCard(task, isDraggable) {
+    const index = activeTasks.findIndex((item) => item.id === task.id);
+
     return (
       <li
         key={task.id}
+        data-task-id={task.id}
         className={
           task.completed
             ? "task-card completed-task"
@@ -39,7 +106,7 @@ function TaskList({
               : "task-card"
         }
         draggable={isDraggable}
-        onClick={() => onSelectTask(task.id)}
+        onKeyDown={(event) => handleKeyDown(event, task)}
         onDragStart={(event) => {
           event.dataTransfer.setData("text/plain", task.id);
           setDraggedTaskId(task.id);
@@ -62,16 +129,20 @@ function TaskList({
         <input
           type="checkbox"
           className="task-checkbox"
+          aria-label={t.completeTaskLabel(task.title)}
           checked={task.completed}
-          onClick={(event) => event.stopPropagation()}
-          onChange={(event) => {
-            event.stopPropagation();
-            toggleTask(task.id);
-          }}
+          onChange={() => toggleTask(task.id)}
         />
 
         <div className="task-card-content">
-          <span className="task-title">{task.title}</span>
+          <button
+            type="button"
+            className="task-title"
+            data-focus="title"
+            onClick={() => onSelectTask(task.id)}
+          >
+            {task.title}
+          </button>
 
           <div className="task-meta">
             <span className="task-badge task-badge-category">
@@ -97,15 +168,38 @@ function TaskList({
           </div>
         </div>
 
+        {isDraggable && (
+          <div className="task-move-controls">
+            <button
+              type="button"
+              className="task-move-button"
+              data-focus="up"
+              aria-label={t.moveTaskUpLabel(task.title)}
+              disabled={index === 0}
+              onClick={() => moveTask(task, -1, "up")}
+            >
+              <span aria-hidden="true">▲</span>
+            </button>
+            <button
+              type="button"
+              className="task-move-button"
+              data-focus="down"
+              aria-label={t.moveTaskDownLabel(task.title)}
+              disabled={index === activeTasks.length - 1}
+              onClick={() => moveTask(task, 1, "down")}
+            >
+              <span aria-hidden="true">▼</span>
+            </button>
+          </div>
+        )}
+
         <button
+          type="button"
           className="task-delete-button"
-          aria-label={t.deleteButton}
-          onClick={(event) => {
-            event.stopPropagation();
-            deleteTask(task.id);
-          }}
+          aria-label={t.deleteTaskLabel(task.title)}
+          onClick={() => deleteTask(task.id)}
         >
-          ×
+          <span aria-hidden="true">×</span>
         </button>
       </li>
     );
@@ -113,7 +207,11 @@ function TaskList({
 
   return (
     <div className="task-list-container">
-      <ul className="task-list">
+      <div className="visually-hidden" role="status">
+        {announcement}
+      </div>
+
+      <ul className="task-list" ref={listRef}>
         {activeTasks.map((task) => renderTaskCard(task, true))}
       </ul>
 
