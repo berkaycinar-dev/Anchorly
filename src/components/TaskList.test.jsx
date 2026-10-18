@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import TaskList from "./TaskList";
 import { strings } from "../strings";
 import {
@@ -40,27 +40,6 @@ function createThreeTasks() {
     createTask(SECOND_ID, "Task 2", 1),
     createTask(THIRD_ID, "Task 3", 2),
   ];
-}
-
-function renderTaskList(onReorderTasks = vi.fn()) {
-  render(
-    <TaskList
-      tasks={[
-        createTask(FIRST_ID, "Task 1", 0),
-        createTask(SECOND_ID, "Task 2", 1),
-      ]}
-      toggleTask={vi.fn()}
-      deleteTask={vi.fn()}
-      onSelectTask={vi.fn()}
-      onReorderTasks={onReorderTasks}
-      t={strings.en}
-    />,
-  );
-
-  return {
-    firstCard: getTaskItem("Task 1"),
-    secondCard: getTaskItem("Task 2"),
-  };
 }
 
 function renderCards(tasks = createThreeTasks()) {
@@ -110,38 +89,167 @@ function getRenderedTitles() {
   return screen.getAllByText(/^Task \d$/).map((element) => element.textContent);
 }
 
+const CARD_HEIGHT = 50;
+const CARD_STEP = 60;
+const TASK_IDS = [FIRST_ID, SECOND_ID, THIRD_ID];
+
+function mockCardRects() {
+  vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(
+    function getRect() {
+      const isList = this.classList?.contains("task-list");
+      const index = TASK_IDS.indexOf(this.dataset?.taskId);
+      const top = index === -1 ? 0 : index * CARD_STEP;
+      const height = isList
+        ? TASK_IDS.length * CARD_STEP
+        : index === -1
+          ? 0
+          : CARD_HEIGHT;
+      const width = isList || index !== -1 ? 300 : 0;
+
+      return {
+        x: 0,
+        y: top,
+        top,
+        left: 0,
+        right: width,
+        bottom: top + height,
+        width,
+        height,
+        toJSON() {},
+      };
+    },
+  );
+}
+
+function getCardCenterY(index) {
+  return index * CARD_STEP + CARD_HEIGHT / 2;
+}
+
+function wait(milliseconds) {
+  return act(() => new Promise((resolve) => setTimeout(resolve, milliseconds)));
+}
+
+function waitForMeasuring() {
+  return wait(20);
+}
+
+function waitForDragCleanup() {
+  return wait(60);
+}
+
+async function startDrag(element, fromIndex) {
+  const startY = getCardCenterY(fromIndex);
+
+  fireEvent.mouseDown(element, { button: 0, clientX: 10, clientY: startY });
+  fireEvent.mouseMove(document, { clientX: 10, clientY: startY + 10 });
+  await waitForMeasuring();
+}
+
+async function finishDrag(toIndex) {
+  const endY = getCardCenterY(toIndex);
+
+  fireEvent.mouseMove(document, { clientX: 10, clientY: endY });
+  await waitForMeasuring();
+  fireEvent.mouseUp(document, { clientX: 10, clientY: endY });
+}
+
+function getAnnouncer() {
+  return document.querySelector(
+    '.task-list-container > .visually-hidden[role="status"]',
+  );
+}
+
 describe("TaskList drag and drop", () => {
-  it("stores the dragged task id in the drag data", () => {
-    const { firstCard } = renderTaskList();
-    const dataTransfer = { setData: vi.fn() };
+  afterEach(() => waitForDragCleanup());
 
-    fireEvent.dragStart(firstCard, { dataTransfer });
+  it("passes the dragged id and the target id when a card is dropped", async () => {
+    mockCardRects();
+    const props = renderCards();
 
-    expect(dataTransfer.setData).toHaveBeenCalledWith("text/plain", FIRST_ID);
+    await startDrag(getTaskItem("Task 1"), 0);
+    await finishDrag(2);
+
+    expect(props.onReorderTasks).toHaveBeenCalledWith(FIRST_ID, THIRD_ID);
   });
 
-  it("marks only the dragged card while dragging", () => {
-    const { firstCard, secondCard } = renderTaskList();
+  it("moves the card to its new place in the list", async () => {
+    mockCardRects();
+    render(<ReorderableList />);
 
-    fireEvent.dragStart(firstCard, { dataTransfer: { setData: vi.fn() } });
+    await startDrag(getTaskItem("Task 1"), 0);
+    await finishDrag(2);
 
-    expect(firstCard).toHaveClass("task-card-dragging");
-    expect(secondCard).not.toHaveClass("task-card-dragging");
-
-    fireEvent.dragEnd(firstCard);
-
-    expect(firstCard).not.toHaveClass("task-card-dragging");
+    expect(getRenderedTitles()).toEqual(["Task 2", "Task 3", "Task 1"]);
   });
 
-  it("passes the dragged id and the target id when a card is dropped", () => {
-    const onReorderTasks = vi.fn();
-    const { secondCard } = renderTaskList(onReorderTasks);
+  it("marks only the dragged card while dragging", async () => {
+    mockCardRects();
+    renderCards();
 
-    fireEvent.drop(secondCard, {
-      dataTransfer: { getData: () => FIRST_ID },
-    });
+    await startDrag(getTaskItem("Task 1"), 0);
 
-    expect(onReorderTasks).toHaveBeenCalledWith(FIRST_ID, SECOND_ID);
+    expect(getTaskItem("Task 1")).toHaveClass("task-card-dragging");
+    expect(getTaskItem("Task 2")).not.toHaveClass("task-card-dragging");
+
+    await finishDrag(0);
+
+    expect(getTaskItem("Task 1")).not.toHaveClass("task-card-dragging");
+  });
+
+  it("does not reorder when the card is dropped on itself", async () => {
+    mockCardRects();
+    const props = renderCards();
+
+    await startDrag(getTaskItem("Task 2"), 1);
+    await finishDrag(1);
+
+    expect(props.onReorderTasks).not.toHaveBeenCalled();
+  });
+
+  it("does not start a drag on a small mouse movement", () => {
+    mockCardRects();
+    const props = renderCards();
+    const card = getTaskItem("Task 1");
+
+    fireEvent.mouseDown(card, { button: 0, clientX: 10, clientY: 25 });
+    fireEvent.mouseMove(document, { clientX: 10, clientY: 29 });
+    fireEvent.mouseUp(document, { clientX: 10, clientY: 29 });
+
+    expect(card).not.toHaveClass("task-card-dragging");
+    expect(props.onReorderTasks).not.toHaveBeenCalled();
+  });
+
+  it("does not open the task when a drag ends on its title", async () => {
+    mockCardRects();
+    const props = renderCards();
+
+    await startDrag(getTaskTitleButton("Task 1"), 0);
+    await finishDrag(2);
+    fireEvent.click(getTaskTitleButton("Task 1"));
+
+    expect(props.onSelectTask).not.toHaveBeenCalled();
+  });
+
+  it("announces the new position after a drag", async () => {
+    mockCardRects();
+    renderCards();
+
+    await startDrag(getTaskItem("Task 1"), 0);
+    await finishDrag(2);
+
+    expect(getAnnouncer()).toHaveTextContent(
+      "Task 1: moved to position 3 of 3",
+    );
+  });
+
+  it("does not make completed tasks draggable", () => {
+    renderCards([
+      createTask(FIRST_ID, "Task 1", 0),
+      createTask(SECOND_ID, "Task 2", 1, { completed: true }),
+    ]);
+
+    expect(getTaskItem("Task 1")).toHaveClass("task-card-sortable");
+    expect(getTaskItem("Task 2")).not.toHaveClass("task-card-sortable");
   });
 });
 
@@ -333,7 +441,7 @@ describe("TaskList announcements", () => {
   it("starts with an empty live region", () => {
     renderCards();
 
-    expect(screen.getByRole("status")).toBeEmptyDOMElement();
+    expect(getAnnouncer()).toBeEmptyDOMElement();
   });
 
   it("announces the new position after moving down", async () => {
@@ -342,7 +450,7 @@ describe("TaskList announcements", () => {
 
     await user.click(getMoveButton("Task 1", "down"));
 
-    expect(screen.getByRole("status")).toHaveTextContent(
+    expect(getAnnouncer()).toHaveTextContent(
       "Task 1: moved to position 2 of 3",
     );
   });
@@ -355,7 +463,7 @@ describe("TaskList announcements", () => {
       altKey: true,
     });
 
-    expect(screen.getByRole("status")).toHaveTextContent(
+    expect(getAnnouncer()).toHaveTextContent(
       "Task 3: moved to position 2 of 3",
     );
   });

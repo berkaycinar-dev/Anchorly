@@ -1,5 +1,46 @@
 import { useLayoutEffect, useRef, useState, memo } from "react";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import {
+  restrictToParentElement,
+  restrictToVerticalAxis,
+} from "@dnd-kit/modifiers";
+import { CSS } from "@dnd-kit/utilities";
 import { getCategoryLabel } from "../utils/categoryHelpers";
+
+const DRAG_MODIFIERS = [restrictToVerticalAxis, restrictToParentElement];
+const SILENT_ANNOUNCEMENTS = {
+  onDragStart: () => undefined,
+  onDragOver: () => undefined,
+  onDragEnd: () => undefined,
+  onDragCancel: () => undefined,
+};
+
+function SortableTaskItem({ id, children }) {
+  const { setNodeRef, listeners, transform, transition, isDragging } =
+    useSortable({ id });
+
+  return children({
+    ref: setNodeRef,
+    listeners,
+    isDragging,
+    style: {
+      transform: CSS.Translate.toString(transform),
+      transition,
+    },
+  });
+}
 
 function TaskList({
   tasks,
@@ -10,10 +51,15 @@ function TaskList({
   t,
 }) {
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
-  const [draggedTaskId, setDraggedTaskId] = useState(null);
   const [announcement, setAnnouncement] = useState("");
   const pendingFocus = useRef(null);
   const containerRef = useRef(null);
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 5 },
+    }),
+  );
 
   const activeTasks = tasks
     .filter((task) => !task.completed)
@@ -101,6 +147,20 @@ function TaskList({
     deleteTask(task.id);
   }
 
+  function handleDragEnd({ active, over }) {
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const task = activeTasks.find((item) => item.id === active.id);
+    const targetIndex = activeTasks.findIndex((item) => item.id === over.id);
+
+    onReorderTasks(active.id, over.id);
+    setAnnouncement(
+      t.taskMovedAnnouncement(task.title, targetIndex + 1, activeTasks.length),
+    );
+  }
+
   function handleKeyDown(event, task) {
     if (task.completed || !event.altKey) {
       return;
@@ -117,40 +177,29 @@ function TaskList({
     moveTask(task, event.key === "ArrowDown" ? 1 : -1, focus);
   }
 
-  function renderTaskCard(task, isDraggable) {
+  function getCardClassName(task, sortable) {
+    if (task.completed) {
+      return "task-card completed-task";
+    }
+
+    return sortable?.isDragging
+      ? "task-card task-card-sortable task-card-dragging"
+      : "task-card task-card-sortable";
+  }
+
+  function renderTaskCard(task, sortable) {
+    const isDraggable = Boolean(sortable);
     const index = activeTasks.findIndex((item) => item.id === task.id);
 
     return (
       <li
         key={task.id}
+        ref={sortable?.ref}
+        style={sortable?.style}
         data-task-id={task.id}
-        className={
-          task.completed
-            ? "task-card completed-task"
-            : draggedTaskId === task.id
-              ? "task-card task-card-dragging"
-              : "task-card"
-        }
-        draggable={isDraggable}
+        className={getCardClassName(task, sortable)}
         onKeyDown={(event) => handleKeyDown(event, task)}
-        onDragStart={(event) => {
-          event.dataTransfer.setData("text/plain", task.id);
-          setDraggedTaskId(task.id);
-        }}
-        onDragEnd={() => setDraggedTaskId(null)}
-        onDragOver={(event) => {
-          if (isDraggable) {
-            event.preventDefault();
-          }
-        }}
-        onDrop={(event) => {
-          if (!isDraggable) {
-            return;
-          }
-          event.preventDefault();
-          const draggedId = event.dataTransfer.getData("text/plain");
-          onReorderTasks(draggedId, task.id);
-        }}
+        {...sortable?.listeners}
       >
         <input
           type="checkbox"
@@ -238,9 +287,26 @@ function TaskList({
         {announcement}
       </div>
 
-      <ul className="task-list">
-        {activeTasks.map((task) => renderTaskCard(task, true))}
-      </ul>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        modifiers={DRAG_MODIFIERS}
+        accessibility={{ announcements: SILENT_ANNOUNCEMENTS }}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={activeTasks.map((task) => task.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <ul className="task-list">
+            {activeTasks.map((task) => (
+              <SortableTaskItem key={task.id} id={task.id}>
+                {(sortable) => renderTaskCard(task, sortable)}
+              </SortableTaskItem>
+            ))}
+          </ul>
+        </SortableContext>
+      </DndContext>
 
       {completedTasks.length > 0 && (
         <div className="completed-section">
@@ -258,7 +324,7 @@ function TaskList({
 
           {isCompletedOpen && (
             <ul className="task-list">
-              {completedTasks.map((task) => renderTaskCard(task, false))}
+              {completedTasks.map((task) => renderTaskCard(task, null))}
             </ul>
           )}
         </div>

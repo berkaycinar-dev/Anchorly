@@ -274,12 +274,15 @@
   transform: rotate(90deg);
 }
 
-.task-card[draggable="true"] {
+.task-card-sortable {
   cursor: grab;
+  touch-action: manipulation;
 }
 
 .task-card-dragging {
-  opacity: 0.4;
+  z-index: 2;
+  cursor: grabbing;
+  box-shadow: var(--shadow-md);
 }
 
 .task-badge-repeat {
@@ -410,5 +413,11 @@
   .filters button,
   .completed-toggle {
     min-height: 44px;
+  }
+
+  .task-card-sortable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
 }
