@@ -1,0 +1,50 @@
+.app {
+  display: flex;
+  min-height: 100vh;
+  font-family: var(--font-main);
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.header p {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+}
+
+.header button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.page-title {
+  margin-bottom: 20px;
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+}

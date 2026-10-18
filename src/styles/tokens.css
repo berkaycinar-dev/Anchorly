@@ -1,0 +1,97 @@
+:root {
+  --color-accent: #64748b;
+  --color-bg-page: #f4f6fb;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #f3f4f6;
+  --color-bg-input: #ffffff;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #5b6371;
+  --color-text-muted: #656c79;
+  --color-border: #e5e7eb;
+  --color-accent-contrast: #ffffff;
+  --color-accent-text: #58667b;
+}
+
+.theme-gray {
+  --color-accent: #64748b;
+  --color-bg-page: #f4f6fb;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #f3f4f6;
+  --color-bg-input: #ffffff;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #5b6371;
+  --color-text-muted: #656c79;
+  --color-border: #e5e7eb;
+  --color-accent-contrast: #ffffff;
+  --color-accent-text: #58667b;
+}
+
+.theme-purple {
+  --color-accent: #9333ea;
+  --color-bg-page: #1e1b2e;
+  --color-bg-card: #2a2440;
+  --color-bg-subtle: #241f38;
+  --color-bg-input: #1e1b2e;
+  --color-text-primary: #f3f0fa;
+  --color-text-secondary: #c4b5fd;
+  --color-text-muted: #9c8cc4;
+  --color-border: #4c3d70;
+  --color-accent-contrast: #ffffff;
+  --color-accent-text: #bb7ff2;
+}
+
+.theme-blue {
+  --color-accent: #3b82f6;
+  --color-bg-page: #0f172a;
+  --color-bg-card: #1e293b;
+  --color-bg-subtle: #16223a;
+  --color-bg-input: #0f172a;
+  --color-text-primary: #e0f2fe;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #8896a9;
+  --color-border: #334155;
+  --color-accent-contrast: #0f172a;
+  --color-accent-text: #629bf8;
+}
+
+.theme-red {
+  --color-accent: #dc2626;
+  --color-bg-page: #fef2f2;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #fee2e2;
+  --color-bg-input: #ffffff;
+  --color-text-primary: #7f1d1d;
+  --color-text-secondary: #b91c1c;
+  --color-text-muted: #895656;
+  --color-border: #fecaca;
+  --color-accent-contrast: #ffffff;
+  --color-accent-text: #b91e1e;
+}
+
+.theme-green {
+  --color-accent: #22c55e;
+  --color-bg-page: #050e09;
+  --color-bg-card: #07180f;
+  --color-bg-subtle: #123021;
+  --color-bg-input: #0f2418;
+  --color-text-primary: #dcfce7;
+  --color-text-secondary: #86efac;
+  --color-text-muted: #73a184;
+  --color-border: #1f5c38;
+  --color-accent-contrast: #052e13;
+  --color-accent-text: #22c55e;
+}
+
+.theme-pink {
+  --color-accent: #db2777;
+  --color-bg-page: #fdf2f8;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #fce7f3;
+  --color-bg-input: #ffffff;
+  --color-text-primary: #831843;
+  --color-text-secondary: #9d174d;
+  --color-text-muted: #9e4a76;
+  --color-border: #fbcfe8;
+  --color-accent-contrast: #ffffff;
+  --color-accent-text: #b81f63;
+}

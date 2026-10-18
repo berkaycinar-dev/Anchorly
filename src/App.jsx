@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/index.css";
 import { useEffect, useState, useRef, useMemo } from "react";
 import {
   Navigate,
