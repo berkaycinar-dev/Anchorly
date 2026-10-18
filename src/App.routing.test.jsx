@@ -1,16 +1,13 @@
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, it, expect } from "vitest";
 import { renderApp, getCurrentPath } from "./test/renderApp";
+import { getSidebarLink } from "./test/queries";
 
 const PROJECT_ID = "22222222-2222-4222-8222-222222222222";
 
 function getPageTitle() {
   return document.querySelector(".page-title");
-}
-
-function getSidebarLink(name) {
-  return within(screen.getByRole("navigation")).getByRole("link", { name });
 }
 
 beforeEach(() => {

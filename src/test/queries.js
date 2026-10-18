@@ -29,7 +29,9 @@ export function getCompletedToggle(count) {
 }
 
 export function getSidebarLink(name) {
-  return within(screen.getByRole("navigation")).getByRole("link", { name });
+  return within(
+    screen.getByRole("navigation", { name: "Main menu" }),
+  ).getByRole("link", { name });
 }
 
 export function getSidebarBadge(name) {

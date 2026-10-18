@@ -7,6 +7,10 @@ export const strings = {
     archive: "Arşiv",
     projects: "Projeler",
     settings: "Ayarlar",
+    routineTab: "Rutin",
+    moreMenu: "Diğer",
+    mainNavigationLabel: "Ana menü",
+    bottomNavigationLabel: "Alt menü",
     settingsTitle: "Ayarlar",
     settingsDescription: "Temayı ve dili buradan yönetebilirsin.",
     themeLabel: "Tema",
@@ -40,7 +44,7 @@ export const strings = {
     categoryPersonal: "Kişisel",
     categorySelfDevelopment: "Kişisel Gelişim",
     categoryOther: "Diğer",
-        categoryHealth: "Sağlık",
+    categoryHealth: "Sağlık",
     categoryProject: "Proje",
     searchLabel: "Görev ara",
     newTaskLabel: "Yeni görev",
@@ -137,7 +141,7 @@ export const strings = {
     fileTooLargeWarning:
       "Bu dosya çok büyük (1MB üzeri). Tarayıcı depolama alanı sınırlı olduğu için daha küçük bir dosya seçmelisin.",
     deleteStepAria: "Adımı sil",
-        storageQuotaWarning:
+    storageQuotaWarning:
       "Depolama alanı dolu; son değişiklikler kaydedilemedi. Büyük dosya eklerini silerek yer aç.",
     storageUnavailableWarning:
       "Tarayıcı depolamasına erişilemiyor; yaptığın değişiklikler sayfayı yenileyince kaybolacak. Gizli sekmeyi veya tarayıcı izinlerini kontrol et.",
@@ -152,6 +156,10 @@ export const strings = {
     archive: "Archive",
     projects: "Projects",
     settings: "Settings",
+    routineTab: "Routine",
+    moreMenu: "More",
+    mainNavigationLabel: "Main menu",
+    bottomNavigationLabel: "Bottom menu",
     settingsTitle: "Settings",
     settingsDescription: "Manage your theme and language here.",
     themeLabel: "Theme",
@@ -185,7 +193,7 @@ export const strings = {
     categoryPersonal: "Personal",
     categorySelfDevelopment: "Self Development",
     categoryOther: "Other",
-        categoryHealth: "Health",
+    categoryHealth: "Health",
     categoryProject: "Project",
     searchLabel: "Search tasks",
     newTaskLabel: "New task",
@@ -283,12 +291,11 @@ export const strings = {
     fileTooLargeWarning:
       "This file is too large (over 1MB). Since browser storage is limited, please choose a smaller file.",
     deleteStepAria: "Delete step",
-        storageQuotaWarning:
+    storageQuotaWarning:
       "Storage is full; your latest changes could not be saved. Remove large attachments to free up space.",
     storageUnavailableWarning:
       "Browser storage is not available; your changes will be lost when you reload the page. Check private browsing mode or browser permissions.",
     storageReadWarning:
       "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
   },
-};
-
+}; 

@@ -10,6 +10,7 @@ import {
 } from "react-router";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import BottomNav from "./components/BottomNav";
 import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
 import ToastProvider from "./components/toast/ToastProvider";
@@ -595,6 +596,8 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+
+        <BottomNav t={t} badges={sidebarBadges} />
 
         <TaskDetailModal
           key={selectedTaskId ?? "none"}

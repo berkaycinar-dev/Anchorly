@@ -13,7 +13,7 @@
 .main-content {
   flex: 1;
   min-width: 0;
-  padding: 16px;
+  padding: 16px 16px calc(16px + var(--bottom-nav-height));
 }
 
 .header {

@@ -44,6 +44,13 @@ const ICON_SHAPES = {
       <circle cx="15" cy="18" r="2.5" />
     </>
   ),
+  More: (
+    <>
+      <circle cx="5" cy="12" r="1.5" />
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="19" cy="12" r="1.5" />
+    </>
+  ),
 };
 
 function NavIcon({ name }) {
@@ -65,4 +72,4 @@ function NavIcon({ name }) {
   );
 }
 
-export default NavIcon;
+export default NavIcon; 

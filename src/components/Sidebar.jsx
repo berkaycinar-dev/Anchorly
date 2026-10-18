@@ -19,27 +19,41 @@ function Sidebar({ t, badges = {} }) {
   useLayoutEffect(() => {
     const nav = navRef.current;
     const indicator = indicatorRef.current;
-    const activeItem = nav.querySelector(".active-nav");
 
-    if (!activeItem) {
+    function positionIndicator() {
+      const activeItem = nav.querySelector(".active-nav");
+
+      if (!activeItem || nav.offsetParent === null) {
+        return;
+      }
+
+      const top = activeItem.offsetTop + INDICATOR_INSET;
+      const bottom =
+        nav.offsetHeight -
+        activeItem.offsetTop -
+        activeItem.offsetHeight +
+        INDICATOR_INSET;
+
+      if (previousTopRef.current !== null && previousTopRef.current !== top) {
+        indicator.dataset.direction =
+          top > previousTopRef.current ? "down" : "up";
+      }
+
+      indicator.style.top = `${top}px`;
+      indicator.style.bottom = `${bottom}px`;
+      previousTopRef.current = top;
+    }
+
+    positionIndicator();
+
+    if (typeof ResizeObserver === "undefined") {
       return;
     }
 
-    const top = activeItem.offsetTop + INDICATOR_INSET;
-    const bottom =
-      nav.offsetHeight -
-      activeItem.offsetTop -
-      activeItem.offsetHeight +
-      INDICATOR_INSET;
+    const observer = new ResizeObserver(positionIndicator);
+    observer.observe(nav);
 
-    if (previousTopRef.current !== null && previousTopRef.current !== top) {
-      indicator.dataset.direction =
-        top > previousTopRef.current ? "down" : "up";
-    }
-
-    indicator.style.top = `${top}px`;
-    indicator.style.bottom = `${bottom}px`;
-    previousTopRef.current = top;
+    return () => observer.disconnect();
   }, [pathname]);
 
   return (
@@ -49,7 +63,7 @@ function Sidebar({ t, badges = {} }) {
         <h2>Anchorly</h2>
       </div>
 
-      <nav ref={navRef}>
+      <nav ref={navRef} aria-label={t.mainNavigationLabel}>
         <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
 
         {routes.map((route) => {
