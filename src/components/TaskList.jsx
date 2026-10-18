@@ -13,7 +13,7 @@ function TaskList({
   const [draggedTaskId, setDraggedTaskId] = useState(null);
   const [announcement, setAnnouncement] = useState("");
   const pendingFocus = useRef(null);
-  const listRef = useRef(null);
+  const containerRef = useRef(null);
 
   const activeTasks = tasks
     .filter((task) => !task.completed)
@@ -22,13 +22,13 @@ function TaskList({
   useLayoutEffect(() => {
     const pending = pendingFocus.current;
 
-    if (!pending || !listRef.current) {
+    if (!pending || !containerRef.current) {
       return;
     }
 
     pendingFocus.current = null;
 
-    const card = listRef.current.querySelector(
+    const card = containerRef.current.querySelector(
       `[data-task-id="${pending.taskId}"]`,
     );
     const target = card?.querySelector(`[data-focus="${pending.focus}"]`);
@@ -74,6 +74,31 @@ function TaskList({
         activeTasks.length,
       ),
     );
+  }
+
+  function toggleWithFocus(task) {
+    pendingFocus.current = {
+      taskId: task.id,
+      focus: "checkbox",
+      fallback: "title",
+    };
+    toggleTask(task.id);
+  }
+
+  function deleteWithFocus(task) {
+    const siblings = task.completed ? completedTasks : activeTasks;
+    const index = siblings.findIndex((item) => item.id === task.id);
+    const neighbour = siblings[index + 1] ?? siblings[index - 1];
+
+    if (neighbour) {
+      pendingFocus.current = {
+        taskId: neighbour.id,
+        focus: "title",
+        fallback: "title",
+      };
+    }
+
+    deleteTask(task.id);
   }
 
   function handleKeyDown(event, task) {
@@ -130,9 +155,10 @@ function TaskList({
         <input
           type="checkbox"
           className="task-checkbox"
+          data-focus="checkbox"
           aria-label={t.completeTaskLabel(task.title)}
           checked={task.completed}
-          onChange={() => toggleTask(task.id)}
+          onChange={() => toggleWithFocus(task)}
         />
 
         <div className="task-card-content">
@@ -198,7 +224,7 @@ function TaskList({
           type="button"
           className="task-delete-button"
           aria-label={t.deleteTaskLabel(task.title)}
-          onClick={() => deleteTask(task.id)}
+          onClick={() => deleteWithFocus(task)}
         >
           <span aria-hidden="true">×</span>
         </button>
@@ -207,12 +233,12 @@ function TaskList({
   }
 
   return (
-    <div className="task-list-container">
+    <div className="task-list-container" ref={containerRef}>
       <div className="visually-hidden" role="status">
         {announcement}
       </div>
 
-      <ul className="task-list" ref={listRef}>
+      <ul className="task-list">
         {activeTasks.map((task) => renderTaskCard(task, true))}
       </ul>
 
