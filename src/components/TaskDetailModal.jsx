@@ -359,6 +359,7 @@ function TaskDetailModal({
 
               <button
                 type="button"
+                className="attachment-delete-button"
                 aria-label={t.deleteAttachmentLabel(attachment.name)}
                 onClick={() => onDeleteAttachment(task.id, attachment.id)}
               >
@@ -405,10 +406,11 @@ function TaskDetailModal({
               <span className={step.done ? "step-done" : ""}>{step.text}</span>
               <button
                 type="button"
+                className="step-delete-button"
                 aria-label={t.deleteStepLabel(step.text)}
                 onClick={() => onDeleteStep(task.id, step.id)}
               >
-                {t.deleteButton}
+                <span aria-hidden="true">×</span>
               </button>
             </li>
           ))}
@@ -423,7 +425,9 @@ function TaskDetailModal({
             value={newStepText}
             onChange={(event) => setNewStepText(event.target.value)}
           />
-          <button type="submit">{t.addButton}</button>
+          <button type="submit" className="btn btn-primary">
+            {t.addButton}
+          </button>
         </form>
       </div>
 
@@ -442,4 +446,4 @@ function TaskDetailModal({
   );
 }
 
-export default TaskDetailModal;
+export default TaskDetailModal; 

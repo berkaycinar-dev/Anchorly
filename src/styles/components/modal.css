@@ -9,9 +9,11 @@
 }
 
 .modal-box {
+  --modal-padding: 24px;
+
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  padding: 24px;
+  padding: 0 var(--modal-padding) var(--modal-padding);
   width: 480px;
   max-width: 90%;
   max-height: 80vh;
@@ -21,10 +23,16 @@
 }
 
 .modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 12px;
+  padding: var(--modal-padding) 0 12px;
+  margin-bottom: 4px;
+  background-color: var(--color-bg-card);
 }
 
 .modal-box textarea {
@@ -55,6 +63,31 @@
 
 .task-steps-list li span {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.step-delete-button,
+.attachment-delete-button {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: #ef4444;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.step-delete-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+@media (hover: hover) {
+  .step-delete-button:hover {
+    background-color: #fee2e2;
+  }
 }
 
 .step-done {
@@ -122,17 +155,29 @@
   white-space: nowrap;
 }
 
-.attachment-item button {
-  border: none;
-  background: none;
-  color: #ef4444;
-  cursor: pointer;
+.attachment-delete-button {
   font-size: 14px;
-  line-height: 1;
 }
 
 .attachment-input {
+  max-width: 100%;
   margin-bottom: 16px;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: 14px;
+}
+
+.attachment-input::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
 }
 .attachment-link {
   display: flex;
@@ -276,17 +321,108 @@
   display: block;
 }
 
-@media (max-width: 767.98px) {
-  .modal-dialog {
-    width: 95vw;
+.modal-dialog {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+}
+
+.modal-dialog[open] {
+  animation: modal-sheet-in 0.24s ease-out;
+}
+
+.modal-dialog .modal-box {
+  --modal-padding: 16px;
+
+  height: 100%;
+  max-height: none;
+  padding-right: calc(var(--modal-padding) + var(--safe-area-right));
+  padding-bottom: calc(var(--modal-padding) + var(--safe-area-bottom));
+  padding-left: calc(var(--modal-padding) + var(--safe-area-left));
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.modal-dialog .modal-header {
+  padding-top: calc(var(--modal-padding) + var(--safe-area-top));
+}
+
+@keyframes modal-sheet-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
   }
 
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-dialog[open] {
+    animation: none;
+  }
+}
+
+@media (max-width: 767.98px) {
   .modal-box {
+    --modal-padding: 16px;
+
     width: 95%;
-    padding: 16px;
   }
 
   .task-step-form {
     flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 480px;
+    height: fit-content;
+    max-width: 90vw;
+    max-height: none;
+    margin: auto;
+  }
+
+  .modal-dialog[open] {
+    animation: none;
+  }
+
+  .modal-dialog .modal-box {
+    --modal-padding: 24px;
+
+    height: auto;
+    max-height: 80vh;
+    padding: 0 var(--modal-padding) var(--modal-padding);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .modal-dialog .modal-header {
+    padding-top: var(--modal-padding);
+  }
+}
+
+@media (pointer: coarse) {
+  .step-delete-button,
+  .attachment-delete-button {
+    position: relative;
+  }
+
+  .step-delete-button::before,
+  .attachment-delete-button::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+  }
+
+  .task-steps-list .themed-checkbox::before {
+    content: "";
+    position: absolute;
+    inset: -14px;
   }
 }
