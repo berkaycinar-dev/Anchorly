@@ -1,3 +1,5 @@
+import { useState } from "react";
+import RoutineDayView from "../components/RoutineDayView";
 import { parseLocalDate } from "../utils/dateHelpers";
 
 export default function DailyRoutinePage({
@@ -23,6 +25,20 @@ export default function DailyRoutinePage({
     routineYear === todayDate.getFullYear() &&
     routineMonthIndex === todayDate.getMonth();
   const todayDayNumber = todayDate.getDate();
+  const monthKey = `${routineYear}-${routineMonthIndex}`;
+  const defaultDay = isCurrentMonth ? todayDayNumber : 1;
+  const [daySelection, setDaySelection] = useState({
+    monthKey,
+    day: defaultDay,
+  });
+  const selectedDay =
+    daySelection.monthKey === monthKey
+      ? Math.min(daySelection.day, routineDays.length)
+      : defaultDay;
+
+  function selectDay(day) {
+    setDaySelection({ monthKey, day });
+  }
 
   function goToPrevious() {
     setRoutineMonth(new Date(routineYear, routineMonthIndex - 1, 1));
@@ -65,6 +81,7 @@ export default function DailyRoutinePage({
       <form className="routine-form" onSubmit={addRoutine}>
         <input
           type="text"
+          aria-label={t.newRoutineLabel}
           placeholder={t.newRoutinePlaceholder}
           value={newRoutineTitle}
           onChange={(event) => setNewRoutineTitle(event.target.value)}
@@ -73,6 +90,22 @@ export default function DailyRoutinePage({
           {t.addRoutineButton}
         </button>
       </form>
+
+      <RoutineDayView
+        routines={routines}
+        routineDays={routineDays}
+        routineYear={routineYear}
+        routineMonthIndex={routineMonthIndex}
+        selectedDay={selectedDay}
+        onSelectDay={selectDay}
+        todayDayNumber={isCurrentMonth ? todayDayNumber : null}
+        routineChecks={routineChecks}
+        getRoutineKey={getRoutineKey}
+        toggleRoutineCheck={toggleRoutineCheck}
+        deleteRoutine={deleteRoutine}
+        t={t}
+        language={language}
+      />
 
       <div className="routine-table-wrapper">
         <table className="routine-table">
@@ -101,11 +134,12 @@ export default function DailyRoutinePage({
                   <div className="routine-name-cell">
                     <span>{routine.title}</span>
                     <button
+                      type="button"
                       className="routine-delete-button"
-                      aria-label="Rutini sil"
+                      aria-label={t.deleteRoutineLabel(routine.title)}
                       onClick={() => deleteRoutine(routine.id)}
                     >
-                      x
+                      <span aria-hidden="true">×</span>
                     </button>
                   </div>
                 </td>
@@ -122,6 +156,7 @@ export default function DailyRoutinePage({
                     <input
                       type="checkbox"
                       className="themed-checkbox"
+                      aria-label={t.routineDayCheckLabel(routine.title, day)}
                       checked={Boolean(
                         routineChecks[getRoutineKey(routine.id, day)],
                       )}

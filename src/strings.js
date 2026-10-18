@@ -112,6 +112,13 @@ export const strings = {
     taskTitlePlaceholder: "Görev başlığı...",
 
     routineColumnHeader: "Rutin",
+    routineDayCheckLabel: (title, day) => `"${title}", ${day}. gün`,
+    routineDayPickerLabel: "Gün seç",
+    newRoutineLabel: "Yeni rutin",
+    routineMonthProgress: (done, total) => `Bu ay ${done}/${total}`,
+    deleteRoutineLabel: (title) => `"${title}" rutinini sil`,
+    emptyRoutineTitle: "Henüz rutin yok",
+    emptyRoutineSubtitle: "Yukarıdan yeni bir rutin ekleyerek başla.",
     newRoutinePlaceholder: "Yeni rutin ekle...",
     addRoutineButton: "Rutin Ekle",
 
@@ -262,6 +269,13 @@ export const strings = {
     taskTitlePlaceholder: "Task title...",
 
     routineColumnHeader: "Routine",
+    routineDayCheckLabel: (title, day) => `"${title}", day ${day}`,
+    routineDayPickerLabel: "Choose a day",
+    newRoutineLabel: "New routine",
+    routineMonthProgress: (done, total) => `This month ${done}/${total}`,
+    deleteRoutineLabel: (title) => `Delete routine "${title}"`,
+    emptyRoutineTitle: "No routines yet",
+    emptyRoutineSubtitle: "Add a new routine above to get started.",
     newRoutinePlaceholder: "Add a new routine...",
     addRoutineButton: "Add Routine",
 
@@ -298,4 +312,4 @@ export const strings = {
     storageReadWarning:
       "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
   },
-}; 
+};

@@ -4,19 +4,8 @@
   gap: 20px;
 }
 
-.routine-list {
-  display: grid;
-  gap: 12px;
-}
-
-.routine-item {
-  padding: 16px;
-  border-radius: 8px;
-  background-color: var(--color-bg-card);
-  font-weight: 600;
-}
-
 .routine-table-wrapper {
+  display: none;
   overflow-x: auto;
   padding: 16px;
   border-radius: 12px;
@@ -56,6 +45,7 @@
 
 .routine-form input {
   flex: 1;
+  min-width: 0;
   padding: 12px 16px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -79,16 +69,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-}
-
-.routine-name-cell button {
-  border: none;
-  padding: 6px 8px;
-  border-radius: 6px;
-  background-color: #fee2e2;
-  color: #b91c1c;
-  font-weight: bold;
-  cursor: pointer;
 }
 
 .routine-table td:not(:first-child) {
@@ -163,5 +143,164 @@
 
   .routine-delete-button::before {
     inset: -11px;
+  }
+}
+
+.routine-day-view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.routine-day-strip {
+  display: flex;
+  gap: 8px;
+  padding: 2px 2px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.routine-day-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.routine-day-button {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 52px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  font: inherit;
+  cursor: pointer;
+  scroll-snap-align: center;
+}
+
+.routine-day-weekday {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.routine-day-number {
+  color: var(--color-text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.routine-day-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.routine-day-dot-visible {
+  background-color: var(--color-accent);
+}
+
+.routine-day-button-today {
+  border-color: var(--color-accent);
+}
+
+.routine-day-button-today .routine-day-number {
+  color: var(--color-accent-text);
+}
+
+.routine-day-button[aria-pressed="true"] {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.routine-day-button[aria-pressed="true"] .routine-day-number {
+  color: var(--color-accent-contrast);
+}
+
+.routine-day-button[aria-pressed="true"] .routine-day-dot-visible {
+  background-color: var(--color-accent-contrast);
+}
+
+.routine-day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.routine-day-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-card);
+}
+
+.routine-day-check {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  cursor: pointer;
+}
+
+.routine-day-title {
+  min-width: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.routine-day-item-done .routine-day-title {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+.routine-day-progress {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.routine-day-delete {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: #ef4444;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .routine-day-delete:hover {
+    background-color: #fee2e2;
+  }
+}
+
+@media (min-width: 768px) {
+  .routine-day-view {
+    display: none;
+  }
+
+  .routine-table-wrapper {
+    display: block;
   }
 }
