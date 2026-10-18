@@ -1,6 +1,77 @@
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createId } from "../lib/id";
- 
+import { useToastHost } from "./toast/useToast";
+
+function useBackdropClose(dialogRef) {
+  const pressStartedOnBackdrop = useRef(false);
+
+  return {
+    onMouseDown(event) {
+      pressStartedOnBackdrop.current = event.target === event.currentTarget;
+    },
+    onClick(event) {
+      const shouldClose =
+        pressStartedOnBackdrop.current && event.target === event.currentTarget;
+
+      pressStartedOnBackdrop.current = false;
+
+      if (shouldClose) {
+        dialogRef.current.close();
+      }
+    },
+  };
+}
+
+function ConfirmDeleteDialog({
+  message,
+  cancelLabel,
+  confirmLabel,
+  onCancel,
+  onConfirm,
+}) {
+  const dialogRef = useRef(null);
+  const messageId = useId();
+  const backdropClose = useBackdropClose(dialogRef);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+
+    if (!dialog.hasAttribute("open")) {
+      dialog.showModal();
+    }
+  }, []);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      className="confirm-dialog"
+      role="alertdialog"
+      aria-labelledby={messageId}
+      onClose={onCancel}
+      onMouseDown={backdropClose.onMouseDown}
+      onClick={backdropClose.onClick}
+    >
+      <div className="confirm-box">
+        <p id={messageId} className="confirm-message">
+          {message}
+        </p>
+
+        <div className="confirm-actions">
+          <button
+            className="btn btn-secondary"
+            onClick={() => dialogRef.current.close()}
+          >
+            {cancelLabel}
+          </button>
+          <button className="btn btn-danger" onClick={onConfirm}>
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </dialog>
+  );
+}
+
 function TaskDetailModal({
   task,
   onClose,
@@ -23,34 +94,63 @@ function TaskDetailModal({
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
- 
+  const dialogRef = useRef(null);
+  const openerRef = useRef(null);
+  const titleRef = useRef(null);
+  const titleId = useId();
+  const setToastHost = useToastHost();
+  const backdropClose = useBackdropClose(dialogRef);
+  const hasTask = Boolean(task);
+
+  useEffect(() => {
+    if (!hasTask) {
+      return undefined;
+    }
+
+    const dialog = dialogRef.current;
+
+    if (!dialog.hasAttribute("open")) {
+      openerRef.current = document.activeElement;
+      dialog.showModal();
+      titleRef.current?.focus();
+    }
+
+    return () => {
+      const opener = openerRef.current;
+
+      if (opener instanceof HTMLElement && opener.isConnected) {
+        opener.focus();
+      }
+    };
+  }, [hasTask]);
+
   if (!task) {
     return null;
   }
- 
+
   function handleAddStep(event) {
     event.preventDefault();
     onAddStep(task.id, newStepText);
     setNewStepText("");
   }
- 
+
   function handleFileUpload(event) {
     const file = event.target.files[0];
- 
+
     if (!file) {
       return;
     }
- 
-    const maxSizeInBytes = 1024 * 1024; // 1 MB
- 
+
+    const maxSizeInBytes = 1024 * 1024;
+
     if (file.size > maxSizeInBytes) {
       alert(t.fileTooLargeWarning);
       event.target.value = "";
       return;
     }
- 
+
     const reader = new FileReader();
- 
+
     reader.onload = () => {
       onAddAttachment(task.id, {
         id: createId(),
@@ -59,57 +159,82 @@ function TaskDetailModal({
         data: reader.result,
       });
     };
- 
+
     reader.readAsDataURL(file);
     event.target.value = "";
   }
- 
+
   function startEditingTitle() {
     setEditedTitle(task.title);
     setIsEditingTitle(true);
   }
- 
+
   function saveTitle() {
     const trimmedTitle = editedTitle.trim();
- 
+
     if (trimmedTitle === "") {
       setEditedTitle(task.title);
       setIsEditingTitle(false);
       return;
     }
- 
+
     onUpdateTitle(task.id, trimmedTitle);
     setIsEditingTitle(false);
   }
- 
+
   function handleTitleKeyDown(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       saveTitle();
     }
- 
+
     if (event.key === "Escape") {
+      event.preventDefault();
       setEditedTitle(task.title);
       setIsEditingTitle(false);
     }
   }
- 
+
+  function requestClose() {
+    dialogRef.current.close();
+  }
+
+  function handleDialogClose(event) {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  }
+
+  function handleDialogCancel(event) {
+    if (event.target === event.currentTarget && isEditingTitle) {
+      event.preventDefault();
+    }
+  }
+
   function handleDeleteTask() {
     setIsDeleteConfirmOpen(true);
   }
- 
+
   function confirmDeleteTask() {
     onDeleteTask(task.id);
     onClose();
   }
- 
+
   function cancelDeleteTask() {
     setIsDeleteConfirmOpen(false);
   }
- 
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-box" onClick={(event) => event.stopPropagation()}>
+    <dialog
+      ref={dialogRef}
+      className="modal-dialog"
+      aria-labelledby={titleId}
+      onClose={handleDialogClose}
+      onCancel={handleDialogCancel}
+      onMouseDown={backdropClose.onMouseDown}
+      onClick={backdropClose.onClick}
+    >
+      <div className="modal-box">
         <div className="modal-header">
           <div className="modal-complete-toggle">
             <input
@@ -118,9 +243,10 @@ function TaskDetailModal({
               checked={task.completed}
               onChange={() => onToggleTask(task.id)}
             />
- 
+
             {isEditingTitle ? (
               <input
+                id={titleId}
                 type="text"
                 className="modal-title-input"
                 value={editedTitle}
@@ -131,6 +257,9 @@ function TaskDetailModal({
               />
             ) : (
               <h2
+                id={titleId}
+                ref={titleRef}
+                tabIndex={-1}
                 className={task.completed ? "modal-title-done" : ""}
                 onDoubleClick={startEditingTitle}
                 title={t.editTitleHint}
@@ -139,7 +268,7 @@ function TaskDetailModal({
               </h2>
             )}
           </div>
- 
+
           <div className="modal-header-actions">
             <button
               className="btn btn-danger"
@@ -148,13 +277,13 @@ function TaskDetailModal({
             >
               {t.deleteButton}
             </button>
- 
-            <button className="btn btn-secondary" onClick={onClose}>
+
+            <button className="btn btn-secondary" onClick={requestClose}>
               {t.closeButton}
             </button>
           </div>
         </div>
- 
+
         <label>{t.descriptionLabel}</label>
         <textarea
           value={task.description || ""}
@@ -168,7 +297,7 @@ function TaskDetailModal({
             value={task.date || ""}
             onChange={(event) => onUpdateDate(task.id, event.target.value)}
           />
- 
+
           {task.date && (
             <button
               type="button"
@@ -179,7 +308,7 @@ function TaskDetailModal({
             </button>
           )}
         </div>
- 
+
         <label>{t.repeatLabel}</label>
         <select
           className="task-repeat-select"
@@ -191,9 +320,9 @@ function TaskDetailModal({
           <option value="daily">{t.repeatDaily}</option>
           <option value="weekly">{t.repeatWeekly}</option>
         </select>
- 
+
         {!task.date && <p className="task-repeat-hint">{t.repeatHint}</p>}
- 
+
         <label>{t.attachmentsLabel}</label>
         <div className="attachments-list">
           {task.attachments.map((attachment) => (
@@ -215,7 +344,7 @@ function TaskDetailModal({
                   <span className="attachment-name">📄 {attachment.name}</span>
                 )}
               </a>
- 
+
               <button
                 onClick={() => onDeleteAttachment(task.id, attachment.id)}
               >
@@ -224,13 +353,13 @@ function TaskDetailModal({
             </div>
           ))}
         </div>
- 
+
         <input
           type="file"
           onChange={handleFileUpload}
           className="attachment-input"
         />
- 
+
         <div className="detail-field">
           <label htmlFor="task-project">{t.project}</label>
           <select
@@ -246,7 +375,7 @@ function TaskDetailModal({
             ))}
           </select>
         </div>
- 
+
         <label>{t.stepsLabel}</label>
         <ul className="task-steps-list">
           {(task.steps || []).map((step) => (
@@ -264,7 +393,7 @@ function TaskDetailModal({
             </li>
           ))}
         </ul>
- 
+
         <form className="task-step-form" onSubmit={handleAddStep}>
           <input
             type="text"
@@ -275,29 +404,19 @@ function TaskDetailModal({
           <button type="submit">{t.addButton}</button>
         </form>
       </div>
- 
+
       {isDeleteConfirmOpen && (
-        <div className="confirm-overlay" onClick={cancelDeleteTask}>
-          <div
-            className="confirm-box"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <p className="confirm-message">
-              {t.confirmDeleteMessage(task.title)}
-            </p>
- 
-            <div className="confirm-actions">
-              <button className="btn btn-secondary" onClick={cancelDeleteTask}>
-                {t.confirmDeleteCancel}
-              </button>
-              <button className="btn btn-danger" onClick={confirmDeleteTask}>
-                {t.confirmDeleteConfirm}
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmDeleteDialog
+          message={t.confirmDeleteMessage(task.title)}
+          cancelLabel={t.confirmDeleteCancel}
+          confirmLabel={t.confirmDeleteConfirm}
+          onCancel={cancelDeleteTask}
+          onConfirm={confirmDeleteTask}
+        />
       )}
-    </div>
+
+      <div ref={setToastHost} className="toast-host" />
+    </dialog>
   );
 }
 

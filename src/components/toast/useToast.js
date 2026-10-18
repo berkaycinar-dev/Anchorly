@@ -10,3 +10,7 @@ export function useToast() {
 
   return toast;
 }
+
+export function useToastHost() {
+  return useToast().setHost;
+}

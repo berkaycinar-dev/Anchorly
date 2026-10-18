@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ToastProvider from "./ToastProvider";
-import { useToast } from "./useToast";
+import { useToast, useToastHost } from "./useToast";
 
 function Capture({ onReady }) {
   const toast = useToast();
@@ -266,6 +266,66 @@ describe("ToastProvider", () => {
     advance(3000);
 
     expect(screen.queryByText("Second message")).not.toBeInTheDocument();
+  });
+
+    it("renders toasts inside a registered host element", () => {
+    function HostProbe() {
+      const toast = useToast();
+      const setHost = useToastHost();
+
+      return (
+        <>
+          <div data-testid="host" ref={setHost} />
+          <button type="button" onClick={() => toast.info("Hosted message")}>
+            Show
+          </button>
+        </>
+      );
+    }
+
+    render(
+      <ToastProvider closeLabel="Close">
+        <HostProbe />
+      </ToastProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Show" }));
+
+    expect(screen.getByTestId("host")).toContainElement(
+      screen.getByRole("status"),
+    );
+  });
+
+  it("moves toasts back to the page when the host is removed", () => {
+    function HostProbe() {
+      const toast = useToast();
+      const setHost = useToastHost();
+      const [hasHost, setHasHost] = useState(true);
+
+      return (
+        <>
+          {hasHost && <div data-testid="host" ref={setHost} />}
+          <button type="button" onClick={() => toast.info("Hosted message")}>
+            Show
+          </button>
+          <button type="button" onClick={() => setHasHost(false)}>
+            Remove
+          </button>
+        </>
+      );
+    }
+
+    render(
+      <ToastProvider closeLabel="Close">
+        <HostProbe />
+      </ToastProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Show" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+    expect(screen.queryByTestId("host")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Hosted message");
   });
 
   it("throws a clear error when useToast is used outside the provider", () => {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { createId } from "../../lib/id";
 import { ToastContext } from "./ToastContext";
 
@@ -44,6 +45,7 @@ function ToastItem({ toast, closeLabel, onDismiss }) {
 
 function ToastProvider({ children, closeLabel }) {
   const [toasts, setToasts] = useState([]);
+  const [host, setHost] = useState(null);
 
   const dismiss = useCallback((id) => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -65,23 +67,28 @@ function ToastProvider({ children, closeLabel }) {
       success: (message) => show("success", message),
       error: (message) => show("error", message),
       dismiss,
+      setHost,
     }),
     [show, dismiss],
+  );
+
+  const region = (
+    <div className="toast-region">
+      {toasts.map((toast) => (
+        <ToastItem
+          key={toast.id}
+          toast={toast}
+          closeLabel={closeLabel}
+          onDismiss={dismiss}
+        />
+      ))}
+    </div>
   );
 
   return (
     <ToastContext.Provider value={api}>
       {children}
-      <div className="toast-region">
-        {toasts.map((toast) => (
-          <ToastItem
-            key={toast.id}
-            toast={toast}
-            closeLabel={closeLabel}
-            onDismiss={dismiss}
-          />
-        ))}
-      </div>
+      {host ? createPortal(region, host) : region}
     </ToastContext.Provider>
   );
 }

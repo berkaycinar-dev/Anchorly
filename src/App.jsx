@@ -137,8 +137,7 @@ function App() {
 
   useEffect(() => {
     function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        setSelectedTaskId(null);
+      if (event.target.closest("dialog")) {
         return;
       }
 

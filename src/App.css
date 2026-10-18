@@ -1720,7 +1720,6 @@ textarea {
   justify-content: center;
   z-index: 200;
 }
-
 .confirm-box {
   background-color: var(--color-bg-card);
   color: var(--color-text-primary);
@@ -1880,4 +1879,54 @@ textarea {
   .toast {
     animation: none;
   }
+}
+.modal-dialog,
+.confirm-dialog {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+}
+
+.modal-dialog {
+  width: 480px;
+  max-width: 90vw;
+}
+
+.modal-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog .modal-box {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.confirm-dialog {
+  width: 320px;
+  max-width: 90vw;
+}
+
+.confirm-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.confirm-dialog .confirm-box {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .modal-dialog {
+    width: 95vw;
+  }
+}
+
+.modal-box h2:focus {
+  outline: none;
 }
