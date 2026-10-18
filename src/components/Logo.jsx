@@ -1,4 +1,8 @@
-function Logo({ size = 36 }) {
+import { useId } from "react";
+
+function Logo({ size = 36}) {
+  const maskId = `${useId().replace(/[^a-zA-Z0-9_-]/g, "")}-badge-cut`;
+
   return (
     <svg
       className="app-logo"
@@ -9,10 +13,17 @@ function Logo({ size = 36 }) {
       focusable="false"
     >
       <defs>
-        <mask id="anchorly-logo-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+        <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
           <rect width="64" height="64" fill="#ffffff" />
+          <polygon
+            points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"
+            fill="none"
+            stroke="#000000"
+            strokeWidth="2.4"
+            strokeLinejoin="round"
+          />
           <g
-            transform="translate(11.5 11.1) scale(0.64)"
+            transform="translate(12.8 13.85) scale(0.6)"
             fill="none"
             stroke="#000000"
             strokeLinecap="round"
@@ -29,15 +40,12 @@ function Logo({ size = 36 }) {
         </mask>
       </defs>
       <polygon
-        className="app-logo-outline"
-        points="5.1,32 18.6,8.8 45.4,8.8 58.9,32 45.4,55.2 18.6,55.2"
-        strokeWidth="3"
+        points="32,4 56,18 56,46 32,60 8,46 8,18"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeWidth="4"
         strokeLinejoin="round"
-      />
-      <polygon
-        className="app-logo-inner"
-        points="10.2,32 21.1,13.1 42.9,13.1 53.8,32 42.9,50.9 21.1,50.9"
-        mask="url(#anchorly-logo-cut)"
+        mask={`url(#${maskId})`}
       />
     </svg>
   );
