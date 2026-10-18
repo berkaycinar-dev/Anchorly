@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import StorageWarning from "./components/StorageWarning";
 import TaskDetailModal from "./components/TaskDetailModal";
+import ToastProvider from "./components/toast/ToastProvider";
 import DashboardPage from "./pages/DashboardPage";
 import TodayPage from "./pages/TodayPage";
 import { strings } from "./strings";
@@ -165,7 +166,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-    }, [navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     document.title = `Anchorly — ${t[currentRoute.titleKey]}`;
@@ -423,7 +424,7 @@ function App() {
     setQuickAddTitle("");
     setQuickAddDate(null);
   }
-      const pages = {
+  const pages = {
     Dashboard: (
       <DashboardPage
         greeting={getGreeting()}
@@ -567,7 +568,8 @@ function App() {
       className={`app theme-${theme}`}
       style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
     >
-            <Sidebar t={t} badges={sidebarBadges} />
+      <ToastProvider closeLabel={t.closeButton}>
+      <Sidebar t={t} badges={sidebarBadges} />
       <main className="main-content">
         <StorageWarning t={t} />
         <Header />
@@ -614,6 +616,7 @@ function App() {
         projects={projects}
         onAssignProject={handleAssignProject}
       />
+      </ToastProvider>
     </div>
   );
 }
