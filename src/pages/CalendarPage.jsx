@@ -293,6 +293,7 @@ function CalendarCell({
             <input
               type="text"
               autoFocus
+              aria-label={t.taskTitleLabel}
               placeholder={t.taskTitlePlaceholder}
               value={quickAddTitle}
               onChange={(event) => setQuickAddTitle(event.target.value)}

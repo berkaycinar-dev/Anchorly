@@ -13,6 +13,7 @@ function AddTaskForm({
     <form className="add-task-form" onSubmit={addTask}>
       <input
         type="text"
+        aria-label={t.newTaskLabel}
         placeholder={t.newTaskPlaceholder}
         value={newTaskTitle}
         onChange={(event) => setNewTaskTitle(event.target.value)}
@@ -20,6 +21,7 @@ function AddTaskForm({
       />
 
       <select
+        aria-label={t.categoryLabel}
         value={newTaskCategory}
         onChange={(event) => setNewTaskCategory(event.target.value)}
       >
@@ -31,6 +33,7 @@ function AddTaskForm({
 
       <input
         type="date"
+        aria-label={t.dateLabel}
         value={newTaskDate}
         onChange={(event) => setNewTaskDate(event.target.value)}
       />

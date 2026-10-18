@@ -57,11 +57,21 @@ function DashboardPage({
 
           <div className="weekly-chart">
             {weeklyProductivity.map((day, index) => (
-              <div
+                            <div
                 className="weekly-bar-wrapper"
-                key={index}
+                key={day.fullDate}
+                role="img"
+                tabIndex={0}
+                aria-label={t.weeklyBarLabel(
+                  `${day.label} ${day.fullDate}`,
+                  day.completed,
+                  day.total,
+                  day.percent,
+                )}
                 onMouseEnter={() => setHoveredDayIndex(index)}
                 onMouseLeave={() => setHoveredDayIndex(null)}
+                onFocus={() => setHoveredDayIndex(index)}
+                onBlur={() => setHoveredDayIndex(null)}
               >
                 {hoveredDayIndex === index && (
                   <div className="weekly-bar-tooltip">

@@ -98,6 +98,13 @@ function TaskDetailModal({
   const openerRef = useRef(null);
   const titleRef = useRef(null);
   const titleId = useId();
+  const fieldId = useId();
+  const descriptionId = `${fieldId}-description`;
+  const dateId = `${fieldId}-date`;
+  const repeatId = `${fieldId}-repeat`;
+  const fileId = `${fieldId}-file`;
+  const projectId = `${fieldId}-project`;
+  const stepInputId = `${fieldId}-step`;
   const setToastHost = useToastHost();
   const toast = useToast();
   const backdropClose = useBackdropClose(dialogRef);
@@ -241,6 +248,7 @@ function TaskDetailModal({
             <input
               type="checkbox"
               className="themed-checkbox"
+              aria-label={t.completeTaskLabel(task.title)}
               checked={task.completed}
               onChange={() => onToggleTask(task.id)}
             />
@@ -285,15 +293,17 @@ function TaskDetailModal({
           </div>
         </div>
 
-        <label>{t.descriptionLabel}</label>
+        <label htmlFor={descriptionId}>{t.descriptionLabel}</label>
         <textarea
+          id={descriptionId}
           value={task.description || ""}
           onChange={(event) => onUpdateDescription(task.id, event.target.value)}
           placeholder={t.descriptionPlaceholder}
         />
-        <label>{t.dateLabel}</label>
+        <label htmlFor={dateId}>{t.dateLabel}</label>
         <div className="detail-date-row">
           <input
+            id={dateId}
             type="date"
             value={task.date || ""}
             onChange={(event) => onUpdateDate(task.id, event.target.value)}
@@ -310,8 +320,9 @@ function TaskDetailModal({
           )}
         </div>
 
-        <label>{t.repeatLabel}</label>
+        <label htmlFor={repeatId}>{t.repeatLabel}</label>
         <select
+          id={repeatId}
           className="task-repeat-select"
           value={task.repeat || "none"}
           disabled={!task.date}
@@ -324,7 +335,7 @@ function TaskDetailModal({
 
         {!task.date && <p className="task-repeat-hint">{t.repeatHint}</p>}
 
-        <label>{t.attachmentsLabel}</label>
+        <label htmlFor={fileId}>{t.attachmentsLabel}</label>
         <div className="attachments-list">
           {task.attachments.map((attachment) => (
             <div className="attachment-item" key={attachment.id}>
@@ -347,24 +358,27 @@ function TaskDetailModal({
               </a>
 
               <button
+                type="button"
+                aria-label={t.deleteAttachmentLabel(attachment.name)}
                 onClick={() => onDeleteAttachment(task.id, attachment.id)}
               >
-                ×
+                <span aria-hidden="true">×</span>
               </button>
             </div>
           ))}
         </div>
 
         <input
+          id={fileId}
           type="file"
           onChange={handleFileUpload}
           className="attachment-input"
         />
 
         <div className="detail-field">
-          <label htmlFor="task-project">{t.project}</label>
+          <label htmlFor={projectId}>{t.project}</label>
           <select
-            id="task-project"
+            id={projectId}
             value={task.projectId ?? ""}
             onChange={(e) => onAssignProject(task.id, e.target.value || null)}
           >
@@ -377,18 +391,23 @@ function TaskDetailModal({
           </select>
         </div>
 
-        <label>{t.stepsLabel}</label>
+        <label htmlFor={stepInputId}>{t.stepsLabel}</label>
         <ul className="task-steps-list">
           {(task.steps || []).map((step) => (
             <li key={step.id}>
               <input
                 type="checkbox"
                 className="themed-checkbox"
+                aria-label={t.completeStepLabel(step.text)}
                 checked={step.done}
                 onChange={() => onToggleStep(task.id, step.id)}
               />
               <span className={step.done ? "step-done" : ""}>{step.text}</span>
-              <button onClick={() => onDeleteStep(task.id, step.id)}>
+              <button
+                type="button"
+                aria-label={t.deleteStepLabel(step.text)}
+                onClick={() => onDeleteStep(task.id, step.id)}
+              >
                 {t.deleteButton}
               </button>
             </li>
@@ -397,7 +416,9 @@ function TaskDetailModal({
 
         <form className="task-step-form" onSubmit={handleAddStep}>
           <input
+            id={stepInputId}
             type="text"
+            aria-label={t.newStepLabel}
             placeholder={t.newStepPlaceholder}
             value={newStepText}
             onChange={(event) => setNewStepText(event.target.value)}

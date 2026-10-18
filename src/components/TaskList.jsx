@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState, memo } from "react";
+import { getCategoryLabel } from "../utils/categoryHelpers";
 
 function TaskList({
   tasks,
@@ -146,7 +147,7 @@ function TaskList({
 
           <div className="task-meta">
             <span className="task-badge task-badge-category">
-              {task.category}
+              {getCategoryLabel(task.category, t)}
             </span>
 
             {task.date && (
