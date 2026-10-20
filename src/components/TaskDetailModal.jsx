@@ -257,6 +257,8 @@ function TaskDetailModal({
               <input
                 id={titleId}
                 type="text"
+                enterKeyHint="done"
+                autoComplete="off"
                 className="modal-title-input"
                 value={editedTitle}
                 autoFocus
@@ -420,6 +422,8 @@ function TaskDetailModal({
           <input
             id={stepInputId}
             type="text"
+            enterKeyHint="done"
+            autoComplete="off"
             aria-label={t.newStepLabel}
             placeholder={t.newStepPlaceholder}
             value={newStepText}
@@ -446,4 +450,4 @@ function TaskDetailModal({
   );
 }
 
-export default TaskDetailModal; 
+export default TaskDetailModal;

@@ -26,6 +26,8 @@ function TodayPage({
       <div className="search-box">
         <input
           type="text"
+          enterKeyHint="search"
+          autoComplete="off"
           aria-label={t.searchLabel}
           placeholder={t.searchPlaceholder}
           value={searchText}

@@ -46,6 +46,8 @@ export default function ProjectsPage({
         <form className="project-task-form" onSubmit={addProjectTask}>
           <input
             type="text"
+            enterKeyHint="done"
+            autoComplete="off"
             aria-label={t.newProjectTaskLabel}
             placeholder={t.newProjectTaskPlaceholder}
             value={newProjectTaskTitle}
@@ -86,6 +88,8 @@ export default function ProjectsPage({
       <form className="project-form" onSubmit={addProject}>
         <input
           type="text"
+          enterKeyHint="done"
+          autoComplete="off"
           aria-label={t.newProjectLabel}
           placeholder={t.newProjectPlaceholder}
           value={newProjectName}

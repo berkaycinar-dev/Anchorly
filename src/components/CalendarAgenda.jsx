@@ -149,6 +149,8 @@ function CalendarAgenda({
         <form className="calendar-agenda-form" onSubmit={handleSubmit}>
           <input
             type="text"
+            enterKeyHint="done"
+            autoComplete="off"
             aria-label={t.addTaskToDay}
             placeholder={t.taskTitlePlaceholder}
             value={newTaskTitle}

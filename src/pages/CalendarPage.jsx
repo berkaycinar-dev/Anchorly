@@ -317,6 +317,8 @@ function CalendarCell({
             <input
               type="text"
               autoFocus
+              enterKeyHint="done"
+              autoComplete="off"
               aria-label={t.taskTitleLabel}
               placeholder={t.taskTitlePlaceholder}
               value={quickAddTitle}

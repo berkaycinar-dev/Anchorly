@@ -13,6 +13,8 @@ function AddTaskForm({
     <form className="add-task-form" onSubmit={addTask}>
       <input
         type="text"
+        enterKeyHint="done"
+        autoComplete="off"
         aria-label={t.newTaskLabel}
         placeholder={t.newTaskPlaceholder}
         value={newTaskTitle}

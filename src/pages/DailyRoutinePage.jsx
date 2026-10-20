@@ -81,6 +81,8 @@ export default function DailyRoutinePage({
       <form className="routine-form" onSubmit={addRoutine}>
         <input
           type="text"
+          enterKeyHint="done"
+          autoComplete="off"
           aria-label={t.newRoutineLabel}
           placeholder={t.newRoutinePlaceholder}
           value={newRoutineTitle}
