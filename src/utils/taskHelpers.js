@@ -68,6 +68,34 @@ export function isTaskVisibleToday(task, today) {
   return true;
 }
 
+export function getReorderedActiveTaskIds(tasks, draggedId, targetId) {
+  const activeIds = tasks
+    .filter((task) => !task.completed)
+    .sort((a, b) => a.order - b.order)
+    .map((task) => task.id);
+
+  const draggedIndex = activeIds.indexOf(draggedId);
+  const targetIndex = activeIds.indexOf(targetId);
+
+  if (draggedIndex === -1 || targetIndex === -1) {
+    return null;
+  }
+
+  const reorderedIds = [...activeIds];
+  reorderedIds.splice(draggedIndex, 1);
+  reorderedIds.splice(targetIndex, 0, draggedId);
+
+  return reorderedIds;
+}
+
+export function applyTaskOrder(tasks, orderedIds) {
+  const orderById = new Map(orderedIds.map((id, index) => [id, index]));
+
+  return tasks.map((task) =>
+    orderById.has(task.id) ? { ...task, order: orderById.get(task.id) } : task,
+  );
+}
+
 export function addFutureOccurrences(tasks, today = getLocalDateString()) {
   const latestByGroup = {};
 
