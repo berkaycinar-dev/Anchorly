@@ -268,3 +268,9 @@
     margin: 8px 4px;
   }
 }
+
+@media (pointer: coarse) {
+  .sidebar .nav-item {
+    height: 44px;
+  }
+}

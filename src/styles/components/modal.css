@@ -413,6 +413,7 @@
     inset: -8px;
   }
 
+  .modal-complete-toggle .themed-checkbox::before,
   .task-steps-list .themed-checkbox::before {
     content: "";
     position: absolute;

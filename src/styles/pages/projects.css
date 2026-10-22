@@ -129,3 +129,10 @@
     gap: 20px;
   }
 }
+
+@media (pointer: coarse) {
+  .project-card-header button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
