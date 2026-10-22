@@ -86,8 +86,9 @@
     max-width: 190px;
   }
 
-  .add-task-form input[type="date"] {
-    max-width: 160px;
+  .add-task-form .date-field {
+    flex: 1;
+    max-width: 200px;
   }
 
   .task-section-header {

@@ -2,6 +2,7 @@ import TaskList from "../components/TaskList";
 import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import { getProjectPath } from "../routes";
+import DateField from "../components/DateField";
 
 export default function ProjectsPage({
   selectedProject,
@@ -54,11 +55,11 @@ export default function ProjectsPage({
             onChange={(event) => setNewProjectTaskTitle(event.target.value)}
           />
 
-          <input
-            type="date"
-            aria-label={t.dateLabel}
+          <DateField
+            label={t.dateLabel}
             value={newProjectTaskDate}
-            onChange={(event) => setNewProjectTaskDate(event.target.value)}
+            onChange={setNewProjectTaskDate}
+            t={t}
           />
 
           <button type="submit" className="btn btn-primary">

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createId } from "../lib/id";
 import { useToast, useToastHost } from "./toast/useToast";
+import DateField from "./DateField";
 
 function useBackdropClose(dialogRef) {
   const pressStartedOnBackdrop = useRef(false);
@@ -304,11 +305,11 @@ function TaskDetailModal({
         />
         <label htmlFor={dateId}>{t.dateLabel}</label>
         <div className="detail-date-row">
-          <input
+          <DateField
             id={dateId}
-            type="date"
             value={task.date || ""}
-            onChange={(event) => onUpdateDate(task.id, event.target.value)}
+            onChange={(date) => onUpdateDate(task.id, date)}
+            t={t}
           />
 
           {task.date && (

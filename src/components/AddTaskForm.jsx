@@ -1,3 +1,5 @@
+import DateField from "./DateField";
+
 function AddTaskForm({
   newTaskTitle,
   setNewTaskTitle,
@@ -33,11 +35,11 @@ function AddTaskForm({
         <option value="Other">{t.categoryOther}</option>
       </select>
 
-      <input
-        type="date"
-        aria-label={t.dateLabel}
+      <DateField
+        label={t.dateLabel}
         value={newTaskDate}
-        onChange={(event) => setNewTaskDate(event.target.value)}
+        onChange={setNewTaskDate}
+        t={t}
       />
 
       <button type="submit" className="btn btn-primary">

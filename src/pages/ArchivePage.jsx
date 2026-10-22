@@ -1,4 +1,5 @@
 import TaskList from "../components/TaskList";
+import DateField from "../components/DateField";
 
 export default function ArchivePage({
   archiveStatusFilter,
@@ -32,18 +33,18 @@ export default function ArchivePage({
           <option value="completed">{t.statusCompleted}</option>
         </select>
 
-        <input
-          type="date"
-          aria-label={t.archiveStartDateLabel}
+        <DateField
+          label={t.archiveStartDateLabel}
           value={archiveStartDate}
-          onChange={(event) => setArchiveStartDate(event.target.value)}
+          onChange={setArchiveStartDate}
+          t={t}
         />
 
-        <input
-          type="date"
-          aria-label={t.archiveEndDateLabel}
+        <DateField
+          label={t.archiveEndDateLabel}
           value={archiveEndDate}
-          onChange={(event) => setArchiveEndDate(event.target.value)}
+          onChange={setArchiveEndDate}
+          t={t}
         />
 
         <button
@@ -68,4 +69,4 @@ export default function ArchivePage({
       />
     </section>
   );
-} 
+}

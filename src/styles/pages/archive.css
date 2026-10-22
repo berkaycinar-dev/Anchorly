@@ -46,8 +46,11 @@
     display: flex;
   }
 
-  .archive-filters select,
-  .archive-filters input {
+  .archive-filters select {
     width: auto;
+  }
+
+  .archive-filters .date-field {
+    width: 200px;
   }
 }

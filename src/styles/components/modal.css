@@ -233,15 +233,8 @@
   margin-bottom: 16px;
 }
 
-.detail-date-row input[type="date"] {
+.detail-date-row .date-field {
   flex: 1;
-  padding: 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  font-family: var(--font-main);
-  box-sizing: border-box;
-  background-color: var(--color-bg-input);
-  color: var(--color-text-primary);
 }
 
 .modal-header-actions {

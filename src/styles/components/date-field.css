@@ -1,0 +1,58 @@
+.date-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.date-field-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date-field-placeholder {
+  color: var(--color-text-muted);
+}
+
+.date-field .nav-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.date-field-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.date-field-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.date-field:focus-within {
+  outline: 2px solid var(--color-accent-text);
+  outline-offset: 2px;
+}
