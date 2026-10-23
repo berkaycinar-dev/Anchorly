@@ -1,7 +1,9 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
 import {
   addFutureOccurrences,
+  applyTaskOrder,
   generateRepeatOccurrences,
+  getReorderedActiveTaskIds,
   isTaskVisibleToday,
 } from "./taskHelpers";
 
@@ -195,5 +197,73 @@ describe("addFutureOccurrences", () => {
     const single = createRepeatingTask({ repeat: "none", repeatGroupId: null });
 
     expect(addFutureOccurrences([single], "2026-10-10")).toEqual([single]);
+  });
+});
+function createOrderedTask(id, order, completed = false) {
+  return { id, title: `Task ${id}`, order, completed };
+}
+
+describe("getReorderedActiveTaskIds", () => {
+  const tasks = [
+    createOrderedTask("c", 2),
+    createOrderedTask("a", 0),
+    createOrderedTask("done", 1, true),
+    createOrderedTask("b", 1),
+  ];
+
+  it("returns the active ids sorted by order when a task moves down", () => {
+    expect(getReorderedActiveTaskIds(tasks, "a", "c")).toEqual(["b", "c", "a"]);
+  });
+
+  it("returns the active ids sorted by order when a task moves up", () => {
+    expect(getReorderedActiveTaskIds(tasks, "c", "a")).toEqual(["c", "a", "b"]);
+  });
+
+  it("leaves completed tasks out of the list", () => {
+    expect(getReorderedActiveTaskIds(tasks, "b", "a")).not.toContain("done");
+  });
+
+  it("returns null when the dragged or target task is not active", () => {
+    expect(getReorderedActiveTaskIds(tasks, "done", "a")).toBeNull();
+    expect(getReorderedActiveTaskIds(tasks, "a", "missing")).toBeNull();
+  });
+
+  it("does not change the tasks it receives", () => {
+    const copy = structuredClone(tasks);
+
+    getReorderedActiveTaskIds(tasks, "a", "c");
+
+    expect(tasks).toEqual(copy);
+  });
+});
+
+describe("applyTaskOrder", () => {
+  it("sets each listed task's order to its position in the list", () => {
+    const tasks = [createOrderedTask("a", 0), createOrderedTask("b", 1)];
+
+    const result = applyTaskOrder(tasks, ["b", "a"]);
+
+    expect(result).toEqual([
+      createOrderedTask("a", 1),
+      createOrderedTask("b", 0),
+    ]);
+  });
+
+  it("keeps tasks that are not in the list unchanged", () => {
+    const done = createOrderedTask("done", 7, true);
+    const tasks = [createOrderedTask("a", 0), done];
+
+    const result = applyTaskOrder(tasks, ["a"]);
+
+    expect(result[1]).toBe(done);
+  });
+
+  it("does not change the tasks it receives", () => {
+    const tasks = [createOrderedTask("a", 0), createOrderedTask("b", 1)];
+    const copy = structuredClone(tasks);
+
+    applyTaskOrder(tasks, ["b", "a"]);
+
+    expect(tasks).toEqual(copy);
   });
 });

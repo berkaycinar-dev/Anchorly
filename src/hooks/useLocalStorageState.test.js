@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, it, expect, vi } from "vitest";
 import useLocalStorageState from "./useLocalStorageState";
-import { getSnapshot } from "../lib/storageStatus";
+import { getSnapshot } from "../data/local/storageStatus";
 
 function createStorageError(name) {
   return new DOMException("Storage failure", name);

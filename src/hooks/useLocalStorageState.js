@@ -1,67 +1,13 @@
-import { useEffect, useState } from "react";
-import { getStorageErrorKind, reportStorageError } from "../lib/storageStatus";
-
-const CORRUPT_KEY_SUFFIX = ":corrupt";
-
-function readStoredValue(key, fallback, transform) {
-  let saved;
-
-  try {
-    saved = localStorage.getItem(key);
-  } catch (error) {
-    console.warn(`Could not read "${key}" from localStorage.`, error);
-    return { value: fallback, failure: { kind: "unavailable", raw: null } };
-  }
-
-  if (saved === null) {
-    return { value: fallback, failure: null };
-  }
-
-  try {
-    const parsed = JSON.parse(saved);
-    return { value: transform ? transform(parsed) : parsed, failure: null };
-  } catch (error) {
-    console.warn(`Stored "${key}" is corrupt. Using the fallback.`, error);
-    return { value: fallback, failure: { kind: "read", raw: saved } };
-  }
-}
-
-function backUpCorruptValue(key, raw) {
-  try {
-    localStorage.setItem(`${key}${CORRUPT_KEY_SUFFIX}`, raw);
-  } catch (error) {
-    console.warn(`Could not back up the corrupt "${key}" value.`, error);
-  }
-}
+import { useEffect, useState, useSyncExternalStore } from "react";
+import createLocalStore from "../data/local/createLocalStore";
 
 export default function useLocalStorageState(key, fallback, transform) {
-  const [initialRead] = useState(() =>
-    readStoredValue(key, fallback, transform),
-  );
-  const [value, setValue] = useState(() => initialRead.value);
+  const [store] = useState(() => createLocalStore(key, fallback, transform));
+  const value = useSyncExternalStore(store.subscribe, store.getSnapshot);
 
   useEffect(() => {
-    const { failure } = initialRead;
+    store.persistInitialState();
+  }, [store]);
 
-    if (!failure) {
-      return;
-    }
-
-    if (failure.raw !== null) {
-      backUpCorruptValue(key, failure.raw);
-    }
-
-    reportStorageError({ key, kind: failure.kind });
-  }, [initialRead, key]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.warn(`Could not save "${key}" to localStorage.`, error);
-      reportStorageError({ key, kind: getStorageErrorKind(error) });
-    }
-  }, [key, value]);
-
-  return [value, setValue];
+  return [value, store.set];
 }

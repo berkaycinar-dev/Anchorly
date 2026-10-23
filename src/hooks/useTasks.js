@@ -4,7 +4,9 @@ import { createId } from "../lib/id";
 import { createInitialTasks } from "../constants/initialData";
 import {
   addFutureOccurrences,
+  applyTaskOrder,
   generateRepeatOccurrences,
+  getReorderedActiveTaskIds,
 } from "../utils/taskHelpers";
 
 function normalizeStoredTasks(storedTasks) {
@@ -202,35 +204,17 @@ export default function useTasks(today) {
       }
 
       setTasks((currentTasks) => {
-        const activeTasksSorted = currentTasks
-          .filter((task) => !task.completed)
-          .sort((a, b) => a.order - b.order);
-
-        const draggedIndex = activeTasksSorted.findIndex(
-          (task) => task.id === draggedId,
-        );
-        const targetIndex = activeTasksSorted.findIndex(
-          (task) => task.id === targetId,
+        const orderedIds = getReorderedActiveTaskIds(
+          currentTasks,
+          draggedId,
+          targetId,
         );
 
-        if (draggedIndex === -1 || targetIndex === -1) {
+        if (!orderedIds) {
           return currentTasks;
         }
 
-        const reordered = [...activeTasksSorted];
-        const [draggedTask] = reordered.splice(draggedIndex, 1);
-        reordered.splice(targetIndex, 0, draggedTask);
-
-        const orderMap = {};
-        reordered.forEach((task, index) => {
-          orderMap[task.id] = index;
-        });
-
-        return currentTasks.map((task) =>
-          orderMap[task.id] !== undefined
-            ? { ...task, order: orderMap[task.id] }
-            : task,
-        );
+        return applyTaskOrder(currentTasks, orderedIds);
       });
     },
     [setTasks],

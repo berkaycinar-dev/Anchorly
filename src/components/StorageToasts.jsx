@@ -4,7 +4,7 @@ import {
   getPrimaryIssueKind,
   getSnapshot,
   subscribe,
-} from "../lib/storageStatus";
+} from "../data/local/storageStatus";
 import { useToast } from "./toast/useToast";
 
 const MESSAGE_KEYS = {

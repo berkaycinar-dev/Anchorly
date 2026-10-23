@@ -8,7 +8,7 @@ import {
   dismiss,
   getSnapshot,
   reportStorageError,
-} from "../lib/storageStatus";
+} from "../data/local/storageStatus";
 
 const t = strings.en;
 
