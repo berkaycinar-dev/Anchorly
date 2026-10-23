@@ -1,4 +1,4 @@
-import { createId, isUuid } from "./id";
+import { createId, isUuid } from "../../lib/id";
 import { getStorageErrorKind, reportStorageError } from "./storageStatus";
 
 const SCHEMA_VERSION_KEY = "schemaVersion";

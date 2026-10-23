@@ -1,8 +1,8 @@
 import { beforeEach, describe, it, expect, vi } from "vitest";
 import { runMigrations } from "./migrations";
-import { isUuid } from "./id";
+import { isUuid } from "../../lib/id";
 import { getSnapshot } from "./storageStatus";
-import legacyBackup from "../test/fixtures/legacyBackup.json";
+import legacyBackup from "../../test/fixtures/legacyBackup.json";
 
 const ROUTINE_CHECK_KEY_PATTERN = /^(\d{4})-(\d{1,2})-(.+)-(\d{1,2})$/;
 const UUID_A = "11111111-1111-4111-8111-111111111111";
