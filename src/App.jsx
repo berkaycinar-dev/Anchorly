@@ -37,6 +37,7 @@ import useToday from "./hooks/useToday";
 import useTasks from "./hooks/useTasks";
 import useRoutines from "./hooks/useRoutines";
 import useProjects from "./hooks/useProjects";
+import DataProvider from "./data/DataProvider";
 import { isTaskVisibleToday } from "./utils/taskHelpers";
 
 const VALID_THEMES = ["gray", "purple", "blue", "red", "green", "pink"];
@@ -55,7 +56,7 @@ function getGreetingSegment() {
   return "evening";
 }
 
-function App() {
+function AppContent() {
   const today = useToday();
   const {
     tasks,
@@ -625,6 +626,14 @@ function App() {
         />
       </ToastProvider>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <DataProvider>
+      <AppContent />
+    </DataProvider>
   );
 }
 
