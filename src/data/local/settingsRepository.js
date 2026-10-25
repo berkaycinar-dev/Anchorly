@@ -1,4 +1,5 @@
 import { DEFAULT_SETTINGS, THEMES } from "../../constants/settings";
+import combineLocalStores from "./combineLocalStores";
 import createLocalStore from "./createLocalStore";
 
 const TRANSFORMS = {
@@ -13,32 +14,10 @@ export default function createLocalSettingsRepository() {
       createLocalStore(key, fallback, TRANSFORMS[key]),
     ]),
   );
-  const listeners = new Set();
-  let snapshot = readSettings();
-
-  function readSettings() {
-    return Object.fromEntries(
-      Object.entries(stores).map(([key, store]) => [key, store.getSnapshot()]),
-    );
-  }
-
-  Object.values(stores).forEach((store) => {
-    store.subscribe(() => {
-      snapshot = readSettings();
-      listeners.forEach((listener) => listener());
-    });
-  });
-
-  function subscribe(listener) {
-    listeners.add(listener);
-
-    return () => {
-      listeners.delete(listener);
-    };
-  }
+  const combined = combineLocalStores(stores);
 
   function start() {
-    Object.values(stores).forEach((store) => store.persistInitialState());
+    combined.persistInitialState();
     return Promise.resolve();
   }
 
@@ -55,13 +34,13 @@ export default function createLocalSettingsRepository() {
       stores[key].set(value);
     });
 
-    return Promise.resolve(snapshot);
+    return Promise.resolve(combined.getSnapshot());
   }
 
   return {
     getStatus: () => "ready",
-    getSnapshot: () => snapshot,
-    subscribe,
+    getSnapshot: combined.getSnapshot,
+    subscribe: combined.subscribe,
     start,
     update,
   };
