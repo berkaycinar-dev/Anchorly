@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { initialProjects } from "../constants/initialData";
+import DataProvider from "../data/DataProvider";
 import { isUuid } from "../lib/id";
 import useProjects from "./useProjects";
 
@@ -12,12 +13,14 @@ const PROJECTS = [
 function renderProjects() {
   localStorage.setItem("projects", JSON.stringify(PROJECTS));
 
-  return renderHook(() => useProjects());
+  return renderHook(() => useProjects(), { wrapper: DataProvider });
 }
 
 describe("useProjects", () => {
   it("starts with the demo projects on the first launch", () => {
-    const { result } = renderHook(() => useProjects());
+    const { result } = renderHook(() => useProjects(), {
+      wrapper: DataProvider,
+    });
 
     expect(result.current.projects).toEqual(initialProjects);
   });
