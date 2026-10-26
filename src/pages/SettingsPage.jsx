@@ -1,3 +1,5 @@
+import { THEMES } from "../constants/settings";
+
 export default function SettingsPage({
   t,
   theme,
@@ -20,21 +22,19 @@ export default function SettingsPage({
         <h3>{t.themeLabel}</h3>
 
         <div className="theme-options">
-          {["gray", "purple", "blue", "red", "green", "pink"].map(
-            (themeOption) => (
-              <button
-                key={themeOption}
-                className={
-                  theme === themeOption
-                    ? "theme-option active-theme"
-                    : "theme-option"
-                }
-                onClick={() => setTheme(themeOption)}
-              >
-                {themeOption}
-              </button>
-            ),
-          )}
+          {THEMES.map((themeOption) => (
+            <button
+              key={themeOption}
+              className={
+                theme === themeOption
+                  ? "theme-option active-theme"
+                  : "theme-option"
+              }
+              onClick={() => setTheme(themeOption)}
+            >
+              {themeOption}
+            </button>
+          ))}
         </div>
       </div>
 

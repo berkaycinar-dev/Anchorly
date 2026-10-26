@@ -1,23 +1,15 @@
 import { useState, useCallback } from "react";
-import useLocalStorageState from "./useLocalStorageState";
+import useRepositorySnapshot from "../data/useRepositorySnapshot";
 import { createId } from "../lib/id";
-import { initialRoutines } from "../constants/initialData";
+import { getLocalDateString, getRoutineKey } from "../utils/dateHelpers";
 import {
-  getRoutineKey,
-  getRoutineKeyForDate,
-  getRoutineIdFromKey,
-  parseLocalDate,
-} from "../utils/dateHelpers";
+  calculateRoutineStreak,
+  calculateWeeklyProductivity,
+} from "../utils/routineStats";
 
 export default function useRoutines(today) {
-  const [routines, setRoutines] = useLocalStorageState(
-    "routines",
-    initialRoutines,
-  );
-  const [routineChecks, setRoutineChecks] = useLocalStorageState(
-    "routineChecks",
-    {},
-  );
+  const [{ routines, checks: routineChecks }, repository] =
+    useRepositorySnapshot("routines");
   const [routineMonth, setRoutineMonth] = useState(new Date());
 
   const routineYear = routineMonth.getFullYear();
@@ -40,93 +32,30 @@ export default function useRoutines(today) {
 
   function toggleRoutineCheck(routineId, day) {
     const key = getRoutineKeyForMonth(routineId, day);
+    const isChecked = Boolean(repository.getSnapshot().checks[key]);
+    const date = getLocalDateString(
+      new Date(routineYear, routineMonthIndex, day),
+    );
 
-    setRoutineChecks({
-      ...routineChecks,
-      [key]: !routineChecks[key],
-    });
+    repository.setCheck(routineId, date, !isChecked);
   }
 
   function addRoutine(title) {
-    setRoutines((currentRoutines) => [
-      ...currentRoutines,
-      { id: createId(), title },
-    ]);
+    repository.create({ id: createId(), title });
   }
 
   function deleteRoutine(id) {
-    setRoutines((currentRoutines) =>
-      currentRoutines.filter((routine) => routine.id !== id),
-    );
-
-    setRoutineChecks((currentChecks) => {
-      const updatedChecks = {};
-
-      Object.keys(currentChecks).forEach((key) => {
-        if (getRoutineIdFromKey(key) !== id) {
-          updatedChecks[key] = currentChecks[key];
-        }
-      });
-
-      return updatedChecks;
-    });
+    repository.remove(id);
   }
 
   const getRoutineStreak = useCallback(
-    (routineId) => {
-      let streak = 0;
-      const checkDate = parseLocalDate(today);
-
-      const isTodayChecked =
-        routineChecks[getRoutineKeyForDate(routineId, checkDate)];
-
-      if (!isTodayChecked) {
-        checkDate.setDate(checkDate.getDate() - 1);
-      }
-
-      while (routineChecks[getRoutineKeyForDate(routineId, checkDate)]) {
-        streak++;
-        checkDate.setDate(checkDate.getDate() - 1);
-      }
-
-      return streak;
-    },
+    (routineId) => calculateRoutineStreak(routineChecks, routineId, today),
     [routineChecks, today],
   );
 
   const getWeeklyProductivity = useCallback(
-    (language) => {
-      const days = [];
-      const localeCode = language === "tr" ? "tr-TR" : "en-US";
-
-      for (let i = 6; i >= 0; i--) {
-        const date = parseLocalDate(today);
-        date.setDate(date.getDate() - i);
-
-        const totalRoutines = routines.length;
-        const completedRoutines = routines.filter(
-          (routine) => routineChecks[getRoutineKeyForDate(routine.id, date)],
-        ).length;
-
-        const percent =
-          totalRoutines === 0
-            ? 0
-            : Math.round((completedRoutines / totalRoutines) * 100);
-
-        days.push({
-          label: date.toLocaleDateString(localeCode, { weekday: "short" }),
-          fullDate: date.toLocaleDateString(localeCode, {
-            day: "numeric",
-            month: "long",
-          }),
-          completed: completedRoutines,
-          total: totalRoutines,
-          percent,
-        });
-      }
-
-      return days;
-    },
+    (language) =>
+      calculateWeeklyProductivity(routines, routineChecks, today, language),
     [routines, routineChecks, today],
   );
 

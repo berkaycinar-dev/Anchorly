@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { afterEach, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
-import { dismiss as dismissStorageIssues } from "../lib/storageStatus";
+import { dismiss as dismissStorageIssues } from "../data/local/storageStatus";
 
 HTMLDialogElement.prototype.showModal = function showModal() {
   this.setAttribute("open", "");

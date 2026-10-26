@@ -1,5 +1,7 @@
+import { createElement } from "react";
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, it, expect, vi } from "vitest";
+import DataProvider from "../data/DataProvider";
 import { isUuid } from "../lib/id";
 import useTasks from "./useTasks";
 
@@ -27,13 +29,21 @@ function createTask(id, order) {
   };
 }
 
+function createWrapper(today) {
+  return function Wrapper({ children }) {
+    return createElement(DataProvider, { today }, children);
+  };
+}
+
 function renderTasks() {
   localStorage.setItem(
     "tasks",
     JSON.stringify(IDS.map((id, index) => createTask(id, index))),
   );
 
-  return renderHook(() => useTasks("2026-10-10"));
+  return renderHook(() => useTasks("2026-10-10"), {
+    wrapper: createWrapper("2026-10-10"),
+  });
 }
 
 function getOrderedIds(tasks) {
@@ -43,7 +53,7 @@ function getOrderedIds(tasks) {
 function renderTasksWith(tasks, today = "2026-10-10") {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 
-  return renderHook(() => useTasks(today));
+  return renderHook(() => useTasks(today), { wrapper: createWrapper(today) });
 }
 
 function findTask(tasks, id) {
@@ -92,7 +102,9 @@ describe("useTasks reorderTasks", () => {
 
 describe("useTasks first launch", () => {
   it("seeds demo tasks dated relative to today", () => {
-    const { result } = renderHook(() => useTasks("2026-10-11"));
+    const { result } = renderHook(() => useTasks("2026-10-11"), {
+      wrapper: createWrapper("2026-10-11"),
+    });
 
     const datesByTitle = Object.fromEntries(
       result.current.tasks.map((task) => [task.title, task.date]),
@@ -104,12 +116,16 @@ describe("useTasks first launch", () => {
   });
 
   it("keeps the stored seed dates on a later launch", () => {
-    const first = renderHook(() => useTasks("2026-10-11"));
+    const first = renderHook(() => useTasks("2026-10-11"), {
+      wrapper: createWrapper("2026-10-11"),
+    });
 
     expect(first.result.current.tasks[0].date).toBe("2026-10-11");
     first.unmount();
 
-    const second = renderHook(() => useTasks("2026-10-20"));
+    const second = renderHook(() => useTasks("2026-10-20"), {
+      wrapper: createWrapper("2026-10-20"),
+    });
 
     expect(second.result.current.tasks[0].date).toBe("2026-10-11");
   });

@@ -1,24 +1,15 @@
-import useLocalStorageState from "./useLocalStorageState";
+import useRepositorySnapshot from "../data/useRepositorySnapshot";
 import { createId } from "../lib/id";
-import { initialProjects } from "../constants/initialData";
 
 export default function useProjects() {
-  const [projects, setProjects] = useLocalStorageState(
-    "projects",
-    initialProjects,
-  );
+  const [projects, repository] = useRepositorySnapshot("projects");
 
   function addProject(name) {
-    setProjects((currentProjects) => [
-      ...currentProjects,
-      { id: createId(), name },
-    ]);
+    repository.create({ id: createId(), name });
   }
 
   function deleteProject(id) {
-    setProjects((currentProjects) =>
-      currentProjects.filter((project) => project.id !== id),
-    );
+    repository.remove(id);
   }
 
   return {

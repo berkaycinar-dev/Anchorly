@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-function Logo({ size = 36}) {
+function Logo({ size = 36 }) {
   const maskId = `${useId().replace(/[^a-zA-Z0-9_-]/g, "")}-badge-cut`;
 
   return (
@@ -13,7 +13,14 @@ function Logo({ size = 36}) {
       focusable="false"
     >
       <defs>
-        <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+        <mask
+          id={maskId}
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="64"
+          height="64"
+        >
           <rect width="64" height="64" fill="#ffffff" />
           <polygon
             points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"

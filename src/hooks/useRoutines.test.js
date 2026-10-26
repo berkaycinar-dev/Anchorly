@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, it, expect, vi } from "vitest";
+import DataProvider from "../data/DataProvider";
 import { isUuid } from "../lib/id";
 import useRoutines from "./useRoutines";
 
@@ -29,7 +30,9 @@ function renderRoutines() {
     }),
   );
 
-  return renderHook(() => useRoutines("2026-10-10"));
+  return renderHook(() => useRoutines("2026-10-10"), {
+    wrapper: DataProvider,
+  });
 }
 
 function renderRoutinesAt(routines, checks = {}, today = "2026-10-10") {
@@ -38,7 +41,7 @@ function renderRoutinesAt(routines, checks = {}, today = "2026-10-10") {
   localStorage.setItem("routines", JSON.stringify(routines));
   localStorage.setItem("routineChecks", JSON.stringify(checks));
 
-  return renderHook(() => useRoutines(today));
+  return renderHook(() => useRoutines(today), { wrapper: DataProvider });
 }
 
 function getKey(routineId, day, month = 10) {
@@ -118,6 +121,31 @@ describe("useRoutines toggleRoutineCheck", () => {
     });
 
     expect(result.current.routineChecks[getKey(FIRST_ID, 5)]).toBe(false);
+  });
+
+  it("keeps both checks when two days are toggled in the same update", () => {
+    const { result } = renderRoutinesAt(ROUTINES);
+
+    act(() => {
+      result.current.toggleRoutineCheck(FIRST_ID, 3);
+      result.current.toggleRoutineCheck(FIRST_ID, 4);
+    });
+
+    expect(result.current.routineChecks).toEqual({
+      [getKey(FIRST_ID, 3)]: true,
+      [getKey(FIRST_ID, 4)]: true,
+    });
+  });
+
+  it("unmarks the day again when it is toggled twice in the same update", () => {
+    const { result } = renderRoutinesAt(ROUTINES);
+
+    act(() => {
+      result.current.toggleRoutineCheck(FIRST_ID, 3);
+      result.current.toggleRoutineCheck(FIRST_ID, 3);
+    });
+
+    expect(result.current.routineChecks[getKey(FIRST_ID, 3)]).toBe(false);
   });
 
   it("uses the month that is shown for the check key", () => {
