@@ -32,15 +32,13 @@ import {
   getRoutineKeyForDate,
   parseLocalDate,
 } from "./utils/dateHelpers";
-import useLocalStorageState from "./hooks/useLocalStorageState";
 import useToday from "./hooks/useToday";
 import useTasks from "./hooks/useTasks";
 import useRoutines from "./hooks/useRoutines";
 import useProjects from "./hooks/useProjects";
+import useSettings from "./hooks/useSettings";
 import DataProvider from "./data/DataProvider";
 import { isTaskVisibleToday } from "./utils/taskHelpers";
-
-const VALID_THEMES = ["gray", "purple", "blue", "red", "green", "pink"];
 
 function getGreetingSegment() {
   const hour = new Date().getHours();
@@ -110,20 +108,16 @@ function AppContent() {
   const [filter, setFilter] = useState("all");
   const [searchText, setSearchText] = useState("");
 
-  const [theme, setTheme] = useLocalStorageState(
-    "theme",
-    "gray",
-    (savedTheme) => (VALID_THEMES.includes(savedTheme) ? savedTheme : "gray"),
-  );
-  const [language, setLanguage] = useLocalStorageState("language", "tr");
-  const [fontFamily, setFontFamily] = useLocalStorageState(
-    "fontFamily",
-    "Inter",
-  );
-  const [weekStartDay, setWeekStartDay] = useLocalStorageState(
-    "weekStartDay",
-    "monday",
-  );
+  const {
+    theme,
+    setTheme,
+    language,
+    setLanguage,
+    fontFamily,
+    setFontFamily,
+    weekStartDay,
+    setWeekStartDay,
+  } = useSettings();
 
   const t = strings[language];
   const [selectedTaskId, setSelectedTaskId] = useState(null);
