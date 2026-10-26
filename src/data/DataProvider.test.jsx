@@ -57,6 +57,25 @@ describe("DataProvider", () => {
     expect(createRepositories).toHaveBeenCalledWith({ today: "2026-10-10" });
   });
 
+  it("creates the repositories with the given date when one is passed", () => {
+    const createRepositories = vi.fn(createFakeRepositories);
+
+    function Wrapper({ children }) {
+      return (
+        <DataProvider
+          createRepositories={createRepositories}
+          today="2026-10-11"
+        >
+          {children}
+        </DataProvider>
+      );
+    }
+
+    renderHook(() => useRepository("tasks"), { wrapper: Wrapper });
+
+    expect(createRepositories).toHaveBeenCalledWith({ today: "2026-10-11" });
+  });
+
   it("keeps the same repositories when the tree renders again", () => {
     const createRepositories = vi.fn(createFakeRepositories);
 
