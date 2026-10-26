@@ -57,7 +57,7 @@ function DashboardPage({
 
           <div className="weekly-chart">
             {weeklyProductivity.map((day, index) => (
-                            <div
+              <div
                 className="weekly-bar-wrapper"
                 key={day.fullDate}
                 role="img"

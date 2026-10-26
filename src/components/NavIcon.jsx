@@ -72,4 +72,4 @@ function NavIcon({ name }) {
   );
 }
 
-export default NavIcon; 
+export default NavIcon;
