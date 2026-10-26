@@ -1,42 +1,27 @@
 import { useCallback } from "react";
-import useLocalStorageState from "./useLocalStorageState";
+import useRepositorySnapshot from "../data/useRepositorySnapshot";
 import { createId } from "../lib/id";
-import { createInitialTasks } from "../constants/initialData";
 import {
-  addFutureOccurrences,
-  applyTaskOrder,
   generateRepeatOccurrences,
   getReorderedActiveTaskIds,
 } from "../utils/taskHelpers";
 
-function normalizeStoredTasks(storedTasks) {
-  return storedTasks.map((task, index) => ({
-    description: "",
-    steps: [],
-    completedAt: null,
-    order: index,
-    repeat: "none",
-    repeatGroupId: null,
-    attachments: [],
-    ...task,
-  }));
-}
-
 export default function useTasks(today) {
-  const [tasks, setTasks] = useLocalStorageState(
-    "tasks",
-    createInitialTasks(today),
-    (storedTasks) =>
-      addFutureOccurrences(normalizeStoredTasks(storedTasks), today),
-  );
+  const [tasks, repository] = useRepositorySnapshot("tasks");
 
   const updateTask = useCallback(
     (taskId, updater) => {
-      setTasks((currentTasks) =>
-        currentTasks.map((task) => (task.id === taskId ? updater(task) : task)),
-      );
+      const task = repository
+        .getSnapshot()
+        .find((currentTask) => currentTask.id === taskId);
+
+      if (!task) {
+        return;
+      }
+
+      repository.update(taskId, updater(task));
     },
-    [setTasks],
+    [repository],
   );
 
   function addTask(taskData) {
@@ -56,7 +41,7 @@ export default function useTasks(today) {
       ...taskData,
     };
 
-    setTasks((currentTasks) => [newTask, ...currentTasks]);
+    repository.create(newTask);
   }
 
   const toggleTask = useCallback(
@@ -76,9 +61,9 @@ export default function useTasks(today) {
 
   const deleteTask = useCallback(
     (id) => {
-      setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id));
+      repository.remove(id);
     },
-    [setTasks],
+    [repository],
   );
 
   function updateTaskTitle(taskId, newTitle) {
@@ -145,56 +130,49 @@ export default function useTasks(today) {
   }
 
   function updateTaskRepeat(taskId, newRepeat) {
-    setTasks((currentTasks) => {
-      const targetTask = currentTasks.find((task) => task.id === taskId);
+    const currentTasks = repository.getSnapshot();
+    const targetTask = currentTasks.find((task) => task.id === taskId);
 
-      if (!targetTask) {
-        return currentTasks;
-      }
+    if (!targetTask) {
+      return;
+    }
 
-      const oldGroupId = targetTask.repeatGroupId;
-      const targetDate = targetTask.date;
-
-      const tasksWithoutStaleFuture = currentTasks.filter((task) => {
-        const isStaleFutureSibling =
+    const oldGroupId = targetTask.repeatGroupId;
+    const staleFutureIds = currentTasks
+      .filter(
+        (task) =>
           oldGroupId &&
           task.repeatGroupId === oldGroupId &&
           task.id !== taskId &&
-          task.date > targetDate;
+          task.date > targetTask.date,
+      )
+      .map((task) => task.id);
 
-        return !isStaleFutureSibling;
-      });
+    if (staleFutureIds.length > 0) {
+      repository.removeMany(staleFutureIds);
+    }
 
-      const updatedTasks = tasksWithoutStaleFuture.map((task) => {
-        if (task.id !== taskId) {
-          return task;
-        }
+    if (newRepeat === "none") {
+      repository.update(taskId, { repeat: "none", repeatGroupId: null });
+      return;
+    }
 
-        if (newRepeat === "none") {
-          return { ...task, repeat: "none", repeatGroupId: null };
-        }
-
-        return {
-          ...task,
-          repeat: newRepeat,
-          repeatGroupId: oldGroupId || createId(),
-        };
-      });
-
-      const updatedTask = updatedTasks.find((task) => task.id === taskId);
-
-      if (!updatedTask || updatedTask.repeat === "none") {
-        return updatedTasks;
-      }
-
-      const newOccurrences = generateRepeatOccurrences(
-        updatedTask,
-        updatedTasks,
-        today,
-      );
-
-      return [...updatedTasks, ...newOccurrences];
+    repository.update(taskId, {
+      repeat: newRepeat,
+      repeatGroupId: oldGroupId || createId(),
     });
+
+    const updatedTasks = repository.getSnapshot();
+    const updatedTask = updatedTasks.find((task) => task.id === taskId);
+    const newOccurrences = generateRepeatOccurrences(
+      updatedTask,
+      updatedTasks,
+      today,
+    );
+
+    if (newOccurrences.length > 0) {
+      repository.createMany(newOccurrences);
+    }
   }
 
   const reorderTasks = useCallback(
@@ -203,21 +181,17 @@ export default function useTasks(today) {
         return;
       }
 
-      setTasks((currentTasks) => {
-        const orderedIds = getReorderedActiveTaskIds(
-          currentTasks,
-          draggedId,
-          targetId,
-        );
+      const orderedIds = getReorderedActiveTaskIds(
+        repository.getSnapshot(),
+        draggedId,
+        targetId,
+      );
 
-        if (!orderedIds) {
-          return currentTasks;
-        }
-
-        return applyTaskOrder(currentTasks, orderedIds);
-      });
+      if (orderedIds) {
+        repository.reorder(orderedIds);
+      }
     },
-    [setTasks],
+    [repository],
   );
 
   function assignTaskToProject(taskId, projectId) {
@@ -225,11 +199,14 @@ export default function useTasks(today) {
   }
 
   function clearProjectFromTasks(projectId) {
-    setTasks((currentTasks) =>
-      currentTasks.map((task) =>
-        task.projectId === projectId ? { ...task, projectId: null } : task,
-      ),
-    );
+    const updates = repository
+      .getSnapshot()
+      .filter((task) => task.projectId === projectId)
+      .map((task) => ({ id: task.id, patch: { projectId: null } }));
+
+    if (updates.length > 0) {
+      repository.updateMany(updates);
+    }
   }
 
   return {

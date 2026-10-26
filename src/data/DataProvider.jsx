@@ -3,8 +3,8 @@ import { getLocalDateString } from "../utils/dateHelpers";
 import { DataContext } from "./DataContext";
 import createLocalRepositories from "./local/createLocalRepositories";
 
-function createDataContextValue(createRepositories) {
-  const repositories = createRepositories({ today: getLocalDateString() });
+function createDataContextValue(createRepositories, today) {
+  const repositories = createRepositories({ today });
   const startedNames = new Set();
 
   function ensureStarted(name) {
@@ -22,8 +22,11 @@ function createDataContextValue(createRepositories) {
 export default function DataProvider({
   children,
   createRepositories = createLocalRepositories,
+  today,
 }) {
-  const [value] = useState(() => createDataContextValue(createRepositories));
+  const [value] = useState(() =>
+    createDataContextValue(createRepositories, today ?? getLocalDateString()),
+  );
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
