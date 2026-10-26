@@ -32,7 +32,7 @@ Anchorly is a task and habit dashboard built with React. Daily tasks, routines, 
 - **Calendar:** month and week views, with quick add on any day.
 - **Archive:** browse all your tasks and filter them by status and date range.
 - **Projects:** group tasks under a project and manage them from one page.
-- **Personalisation:** 6 themes (gray, purple, blue, red, green, pink), Turkish and English, three fonts (Inter, Poppins, Manrope), week starting on Monday or Sunday.
+- **Personalisation:** 7 themes (gray, purple, blue, red, green, pink, black), Turkish and English, three fonts (Inter, Poppins, Manrope), week starting on Monday or Sunday.
 - **Keyboard shortcut:** press `n` outside a text field to jump to Today and focus the new task input.
 - **Correct local dates:** "today" follows your local time zone and refreshes itself at midnight.
 - **Data safety:**
@@ -86,18 +86,25 @@ Tests run with the time zone fixed to `Europe/Istanbul`, so date logic is tested
 
 ```text
 src/
-├── components/     AddTaskForm, Header, NavIcon, Sidebar, StatCard,
-│                   StorageWarning, TaskDetailModal, TaskList
-├── constants/      initialData.js (demo data factory)
-├── hooks/          useLocalStorageState, useProjects, useRoutines,
-│                   useTasks, useToday
-├── lib/            id.js, migrations.js, storageStatus.js
+├── components/     AddTaskForm, BottomNav, CalendarAgenda, DateField,
+│                   Header, Logo, NavIcon, RoutineDayView, Sidebar,
+│                   StatCard, StorageToasts, TaskDetailModal, TaskList,
+│                   toast/ (ToastProvider)
+├── constants/      initialData.js (demo data), settings.js (themes, defaults)
+├── data/           DataProvider, useRepository, useRepositorySnapshot
+│   ├── contracts/  contract tests every repository must pass
+│   └── local/      localStorage repositories, migrations, storage status
+├── hooks/          useProjects, useRoutines, useSettings, useTasks,
+│                   useToday
+├── lib/            id.js
 ├── pages/          Dashboard, Today, DailyRoutine, Calendar,
 │                   Archive, Projects, Settings
+├── styles/         tokens.css (the seven themes), base, layout,
+│                   components/, pages/
 ├── test/           test setup and fixtures
-├── utils/          dateHelpers.js, taskHelpers.js
-├── App.jsx         App state and page switching
-├── App.css         Styles and the six themes
+├── utils/          categoryHelpers, dateHelpers, routineStats, taskHelpers
+├── App.jsx         App shell, page switching, DataProvider
+├── routes.js       Page paths
 ├── strings.js      Turkish and English texts
 └── main.jsx        Entry point, runs data migrations before rendering
 ```

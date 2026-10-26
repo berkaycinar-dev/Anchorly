@@ -32,7 +32,7 @@ Anchorly, React ile geliştirdiğim bir görev ve alışkanlık panosu. Günlük
 - **Takvim:** ay ve hafta görünümü, herhangi bir güne hızlı görev ekleme.
 - **Arşiv:** tüm görevlerine göz at; duruma ve tarih aralığına göre filtrele.
 - **Projeler:** görevleri bir proje altında toplama ve tek sayfadan yönetme.
-- **Kişiselleştirme:** 6 tema (gray, purple, blue, red, green, pink), Türkçe ve İngilizce, üç yazı tipi (Inter, Poppins, Manrope), haftanın Pazartesi ya da Pazar başlaması.
+- **Kişiselleştirme:** 7 tema (gray, purple, blue, red, green, pink, black), Türkçe ve İngilizce, üç yazı tipi (Inter, Poppins, Manrope), haftanın Pazartesi ya da Pazar başlaması.
 - **Klavye kısayolu:** yazı alanı dışındayken `n` tuşu Bugün sayfasına gidip yeni görev alanına odaklanır.
 - **Doğru yerel tarih:** "bugün" yerel saat diliminize göre belirlenir ve gece yarısı kendiliğinden yenilenir.
 - **Veri güvenliği:**
@@ -86,18 +86,25 @@ Testler saat dilimi `Europe/Istanbul` olarak sabitlenerek çalışır; böylece 
 
 ```text
 src/
-├── components/     AddTaskForm, Header, NavIcon, Sidebar, StatCard,
-│                   StorageWarning, TaskDetailModal, TaskList
-├── constants/      initialData.js (demo veri üreticisi)
-├── hooks/          useLocalStorageState, useProjects, useRoutines,
-│                   useTasks, useToday
-├── lib/            id.js, migrations.js, storageStatus.js
+├── components/     AddTaskForm, BottomNav, CalendarAgenda, DateField,
+│                   Header, Logo, NavIcon, RoutineDayView, Sidebar,
+│                   StatCard, StorageToasts, TaskDetailModal, TaskList,
+│                   toast/ (ToastProvider)
+├── constants/      initialData.js (demo veri), settings.js (temalar, varsayılanlar)
+├── data/           DataProvider, useRepository, useRepositorySnapshot
+│   ├── contracts/  her repository'nin geçmesi gereken sözleşme testleri
+│   └── local/      localStorage repository'leri, migration'lar, depolama durumu
+├── hooks/          useProjects, useRoutines, useSettings, useTasks,
+│                   useToday
+├── lib/            id.js
 ├── pages/          Dashboard, Today, DailyRoutine, Calendar,
 │                   Archive, Projects, Settings
+├── styles/         tokens.css (yedi tema), base, layout,
+│                   components/, pages/
 ├── test/           test kurulumu ve örnek veriler
-├── utils/          dateHelpers.js, taskHelpers.js
-├── App.jsx         Uygulama durumu ve sayfa geçişi
-├── App.css         Stiller ve altı tema
+├── utils/          categoryHelpers, dateHelpers, routineStats, taskHelpers
+├── App.jsx         Uygulama iskeleti, sayfa geçişi, DataProvider
+├── routes.js       Sayfa yolları
 ├── strings.js      Türkçe ve İngilizce metinler
 └── main.jsx        Giriş noktası, render öncesi veri göçlerini çalıştırır
 ```
