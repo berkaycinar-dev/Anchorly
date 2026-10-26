@@ -50,6 +50,14 @@ describe("local settings repository", () => {
     expect(setItem).toHaveBeenCalledWith("theme", '"green"');
   });
 
+  it("keeps a stored black theme", () => {
+    localStorage.setItem("theme", JSON.stringify("black"));
+
+    const repository = createLocalSettingsRepository();
+
+    expect(repository.getSnapshot().theme).toBe("black");
+  });
+
   it("replaces an unknown stored theme with the default theme", () => {
     localStorage.setItem("theme", JSON.stringify("orange"));
 

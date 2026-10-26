@@ -68,6 +68,10 @@
   background-color: #fbeef9;
 }
 
+.theme-black .calendar-cell-weekend {
+  background-color: #1c1c1c;
+}
+
 .calendar-tasks {
   display: grid;
   gap: 6px;

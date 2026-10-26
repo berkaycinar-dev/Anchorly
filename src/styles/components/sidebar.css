@@ -18,9 +18,11 @@
 .theme-purple .sidebar,
 .theme-blue .sidebar,
 .theme-green .sidebar,
+.theme-black .sidebar,
 .theme-purple .bottom-nav,
 .theme-blue .bottom-nav,
-.theme-green .bottom-nav {
+.theme-green .bottom-nav,
+.theme-black .bottom-nav {
   --nav-badge-bg: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
   --nav-badge-text: var(--color-text-secondary);
 }

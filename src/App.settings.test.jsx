@@ -28,6 +28,16 @@ describe("App settings", () => {
     expect(localStorage.getItem("theme")).toBe('"green"');
   });
 
+  it("applies and saves the black theme", async () => {
+    const user = userEvent.setup();
+    renderApp("/settings");
+
+    await user.click(screen.getByRole("button", { name: "black" }));
+
+    expect(getAppRoot()).toHaveClass("theme-black");
+    expect(localStorage.getItem("theme")).toBe('"black"');
+  });
+
   it("switches the interface to English and saves the language", async () => {
     const user = userEvent.setup();
     renderApp("/settings");
