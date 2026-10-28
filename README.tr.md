@@ -27,11 +27,13 @@ Anchorly, React ile geliştirdiğim bir görev ve alışkanlık panosu. Günlük
 - **Panel:** karşılama mesajı, görev sayaçları (bugün, tamamlanan, devam eden, geciken), tamamlanma halkası ve haftalık verimlilik grafiği.
 - **Görevler:** her görev için kategori ve tarih, arama, Tümü / Aktif / Tamamlanan filtreleri; açıklama, adımlar ve dosya eki (her biri en fazla 1 MB) içeren görev detay penceresi.
 - **Tekrarlayan görevler:** günlük veya haftalık. Gelecek tekrarlar 120 gün ilerisine kadar üretilir.
-- **Sürükle-bırak:** aktif görevlerin sırasını sürükleyerek değiştirme.
-- **Günlük Rutin:** aylık tabloda alışkanlık takibi, ay ay gezinme.
-- **Takvim:** ay ve hafta görünümü, herhangi bir güne hızlı görev ekleme.
+- **Sürükle-bırak:** aktif görevlerin sırasını fareyle, dokunmatik ekranda uzun basarak ya da klavyeyle değiştirme.
+- **Günlük Rutin:** aylık tabloda alışkanlık takibi, ay ay gezinme. Telefonda gün şeridi ve rutin kartları.
+- **Takvim:** ay ve hafta görünümü, herhangi bir güne hızlı görev ekleme. Telefonda gün seçici ve ajanda listesi.
 - **Arşiv:** tüm görevlerine göz at; duruma ve tarih aralığına göre filtrele.
 - **Projeler:** görevleri bir proje altında toplama ve tek sayfadan yönetme.
+- **Duyarlı tasarım:** 375 px telefondan masaüstüne kadar her ekranda çalışır: telefonda alt sekme çubuğu, tablette ikonlu kenar çubuğu, masaüstünde tam kenar çubuğu.
+- **Sayfa adresleri:** her sayfanın kendi adresi var; tarayıcının geri tuşu ve yer imleri çalışır.
 - **Kişiselleştirme:** 7 tema (gray, purple, blue, red, green, pink, black), Türkçe ve İngilizce, üç yazı tipi (Inter, Poppins, Manrope), haftanın Pazartesi ya da Pazar başlaması.
 - **Klavye kısayolu:** yazı alanı dışındayken `n` tuşu Bugün sayfasına gidip yeni görev alanına odaklanır.
 - **Doğru yerel tarih:** "bugün" yerel saat diliminize göre belirlenir ve gece yarısı kendiliğinden yenilenir.
@@ -47,9 +49,12 @@ Anchorly, React ile geliştirdiğim bir görev ve alışkanlık panosu. Günlük
 
 - React 19
 - Vite 8
+- React Router 8
+- Sürükle-bırak için dnd-kit
 - Vanilla CSS (UI kütüphanesi yok)
 - Testler için Vitest ve Testing Library
 - ESLint ve Prettier
+- GitHub Actions (her push'ta lint, test ve derleme)
 
 ---
 
@@ -114,19 +119,20 @@ src/
 ## Bilinen sınırlamalar
 
 - Veriler tarayıcıda (`localStorage`) saklanır. Cihazlar veya tarayıcılar arasında senkronize olmaz ve tarayıcı boyutunu sınırlar.
-- Henüz mobil görünüm yok. Arayüz masaüstü ekranlar için tasarlandı.
-- Sayfaların henüz kendi adresi yok. Gezinirken adres çubuğu değişmez.
+- Henüz kullanıcı hesabı yok. Backend ayrı bir depoda geliştiriliyor: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 
 ## Yol haritası
 
-- [ ] React Router ile her sayfa için ayrı adres
-- [ ] Klavye ve ekran okuyucu erişilebilirliği, toast bildirimleri
-- [ ] GitHub Actions ile sürekli entegrasyon
-- [ ] Context ve reducer'lar ile durum yönetimi düzenlemesi
-- [ ] Mobil görünüm
-- [ ] Cihazlar arası veri için backend, veritabanı ve kimlik doğrulama
+- [x] React Router ile her sayfa için ayrı adres
+- [x] Toast bildirimleri
+- [x] GitHub Actions ile sürekli entegrasyon
+- [x] Veri erişim katmanı: `DataProvider` arkasında repository'ler
+- [x] Mobil görünüm
+- [ ] Cihazlar arası veri için backend, veritabanı ve kimlik doğrulama (geliştiriliyor: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api))
+- [ ] Klavye ve ekran okuyucu erişilebilirliği incelemesi
+- [ ] Yüklenebilir web uygulaması (PWA) ve Android uygulaması
 
 ---
 
@@ -136,4 +142,4 @@ Bu proje kişisel ve portfolyo amaçlı geliştirilmiştir.
 
 ---
 
-**Geliştiren:** [berkaycinar-dev](https://github.com/berkaycinar-dev)
+**Geliştiren:** [berkaycinar-dev](https://github.com/berkaycinar-dev)sssssssssssssssssss

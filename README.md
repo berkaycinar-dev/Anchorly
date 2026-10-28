@@ -27,11 +27,13 @@ Anchorly is a task and habit dashboard built with React. Daily tasks, routines, 
 - **Dashboard:** greeting, task counters (today, completed, in progress, overdue), a completion donut and a weekly productivity chart.
 - **Tasks:** category and date for each task, search, All / Active / Completed filters, and a detail dialog with description, steps and file attachments (up to 1 MB each).
 - **Repeating tasks:** daily or weekly. Upcoming occurrences are generated 120 days ahead.
-- **Drag and drop:** reorder active tasks by dragging.
-- **Daily Routine:** habit tracking in a monthly table with month navigation.
-- **Calendar:** month and week views, with quick add on any day.
+- **Drag and drop:** reorder active tasks with the mouse, by long-pressing on touch screens, or with the keyboard.
+- **Daily Routine:** habit tracking in a monthly table with month navigation. On phones, a day strip with routine cards.
+- **Calendar:** month and week views, with quick add on any day. On phones, a day picker with an agenda list.
 - **Archive:** browse all your tasks and filter them by status and date range.
 - **Projects:** group tasks under a project and manage them from one page.
+- **Responsive layout:** works from 375 px phones to desktop screens: a bottom tab bar on phones, an icon sidebar on tablets and the full sidebar on desktop.
+- **Page addresses:** every page has its own URL, so the browser's back button and bookmarks work.
 - **Personalisation:** 7 themes (gray, purple, blue, red, green, pink, black), Turkish and English, three fonts (Inter, Poppins, Manrope), week starting on Monday or Sunday.
 - **Keyboard shortcut:** press `n` outside a text field to jump to Today and focus the new task input.
 - **Correct local dates:** "today" follows your local time zone and refreshes itself at midnight.
@@ -47,9 +49,12 @@ Anchorly is a task and habit dashboard built with React. Daily tasks, routines, 
 
 - React 19
 - Vite 8
+- React Router 8
+- dnd-kit for drag and drop
 - Vanilla CSS (no UI library)
 - Vitest and Testing Library for tests
 - ESLint and Prettier
+- GitHub Actions (lint, tests and build on every push)
 
 ---
 
@@ -114,19 +119,20 @@ src/
 ## Known limitations
 
 - Data is stored in the browser (`localStorage`). It is not synced between devices or browsers, and the browser limits its size.
-- There is no mobile layout yet. The interface is designed for desktop screens.
-- Pages do not have their own URLs yet. The address bar stays the same while you navigate.
+- There are no user accounts yet. The backend is being built in a separate repository: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 
 ## Roadmap
 
-- [ ] A URL for every page with React Router
-- [ ] Keyboard and screen reader accessibility, toast notifications
-- [ ] Continuous integration with GitHub Actions
-- [ ] State refactor with Context and reducers
-- [ ] Mobile layout
-- [ ] Backend, database and authentication for cross-device data
+- [x] A URL for every page with React Router
+- [x] Toast notifications
+- [x] Continuous integration with GitHub Actions
+- [x] Data access layer: repositories behind a `DataProvider`
+- [x] Mobile layout
+- [ ] Backend, database and authentication for cross-device data (in progress: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api))
+- [ ] Keyboard and screen reader accessibility review
+- [ ] Installable web app (PWA) and Android app
 
 ---
 
