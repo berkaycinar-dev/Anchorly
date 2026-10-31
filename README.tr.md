@@ -142,4 +142,4 @@ Bu proje kişisel ve portfolyo amaçlı geliştirilmiştir.
 
 ---
 
-**Geliştiren:** [berkaycinar-dev](https://github.com/berkaycinar-dev)sssssssssssssssssss
+**Geliştiren:** [berkaycinar-dev](https://github.com/berkaycinar-dev)
