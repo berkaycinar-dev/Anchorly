@@ -69,19 +69,30 @@ npm install
 npm run dev
 ```
 
+### Running with the backend (accounts, optional)
+
+Accounts are switched off by default; without the flag the app makes no API requests and keeps everything in the browser. To try sign-in locally with [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api):
+
+1. Start anchorly-api on `http://localhost:3000` with `AUTH_COOKIE_PATH=/api/auth` in its `.env`.
+2. Copy `.env.example` to `.env.local` and set `VITE_AUTH_ENABLED=true`.
+3. Run `npm run dev`. Vite forwards `/api/*` to the backend (`/api/auth/login` → `/auth/login`), so the browser sees a single origin and the `HttpOnly` refresh cookie works without CORS.
+
+The access token stays in memory only. A refresh is attempted on start only if this browser has signed in before (`authSessionHint` in `localStorage`, which holds `"1"` and no token).
+
 ---
 
 ## Scripts
 
-| Command              | What it does                         |
-| -------------------- | ------------------------------------ |
-| `npm run dev`        | Start the development server         |
-| `npm run build`      | Create a production build in `dist/` |
-| `npm run preview`    | Serve the production build locally   |
-| `npm run lint`       | Run ESLint                           |
-| `npm test`           | Run all tests once                   |
-| `npm run test:watch` | Run tests in watch mode              |
-| `npm run format`     | Format `src/` with Prettier          |
+| Command                | What it does                         |
+| ---------------------- | ------------------------------------ |
+| `npm run dev`          | Start the development server         |
+| `npm run build`        | Create a production build in `dist/` |
+| `npm run preview`      | Serve the production build locally   |
+| `npm run lint`         | Run ESLint                           |
+| `npm test`             | Run all tests once                   |
+| `npm run test:watch`   | Run tests in watch mode              |
+| `npm run format`       | Format the project with Prettier     |
+| `npm run format:check` | Check formatting without writing     |
 
 Tests run with the time zone fixed to `Europe/Istanbul`, so date logic is tested around local midnight.
 
@@ -96,7 +107,9 @@ src/
 │                   StatCard, StorageToasts, TaskDetailModal, TaskList,
 │                   toast/ (ToastProvider)
 ├── constants/      initialData.js (demo data), settings.js (themes, defaults)
+├── auth/           AuthProvider, useAuth, cross-tab channel
 ├── data/           DataProvider, useRepository, useRepositorySnapshot
+│   ├── api/        API client (token refresh), auth API calls
 │   ├── contracts/  contract tests every repository must pass
 │   └── local/      localStorage repositories, migrations, storage status
 ├── hooks/          useProjects, useRoutines, useSettings, useTasks,
@@ -108,7 +121,8 @@ src/
 │                   components/, pages/
 ├── test/           test setup and fixtures
 ├── utils/          categoryHelpers, dateHelpers, routineStats, taskHelpers
-├── App.jsx         App shell, page switching, DataProvider
+├── App.jsx         App shell, page switching, AuthProvider, DataProvider
+├── config.js       Feature flags (VITE_AUTH_ENABLED)
 ├── routes.js       Page paths
 ├── strings.js      Turkish and English texts
 └── main.jsx        Entry point, runs data migrations before rendering
@@ -119,7 +133,7 @@ src/
 ## Known limitations
 
 - Data is stored in the browser (`localStorage`). It is not synced between devices or browsers, and the browser limits its size.
-- There are no user accounts yet. The backend is being built in a separate repository: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
+- Accounts are being added behind the `VITE_AUTH_ENABLED` flag; task, routine and project data is not stored on the server yet. The backend lives in a separate repository: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 

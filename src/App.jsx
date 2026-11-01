@@ -38,6 +38,7 @@ import useRoutines from "./hooks/useRoutines";
 import useProjects from "./hooks/useProjects";
 import useSettings from "./hooks/useSettings";
 import DataProvider from "./data/DataProvider";
+import AuthProvider from "./auth/AuthProvider";
 import { isTaskVisibleToday } from "./utils/taskHelpers";
 
 function getGreetingSegment() {
@@ -625,9 +626,11 @@ function AppContent() {
 
 function App() {
   return (
-    <DataProvider>
-      <AppContent />
-    </DataProvider>
+    <AuthProvider>
+      <DataProvider>
+        <AppContent />
+      </DataProvider>
+    </AuthProvider>
   );
 }
 
