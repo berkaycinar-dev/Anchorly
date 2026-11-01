@@ -4,6 +4,7 @@ import Icon from "./Icon";
 import { NAV_ICONS } from "./navIcons";
 import { routes } from "../routes";
 import Logo from "./Logo";
+import SidebarAccount from "./SidebarAccount";
 
 const INDICATOR_INSET = 11;
 
@@ -136,6 +137,12 @@ function Sidebar({
               );
             })}
           </nav>
+
+          <SidebarAccount
+            t={t}
+            isExpanded={isExpanded}
+            onNavigate={onNavigate}
+          />
         </div>
       </aside>
     </>
