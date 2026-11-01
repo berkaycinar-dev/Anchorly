@@ -4,6 +4,8 @@
 
 body {
   margin: 0;
+  font-size: var(--text-md);
+  line-height: var(--line-height-base);
 }
 
 button,
@@ -19,6 +21,16 @@ textarea {
   textarea
 ) {
   font-size: 16px;
+}
+
+@media (min-width: 768px) and (pointer: fine) {
+  :where(
+    input:not([type="checkbox"], [type="radio"], [type="file"]),
+    select,
+    textarea
+  ) {
+    font-size: var(--text-md);
+  }
 }
 
 @media (pointer: coarse) {
