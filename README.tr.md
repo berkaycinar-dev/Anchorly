@@ -69,19 +69,30 @@ npm install
 npm run dev
 ```
 
+### Backend ile çalıştırma (hesaplar, isteğe bağlı)
+
+Hesaplar varsayılan olarak kapalıdır; bayrak açılmadıkça uygulama hiçbir API isteği atmaz ve her şeyi tarayıcıda tutar. Girişi yerelde [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api) ile denemek için:
+
+1. anchorly-api'yi `.env` dosyasında `AUTH_COOKIE_PATH=/api/auth` ile `http://localhost:3000` üzerinde başlat.
+2. `.env.example` dosyasını `.env.local` adıyla kopyala ve `VITE_AUTH_ENABLED=true` yap.
+3. `npm run dev` çalıştır. Vite `/api/*` isteklerini backend'e iletir (`/api/auth/login` → `/auth/login`); tarayıcı tek bir köken gördüğü için `HttpOnly` refresh cookie'si CORS gerekmeden çalışır.
+
+Access token yalnızca bellekte tutulur. Açılışta oturum yenileme yalnızca bu tarayıcıda daha önce giriş yapılmışsa denenir (`localStorage`'daki `authSessionHint`; içinde token değil yalnızca `"1"` vardır).
+
 ---
 
 ## Komutlar
 
-| Komut                | Ne yapar                                    |
-| -------------------- | ------------------------------------------- |
-| `npm run dev`        | Geliştirme sunucusunu başlatır              |
-| `npm run build`      | `dist/` içinde üretim derlemesi oluşturur   |
-| `npm run preview`    | Üretim derlemesini yerelde sunar            |
-| `npm run lint`       | ESLint çalıştırır                           |
-| `npm test`           | Tüm testleri bir kez çalıştırır             |
-| `npm run test:watch` | Testleri izleme modunda çalıştırır          |
-| `npm run format`     | `src/` klasörünü Prettier ile biçimlendirir |
+| Komut                  | Ne yapar                                  |
+| ---------------------- | ----------------------------------------- |
+| `npm run dev`          | Geliştirme sunucusunu başlatır            |
+| `npm run build`        | `dist/` içinde üretim derlemesi oluşturur |
+| `npm run preview`      | Üretim derlemesini yerelde sunar          |
+| `npm run lint`         | ESLint çalıştırır                         |
+| `npm test`             | Tüm testleri bir kez çalıştırır           |
+| `npm run test:watch`   | Testleri izleme modunda çalıştırır        |
+| `npm run format`       | Projeyi Prettier ile biçimlendirir        |
+| `npm run format:check` | Biçimi değiştirmeden denetler             |
 
 Testler saat dilimi `Europe/Istanbul` olarak sabitlenerek çalışır; böylece tarih mantığı yerel gece yarısı çevresinde test edilir.
 
@@ -96,7 +107,9 @@ src/
 │                   StatCard, StorageToasts, TaskDetailModal, TaskList,
 │                   toast/ (ToastProvider)
 ├── constants/      initialData.js (demo veri), settings.js (temalar, varsayılanlar)
+├── auth/           AuthProvider, useAuth, sekmeler arası kanal
 ├── data/           DataProvider, useRepository, useRepositorySnapshot
+│   ├── api/        API istemcisi (token yenileme), auth API çağrıları
 │   ├── contracts/  her repository'nin geçmesi gereken sözleşme testleri
 │   └── local/      localStorage repository'leri, migration'lar, depolama durumu
 ├── hooks/          useProjects, useRoutines, useSettings, useTasks,
@@ -108,7 +121,8 @@ src/
 │                   components/, pages/
 ├── test/           test kurulumu ve örnek veriler
 ├── utils/          categoryHelpers, dateHelpers, routineStats, taskHelpers
-├── App.jsx         Uygulama iskeleti, sayfa geçişi, DataProvider
+├── App.jsx         Uygulama iskeleti, sayfa geçişi, AuthProvider, DataProvider
+├── config.js       Özellik bayrakları (VITE_AUTH_ENABLED)
 ├── routes.js       Sayfa yolları
 ├── strings.js      Türkçe ve İngilizce metinler
 └── main.jsx        Giriş noktası, render öncesi veri göçlerini çalıştırır
@@ -119,7 +133,7 @@ src/
 ## Bilinen sınırlamalar
 
 - Veriler tarayıcıda (`localStorage`) saklanır. Cihazlar veya tarayıcılar arasında senkronize olmaz ve tarayıcı boyutunu sınırlar.
-- Henüz kullanıcı hesabı yok. Backend ayrı bir depoda geliştiriliyor: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
+- Hesaplar `VITE_AUTH_ENABLED` bayrağının arkasında ekleniyor; görev, rutin ve proje verisi henüz sunucuda saklanmıyor. Backend ayrı bir depoda: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 
