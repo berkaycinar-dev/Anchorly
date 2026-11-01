@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import Icon from "./Icon";
 import { NAV_ICONS } from "./navIcons";
@@ -6,6 +6,7 @@ import { routes, getRouteForPathname } from "../routes";
 
 const PRIMARY_ROUTE_KEYS = ["Dashboard", "Today", "Daily Routine", "Calendar"];
 const TAB_TITLE_KEYS = { "Daily Routine": "routineTab" };
+const INDICATOR_WIDTH = 28;
 
 const primaryRoutes = routes.filter((route) =>
   PRIMARY_ROUTE_KEYS.includes(route.key),
@@ -30,6 +31,9 @@ function BottomNav({ t, badges = {} }) {
   const { pathname } = useLocation();
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const navRef = useRef(null);
+  const tabsRef = useRef(null);
+  const indicatorRef = useRef(null);
+  const previousLeftRef = useRef(null);
   const moreButtonRef = useRef(null);
   const morePanelId = useId();
 
@@ -37,6 +41,50 @@ function BottomNav({ t, badges = {} }) {
   const isMoreActive = moreRoutes.some(
     (route) => route.key === currentRoute?.key,
   );
+
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    const indicator = indicatorRef.current;
+
+    function positionIndicator() {
+      const target = isMoreOpen
+        ? moreButtonRef.current
+        : tabsRef.current.querySelector(".bottom-nav-item-active");
+
+      if (!target || nav.offsetWidth === 0) {
+        indicator.hidden = true;
+        return;
+      }
+
+      const left =
+        target.offsetLeft + (target.offsetWidth - INDICATOR_WIDTH) / 2;
+      const right = nav.offsetWidth - left - INDICATOR_WIDTH;
+
+      if (
+        previousLeftRef.current !== null &&
+        previousLeftRef.current !== left
+      ) {
+        indicator.dataset.direction =
+          left > previousLeftRef.current ? "right" : "left";
+      }
+
+      indicator.hidden = false;
+      indicator.style.left = `${left}px`;
+      indicator.style.right = `${right}px`;
+      previousLeftRef.current = left;
+    }
+
+    positionIndicator();
+
+    if (typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const observer = new ResizeObserver(positionIndicator);
+    observer.observe(nav);
+
+    return () => observer.disconnect();
+  }, [pathname, isMoreOpen]);
 
   useEffect(() => {
     if (!isMoreOpen) {
@@ -89,6 +137,13 @@ function BottomNav({ t, badges = {} }) {
       className="bottom-nav"
       aria-label={t.bottomNavigationLabel}
     >
+      <span
+        ref={indicatorRef}
+        className="bottom-nav-indicator"
+        aria-hidden="true"
+        hidden
+      />
+
       <ul
         id={morePanelId}
         className="bottom-nav-more-panel"
@@ -113,7 +168,7 @@ function BottomNav({ t, badges = {} }) {
         ))}
       </ul>
 
-      <ul className="bottom-nav-tabs">
+      <ul ref={tabsRef} className="bottom-nav-tabs">
         {primaryRoutes.map((route) => (
           <li key={route.key}>
             <NavLink

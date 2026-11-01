@@ -11,6 +11,7 @@ import {
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
+import useSidebar from "./hooks/useSidebar";
 import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
 import ToastProvider from "./components/toast/ToastProvider";
@@ -121,6 +122,7 @@ function AppContent() {
   } = useSettings();
 
   const t = strings[language];
+  const sidebar = useSidebar();
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
@@ -571,7 +573,14 @@ function AppContent() {
     >
       <ToastProvider closeLabel={t.closeButton}>
         <StorageToasts t={t} />
-        <Sidebar t={t} badges={sidebarBadges} />
+        <Sidebar
+          t={t}
+          badges={sidebarBadges}
+          isExpanded={sidebar.isExpanded}
+          isOverlayOpen={sidebar.isOverlayOpen}
+          onToggle={sidebar.toggle}
+          onNavigate={sidebar.closeOverlay}
+        />
         <main className="main-content">
           <Header />
           <h2 className="page-title">{t[currentRoute.titleKey]}</h2>

@@ -6,13 +6,13 @@ function iconsIn(element) {
   return [...element.querySelectorAll("svg")];
 }
 
-function expectNavIcon(link) {
+function expectNavIcon(link, width) {
   const icons = iconsIn(link);
 
   expect(icons).toHaveLength(1);
   expect(icons[0]).toHaveClass("nav-icon", "lucide");
   expect(icons[0]).toHaveAttribute("aria-hidden", "true");
-  expect(icons[0]).toHaveAttribute("width", "20");
+  expect(icons[0]).toHaveAttribute("width", width);
 }
 
 beforeEach(() => {
@@ -27,7 +27,7 @@ describe("navigation icons", () => {
     const links = within(sidebar).getAllByRole("link");
 
     expect(links).toHaveLength(7);
-    links.forEach(expectNavIcon);
+    links.forEach((link) => expectNavIcon(link, "18"));
   });
 
   it("gives every bottom navigation entry one decorative icon", () => {
@@ -40,7 +40,7 @@ describe("navigation icons", () => {
     ];
 
     expect(entries).toHaveLength(8);
-    entries.forEach(expectNavIcon);
+    entries.forEach((entry) => expectNavIcon(entry, "20"));
   });
 
   it.each([["Main menu"], ["Bottom menu"]])(
