@@ -98,3 +98,13 @@ describe("DateField", () => {
     expect(reportedErrors).toEqual([]);
   });
 });
+
+describe("DateField icon", () => {
+  it("shows a decorative calendar icon", () => {
+    const { input } = renderField();
+    const icon = input.parentElement.querySelector("svg");
+
+    expect(icon).toHaveClass("nav-icon", "lucide-calendar");
+    expect(icon).toHaveAttribute("aria-hidden", "true");
+  });
+});

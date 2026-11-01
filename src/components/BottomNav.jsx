@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router";
-import NavIcon from "./NavIcon";
+import Icon from "./Icon";
+import { NAV_ICONS } from "./navIcons";
 import { routes, getRouteForPathname } from "../routes";
 
 const PRIMARY_ROUTE_KEYS = ["Dashboard", "Today", "Daily Routine", "Calendar"];
@@ -100,7 +101,11 @@ function BottomNav({ t, badges = {} }) {
               className={getMoreItemClassName}
               onClick={closeMore}
             >
-              <NavIcon name={route.key} />
+              <Icon
+                icon={NAV_ICONS[route.key]}
+                size="lg"
+                className="nav-icon"
+              />
               <span className="nav-label">{t[route.titleKey]}</span>
               {renderBadge(route.key, "nav-badge")}
             </NavLink>
@@ -118,7 +123,11 @@ function BottomNav({ t, badges = {} }) {
               onClick={closeMore}
             >
               <span className="bottom-nav-icon">
-                <NavIcon name={route.key} />
+                <Icon
+                  icon={NAV_ICONS[route.key]}
+                  size="lg"
+                  className="nav-icon"
+                />
               </span>
               <span className="bottom-nav-label">
                 {t[TAB_TITLE_KEYS[route.key] ?? route.titleKey]}
@@ -142,7 +151,7 @@ function BottomNav({ t, badges = {} }) {
             onClick={() => setIsMoreOpen((open) => !open)}
           >
             <span className="bottom-nav-icon">
-              <NavIcon name="More" />
+              <Icon icon={NAV_ICONS.More} size="lg" className="nav-icon" />
             </span>
             <span className="bottom-nav-label">{t.moreMenu}</span>
           </button>

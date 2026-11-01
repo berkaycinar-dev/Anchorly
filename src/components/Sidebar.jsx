@@ -1,6 +1,7 @@
 import { Fragment, useLayoutEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router";
-import NavIcon from "./NavIcon";
+import Icon from "./Icon";
+import { NAV_ICONS } from "./navIcons";
 import { routes } from "../routes";
 import Logo from "./Logo";
 
@@ -78,7 +79,11 @@ function Sidebar({ t, badges = {} }) {
                 end={route.path === "/"}
                 className={getNavItemClassName}
               >
-                <NavIcon name={route.key} />
+                <Icon
+                  icon={NAV_ICONS[route.key]}
+                  size="lg"
+                  className="nav-icon"
+                />
                 <span className="nav-label">{t[route.titleKey]}</span>
                 {badgeCount > 0 && (
                   <span key={badgeCount} className="nav-badge">
