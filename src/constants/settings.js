@@ -10,6 +10,8 @@ export const THEMES = [
   "black",
 ];
 
+export const FONTS = ["Inter", "Poppins", "Manrope"];
+
 export const DEFAULT_SETTINGS = {
   theme: "gray",
   language: "tr",
