@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import { renderApp } from "./test/renderApp";
@@ -226,7 +226,7 @@ describe("calendar quick add", () => {
 
 describe("weekly productivity chart", () => {
   function getBars() {
-    return screen.getAllByRole("img", { name: /routines done/ });
+    return screen.getAllByRole("button", { name: /routines done/ });
   }
 
   it("exposes one focusable bar per day with a text alternative", () => {
@@ -238,7 +238,6 @@ describe("weekly productivity chart", () => {
     expect(bars).toHaveLength(7);
 
     bars.forEach((bar) => {
-      expect(bar).toHaveAttribute("tabindex", "0");
       expect(bar).toHaveAccessibleName(
         /^\w+ [\w ]+: \d+ of \d+ routines done, \d+%$/,
       );
@@ -249,26 +248,21 @@ describe("weekly productivity chart", () => {
     seed("tr", [createTask()]);
     renderApp("/");
 
-    const bars = screen.getAllByRole("img", { name: /rutinden/ });
+    const bars = screen.getAllByRole("button", { name: /rutinden/ });
 
     expect(bars).toHaveLength(7);
     expect(bars[0]).toHaveAccessibleName(/rutinden \d+ tamamlandı, %\d+$/);
   });
 
-  it("shows the tooltip while a bar has keyboard focus", () => {
+  it("gives every bar a decorative tooltip with the percent and routines", () => {
     seed("en", [createTask()]);
     renderApp("/");
 
     const [firstBar] = getBars();
+    const tooltip = firstBar.querySelector(".dashboard-tooltip");
 
-    expect(within(firstBar).queryByText(/routines$/)).toBeNull();
-
-    fireEvent.focus(firstBar);
-
-    expect(within(firstBar).getByText(/routines$/)).toBeInTheDocument();
-
-    fireEvent.blur(firstBar);
-
-    expect(within(firstBar).queryByText(/routines$/)).toBeNull();
+    expect(tooltip).toHaveAttribute("aria-hidden", "true");
+    expect(tooltip).toHaveTextContent(/\d+% done/);
+    expect(tooltip).toHaveTextContent(/\d+ \/ \d+ routines done/);
   });
 });

@@ -1,7 +1,12 @@
 import { useState, useCallback } from "react";
 import useRepositorySnapshot from "../data/useRepositorySnapshot";
 import { createId } from "../lib/id";
-import { getLocalDateString, getRoutineKey } from "../utils/dateHelpers";
+import {
+  getLocalDateString,
+  getRoutineKey,
+  getRoutineKeyForDate,
+  parseLocalDate,
+} from "../utils/dateHelpers";
 import {
   calculateRoutineStreak,
   calculateWeeklyProductivity,
@@ -40,6 +45,13 @@ export default function useRoutines(today) {
     repository.setCheck(routineId, date, !isChecked);
   }
 
+  function toggleRoutineForDate(routineId, date) {
+    const key = getRoutineKeyForDate(routineId, parseLocalDate(date));
+    const isChecked = Boolean(repository.getSnapshot().checks[key]);
+
+    repository.setCheck(routineId, date, !isChecked);
+  }
+
   function addRoutine(title) {
     repository.create({ id: createId(), title });
   }
@@ -69,6 +81,7 @@ export default function useRoutines(today) {
     routineDays,
     getRoutineKeyForMonth,
     toggleRoutineCheck,
+    toggleRoutineForDate,
     addRoutine,
     deleteRoutine,
     getRoutineStreak,

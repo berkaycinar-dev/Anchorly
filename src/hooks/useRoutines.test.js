@@ -312,4 +312,24 @@ describe("useRoutines getWeeklyProductivity", () => {
     expect(week.every((day) => day.total === 0)).toBe(true);
     expect(week.every((day) => day.percent === 0)).toBe(true);
   });
+
+  it("toggles a routine for a given date, whatever month is on screen", () => {
+    const { result } = renderRoutines();
+
+    act(() => {
+      result.current.setRoutineMonth(new Date(2026, 0, 1));
+    });
+    act(() => {
+      result.current.toggleRoutineForDate(SECOND_ID, "2026-10-10");
+    });
+
+    expect(result.current.routineChecks[`2026-10-${SECOND_ID}-10`]).toBe(true);
+
+    act(() => {
+      result.current.toggleRoutineForDate(SECOND_ID, "2026-10-10");
+    });
+
+    expect(result.current.routineChecks[`2026-10-${SECOND_ID}-10`]).toBeFalsy();
+    expect(result.current.routineChecks[`2026-10-${FIRST_ID}-1`]).toBe(true);
+  });
 });

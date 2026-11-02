@@ -81,6 +81,50 @@ describe("local settings repository", () => {
     expect(getStorageIssues()).toEqual([{ key: "fontFamily", kind: "read" }]);
   });
 
+  it("keeps a valid stored dashboard layout", () => {
+    localStorage.setItem(
+      "dashboardLayout",
+      JSON.stringify([{ id: "projects", size: "wide" }]),
+    );
+
+    const repository = createLocalSettingsRepository();
+
+    expect(repository.getSnapshot().dashboardLayout).toEqual([
+      { id: "projects", size: "wide" },
+    ]);
+  });
+
+  it("drops unknown, duplicate and malformed dashboard cards", () => {
+    localStorage.setItem(
+      "dashboardLayout",
+      JSON.stringify([
+        { id: "projects", size: "wide" },
+        { id: "weather", size: "small" },
+        { id: "projects", size: "small" },
+        { id: "calendar", size: "huge" },
+        null,
+        { id: "streaks", size: "small", extra: true },
+      ]),
+    );
+
+    const repository = createLocalSettingsRepository();
+
+    expect(repository.getSnapshot().dashboardLayout).toEqual([
+      { id: "projects", size: "wide" },
+      { id: "streaks", size: "small" },
+    ]);
+  });
+
+  it("falls back to the default dashboard layout when the stored one is not a list", () => {
+    localStorage.setItem("dashboardLayout", JSON.stringify({ id: "x" }));
+
+    const repository = createLocalSettingsRepository();
+
+    expect(repository.getSnapshot().dashboardLayout).toEqual(
+      DEFAULT_SETTINGS.dashboardLayout,
+    );
+  });
+
   it("rejects a setting name that only exists on the object prototype", async () => {
     const repository = createLocalSettingsRepository();
 

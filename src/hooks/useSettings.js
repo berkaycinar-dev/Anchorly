@@ -32,11 +32,19 @@ export default function useSettings() {
     [repository],
   );
 
+  const setDashboardLayout = useCallback(
+    (dashboardLayout) => {
+      repository.update({ dashboardLayout });
+    },
+    [repository],
+  );
+
   return {
     ...settings,
     setTheme,
     setLanguage,
     setFontFamily,
     setWeekStartDay,
+    setDashboardLayout,
   };
 }

@@ -87,6 +87,7 @@ function AppContent() {
     routineDays,
     getRoutineKeyForMonth,
     toggleRoutineCheck,
+    toggleRoutineForDate,
     addRoutine,
     deleteRoutine,
     getRoutineStreak,
@@ -119,12 +120,27 @@ function AppContent() {
     setFontFamily,
     weekStartDay,
     setWeekStartDay,
+    dashboardLayout,
+    setDashboardLayout,
   } = useSettings();
 
   const t = strings[language];
   const sidebar = useSidebar();
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const afterTaskDetailCloseRef = useRef(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
+
+  function openTaskDetail(taskId, onClose = null) {
+    afterTaskDetailCloseRef.current = onClose;
+    setSelectedTaskId(taskId);
+  }
+
+  function closeTaskDetail() {
+    const afterClose = afterTaskDetailCloseRef.current;
+    afterTaskDetailCloseRef.current = null;
+    setSelectedTaskId(null);
+    afterClose?.();
+  }
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [calendarViewMode, setCalendarViewMode] = useState("month");
@@ -330,8 +346,6 @@ function AppContent() {
     return t.greetingEvening;
   }
 
-  const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
-
   function handleAddTask(event) {
     event.preventDefault();
 
@@ -379,7 +393,7 @@ function AppContent() {
 
   function handleDeleteTaskFromModal(taskId) {
     deleteTask(taskId);
-    setSelectedTaskId(null);
+    closeTaskDetail();
   }
 
   function handleAssignProject(taskId, projectId) {
@@ -429,19 +443,24 @@ function AppContent() {
   const pages = {
     Dashboard: (
       <DashboardPage
+        t={t}
+        language={language}
+        today={today}
+        weekStartDay={weekStartDay}
         greeting={getGreeting()}
         dashboardMessage={dashboardMessage}
-        todayTasksCount={todayStats.total}
-        completedTodayTasksCount={todayStats.completed}
-        allTaskCount={todayStats.total}
-        completedTasksCount={todayStats.completed}
-        activeTaskCount={todayStats.active}
-        overdueTaskCount={todayStats.overdue}
-        todayCompletionPercent={todayStats.completionPercent}
+        tasks={tasks}
+        todayScopedTasks={todayScopedTasks}
+        todayStats={todayStats}
         weeklyProductivity={weeklyProductivity}
-        hoveredDayIndex={hoveredDayIndex}
-        setHoveredDayIndex={setHoveredDayIndex}
-        t={t}
+        routines={routines}
+        routineChecks={routineChecks}
+        getRoutineStreak={getRoutineStreak}
+        projects={projects}
+        layout={dashboardLayout}
+        onSaveLayout={setDashboardLayout}
+        onToggleRoutine={(routineId) => toggleRoutineForDate(routineId, today)}
+        onOpenTask={openTaskDetail}
       />
     ),
     Today: (
@@ -612,7 +631,7 @@ function AppContent() {
         <TaskDetailModal
           key={selectedTaskId ?? "none"}
           task={selectedTask}
-          onClose={() => setSelectedTaskId(null)}
+          onClose={closeTaskDetail}
           onToggleTask={toggleTask}
           onUpdateDescription={updateTaskDescription}
           onUpdateTitle={updateTaskTitle}
