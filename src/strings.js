@@ -291,6 +291,17 @@ export const strings = {
     calendarDayTaskCount: (count) => `${count} görev`,
     calendarNoTasks: "Bu gün için görev yok.",
     taskTitlePlaceholder: "Görev başlığı...",
+    calendarTodayButton: "Bugün",
+    calendarTodayEyebrow: (weekday) => `Bugün · ${weekday}`,
+    calendarDaySummary: (total, completed) =>
+      `${total} görev · ${completed} tamamlandı`,
+    calendarNoTasksSummary: "Görev yok",
+    calendarTasksHeading: "Görevler",
+    calendarHidePanel: "Paneli gizle",
+    calendarShowPanel: "Paneli göster",
+    calendarPercent: (percent) => `%${percent}`,
+    calendarMoreTasks: (count) => `+${count} daha`,
+    calendarAddPlaceholder: (date) => `${date} için görev ekle...`,
 
     routineDayPickerLabel: "Gün seç",
     routineDayButtonLabel: (date, completed, total) =>
@@ -653,6 +664,17 @@ export const strings = {
       count === 1 ? "1 task" : `${count} tasks`,
     calendarNoTasks: "No tasks on this day.",
     taskTitlePlaceholder: "Task title...",
+    calendarTodayButton: "Today",
+    calendarTodayEyebrow: (weekday) => `Today · ${weekday}`,
+    calendarDaySummary: (total, completed) =>
+      `${total === 1 ? "1 task" : `${total} tasks`} · ${completed} completed`,
+    calendarNoTasksSummary: "No tasks",
+    calendarTasksHeading: "Tasks",
+    calendarHidePanel: "Hide panel",
+    calendarShowPanel: "Show panel",
+    calendarPercent: (percent) => `${percent}%`,
+    calendarMoreTasks: (count) => `+${count} more`,
+    calendarAddPlaceholder: (date) => `Add a task for ${date}...`,
 
     routineDayPickerLabel: "Choose a day",
     routineDayButtonLabel: (date, completed, total) =>

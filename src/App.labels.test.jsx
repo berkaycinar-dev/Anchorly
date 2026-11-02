@@ -207,19 +207,31 @@ describe("task detail dialog labels", () => {
   });
 });
 
-describe("calendar quick add", () => {
-  it("labels the quick add title input", async () => {
-    const user = userEvent.setup();
-
+describe("calendar day panel", () => {
+  it("labels the add task input of the selected day", () => {
     seed("en", [createTask()]);
     renderApp("/calendar");
 
-    await user.click(
-      screen.getAllByRole("button", { name: "Add task to this day" })[0],
-    );
+    const panel = document.querySelector(".calendar-panel");
 
     expect(
-      screen.getByRole("textbox", { name: "Task title" }),
+      within(panel).getByRole("textbox", { name: "Add task to this day" }),
+    ).toBeInTheDocument();
+  });
+
+  it("labels the task checkboxes and the progress bar", () => {
+    seed("en", [createTask()]);
+    renderApp("/calendar");
+
+    const panel = document.querySelector(".calendar-panel");
+
+    expect(
+      within(panel).getByRole("checkbox", { name: 'Complete "Task 1"' }),
+    ).toBeInTheDocument();
+    expect(
+      within(panel).getByRole("progressbar", {
+        name: "0 of 1 tasks completed",
+      }),
     ).toBeInTheDocument();
   });
 });

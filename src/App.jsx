@@ -27,9 +27,7 @@ import SettingsPage from "./pages/SettingsPage";
 import {
   addDaysToDateString,
   getLocalDateString,
-  getWeekStartOffset,
   getWeekStartDate,
-  getWeekDays,
   getRoutineKeyForDate,
   parseLocalDate,
 } from "./utils/dateHelpers";
@@ -144,8 +142,6 @@ function AppContent() {
   }
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
-  const [calendarViewMode, setCalendarViewMode] = useState("month");
-  const [calendarWeekStart, setCalendarWeekStart] = useState(new Date());
   const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
   const [archiveStartDate, setArchiveStartDate] = useState("");
   const [archiveEndDate, setArchiveEndDate] = useState("");
@@ -190,8 +186,6 @@ function AppContent() {
 
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
-  const [quickAddDate, setQuickAddDate] = useState(null);
-  const [quickAddTitle, setQuickAddTitle] = useState("");
   const todayScopedTasks = useMemo(
     () => tasks.filter((task) => isTaskVisibleToday(task, today)),
     [tasks, today],
@@ -319,27 +313,6 @@ function AppContent() {
     weekStartDay,
     greetingSegment,
   ]);
-  const calendarYear = calendarMonth.getFullYear();
-  const calendarMonthIndex = calendarMonth.getMonth();
-
-  const firstDayOfCalendarMonth = new Date(calendarYear, calendarMonthIndex, 1);
-  const daysInCalendarMonth = new Date(
-    calendarYear,
-    calendarMonthIndex + 1,
-    0,
-  ).getDate();
-
-  const calendarStartDay = getWeekStartOffset(
-    firstDayOfCalendarMonth,
-    weekStartDay,
-  );
-
-  const calendarDays = Array.from(
-    { length: daysInCalendarMonth },
-    (_, index) => index + 1,
-  );
-
-  const weekDays = getWeekDays(calendarWeekStart, weekStartDay);
 
   function getGreeting() {
     const hour = new Date().getHours();
@@ -423,22 +396,6 @@ function AppContent() {
     setNewProjectTaskDate(today);
   }
 
-  function submitQuickAdd(event) {
-    event.preventDefault();
-
-    if (quickAddTitle.trim() === "") {
-      return;
-    }
-
-    addTask({
-      title: quickAddTitle,
-      category: "Work",
-      date: quickAddDate,
-    });
-
-    setQuickAddTitle("");
-    setQuickAddDate(null);
-  }
   function addTaskToDate(title, date) {
     addTask({ title, category: "Work", date });
   }
@@ -513,29 +470,16 @@ function AppContent() {
     ),
     Calendar: (
       <CalendarPage
-        calendarViewMode={calendarViewMode}
-        setCalendarViewMode={setCalendarViewMode}
         calendarMonth={calendarMonth}
-        weekDays={weekDays}
         setCalendarMonth={setCalendarMonth}
-        calendarYear={calendarYear}
-        calendarMonthIndex={calendarMonthIndex}
-        calendarWeekStart={calendarWeekStart}
-        setCalendarWeekStart={setCalendarWeekStart}
-        calendarStartDay={calendarStartDay}
-        calendarDays={calendarDays}
         tasks={tasks}
-        setQuickAddDate={setQuickAddDate}
-        setQuickAddTitle={setQuickAddTitle}
-        quickAddDate={quickAddDate}
-        submitQuickAdd={submitQuickAdd}
-        quickAddTitle={quickAddTitle}
-        addTaskToDate={addTaskToDate}
-        setSelectedTaskId={setSelectedTaskId}
         today={today}
         weekStartDay={weekStartDay}
         t={t}
         language={language}
+        onToggleTask={toggleTask}
+        onOpenTask={setSelectedTaskId}
+        onAddTask={addTaskToDate}
       />
     ),
     Archive: (
