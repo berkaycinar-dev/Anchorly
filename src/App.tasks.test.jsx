@@ -213,7 +213,10 @@ describe("App deleting a project", () => {
     expect(queryTaskItem("Project task")).not.toBeInTheDocument();
 
     await user.click(getSidebarLink(/^Projects/));
-    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await user.click(screen.getByRole("link", { name: /^Project 1/ }));
+    await user.click(
+      screen.getByRole("button", { name: "Delete project Project 1" }),
+    );
     await user.click(getSidebarLink(/^Today/));
 
     expect(getTaskItem("Project task")).toBeInTheDocument();

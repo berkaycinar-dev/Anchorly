@@ -93,8 +93,53 @@ export const strings = {
     addProjectButton: "Proje Ekle",
     backToProjects: "← Projelere Dön",
     newProjectTaskPlaceholder: "Proje görevi ekle...",
-    addProjectTaskButton: "Görev Ekle",
+    addProjectTaskButton: "Ekle",
     taskCountSuffix: "görev",
+    openNewProjectForm: "Yeni proje oluştur",
+    projectDueDateLabel: "Bitiş tarihi",
+    projectActiveSection: "Aktif",
+    projectArchivedSection: "Arşivlenen",
+    projectListLabel: "Proje listesi",
+    projectOpenTasksAria: (count) => `${count} açık görev`,
+    projectArchivedMark: "Arşivlendi",
+    projectDueOn: (date) => `Bitiş ${date}`,
+    projectNoDueDate: "Bitiş tarihi yok",
+    projectDaysLeft: (days) => {
+      if (days === 0) {
+        return "Bugün bitiyor";
+      }
+
+      return days > 0 ? `${days} gün kaldı` : `${-days} gün gecikti`;
+    },
+    projectProgressAria: (done, total) =>
+      `${total} görevden ${done} tanesi tamamlandı`,
+    projectViewsLabel: "Proje görünümü",
+    projectViewBoard: "Pano",
+    projectViewList: "Liste",
+    projectCategoryFilterLabel: "Kategori filtresi",
+    projectCategoryAll: "Kategori: Tümü",
+    projectAddTaskOpen: "Görev ekle",
+    projectBoardLabel: "Proje panosu",
+    projectColumnTodo: "Yapılacak",
+    projectColumnDoing: "Devam ediyor",
+    projectColumnDone: "Tamamlandı",
+    projectDragInstructions:
+      "Görevi taşımak için boşluk tuşuna bas, sütunlar arasında sol ve sağ ok tuşlarını kullan, bırakmak için boşluk veya Enter tuşuna bas.",
+    projectTaskMovedAnnouncement: (title, column) =>
+      `${title}: "${column}" sütununa taşındı`,
+    projectDoneMore: (count) => `+${count} görev daha`,
+    projectCardSteps: (done, total) => `${done}/${total} adım`,
+    projectCardStepsAria: (done, total) =>
+      `${total} adımdan ${done} tanesi tamamlandı`,
+    projectCardAttachmentsAria: (count) => `${count} ek`,
+    archiveProjectAction: (name) => `${name} projesini arşivle`,
+    unarchiveProjectAction: (name) => `${name} projesini arşivden çıkar`,
+    deleteProjectAction: (name) => `${name} projesini sil`,
+    selectProjectTitle: "Bir proje seç",
+    selectProjectSubtitle:
+      "Soldaki listeden bir proje seç ya da yeni bir proje oluştur.",
+    noProjectsTitle: "Henüz proje yok",
+    noProjectsSubtitle: "Sağ üstteki + düğmesiyle ilk projeni oluştur.",
 
     greeting: "Merhaba",
     dashboardQuotes: [
@@ -382,8 +427,59 @@ export const strings = {
     addProjectButton: "Add Project",
     backToProjects: "← Back to Projects",
     newProjectTaskPlaceholder: "Add a project task...",
-    addProjectTaskButton: "Add Task",
+    addProjectTaskButton: "Add",
     taskCountSuffix: "tasks",
+    openNewProjectForm: "Create a new project",
+    projectDueDateLabel: "Due date",
+    projectActiveSection: "Active",
+    projectArchivedSection: "Archived",
+    projectListLabel: "Project list",
+    projectOpenTasksAria: (count) =>
+      count === 1 ? "1 open task" : `${count} open tasks`,
+    projectArchivedMark: "Archived",
+    projectDueOn: (date) => `Due ${date}`,
+    projectNoDueDate: "No due date",
+    projectDaysLeft: (days) => {
+      if (days === 0) {
+        return "Due today";
+      }
+
+      if (days > 0) {
+        return days === 1 ? "1 day left" : `${days} days left`;
+      }
+
+      return days === -1 ? "1 day overdue" : `${-days} days overdue`;
+    },
+    projectProgressAria: (done, total) => `${done} of ${total} tasks completed`,
+    projectViewsLabel: "Project view",
+    projectViewBoard: "Board",
+    projectViewList: "List",
+    projectCategoryFilterLabel: "Category filter",
+    projectCategoryAll: "Category: All",
+    projectAddTaskOpen: "Add task",
+    projectBoardLabel: "Project board",
+    projectColumnTodo: "To do",
+    projectColumnDoing: "In progress",
+    projectColumnDone: "Done",
+    projectDragInstructions:
+      "Press space to pick up a task, use the left and right arrow keys to change columns, and press space or enter to drop it.",
+    projectTaskMovedAnnouncement: (title, column) =>
+      `${title}: moved to "${column}"`,
+    projectDoneMore: (count) => `+${count} more tasks`,
+    projectCardSteps: (done, total) => `${done}/${total} steps`,
+    projectCardStepsAria: (done, total) =>
+      `${done} of ${total} steps completed`,
+    projectCardAttachmentsAria: (count) =>
+      count === 1 ? "1 attachment" : `${count} attachments`,
+    archiveProjectAction: (name) => `Archive project ${name}`,
+    unarchiveProjectAction: (name) => `Unarchive project ${name}`,
+    deleteProjectAction: (name) => `Delete project ${name}`,
+    selectProjectTitle: "Select a project",
+    selectProjectSubtitle:
+      "Pick a project from the list on the left or create a new one.",
+    noProjectsTitle: "No projects yet",
+    noProjectsSubtitle:
+      "Use the + button at the top to create your first project.",
 
     greeting: "Hello",
     dashboardQuotes: [

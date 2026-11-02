@@ -70,4 +70,36 @@ describe("useProjects", () => {
     );
     expect(result.current.projects).toHaveLength(2);
   });
+
+  it("adds the due date only when one is given", () => {
+    const { result } = renderProjects();
+
+    act(() => {
+      result.current.addProject("Gamma", "2099-02-03");
+      result.current.addProject("Delta", "");
+    });
+
+    expect(result.current.projects[2]).toEqual({
+      id: expect.any(String),
+      name: "Gamma",
+      dueDate: "2099-02-03",
+    });
+    expect(result.current.projects[3]).toEqual({
+      id: expect.any(String),
+      name: "Delta",
+    });
+  });
+
+  it("updates the given fields of one project", () => {
+    const { result } = renderProjects();
+
+    act(() => {
+      result.current.updateProject("project-2", { archived: true });
+    });
+
+    expect(result.current.projects).toEqual([
+      PROJECTS[0],
+      { ...PROJECTS[1], archived: true },
+    ]);
+  });
 });

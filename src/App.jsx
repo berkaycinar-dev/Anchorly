@@ -62,6 +62,7 @@ function AppContent() {
     tasks,
     addTask,
     toggleTask,
+    moveTaskToColumn,
     deleteTask,
     updateTaskTitle,
     updateTaskDescription,
@@ -94,7 +95,7 @@ function AppContent() {
     getWeeklyProductivity,
   } = useRoutines(today);
 
-  const { projects, addProject, deleteProject } = useProjects();
+  const { projects, addProject, updateProject, deleteProject } = useProjects();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -149,6 +150,7 @@ function AppContent() {
   const [archiveStartDate, setArchiveStartDate] = useState("");
   const [archiveEndDate, setArchiveEndDate] = useState("");
   const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectDueDate, setNewProjectDueDate] = useState("");
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -219,7 +221,7 @@ function AppContent() {
   const sidebarBadges = {
     Today: todayStats.active,
     "Daily Routine": remainingRoutineCount,
-    Projects: projects.length,
+    Projects: projects.filter((project) => !project.archived).length,
   };
 
   const filteredTasks = useMemo(() => {
@@ -382,8 +384,9 @@ function AppContent() {
       return;
     }
 
-    addProject(newProjectName);
+    addProject(newProjectName, newProjectDueDate);
     setNewProjectName("");
+    setNewProjectDueDate("");
   }
 
   function handleDeleteProject(id) {
@@ -557,9 +560,13 @@ function AppContent() {
         addProject={handleAddProject}
         newProjectName={newProjectName}
         setNewProjectName={setNewProjectName}
+        newProjectDueDate={newProjectDueDate}
+        setNewProjectDueDate={setNewProjectDueDate}
         projects={projects}
+        updateProject={updateProject}
         deleteProject={handleDeleteProject}
         tasks={tasks}
+        today={today}
         addProjectTask={addProjectTask}
         newProjectTaskTitle={newProjectTaskTitle}
         setNewProjectTaskTitle={setNewProjectTaskTitle}
@@ -567,6 +574,7 @@ function AppContent() {
         setNewProjectTaskDate={setNewProjectTaskDate}
         selectedProjectId={selectedProjectId}
         toggleTask={toggleTask}
+        moveTaskToColumn={moveTaskToColumn}
         deleteTask={deleteTask}
         setSelectedTaskId={setSelectedTaskId}
         reorderTasks={reorderTasks}

@@ -40,6 +40,43 @@ export function runProjectsRepositoryContract(name, createRepository) {
       expect(repository.getSnapshot()).toEqual([FIRST, SECOND, NEW_PROJECT]);
     });
 
+    it("changes only the given fields of the given project", async () => {
+      const repository = await setUp();
+
+      const updated = await repository.update(FIRST.id, { archived: true });
+
+      expect(updated).toEqual({ ...FIRST, archived: true });
+      expect(repository.getSnapshot()).toEqual([
+        { ...FIRST, archived: true },
+        SECOND,
+      ]);
+    });
+
+    it("keeps the project id when an update tries to change it", async () => {
+      const repository = await setUp();
+
+      await repository.update(FIRST.id, {
+        id: NEW_PROJECT.id,
+        name: "Renamed",
+      });
+
+      expect(repository.getSnapshot()[0]).toEqual({
+        ...FIRST,
+        name: "Renamed",
+      });
+    });
+
+    it("keeps the list unchanged when the updated project does not exist", async () => {
+      const repository = await setUp();
+
+      const updated = await repository.update(NEW_PROJECT.id, {
+        archived: true,
+      });
+
+      expect(updated).toBeNull();
+      expect(repository.getSnapshot()).toEqual([FIRST, SECOND]);
+    });
+
     it("removes only the given project", async () => {
       const repository = await setUp();
 
