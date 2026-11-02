@@ -2,6 +2,12 @@ import { describe, it, expect } from "vitest";
 import {
   calculateRoutineStreak,
   calculateWeeklyProductivity,
+  getDayProgress,
+  getLongestActiveStreak,
+  getMonthAverage,
+  getRoutineHistory,
+  getRoutineMonthProgress,
+  isRoutineCheckedOn,
 } from "./routineStats";
 
 const FIRST_ID = "42a8fe5c-29ef-47b1-a3f3-1af09f7b5a20";
@@ -98,5 +104,115 @@ describe("calculateWeeklyProductivity", () => {
 
     expect(routines).toEqual(ROUTINES);
     expect(checks).toEqual({ [getKey(FIRST_ID, 10)]: true });
+  });
+});
+
+describe("isRoutineCheckedOn", () => {
+  it("reads the check of the given routine and date", () => {
+    const checks = { [getKey(FIRST_ID, 5)]: true };
+
+    expect(isRoutineCheckedOn(checks, FIRST_ID, "2026-10-05")).toBe(true);
+    expect(isRoutineCheckedOn(checks, FIRST_ID, "2026-10-06")).toBe(false);
+    expect(isRoutineCheckedOn(checks, SECOND_ID, "2026-10-05")).toBe(false);
+  });
+
+  it("treats a check that was turned off as unchecked", () => {
+    const checks = { [getKey(FIRST_ID, 5)]: false };
+
+    expect(isRoutineCheckedOn(checks, FIRST_ID, "2026-10-05")).toBe(false);
+  });
+});
+
+describe("getDayProgress", () => {
+  it("counts the routines checked on the given date", () => {
+    const checks = { [getKey(FIRST_ID, 5)]: true };
+
+    expect(getDayProgress(ROUTINES, checks, "2026-10-05")).toEqual({
+      completed: 1,
+      total: 2,
+      percent: 50,
+    });
+  });
+
+  it("returns 0 percent when there are no routines", () => {
+    expect(getDayProgress([], {}, "2026-10-05")).toEqual({
+      completed: 0,
+      total: 0,
+      percent: 0,
+    });
+  });
+});
+
+describe("getRoutineHistory", () => {
+  it("lists the given number of days ending on the given date", () => {
+    const checks = {
+      [getKey(FIRST_ID, 1)]: true,
+      [getKey(FIRST_ID, 30, 9)]: true,
+    };
+
+    const history = getRoutineHistory(checks, FIRST_ID, "2026-10-02", 4);
+
+    expect(history).toEqual([
+      { date: "2026-09-29", checked: false },
+      { date: "2026-09-30", checked: true },
+      { date: "2026-10-01", checked: true },
+      { date: "2026-10-02", checked: false },
+    ]);
+  });
+});
+
+describe("getRoutineMonthProgress", () => {
+  it("counts the checked days in the month of the given date", () => {
+    const checks = {
+      [getKey(FIRST_ID, 1)]: true,
+      [getKey(FIRST_ID, 31)]: true,
+      [getKey(FIRST_ID, 30, 9)]: true,
+      [getKey(SECOND_ID, 2)]: true,
+    };
+
+    expect(getRoutineMonthProgress(checks, FIRST_ID, "2026-10-15")).toEqual({
+      completed: 2,
+      total: 31,
+    });
+  });
+
+  it("uses the length of February in a leap year", () => {
+    expect(getRoutineMonthProgress({}, FIRST_ID, "2028-02-10").total).toBe(29);
+  });
+});
+
+describe("getMonthAverage", () => {
+  it("averages the checks from the first day of the month up to today", () => {
+    const checks = {
+      [getKey(FIRST_ID, 1)]: true,
+      [getKey(FIRST_ID, 2)]: true,
+      [getKey(SECOND_ID, 2)]: true,
+      [getKey(FIRST_ID, 3)]: true,
+    };
+
+    expect(getMonthAverage(ROUTINES, checks, "2026-10-02")).toBe(75);
+  });
+
+  it("returns 0 when there are no routines", () => {
+    expect(getMonthAverage([], {}, "2026-10-02")).toBe(0);
+  });
+});
+
+describe("getLongestActiveStreak", () => {
+  it("returns the routine with the longest streak", () => {
+    const checks = {
+      [getKey(FIRST_ID, 10)]: true,
+      [getKey(SECOND_ID, 10)]: true,
+      [getKey(SECOND_ID, 9)]: true,
+    };
+
+    expect(getLongestActiveStreak(ROUTINES, checks, "2026-10-10")).toEqual({
+      routine: ROUTINES[1],
+      streak: 2,
+    });
+  });
+
+  it("returns null when no routine has an active streak", () => {
+    expect(getLongestActiveStreak(ROUTINES, {}, "2026-10-10")).toBeNull();
   });
 });

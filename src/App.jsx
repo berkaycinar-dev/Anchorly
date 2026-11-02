@@ -500,6 +500,9 @@ function AppContent() {
         routineChecks={routineChecks}
         getRoutineKey={getRoutineKeyForMonth}
         toggleRoutineCheck={toggleRoutineCheck}
+        toggleRoutineForDate={toggleRoutineForDate}
+        getRoutineStreak={getRoutineStreak}
+        weekStartDay={weekStartDay}
         language={language}
         today={today}
         t={t}

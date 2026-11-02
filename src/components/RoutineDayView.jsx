@@ -7,6 +7,7 @@ function RoutineDayView({
   routineMonthIndex,
   selectedDay,
   onSelectDay,
+  transitionDirection,
   todayDayNumber,
   routineChecks,
   getRoutineKey,
@@ -107,7 +108,14 @@ function RoutineDayView({
           <p className="empty-state-subtitle">{t.emptyRoutineSubtitle}</p>
         </div>
       ) : (
-        <ul className="routine-day-list">
+        <ul
+          key={`${monthKey}-${selectedDay}`}
+          className={
+            transitionDirection
+              ? `routine-day-list routine-transition-${transitionDirection}`
+              : "routine-day-list"
+          }
+        >
           {routines.map((routine) => {
             const checked = isChecked(routine.id, selectedDay);
 

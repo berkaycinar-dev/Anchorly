@@ -151,27 +151,39 @@ describe("App routine day view", () => {
   });
 });
 
-describe("App routine table labels", () => {
-  it("names every day checkbox after its routine and day", () => {
+describe("App routine day view transitions", () => {
+  function getDayList() {
+    return getDayView().querySelector(".routine-day-list");
+  }
+
+  it("does not animate the list on the first render", () => {
     renderApp("/routine");
 
-    const table = screen.getByRole("table");
-
-    expect(
-      within(table).getByRole("checkbox", { name: '"Water", day 10' }),
-    ).toBeChecked();
-    expect(
-      within(table).getByRole("checkbox", { name: '"Read", day 10' }),
-    ).not.toBeChecked();
+    expect(getDayList()).not.toHaveClass("routine-transition-forward");
+    expect(getDayList()).not.toHaveClass("routine-transition-back");
   });
 
-  it("names the delete button in the user's language", () => {
+  it("slides the list back and forward when the day changes", async () => {
+    const user = userEvent.setup();
     renderApp("/routine");
 
-    expect(
-      within(screen.getByRole("table")).getByRole("button", {
-        name: 'Delete routine "Water"',
-      }),
-    ).toBeInTheDocument();
+    await user.click(getDayButton("Friday, October 9"));
+
+    expect(getDayList()).toHaveClass("routine-transition-back");
+
+    await user.click(getDayButton("Sunday, October 11"));
+
+    expect(getDayList()).toHaveClass("routine-transition-forward");
+  });
+
+  it("does not animate after moving to another month", async () => {
+    const user = userEvent.setup();
+    renderApp("/routine");
+
+    await user.click(getDayButton("Friday, October 9"));
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    expect(getDayList()).not.toHaveClass("routine-transition-forward");
+    expect(getDayList()).not.toHaveClass("routine-transition-back");
   });
 });
