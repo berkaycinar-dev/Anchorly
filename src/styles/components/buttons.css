@@ -17,7 +17,7 @@
 }
 
 @media (hover: hover) {
-  .btn-primary:hover {
+  .btn-primary:hover:not(:disabled) {
     opacity: 0.9;
   }
 }
@@ -28,7 +28,7 @@
 }
 
 @media (hover: hover) {
-  .btn-secondary:hover {
+  .btn-secondary:hover:not(:disabled) {
     background-color: var(--color-border);
   }
 }
@@ -40,13 +40,69 @@
 }
 
 @media (hover: hover) {
-  .btn-danger:hover {
+  .btn-danger:hover:not(:disabled) {
     background-color: #b91c1c;
+  }
+}
+
+.btn-lg,
+.btn-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.btn-lg {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-md);
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-loading:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: btn-spin 0.7s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner {
+    animation-duration: 1.8s;
   }
 }
 
 @media (pointer: coarse) {
   .btn {
     min-height: 44px;
+  }
+
+  .btn-lg {
+    min-height: 48px;
   }
 }
