@@ -22,6 +22,7 @@ import {
   routes,
   PROJECT_DETAIL_PATH,
   ARCHIVE_SERIES_PATH,
+  getAuthRouteForPathname,
   getRouteForPathname,
 } from "./routes";
 import DailyRoutinePage from "./pages/DailyRoutinePage";
@@ -29,6 +30,8 @@ import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import {
   addDaysToDateString,
   getLocalDateString,
@@ -43,6 +46,7 @@ import useProjects from "./hooks/useProjects";
 import useSettings from "./hooks/useSettings";
 import DataProvider from "./data/DataProvider";
 import AuthProvider from "./auth/AuthProvider";
+import useAuth from "./auth/useAuth";
 import { isTaskVisibleToday } from "./utils/taskHelpers";
 
 function getGreetingSegment() {
@@ -102,7 +106,9 @@ function AppContent() {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const currentRoute = getRouteForPathname(pathname) ?? routes[0];
+  const { enabled: authEnabled } = useAuth();
+  const authRoute = authEnabled ? getAuthRouteForPathname(pathname) : null;
+  const currentRoute = authRoute ?? getRouteForPathname(pathname) ?? routes[0];
   const projectMatch = useMatch(PROJECT_DETAIL_PATH);
   const selectedProjectId = projectMatch ? projectMatch.params.projectId : null;
   const selectedProject =
@@ -521,11 +527,26 @@ function AppContent() {
     ),
   };
 
+  const fontStyle = {
+    "--font-main": `'${fontFamily}', system-ui, sans-serif`,
+  };
+
+  if (authRoute) {
+    return (
+      <div className={`auth-shell theme-${theme}`} style={fontStyle}>
+        <Routes>
+          <Route path="/login" element={<LoginPage t={t} />} />
+          <Route
+            path="/register"
+            element={<RegisterPage t={t} language={language} />}
+          />
+        </Routes>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`app theme-${theme}`}
-      style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
-    >
+    <div className={`app theme-${theme}`} style={fontStyle}>
       <ToastProvider closeLabel={t.closeButton}>
         <StorageToasts t={t} />
         <Sidebar

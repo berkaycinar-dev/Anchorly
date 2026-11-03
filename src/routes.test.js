@@ -3,6 +3,8 @@ import {
   routes,
   PROJECT_DETAIL_PATH,
   ARCHIVE_SERIES_PATH,
+  authRoutes,
+  getAuthRouteForPathname,
   getRouteForPathname,
   getProjectPath,
   getArchiveSeriesPath,
@@ -80,5 +82,26 @@ describe("routes", () => {
     "/archive/series/a/b",
   ])("finds no page for %s", (pathname) => {
     expect(getRouteForPathname(pathname)).toBeNull();
+  });
+
+  it("lists the auth pages outside the sidebar routes", () => {
+    expect(authRoutes.map((route) => route.path)).toEqual([
+      "/login",
+      "/register",
+    ]);
+    expect(routes.some((route) => route.path === "/login")).toBe(false);
+  });
+
+  it("finds auth routes by pathname", () => {
+    expect(getAuthRouteForPathname("/login").key).toBe("Login");
+    expect(getAuthRouteForPathname("/register").key).toBe("Register");
+    expect(getAuthRouteForPathname("/today")).toBeNull();
+  });
+
+  it("gives every auth page a title string in both languages", () => {
+    for (const route of authRoutes) {
+      expect(strings.tr[route.titleKey]).toBeTruthy();
+      expect(strings.en[route.titleKey]).toBeTruthy();
+    }
   });
 });

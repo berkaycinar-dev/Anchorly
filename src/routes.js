@@ -10,6 +10,11 @@ export const routes = [
   { key: "Settings", path: "/settings", titleKey: "settings" },
 ];
 
+export const authRoutes = [
+  { key: "Login", path: "/login", titleKey: "signIn" },
+  { key: "Register", path: "/register", titleKey: "signUp" },
+];
+
 export const PROJECT_DETAIL_PATH = "/projects/:projectId";
 
 export const ARCHIVE_SERIES_PATH = "/archive/series/:groupId";
@@ -38,4 +43,10 @@ export function getRouteForPathname(pathname) {
   }
 
   return null;
+}
+
+export function getAuthRouteForPathname(pathname) {
+  return (
+    authRoutes.find((candidate) => matchPath(candidate.path, pathname)) ?? null
+  );
 }
