@@ -22,5 +22,6 @@ export default defineConfig({
     globalSetup: "./src/test/globalSetup.js",
     setupFiles: "./src/test/setup.js",
     testTimeout: 15000,
+    env: { VITE_AUTH_ENABLED: "false" },
   },
 });
