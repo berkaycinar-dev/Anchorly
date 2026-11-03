@@ -1,8 +1,10 @@
 import { Fragment, useLayoutEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router";
-import NavIcon from "./NavIcon";
+import Icon from "./Icon";
+import { NAV_ICONS } from "./navIcons";
 import { routes } from "../routes";
 import Logo from "./Logo";
+import SidebarAccount from "./SidebarAccount";
 
 const INDICATOR_INSET = 11;
 
@@ -10,7 +12,14 @@ function getNavItemClassName({ isActive }) {
   return isActive ? "nav-item active-nav" : "nav-item";
 }
 
-function Sidebar({ t, badges = {} }) {
+function Sidebar({
+  t,
+  badges = {},
+  isExpanded = true,
+  isOverlayOpen = false,
+  onToggle,
+  onNavigate,
+}) {
   const { pathname } = useLocation();
   const navRef = useRef(null);
   const indicatorRef = useRef(null);
@@ -56,41 +65,87 @@ function Sidebar({ t, badges = {} }) {
     return () => observer.disconnect();
   }, [pathname]);
 
+  const toggleLabel = isExpanded ? t.sidebarCollapse : t.sidebarExpand;
+
   return (
-    <aside className="sidebar">
-      <div className="sidebar-brand">
-        <Logo />
-        <h2>Anchorly</h2>
-      </div>
+    <>
+      {isOverlayOpen && (
+        <div
+          className="sidebar-backdrop"
+          aria-hidden="true"
+          onClick={onNavigate}
+        />
+      )}
 
-      <nav ref={navRef} aria-label={t.mainNavigationLabel}>
-        <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
+      <aside
+        className="sidebar"
+        data-expanded={isExpanded ? "true" : "false"}
+        data-overlay={isOverlayOpen ? "true" : "false"}
+      >
+        <div className="sidebar-panel">
+          <button
+            type="button"
+            className="sidebar-brand"
+            aria-expanded={isExpanded}
+            aria-label={toggleLabel}
+            title={toggleLabel}
+            onClick={onToggle}
+          >
+            <Logo />
+            <span className="sidebar-brand-name">Anchorly</span>
+          </button>
 
-        {routes.map((route) => {
-          const badgeCount = badges[route.key] || 0;
+          <nav ref={navRef} aria-label={t.mainNavigationLabel}>
+            <span
+              ref={indicatorRef}
+              className="nav-indicator"
+              aria-hidden="true"
+            />
 
-          return (
-            <Fragment key={route.key}>
-              {route.key === "Settings" && <div className="nav-separator" />}
+            {routes.map((route) => {
+              const badgeCount = badges[route.key] || 0;
+              const label = t[route.titleKey];
 
-              <NavLink
-                to={route.path}
-                end={route.path === "/"}
-                className={getNavItemClassName}
-              >
-                <NavIcon name={route.key} />
-                <span className="nav-label">{t[route.titleKey]}</span>
-                {badgeCount > 0 && (
-                  <span key={badgeCount} className="nav-badge">
-                    {badgeCount}
-                  </span>
-                )}
-              </NavLink>
-            </Fragment>
-          );
-        })}
-      </nav>
-    </aside>
+              return (
+                <Fragment key={route.key}>
+                  {route.key === "Settings" && (
+                    <div className="nav-separator" />
+                  )}
+
+                  <NavLink
+                    to={route.path}
+                    end={route.path === "/"}
+                    className={getNavItemClassName}
+                    onClick={onNavigate}
+                  >
+                    <Icon
+                      icon={NAV_ICONS[route.key]}
+                      size="md"
+                      className="nav-icon"
+                    />
+                    <span className="nav-label">{label}</span>
+                    {badgeCount > 0 && (
+                      <span key={badgeCount} className="nav-badge">
+                        {badgeCount}
+                      </span>
+                    )}
+                    <span className="nav-tooltip" aria-hidden="true">
+                      {badgeCount > 0 ? `${label} · ${badgeCount}` : label}
+                    </span>
+                  </NavLink>
+                </Fragment>
+              );
+            })}
+          </nav>
+
+          <SidebarAccount
+            t={t}
+            isExpanded={isExpanded}
+            onNavigate={onNavigate}
+          />
+        </div>
+      </aside>
+    </>
   );
 }
 

@@ -54,6 +54,11 @@ describe("useSettings", () => {
     ["setLanguage", "language", "en"],
     ["setFontFamily", "fontFamily", "Roboto"],
     ["setWeekStartDay", "weekStartDay", "sunday"],
+    [
+      "setDashboardLayout",
+      "dashboardLayout",
+      [{ id: "streaks", size: "wide" }],
+    ],
   ])("%s changes and saves only %s", (setterName, key, value) => {
     const { result } = renderSettings();
 

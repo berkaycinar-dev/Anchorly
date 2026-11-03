@@ -1,17 +1,21 @@
-import TaskList from "../components/TaskList";
 import { useMemo } from "react";
-import { useNavigate } from "react-router";
-import { getProjectPath } from "../routes";
-import DateField from "../components/DateField";
+import { FolderOpen } from "lucide-react";
+import Icon from "../components/Icon";
+import ProjectDetail from "../components/projects/ProjectDetail";
+import ProjectListPanel from "../components/projects/ProjectListPanel";
 
 export default function ProjectsPage({
   selectedProject,
   addProject,
   newProjectName,
   setNewProjectName,
+  newProjectDueDate,
+  setNewProjectDueDate,
   projects,
+  updateProject,
   deleteProject,
   tasks,
+  today,
   addProjectTask,
   newProjectTaskTitle,
   setNewProjectTaskTitle,
@@ -19,114 +23,62 @@ export default function ProjectsPage({
   setNewProjectTaskDate,
   selectedProjectId,
   toggleTask,
+  moveTaskToColumn,
   deleteTask,
   setSelectedTaskId,
   reorderTasks,
   t,
 }) {
-  const navigate = useNavigate();
   const selectedProjectTasks = useMemo(
     () => tasks.filter((task) => task.projectId === selectedProjectId),
     [tasks, selectedProjectId],
   );
 
-  if (selectedProject) {
-    return (
-      <section className="project-detail">
-        <div className="dashboard-welcome">
-          <button
-            type="button"
-            className="btn btn-secondary project-back-button"
-            onClick={() => navigate("/projects")}
-          >
-            {t.backToProjects}
-          </button>
-          <h2>{selectedProject.name}</h2>
-        </div>
+  return (
+    <section
+      className="projects-layout"
+      data-view={selectedProject ? "detail" : "list"}
+    >
+      <ProjectListPanel
+        projects={projects}
+        tasks={tasks}
+        selectedProjectId={selectedProjectId}
+        addProject={addProject}
+        newProjectName={newProjectName}
+        setNewProjectName={setNewProjectName}
+        newProjectDueDate={newProjectDueDate}
+        setNewProjectDueDate={setNewProjectDueDate}
+        t={t}
+      />
 
-        <form className="project-task-form" onSubmit={addProjectTask}>
-          <input
-            type="text"
-            enterKeyHint="done"
-            autoComplete="off"
-            aria-label={t.newProjectTaskLabel}
-            placeholder={t.newProjectTaskPlaceholder}
-            value={newProjectTaskTitle}
-            onChange={(event) => setNewProjectTaskTitle(event.target.value)}
-          />
-
-          <DateField
-            label={t.dateLabel}
-            value={newProjectTaskDate}
-            onChange={setNewProjectTaskDate}
+      <div className="project-detail-panel">
+        {selectedProject ? (
+          <ProjectDetail
+            key={selectedProject.id}
+            project={selectedProject}
+            tasks={selectedProjectTasks}
+            today={today}
+            updateProject={updateProject}
+            deleteProject={deleteProject}
+            addProjectTask={addProjectTask}
+            newProjectTaskTitle={newProjectTaskTitle}
+            setNewProjectTaskTitle={setNewProjectTaskTitle}
+            newProjectTaskDate={newProjectTaskDate}
+            setNewProjectTaskDate={setNewProjectTaskDate}
+            toggleTask={toggleTask}
+            moveTaskToColumn={moveTaskToColumn}
+            deleteTask={deleteTask}
+            setSelectedTaskId={setSelectedTaskId}
+            reorderTasks={reorderTasks}
             t={t}
           />
-
-          <button type="submit" className="btn btn-primary">
-            {t.addProjectTaskButton}
-          </button>
-        </form>
-
-        <TaskList
-          tasks={selectedProjectTasks}
-          toggleTask={toggleTask}
-          deleteTask={deleteTask}
-          onSelectTask={setSelectedTaskId}
-          onReorderTasks={reorderTasks}
-          t={t}
-        />
-      </section>
-    );
-  }
-
-  return (
-    <section className="projects-page">
-      <div className="dashboard-welcome">
-        <h2>{t.projectsPageTitle}</h2>
-        <p>{t.projectsPageDescription}</p>
-      </div>
-
-      <form className="project-form" onSubmit={addProject}>
-        <input
-          type="text"
-          enterKeyHint="done"
-          autoComplete="off"
-          aria-label={t.newProjectLabel}
-          placeholder={t.newProjectPlaceholder}
-          value={newProjectName}
-          onChange={(event) => setNewProjectName(event.target.value)}
-        />
-
-        <button type="submit" className="btn btn-primary">
-          {t.addProjectButton}
-        </button>
-      </form>
-
-      <div className="project-list">
-        {projects.map((project) => (
-          <div
-            className="project-card"
-            key={project.id}
-            onClick={() => navigate(getProjectPath(project.id))}
-          >
-            <div className="project-card-header">
-              <h3>{project.name}</h3>
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  deleteProject(project.id);
-                }}
-              >
-                {t.deleteButton}
-              </button>
-            </div>
-
-            <p>
-              {tasks.filter((task) => task.projectId === project.id).length}{" "}
-              {t.taskCountSuffix}
-            </p>
+        ) : (
+          <div className="empty-state project-detail-empty">
+            <Icon icon={FolderOpen} size="lg" />
+            <p className="empty-state-title">{t.selectProjectTitle}</p>
+            <p className="empty-state-subtitle">{t.selectProjectSubtitle}</p>
           </div>
-        ))}
+        )}
       </div>
     </section>
   );

@@ -1,3 +1,5 @@
+import { DEFAULT_DASHBOARD_LAYOUT } from "./dashboardCards";
+
 export const THEMES = [
   "gray",
   "purple",
@@ -8,9 +10,12 @@ export const THEMES = [
   "black",
 ];
 
+export const FONTS = ["Inter", "Poppins", "Manrope"];
+
 export const DEFAULT_SETTINGS = {
   theme: "gray",
   language: "tr",
   fontFamily: "Inter",
   weekStartDay: "monday",
+  dashboardLayout: DEFAULT_DASHBOARD_LAYOUT,
 };

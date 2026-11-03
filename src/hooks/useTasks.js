@@ -59,6 +59,32 @@ export default function useTasks(today) {
     [updateTask, today],
   );
 
+  const moveTaskToColumn = useCallback(
+    (id, column) => {
+      updateTask(id, (task) => {
+        if (column === "done") {
+          if (task.completed) {
+            return task;
+          }
+
+          return {
+            ...task,
+            completed: true,
+            completedAt: task.date || today,
+          };
+        }
+
+        return {
+          ...task,
+          completed: false,
+          completedAt: null,
+          boardStatus: column,
+        };
+      });
+    },
+    [updateTask, today],
+  );
+
   const deleteTask = useCallback(
     (id) => {
       repository.remove(id);
@@ -213,6 +239,7 @@ export default function useTasks(today) {
     tasks,
     addTask,
     toggleTask,
+    moveTaskToColumn,
     deleteTask,
     updateTaskTitle,
     updateTaskDescription,

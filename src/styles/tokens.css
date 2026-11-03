@@ -10,6 +10,59 @@
   --color-border: #e5e7eb;
   --color-accent-contrast: #ffffff;
   --color-accent-text: #58667b;
+  --color-surface-raised: #ffffff;
+  --color-accent-tint: rgba(100, 116, 139, 0.12);
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-category-work: #1d4ed8;
+  --color-category-work-bg: #dbeafe;
+  --color-category-personal: #c2410c;
+  --color-category-personal-bg: #ffedd5;
+  --color-category-growth: #7e22ce;
+  --color-category-growth-bg: #f3e8ff;
+  --color-category-health: #15803d;
+  --color-category-health-bg: #dcfce7;
+  --color-category-project: #0f766e;
+  --color-category-project-bg: #ccfbf1;
+  --color-category-other: #4b5563;
+  --color-category-other-bg: #f3f4f6;
+  --shadow-pop: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.22);
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 15px;
+  --text-lg: 16px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height-tight: 1.25;
+  --line-height-base: 1.5;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
   --bp-sm: 480px;
   --bp-md: 768px;
@@ -21,6 +74,14 @@
   --safe-area-left: env(safe-area-inset-left, 0px);
 
   --bottom-nav-height: 64px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --text-md: 14px;
+    --text-xl: 22px;
+    --text-2xl: 26px;
+  }
 }
 
 .theme-gray {
@@ -35,6 +96,28 @@
   --color-border: #e5e7eb;
   --color-accent-contrast: #ffffff;
   --color-accent-text: #58667b;
+  --color-surface-raised: #ffffff;
+  --color-accent-tint: rgba(100, 116, 139, 0.12);
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-category-work: #1d4ed8;
+  --color-category-work-bg: #dbeafe;
+  --color-category-personal: #c2410c;
+  --color-category-personal-bg: #ffedd5;
+  --color-category-growth: #7e22ce;
+  --color-category-growth-bg: #f3e8ff;
+  --color-category-health: #15803d;
+  --color-category-health-bg: #dcfce7;
+  --color-category-project: #0f766e;
+  --color-category-project-bg: #ccfbf1;
+  --color-category-other: #4b5563;
+  --color-category-other-bg: #f3f4f6;
+  --shadow-pop: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.22);
 }
 
 .theme-purple {
@@ -49,6 +132,28 @@
   --color-border: #4c3d70;
   --color-accent-contrast: #ffffff;
   --color-accent-text: #bb7ff2;
+  --color-surface-raised: #36304b;
+  --color-accent-tint: rgba(147, 51, 234, 0.22);
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.14);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.14);
+  --color-danger: #fca5a5;
+  --color-danger-bg: rgba(248, 113, 113, 0.14);
+  --color-category-work: #93c5fd;
+  --color-category-work-bg: rgba(59, 130, 246, 0.18);
+  --color-category-personal: #fdba74;
+  --color-category-personal-bg: rgba(249, 115, 22, 0.18);
+  --color-category-growth: #d8b4fe;
+  --color-category-growth-bg: rgba(168, 85, 247, 0.2);
+  --color-category-health: #86efac;
+  --color-category-health-bg: rgba(34, 197, 94, 0.18);
+  --color-category-project: #5eead4;
+  --color-category-project-bg: rgba(20, 184, 166, 0.18);
+  --color-category-other: #d4d4d8;
+  --color-category-other-bg: rgba(161, 161, 170, 0.16);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 .theme-blue {
@@ -63,6 +168,28 @@
   --color-border: #334155;
   --color-accent-contrast: #0f172a;
   --color-accent-text: #629bf8;
+  --color-surface-raised: #2a3547;
+  --color-accent-tint: rgba(59, 130, 246, 0.22);
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.14);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.14);
+  --color-danger: #fca5a5;
+  --color-danger-bg: rgba(248, 113, 113, 0.14);
+  --color-category-work: #93c5fd;
+  --color-category-work-bg: rgba(59, 130, 246, 0.18);
+  --color-category-personal: #fdba74;
+  --color-category-personal-bg: rgba(249, 115, 22, 0.18);
+  --color-category-growth: #d8b4fe;
+  --color-category-growth-bg: rgba(168, 85, 247, 0.2);
+  --color-category-health: #86efac;
+  --color-category-health-bg: rgba(34, 197, 94, 0.18);
+  --color-category-project: #5eead4;
+  --color-category-project-bg: rgba(20, 184, 166, 0.18);
+  --color-category-other: #d4d4d8;
+  --color-category-other-bg: rgba(161, 161, 170, 0.16);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 .theme-red {
@@ -77,6 +204,28 @@
   --color-border: #fecaca;
   --color-accent-contrast: #ffffff;
   --color-accent-text: #b91e1e;
+  --color-surface-raised: #ffffff;
+  --color-accent-tint: rgba(220, 38, 38, 0.12);
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-category-work: #1d4ed8;
+  --color-category-work-bg: #dbeafe;
+  --color-category-personal: #c2410c;
+  --color-category-personal-bg: #ffedd5;
+  --color-category-growth: #7e22ce;
+  --color-category-growth-bg: #f3e8ff;
+  --color-category-health: #15803d;
+  --color-category-health-bg: #dcfce7;
+  --color-category-project: #0f766e;
+  --color-category-project-bg: #ccfbf1;
+  --color-category-other: #4b5563;
+  --color-category-other-bg: #f3f4f6;
+  --shadow-pop: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.22);
 }
 
 .theme-green {
@@ -91,6 +240,28 @@
   --color-border: #1f5c38;
   --color-accent-contrast: #052e13;
   --color-accent-text: #22c55e;
+  --color-surface-raised: #14261c;
+  --color-accent-tint: rgba(34, 197, 94, 0.22);
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.14);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.14);
+  --color-danger: #fca5a5;
+  --color-danger-bg: rgba(248, 113, 113, 0.14);
+  --color-category-work: #93c5fd;
+  --color-category-work-bg: rgba(59, 130, 246, 0.18);
+  --color-category-personal: #fdba74;
+  --color-category-personal-bg: rgba(249, 115, 22, 0.18);
+  --color-category-growth: #d8b4fe;
+  --color-category-growth-bg: rgba(168, 85, 247, 0.2);
+  --color-category-health: #86efac;
+  --color-category-health-bg: rgba(34, 197, 94, 0.18);
+  --color-category-project: #5eead4;
+  --color-category-project-bg: rgba(20, 184, 166, 0.18);
+  --color-category-other: #d4d4d8;
+  --color-category-other-bg: rgba(161, 161, 170, 0.16);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 .theme-pink {
@@ -105,6 +276,28 @@
   --color-border: #fbcfe8;
   --color-accent-contrast: #ffffff;
   --color-accent-text: #b81f63;
+  --color-surface-raised: #ffffff;
+  --color-accent-tint: rgba(219, 39, 119, 0.12);
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-category-work: #1d4ed8;
+  --color-category-work-bg: #dbeafe;
+  --color-category-personal: #c2410c;
+  --color-category-personal-bg: #ffedd5;
+  --color-category-growth: #7e22ce;
+  --color-category-growth-bg: #f3e8ff;
+  --color-category-health: #15803d;
+  --color-category-health-bg: #dcfce7;
+  --color-category-project: #0f766e;
+  --color-category-project-bg: #ccfbf1;
+  --color-category-other: #4b5563;
+  --color-category-other-bg: #f3f4f6;
+  --shadow-pop: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.22);
 }
 
 .theme-black {
@@ -119,4 +312,26 @@
   --color-border: #2e2e2e;
   --color-accent-contrast: #000000;
   --color-accent-text: #e5e5e5;
+  --color-surface-raised: #222222;
+  --color-accent-tint: rgba(229, 229, 229, 0.22);
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.14);
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.14);
+  --color-danger: #fca5a5;
+  --color-danger-bg: rgba(248, 113, 113, 0.14);
+  --color-category-work: #93c5fd;
+  --color-category-work-bg: rgba(59, 130, 246, 0.18);
+  --color-category-personal: #fdba74;
+  --color-category-personal-bg: rgba(249, 115, 22, 0.18);
+  --color-category-growth: #d8b4fe;
+  --color-category-growth-bg: rgba(168, 85, 247, 0.2);
+  --color-category-health: #86efac;
+  --color-category-health-bg: rgba(34, 197, 94, 0.18);
+  --color-category-project: #5eead4;
+  --color-category-project-bg: rgba(20, 184, 166, 0.18);
+  --color-category-other: #d4d4d8;
+  --color-category-other-bg: rgba(161, 161, 170, 0.16);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.6);
 }

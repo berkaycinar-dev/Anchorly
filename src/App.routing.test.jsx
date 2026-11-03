@@ -109,17 +109,18 @@ describe("App routing", () => {
 
     expect(getCurrentPath()).toBe("/projects");
     expect(
-      screen.getByRole("heading", { level: 3, name: "Project 1" }),
+      screen.getByRole("link", { name: /^Project 1/ }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { level: 2, name: "Project 1" }),
+    ).not.toBeInTheDocument();
   });
 
   it("opens a project from its card", async () => {
     const user = userEvent.setup();
     renderApp("/projects");
 
-    await user.click(
-      screen.getByRole("heading", { level: 3, name: "Project 1" }),
-    );
+    await user.click(screen.getByRole("link", { name: /^Project 1/ }));
 
     expect(getCurrentPath()).toBe(`/projects/${PROJECT_ID}`);
     expect(
@@ -135,8 +136,11 @@ describe("App routing", () => {
 
     expect(getCurrentPath()).toBe("/projects");
     expect(
-      screen.getByRole("heading", { level: 3, name: "Project 1" }),
+      screen.getByRole("link", { name: /^Project 1/ }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { level: 2, name: "Project 1" }),
+    ).not.toBeInTheDocument();
   });
 
   it("puts the page name in the document title", async () => {

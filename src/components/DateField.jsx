@@ -1,4 +1,5 @@
-import NavIcon from "./NavIcon";
+import { Calendar } from "lucide-react";
+import Icon from "./Icon";
 import { parseLocalDate } from "../utils/dateHelpers";
 
 function openNativePicker(event) {
@@ -29,7 +30,7 @@ function DateField({ id, value, onChange, label, t, className = "" }) {
         {displayText}
       </span>
 
-      <NavIcon name="Calendar" />
+      <Icon icon={Calendar} size="lg" className="nav-icon" />
 
       <input
         id={id}

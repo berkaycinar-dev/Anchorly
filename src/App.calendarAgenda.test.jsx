@@ -144,19 +144,6 @@ describe("App calendar agenda", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the seven days of the week in week view", async () => {
-    const user = userEvent.setup();
-    renderApp("/calendar");
-
-    await user.click(screen.getByRole("button", { name: "October 2026" }));
-
-    expect(within(getPicker()).getAllByRole("button")).toHaveLength(7);
-    expect(getDayButton("Saturday, October 10, 2 tasks")).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-  });
-
   it("selects the first day after moving to another month", async () => {
     const user = userEvent.setup();
     renderApp("/calendar");

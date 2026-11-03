@@ -4,8 +4,18 @@ import { createId } from "../lib/id";
 export default function useProjects() {
   const [projects, repository] = useRepositorySnapshot("projects");
 
-  function addProject(name) {
-    repository.create({ id: createId(), name });
+  function addProject(name, dueDate = "") {
+    const project = { id: createId(), name };
+
+    if (dueDate) {
+      project.dueDate = dueDate;
+    }
+
+    repository.create(project);
+  }
+
+  function updateProject(id, changes) {
+    repository.update(id, changes);
   }
 
   function deleteProject(id) {
@@ -15,6 +25,7 @@ export default function useProjects() {
   return {
     projects,
     addProject,
+    updateProject,
     deleteProject,
   };
 }

@@ -11,24 +11,36 @@ import {
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
+import useSidebar from "./hooks/useSidebar";
 import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
 import ToastProvider from "./components/toast/ToastProvider";
 import DashboardPage from "./pages/DashboardPage";
 import TodayPage from "./pages/TodayPage";
 import { strings } from "./strings";
-import { routes, PROJECT_DETAIL_PATH, getRouteForPathname } from "./routes";
+import {
+  routes,
+  PROJECT_DETAIL_PATH,
+  ARCHIVE_SERIES_PATH,
+  getAuthRouteForPathname,
+  getRouteForPathname,
+} from "./routes";
 import DailyRoutinePage from "./pages/DailyRoutinePage";
 import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import AccountPage from "./pages/AccountPage";
+import VerificationBanner from "./components/auth/VerificationBanner";
 import {
   addDaysToDateString,
   getLocalDateString,
-  getWeekStartOffset,
   getWeekStartDate,
-  getWeekDays,
   getRoutineKeyForDate,
   parseLocalDate,
 } from "./utils/dateHelpers";
@@ -39,6 +51,7 @@ import useProjects from "./hooks/useProjects";
 import useSettings from "./hooks/useSettings";
 import DataProvider from "./data/DataProvider";
 import AuthProvider from "./auth/AuthProvider";
+import useAuth from "./auth/useAuth";
 import { isTaskVisibleToday } from "./utils/taskHelpers";
 
 function getGreetingSegment() {
@@ -61,6 +74,7 @@ function AppContent() {
     tasks,
     addTask,
     toggleTask,
+    moveTaskToColumn,
     deleteTask,
     updateTaskTitle,
     updateTaskDescription,
@@ -86,21 +100,26 @@ function AppContent() {
     routineDays,
     getRoutineKeyForMonth,
     toggleRoutineCheck,
+    toggleRoutineForDate,
     addRoutine,
     deleteRoutine,
     getRoutineStreak,
     getWeeklyProductivity,
   } = useRoutines(today);
 
-  const { projects, addProject, deleteProject } = useProjects();
+  const { projects, addProject, updateProject, deleteProject } = useProjects();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const currentRoute = getRouteForPathname(pathname) ?? routes[0];
+  const { enabled: authEnabled } = useAuth();
+  const authRoute = authEnabled ? getAuthRouteForPathname(pathname) : null;
+  const currentRoute = authRoute ?? getRouteForPathname(pathname) ?? routes[0];
   const projectMatch = useMatch(PROJECT_DETAIL_PATH);
   const selectedProjectId = projectMatch ? projectMatch.params.projectId : null;
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) || null;
+  const seriesMatch = useMatch(ARCHIVE_SERIES_PATH);
+  const selectedSeriesId = seriesMatch ? seriesMatch.params.groupId : null;
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
@@ -118,19 +137,31 @@ function AppContent() {
     setFontFamily,
     weekStartDay,
     setWeekStartDay,
+    dashboardLayout,
+    setDashboardLayout,
   } = useSettings();
 
   const t = strings[language];
+  const sidebar = useSidebar();
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const afterTaskDetailCloseRef = useRef(null);
   const selectedTask = tasks.find((task) => task.id === selectedTaskId) || null;
+
+  function openTaskDetail(taskId, onClose = null) {
+    afterTaskDetailCloseRef.current = onClose;
+    setSelectedTaskId(taskId);
+  }
+
+  function closeTaskDetail() {
+    const afterClose = afterTaskDetailCloseRef.current;
+    afterTaskDetailCloseRef.current = null;
+    setSelectedTaskId(null);
+    afterClose?.();
+  }
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
-  const [calendarViewMode, setCalendarViewMode] = useState("month");
-  const [calendarWeekStart, setCalendarWeekStart] = useState(new Date());
-  const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
-  const [archiveStartDate, setArchiveStartDate] = useState("");
-  const [archiveEndDate, setArchiveEndDate] = useState("");
   const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectDueDate, setNewProjectDueDate] = useState("");
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -170,8 +201,6 @@ function AppContent() {
 
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
   const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
-  const [quickAddDate, setQuickAddDate] = useState(null);
-  const [quickAddTitle, setQuickAddTitle] = useState("");
   const todayScopedTasks = useMemo(
     () => tasks.filter((task) => isTaskVisibleToday(task, today)),
     [tasks, today],
@@ -201,7 +230,7 @@ function AppContent() {
   const sidebarBadges = {
     Today: todayStats.active,
     "Daily Routine": remainingRoutineCount,
-    Projects: projects.length,
+    Projects: projects.filter((project) => !project.archived).length,
   };
 
   const filteredTasks = useMemo(() => {
@@ -218,25 +247,6 @@ function AppContent() {
       return matchesSearch && matchesFilter;
     });
   }, [todayScopedTasks, searchText, filter]);
-
-  const filteredArchiveTasks = useMemo(
-    () =>
-      tasks.filter((task) => {
-        const matchesStatus =
-          archiveStatusFilter === "all" ||
-          (archiveStatusFilter === "completed" && task.completed) ||
-          (archiveStatusFilter === "active" && !task.completed);
-
-        const matchesStartDate =
-          archiveStartDate === "" || task.date >= archiveStartDate;
-
-        const matchesEndDate =
-          archiveEndDate === "" || task.date <= archiveEndDate;
-
-        return matchesStatus && matchesStartDate && matchesEndDate;
-      }),
-    [tasks, archiveStatusFilter, archiveStartDate, archiveEndDate],
-  );
 
   const weeklyProductivity = useMemo(
     () => getWeeklyProductivity(language),
@@ -299,27 +309,6 @@ function AppContent() {
     weekStartDay,
     greetingSegment,
   ]);
-  const calendarYear = calendarMonth.getFullYear();
-  const calendarMonthIndex = calendarMonth.getMonth();
-
-  const firstDayOfCalendarMonth = new Date(calendarYear, calendarMonthIndex, 1);
-  const daysInCalendarMonth = new Date(
-    calendarYear,
-    calendarMonthIndex + 1,
-    0,
-  ).getDate();
-
-  const calendarStartDay = getWeekStartOffset(
-    firstDayOfCalendarMonth,
-    weekStartDay,
-  );
-
-  const calendarDays = Array.from(
-    { length: daysInCalendarMonth },
-    (_, index) => index + 1,
-  );
-
-  const weekDays = getWeekDays(calendarWeekStart, weekStartDay);
 
   function getGreeting() {
     const hour = new Date().getHours();
@@ -327,8 +316,6 @@ function AppContent() {
     if (hour < 18) return t.greetingAfternoon;
     return t.greetingEvening;
   }
-
-  const [hoveredDayIndex, setHoveredDayIndex] = useState(null);
 
   function handleAddTask(event) {
     event.preventDefault();
@@ -366,8 +353,9 @@ function AppContent() {
       return;
     }
 
-    addProject(newProjectName);
+    addProject(newProjectName, newProjectDueDate);
     setNewProjectName("");
+    setNewProjectDueDate("");
   }
 
   function handleDeleteProject(id) {
@@ -377,7 +365,7 @@ function AppContent() {
 
   function handleDeleteTaskFromModal(taskId) {
     deleteTask(taskId);
-    setSelectedTaskId(null);
+    closeTaskDetail();
   }
 
   function handleAssignProject(taskId, projectId) {
@@ -404,22 +392,6 @@ function AppContent() {
     setNewProjectTaskDate(today);
   }
 
-  function submitQuickAdd(event) {
-    event.preventDefault();
-
-    if (quickAddTitle.trim() === "") {
-      return;
-    }
-
-    addTask({
-      title: quickAddTitle,
-      category: "Work",
-      date: quickAddDate,
-    });
-
-    setQuickAddTitle("");
-    setQuickAddDate(null);
-  }
   function addTaskToDate(title, date) {
     addTask({ title, category: "Work", date });
   }
@@ -427,19 +399,24 @@ function AppContent() {
   const pages = {
     Dashboard: (
       <DashboardPage
+        t={t}
+        language={language}
+        today={today}
+        weekStartDay={weekStartDay}
         greeting={getGreeting()}
         dashboardMessage={dashboardMessage}
-        todayTasksCount={todayStats.total}
-        completedTodayTasksCount={todayStats.completed}
-        allTaskCount={todayStats.total}
-        completedTasksCount={todayStats.completed}
-        activeTaskCount={todayStats.active}
-        overdueTaskCount={todayStats.overdue}
-        todayCompletionPercent={todayStats.completionPercent}
+        tasks={tasks}
+        todayScopedTasks={todayScopedTasks}
+        todayStats={todayStats}
         weeklyProductivity={weeklyProductivity}
-        hoveredDayIndex={hoveredDayIndex}
-        setHoveredDayIndex={setHoveredDayIndex}
-        t={t}
+        routines={routines}
+        routineChecks={routineChecks}
+        getRoutineStreak={getRoutineStreak}
+        projects={projects}
+        layout={dashboardLayout}
+        onSaveLayout={setDashboardLayout}
+        onToggleRoutine={(routineId) => toggleRoutineForDate(routineId, today)}
+        onOpenTask={openTaskDetail}
       />
     ),
     Today: (
@@ -479,6 +456,9 @@ function AppContent() {
         routineChecks={routineChecks}
         getRoutineKey={getRoutineKeyForMonth}
         toggleRoutineCheck={toggleRoutineCheck}
+        toggleRoutineForDate={toggleRoutineForDate}
+        getRoutineStreak={getRoutineStreak}
+        weekStartDay={weekStartDay}
         language={language}
         today={today}
         t={t}
@@ -486,40 +466,23 @@ function AppContent() {
     ),
     Calendar: (
       <CalendarPage
-        calendarViewMode={calendarViewMode}
-        setCalendarViewMode={setCalendarViewMode}
         calendarMonth={calendarMonth}
-        weekDays={weekDays}
         setCalendarMonth={setCalendarMonth}
-        calendarYear={calendarYear}
-        calendarMonthIndex={calendarMonthIndex}
-        calendarWeekStart={calendarWeekStart}
-        setCalendarWeekStart={setCalendarWeekStart}
-        calendarStartDay={calendarStartDay}
-        calendarDays={calendarDays}
         tasks={tasks}
-        setQuickAddDate={setQuickAddDate}
-        setQuickAddTitle={setQuickAddTitle}
-        quickAddDate={quickAddDate}
-        submitQuickAdd={submitQuickAdd}
-        quickAddTitle={quickAddTitle}
-        addTaskToDate={addTaskToDate}
-        setSelectedTaskId={setSelectedTaskId}
         today={today}
         weekStartDay={weekStartDay}
         t={t}
         language={language}
+        onToggleTask={toggleTask}
+        onOpenTask={setSelectedTaskId}
+        onAddTask={addTaskToDate}
       />
     ),
     Archive: (
       <ArchivePage
-        archiveStatusFilter={archiveStatusFilter}
-        setArchiveStatusFilter={setArchiveStatusFilter}
-        archiveStartDate={archiveStartDate}
-        setArchiveStartDate={setArchiveStartDate}
-        archiveEndDate={archiveEndDate}
-        setArchiveEndDate={setArchiveEndDate}
-        filteredArchiveTasks={filteredArchiveTasks}
+        tasks={tasks}
+        today={today}
+        selectedSeriesId={selectedSeriesId}
         toggleTask={toggleTask}
         deleteTask={deleteTask}
         setSelectedTaskId={setSelectedTaskId}
@@ -533,9 +496,13 @@ function AppContent() {
         addProject={handleAddProject}
         newProjectName={newProjectName}
         setNewProjectName={setNewProjectName}
+        newProjectDueDate={newProjectDueDate}
+        setNewProjectDueDate={setNewProjectDueDate}
         projects={projects}
+        updateProject={updateProject}
         deleteProject={handleDeleteProject}
         tasks={tasks}
+        today={today}
         addProjectTask={addProjectTask}
         newProjectTaskTitle={newProjectTaskTitle}
         setNewProjectTaskTitle={setNewProjectTaskTitle}
@@ -543,6 +510,7 @@ function AppContent() {
         setNewProjectTaskDate={setNewProjectTaskDate}
         selectedProjectId={selectedProjectId}
         toggleTask={toggleTask}
+        moveTaskToColumn={moveTaskToColumn}
         deleteTask={deleteTask}
         setSelectedTaskId={setSelectedTaskId}
         reorderTasks={reorderTasks}
@@ -564,15 +532,44 @@ function AppContent() {
     ),
   };
 
+  const fontStyle = {
+    "--font-main": `'${fontFamily}', system-ui, sans-serif`,
+  };
+
+  if (authRoute) {
+    return (
+      <div className={`auth-shell theme-${theme}`} style={fontStyle}>
+        <Routes>
+          <Route path="/login" element={<LoginPage t={t} />} />
+          <Route
+            path="/register"
+            element={<RegisterPage t={t} language={language} />}
+          />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPasswordPage t={t} />}
+          />
+          <Route path="/reset-password" element={<ResetPasswordPage t={t} />} />
+          <Route path="/verify-email" element={<VerifyEmailPage t={t} />} />
+        </Routes>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`app theme-${theme}`}
-      style={{ "--font-main": `'${fontFamily}', system-ui, sans-serif` }}
-    >
+    <div className={`app theme-${theme}`} style={fontStyle}>
       <ToastProvider closeLabel={t.closeButton}>
         <StorageToasts t={t} />
-        <Sidebar t={t} badges={sidebarBadges} />
+        <Sidebar
+          t={t}
+          badges={sidebarBadges}
+          isExpanded={sidebar.isExpanded}
+          isOverlayOpen={sidebar.isOverlayOpen}
+          onToggle={sidebar.toggle}
+          onNavigate={sidebar.closeOverlay}
+        />
         <main className="main-content">
+          <VerificationBanner t={t} />
           <Header />
           <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
 
@@ -594,6 +591,28 @@ function AppContent() {
                 )
               }
             />
+            <Route
+              path={ARCHIVE_SERIES_PATH}
+              element={
+                tasks.some(
+                  (task) => task.repeatGroupId === selectedSeriesId,
+                ) ? (
+                  pages.Archive
+                ) : (
+                  <Navigate to="/archive" replace />
+                )
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                authEnabled ? (
+                  <AccountPage t={t} language={language} />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
@@ -603,7 +622,7 @@ function AppContent() {
         <TaskDetailModal
           key={selectedTaskId ?? "none"}
           task={selectedTask}
-          onClose={() => setSelectedTaskId(null)}
+          onClose={closeTaskDetail}
           onToggleTask={toggleTask}
           onUpdateDescription={updateTaskDescription}
           onUpdateTitle={updateTaskTitle}

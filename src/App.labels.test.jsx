@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import { renderApp } from "./test/renderApp";
@@ -207,26 +207,38 @@ describe("task detail dialog labels", () => {
   });
 });
 
-describe("calendar quick add", () => {
-  it("labels the quick add title input", async () => {
-    const user = userEvent.setup();
-
+describe("calendar day panel", () => {
+  it("labels the add task input of the selected day", () => {
     seed("en", [createTask()]);
     renderApp("/calendar");
 
-    await user.click(
-      screen.getAllByRole("button", { name: "Add task to this day" })[0],
-    );
+    const panel = document.querySelector(".calendar-panel");
 
     expect(
-      screen.getByRole("textbox", { name: "Task title" }),
+      within(panel).getByRole("textbox", { name: "Add task to this day" }),
+    ).toBeInTheDocument();
+  });
+
+  it("labels the task checkboxes and the progress bar", () => {
+    seed("en", [createTask()]);
+    renderApp("/calendar");
+
+    const panel = document.querySelector(".calendar-panel");
+
+    expect(
+      within(panel).getByRole("checkbox", { name: 'Complete "Task 1"' }),
+    ).toBeInTheDocument();
+    expect(
+      within(panel).getByRole("progressbar", {
+        name: "0 of 1 tasks completed",
+      }),
     ).toBeInTheDocument();
   });
 });
 
 describe("weekly productivity chart", () => {
   function getBars() {
-    return screen.getAllByRole("img", { name: /routines done/ });
+    return screen.getAllByRole("button", { name: /routines done/ });
   }
 
   it("exposes one focusable bar per day with a text alternative", () => {
@@ -238,7 +250,6 @@ describe("weekly productivity chart", () => {
     expect(bars).toHaveLength(7);
 
     bars.forEach((bar) => {
-      expect(bar).toHaveAttribute("tabindex", "0");
       expect(bar).toHaveAccessibleName(
         /^\w+ [\w ]+: \d+ of \d+ routines done, \d+%$/,
       );
@@ -249,26 +260,21 @@ describe("weekly productivity chart", () => {
     seed("tr", [createTask()]);
     renderApp("/");
 
-    const bars = screen.getAllByRole("img", { name: /rutinden/ });
+    const bars = screen.getAllByRole("button", { name: /rutinden/ });
 
     expect(bars).toHaveLength(7);
     expect(bars[0]).toHaveAccessibleName(/rutinden \d+ tamamlandı, %\d+$/);
   });
 
-  it("shows the tooltip while a bar has keyboard focus", () => {
+  it("gives every bar a decorative tooltip with the percent and routines", () => {
     seed("en", [createTask()]);
     renderApp("/");
 
     const [firstBar] = getBars();
+    const tooltip = firstBar.querySelector(".dashboard-tooltip");
 
-    expect(within(firstBar).queryByText(/routines$/)).toBeNull();
-
-    fireEvent.focus(firstBar);
-
-    expect(within(firstBar).getByText(/routines$/)).toBeInTheDocument();
-
-    fireEvent.blur(firstBar);
-
-    expect(within(firstBar).queryByText(/routines$/)).toBeNull();
+    expect(tooltip).toHaveAttribute("aria-hidden", "true");
+    expect(tooltip).toHaveTextContent(/\d+% done/);
+    expect(tooltip).toHaveTextContent(/\d+ \/ \d+ routines done/);
   });
 });

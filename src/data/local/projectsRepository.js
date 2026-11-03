@@ -14,6 +14,24 @@ export default function createLocalProjectsRepository() {
     return Promise.resolve(project);
   }
 
+  function update(id, changes) {
+    let updated = null;
+
+    store.set((currentProjects) =>
+      currentProjects.map((project) => {
+        if (project.id !== id) {
+          return project;
+        }
+
+        updated = { ...project, ...changes, id };
+
+        return updated;
+      }),
+    );
+
+    return Promise.resolve(updated);
+  }
+
   function remove(id) {
     store.set((currentProjects) =>
       currentProjects.filter((project) => project.id !== id),
@@ -27,6 +45,7 @@ export default function createLocalProjectsRepository() {
     subscribe: store.subscribe,
     start,
     create,
+    update,
     remove,
   };
 }

@@ -10,10 +10,30 @@ export const routes = [
   { key: "Settings", path: "/settings", titleKey: "settings" },
 ];
 
+export const authRoutes = [
+  { key: "Login", path: "/login", titleKey: "signIn" },
+  { key: "Register", path: "/register", titleKey: "signUp" },
+  { key: "Forgot", path: "/forgot-password", titleKey: "authForgotTitle" },
+  { key: "Reset", path: "/reset-password", titleKey: "authResetTitle" },
+  { key: "Verify", path: "/verify-email", titleKey: "verifySuccessTitle" },
+];
+
+export const accountRoute = {
+  key: "Account",
+  path: "/account",
+  titleKey: "accountPageLink",
+};
+
 export const PROJECT_DETAIL_PATH = "/projects/:projectId";
+
+export const ARCHIVE_SERIES_PATH = "/archive/series/:groupId";
 
 export function getProjectPath(projectId) {
   return `/projects/${encodeURIComponent(projectId)}`;
+}
+
+export function getArchiveSeriesPath(groupId) {
+  return `/archive/series/${encodeURIComponent(groupId)}`;
 }
 
 export function getRouteForPathname(pathname) {
@@ -23,9 +43,23 @@ export function getRouteForPathname(pathname) {
     return route;
   }
 
+  if (matchPath(accountRoute.path, pathname)) {
+    return accountRoute;
+  }
+
   if (matchPath(PROJECT_DETAIL_PATH, pathname)) {
     return routes.find((candidate) => candidate.key === "Projects");
   }
 
+  if (matchPath(ARCHIVE_SERIES_PATH, pathname)) {
+    return routes.find((candidate) => candidate.key === "Archive");
+  }
+
   return null;
+}
+
+export function getAuthRouteForPathname(pathname) {
+  return (
+    authRoutes.find((candidate) => matchPath(candidate.path, pathname)) ?? null
+  );
 }

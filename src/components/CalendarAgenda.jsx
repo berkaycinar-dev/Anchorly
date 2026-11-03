@@ -7,6 +7,8 @@ function CalendarAgenda({
   dates,
   leadingBlankCount,
   weekdayNames,
+  selectedDate,
+  onSelectDate,
   tasks,
   today,
   onSelectTask,
@@ -16,8 +18,6 @@ function CalendarAgenda({
 }) {
   const locale = language === "tr" ? "tr-TR" : "en-US";
   const dateStrings = dates.map((date) => getLocalDateString(date));
-  const defaultDate = dateStrings.includes(today) ? today : dateStrings[0];
-  const [selectedDate, setSelectedDate] = useState(defaultDate);
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   function getTasksForDate(dateString) {
@@ -93,7 +93,7 @@ function CalendarAgenda({
                   ? `${fullLabel}, ${t.calendarDayTaskCount(dayTasks.length)}`
                   : fullLabel
               }
-              onClick={() => setSelectedDate(dateString)}
+              onClick={() => onSelectDate(dateString)}
             >
               <span className="calendar-picker-number" aria-hidden="true">
                 {date.getDate()}

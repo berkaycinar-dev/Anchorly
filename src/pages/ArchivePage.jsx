@@ -1,20 +1,46 @@
-import TaskList from "../components/TaskList";
-import DateField from "../components/DateField";
+import { useMemo, useState } from "react";
+import OneTimeTasks from "../components/archive/OneTimeTasks";
+import SeriesDetail from "../components/archive/SeriesDetail";
+import SeriesList from "../components/archive/SeriesList";
+import { buildSeriesList } from "../utils/archiveSeries";
+
+const TABS = [
+  { value: "series", labelKey: "archiveTabSeries" },
+  { value: "oneTime", labelKey: "archiveTabOneTime" },
+];
 
 export default function ArchivePage({
-  archiveStatusFilter,
-  setArchiveStatusFilter,
-  archiveStartDate,
-  setArchiveStartDate,
-  archiveEndDate,
-  setArchiveEndDate,
-  filteredArchiveTasks,
+  tasks,
+  today,
+  selectedSeriesId,
   toggleTask,
   deleteTask,
   setSelectedTaskId,
   reorderTasks,
   t,
 }) {
+  const [tab, setTab] = useState("series");
+  const seriesList = useMemo(
+    () => buildSeriesList(tasks, today),
+    [tasks, today],
+  );
+  const selectedSeries = selectedSeriesId
+    ? seriesList.find((series) => series.id === selectedSeriesId)
+    : null;
+
+  if (selectedSeries) {
+    return (
+      <SeriesDetail
+        key={selectedSeries.id}
+        series={selectedSeries}
+        today={today}
+        toggleTask={toggleTask}
+        onSelectTask={setSelectedTaskId}
+        t={t}
+      />
+    );
+  }
+
   return (
     <section className="archive-page">
       <div className="dashboard-welcome">
@@ -22,51 +48,44 @@ export default function ArchivePage({
         <p>{t.archivePageDescription}</p>
       </div>
 
-      <div className="archive-filters">
-        <select
-          aria-label={t.archiveStatusLabel}
-          value={archiveStatusFilter}
-          onChange={(event) => setArchiveStatusFilter(event.target.value)}
-        >
-          <option value="all">{t.statusAll}</option>
-          <option value="active">{t.statusActive}</option>
-          <option value="completed">{t.statusCompleted}</option>
-        </select>
-
-        <DateField
-          label={t.archiveStartDateLabel}
-          value={archiveStartDate}
-          onChange={setArchiveStartDate}
-          t={t}
-        />
-
-        <DateField
-          label={t.archiveEndDateLabel}
-          value={archiveEndDate}
-          onChange={setArchiveEndDate}
-          t={t}
-        />
-
-        <button
-          type="button"
-          onClick={() => {
-            setArchiveStatusFilter("all");
-            setArchiveStartDate("");
-            setArchiveEndDate("");
-          }}
-        >
-          {t.clearFilters}
-        </button>
+      <div
+        className="archive-tabs"
+        role="tablist"
+        aria-label={t.archiveTabsLabel}
+      >
+        {TABS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="tab"
+            id={`archive-tab-${option.value}`}
+            aria-selected={tab === option.value}
+            aria-controls="archive-tab-panel"
+            onClick={() => setTab(option.value)}
+          >
+            {t[option.labelKey]}
+          </button>
+        ))}
       </div>
 
-      <TaskList
-        tasks={filteredArchiveTasks}
-        toggleTask={toggleTask}
-        deleteTask={deleteTask}
-        onSelectTask={setSelectedTaskId}
-        onReorderTasks={reorderTasks}
-        t={t}
-      />
+      <div
+        role="tabpanel"
+        id="archive-tab-panel"
+        aria-labelledby={`archive-tab-${tab}`}
+      >
+        {tab === "series" ? (
+          <SeriesList seriesList={seriesList} t={t} />
+        ) : (
+          <OneTimeTasks
+            tasks={tasks}
+            toggleTask={toggleTask}
+            deleteTask={deleteTask}
+            onSelectTask={setSelectedTaskId}
+            onReorderTasks={reorderTasks}
+            t={t}
+          />
+        )}
+      </div>
     </section>
   );
 }

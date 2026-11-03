@@ -203,6 +203,111 @@ describe("useTasks addTask", () => {
   });
 });
 
+describe("useTasks moveTaskToColumn", () => {
+  function findTask(result, id) {
+    return result.current.tasks.find((task) => task.id === id);
+  }
+
+  it("completes an open task when it moves to done", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+
+    expect(findTask(result, IDS[0])).toMatchObject({
+      completed: true,
+      completedAt: "2026-10-10",
+    });
+  });
+
+  it("uses the task date as the completion date when it has one", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.updateTaskDate(IDS[0], "2026-10-05");
+    });
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+
+    expect(findTask(result, IDS[0]).completedAt).toBe("2026-10-05");
+  });
+
+  it("keeps the original completion date when a done task is dropped on done again", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+    act(() => {
+      result.current.updateTaskDate(IDS[0], "2026-10-05");
+    });
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+
+    expect(findTask(result, IDS[0]).completedAt).toBe("2026-10-10");
+  });
+
+  it("keeps a completed task as it is when it moves to done again", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+
+    const before = findTask(result, IDS[0]);
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+
+    expect(findTask(result, IDS[0])).toEqual(before);
+  });
+
+  it("reopens a completed task and remembers the target column", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "done");
+    });
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "doing");
+    });
+
+    expect(findTask(result, IDS[0])).toMatchObject({
+      completed: false,
+      completedAt: null,
+      boardStatus: "doing",
+    });
+  });
+
+  it("stores the todo column for an open task", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[1], "doing");
+    });
+    act(() => {
+      result.current.moveTaskToColumn(IDS[1], "todo");
+    });
+
+    expect(findTask(result, IDS[1]).boardStatus).toBe("todo");
+  });
+
+  it("changes only the given task", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.moveTaskToColumn(IDS[0], "doing");
+    });
+
+    expect(findTask(result, IDS[1])).toEqual(createTask(IDS[1], 1));
+    expect(findTask(result, IDS[2])).toEqual(createTask(IDS[2], 2));
+  });
+});
+
 describe("useTasks toggleTask", () => {
   it("completes a dated task with the date of the task", () => {
     const task = { ...createTask(IDS[0], 0), date: "2026-10-08" };
