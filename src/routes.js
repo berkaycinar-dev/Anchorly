@@ -13,6 +13,8 @@ export const routes = [
 export const authRoutes = [
   { key: "Login", path: "/login", titleKey: "signIn" },
   { key: "Register", path: "/register", titleKey: "signUp" },
+  { key: "Forgot", path: "/forgot-password", titleKey: "authForgotTitle" },
+  { key: "Reset", path: "/reset-password", titleKey: "authResetTitle" },
 ];
 
 export const PROJECT_DETAIL_PATH = "/projects/:projectId";

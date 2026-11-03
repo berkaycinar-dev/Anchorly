@@ -88,6 +88,8 @@ describe("routes", () => {
     expect(authRoutes.map((route) => route.path)).toEqual([
       "/login",
       "/register",
+      "/forgot-password",
+      "/reset-password",
     ]);
     expect(routes.some((route) => route.path === "/login")).toBe(false);
   });

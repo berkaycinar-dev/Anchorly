@@ -24,7 +24,12 @@ function getValidationMessage(field, t) {
 }
 
 export default function describeAuthError(error, t) {
-  const result = { fields: {}, alert: null, retryAfterSeconds: 0 };
+  const result = {
+    fields: {},
+    alert: null,
+    retryAfterSeconds: 0,
+    tokenInvalid: false,
+  };
 
   if (!(error instanceof ApiError)) {
     result.alert = { tone: "danger", message: t.authGenericError };
@@ -39,6 +44,8 @@ export default function describeAuthError(error, t) {
       message: t.authEmailTaken,
       offerSignIn: true,
     };
+  } else if (error.code === "INVALID_EMAIL_TOKEN") {
+    result.tokenInvalid = true;
   } else if (error.code === "VALIDATION_ERROR") {
     const details = Array.isArray(error.details) ? error.details : [];
 

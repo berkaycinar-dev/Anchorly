@@ -7,7 +7,10 @@ function AuthAlert({ t, alert, signInPath }) {
   }
 
   const actions = alert.offerSignIn ? (
-    <Link to={signInPath}>{t.signIn}</Link>
+    <>
+      <Link to={signInPath}>{t.signIn}</Link>
+      <Link to="/forgot-password">{t.authForgotLink}</Link>
+    </>
   ) : undefined;
 
   return (

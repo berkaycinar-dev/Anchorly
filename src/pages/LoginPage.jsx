@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
-import { Link, Navigate, useSearchParams } from "react-router";
+import { Link, Navigate, useLocation, useSearchParams } from "react-router";
 import AuthAlert from "../components/auth/AuthAlert";
 import AuthLayout from "../components/auth/AuthLayout";
+import Alert from "../components/ui/Alert";
 import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
 import describeAuthError from "../auth/authErrors";
@@ -14,6 +15,7 @@ import { validateEmail, validatePassword } from "../auth/validateAuthForm";
 function LoginPage({ t }) {
   const { status, login } = useAuth();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const nextPath = getSafeNextPath(searchParams.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -114,6 +116,9 @@ function LoginPage({ t }) {
     >
       <form className="auth-form" noValidate onSubmit={handleSubmit}>
         <AuthAlert t={t} alert={visibleAlert} />
+        {!visibleAlert && location.state?.passwordReset ? (
+          <Alert tone="success">{t.authPasswordUpdated}</Alert>
+        ) : null}
         <TextField
           ref={emailRef}
           label={t.authEmailLabel}
@@ -131,6 +136,11 @@ function LoginPage({ t }) {
         <TextField
           ref={passwordRef}
           label={t.authPasswordLabel}
+          labelAction={
+            <Link to="/forgot-password" className="auth-inline-link">
+              {t.authForgotLink}
+            </Link>
+          }
           type="password"
           name="password"
           autoComplete="current-password"

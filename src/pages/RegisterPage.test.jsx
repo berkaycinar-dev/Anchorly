@@ -124,6 +124,7 @@ describe("RegisterPage", () => {
     expect(
       alert.querySelector(`a[href="/login?next=%2Ftoday"]`),
     ).not.toBeNull();
+    expect(alert.querySelector('a[href="/forgot-password"]')).not.toBeNull();
   });
 
   it("maps server validation details onto fields", async () => {

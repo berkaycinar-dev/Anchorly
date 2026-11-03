@@ -49,6 +49,27 @@ export const strings = {
     authNetworkError:
       "Sunucuya ulaşılamadı. Bağlantını kontrol edip tekrar dene.",
     authGenericError: "Bir şeyler ters gitti. Lütfen tekrar dene.",
+    authForgotLink: "Parolamı unuttum",
+    authForgotTitle: "Parolanı mı unuttun?",
+    authForgotSubtitle:
+      "E-posta adresini yaz, sana sıfırlama bağlantısı gönderelim.",
+    authForgotSubmit: "Bağlantı gönder",
+    authBackToSignIn: "Girişe dön",
+    authSentTitle: "E-postanı kontrol et",
+    authSentBody: (email) =>
+      `${email} kayıtlıysa sıfırlama bağlantısı gönderdik. Bağlantı 1 saat geçerli.`,
+    authResend: "Tekrar gönder",
+    authResendIn: (seconds) => `Tekrar gönder (${seconds} sn)`,
+    authResetTitle: "Yeni parola belirle",
+    authResetSubtitle:
+      "Parolan değişince bütün cihazlardaki oturumlar kapanır.",
+    authNewPasswordLabel: "Yeni parola",
+    authResetSubmit: "Parolayı güncelle",
+    authLinkInvalidTitle: "Bağlantı geçersiz",
+    authLinkInvalidBody:
+      "Bağlantının süresi dolmuş ya da daha önce kullanılmış olabilir.",
+    authRequestNewLink: "Yeni bağlantı iste",
+    authPasswordUpdated: "Parolan güncellendi. Yeni parolanla giriş yap.",
     bottomNavigationLabel: "Alt menü",
     settingsDescription: "Görünümü ve tercihlerini buradan yönet.",
     settingsCategoriesLabel: "Ayar kategorileri",
@@ -501,6 +522,27 @@ export const strings = {
     authNetworkError:
       "Could not reach the server. Check your connection and try again.",
     authGenericError: "Something went wrong. Please try again.",
+    authForgotLink: "Forgot password",
+    authForgotTitle: "Forgot your password?",
+    authForgotSubtitle:
+      "Enter your email address and we will send a reset link.",
+    authForgotSubmit: "Send link",
+    authBackToSignIn: "Back to sign in",
+    authSentTitle: "Check your email",
+    authSentBody: (email) =>
+      `If ${email} is registered, we sent a reset link. It is valid for 1 hour.`,
+    authResend: "Resend",
+    authResendIn: (seconds) => `Resend (${seconds} sec)`,
+    authResetTitle: "Set a new password",
+    authResetSubtitle: "Changing your password signs you out on every device.",
+    authNewPasswordLabel: "New password",
+    authResetSubmit: "Update password",
+    authLinkInvalidTitle: "Link is invalid",
+    authLinkInvalidBody:
+      "The link may have expired or may have been used already.",
+    authRequestNewLink: "Request a new link",
+    authPasswordUpdated:
+      "Your password was updated. Sign in with your new password.",
     bottomNavigationLabel: "Bottom menu",
     settingsDescription: "Manage your appearance and preferences here.",
     settingsCategoriesLabel: "Settings categories",

@@ -33,6 +33,16 @@ describe("describeAuthError", () => {
     expect(result.alert.offerSignIn).toBe(true);
   });
 
+  it("flags an invalid or expired token without an alert", () => {
+    const result = describeAuthError(
+      apiError({ code: "INVALID_EMAIL_TOKEN" }),
+      t,
+    );
+
+    expect(result.tokenInvalid).toBe(true);
+    expect(result.alert).toBeNull();
+  });
+
   it("maps validation details to field messages", () => {
     const result = describeAuthError(
       apiError({

@@ -47,6 +47,26 @@ describe("LoginPage", () => {
     ).toBeInTheDocument();
   });
 
+  it("links to the password reset page", () => {
+    renderLogin();
+
+    expect(
+      screen.getByRole("link", { name: t.authForgotLink }),
+    ).toHaveAttribute("href", "/forgot-password");
+  });
+
+  it("confirms a finished password reset", () => {
+    renderLogin({ state: { passwordReset: true } });
+
+    expect(screen.getByRole("status")).toHaveTextContent(t.authPasswordUpdated);
+  });
+
+  it("does not show the reset confirmation by default", () => {
+    renderLogin();
+
+    expect(screen.queryByText(t.authPasswordUpdated)).toBeNull();
+  });
+
   it("keeps the next destination on the switch link", () => {
     renderLogin({ path: "/login?next=%2Fprojects" });
 

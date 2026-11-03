@@ -141,4 +141,72 @@ describe("auth pages in the app", () => {
     ).toBeInTheDocument();
     expect(screen.getByLabelText("E-posta")).toBeInTheDocument();
   });
+
+  it("renders the forgot and reset pages without the app shell", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    vi.stubGlobal("fetch", vi.fn());
+
+    const first = renderApp("/forgot-password");
+    expect(
+      await screen.findByRole("heading", { name: "Forgot your password?" }),
+    ).toBeInTheDocument();
+    expect(document.querySelector(".sidebar")).toBeNull();
+    first.unmount();
+
+    renderApp("/reset-password#token=abc");
+    expect(
+      await screen.findByRole("heading", { name: "Set a new password" }),
+    ).toBeInTheDocument();
+    expect(document.querySelector(".sidebar")).toBeNull();
+  });
+
+  it("requests a reset link through the API", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    const fetchSpy = vi.fn(async () => new Response(null, { status: 202 }));
+    vi.stubGlobal("fetch", fetchSpy);
+    const user = userEvent.setup();
+
+    renderApp("/forgot-password");
+
+    await user.type(
+      await screen.findByLabelText("Email"),
+      "dev@anchorly.local",
+    );
+    await user.click(screen.getByRole("button", { name: "Send link" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Check your email" }),
+    ).toBeInTheDocument();
+    const [url, init] = fetchSpy.mock.calls[0];
+    expect(url).toBe("/api/auth/forgot-password");
+    expect(JSON.parse(init.body)).toEqual({ email: "dev@anchorly.local" });
+  });
+
+  it("resets the password and shows the confirmation on sign in", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    const fetchSpy = vi.fn(async () => new Response(null, { status: 204 }));
+    vi.stubGlobal("fetch", fetchSpy);
+    const user = userEvent.setup();
+
+    renderApp("/reset-password#token=abc123");
+
+    await user.type(
+      await screen.findByLabelText("New password"),
+      "newpassword1",
+    );
+    await user.click(screen.getByRole("button", { name: "Update password" }));
+
+    await waitFor(() => {
+      expect(getCurrentPath()).toBe("/login");
+    });
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Your password was updated",
+    );
+    const [url, init] = fetchSpy.mock.calls[0];
+    expect(url).toBe("/api/auth/reset-password");
+    expect(JSON.parse(init.body)).toEqual({
+      token: "abc123",
+      password: "newpassword1",
+    });
+  });
 });

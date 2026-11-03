@@ -7,7 +7,7 @@ import LocationProbe from "./LocationProbe";
 
 export function renderAuthPage(
   element,
-  { path = "/", status = AUTH_STATUS.signedOut, ...authValue } = {},
+  { path = "/", state, status = AUTH_STATUS.signedOut, ...authValue } = {},
 ) {
   const value = {
     status,
@@ -17,11 +17,18 @@ export function renderAuthPage(
     ...authValue,
   };
 
+  const url = new URL(path, "http://localhost");
+
   const view = render(
-    <MemoryRouter initialEntries={[path]} useTransitions={false}>
+    <MemoryRouter
+      initialEntries={[
+        { pathname: url.pathname, search: url.search, hash: url.hash, state },
+      ]}
+      useTransitions={false}
+    >
       <AuthContext.Provider value={value}>
         <Routes>
-          <Route path={path.split("?")[0]} element={element} />
+          <Route path={path.split(/[?#]/)[0]} element={element} />
           <Route path="*" element={null} />
         </Routes>
       </AuthContext.Provider>
