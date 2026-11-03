@@ -73,6 +73,50 @@
   cursor: default;
 }
 
+.routine-page .calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.routine-page .calendar-nav-label {
+  flex: 1;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.routine-page .calendar-nav-arrow {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--text-xl);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.routine-page .calendar-nav-arrow:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .routine-page .calendar-nav-arrow:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
+}
+
 .routine-day-view {
   display: flex;
   flex-direction: column;

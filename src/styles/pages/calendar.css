@@ -377,6 +377,12 @@
   min-height: 44px;
 }
 
+@media (pointer: coarse) {
+  .calendar-panel-form input {
+    font-size: 16px;
+  }
+}
+
 @media (min-width: 768px) {
   .calendar-desktop {
     display: flex;
