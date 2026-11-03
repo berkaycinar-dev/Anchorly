@@ -415,14 +415,7 @@ describe("getPaginationItems", () => {
 
   it("collapses the end when the current page is near the start", () => {
     expect(getPaginationItems(0, 15)).toEqual([0, 1, "ellipsis-end", 14]);
-    expect(getPaginationItems(2, 15)).toEqual([
-      0,
-      1,
-      2,
-      3,
-      "ellipsis-end",
-      14,
-    ]);
+    expect(getPaginationItems(2, 15)).toEqual([0, 1, 2, 3, "ellipsis-end", 14]);
   });
 
   it("collapses both sides in the middle", () => {
@@ -438,12 +431,7 @@ describe("getPaginationItems", () => {
   });
 
   it("collapses the start when the current page is near the end", () => {
-    expect(getPaginationItems(14, 15)).toEqual([
-      0,
-      "ellipsis-start",
-      13,
-      14,
-    ]);
+    expect(getPaginationItems(14, 15)).toEqual([0, "ellipsis-start", 13, 14]);
     expect(getPaginationItems(12, 15)).toEqual([
       0,
       "ellipsis-start",
