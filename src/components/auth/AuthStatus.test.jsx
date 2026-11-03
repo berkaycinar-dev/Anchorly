@@ -35,4 +35,17 @@ describe("AuthStatus", () => {
     );
     expect(container.querySelector(".auth-status-actions")).toBeNull();
   });
+
+  it("marks the icon as spinning while loading", () => {
+    const { container } = render(
+      <AuthStatus icon={Mail} spinning title="Wait">
+        Body
+      </AuthStatus>,
+    );
+
+    expect(container.querySelector(".auth-status-icon")).toHaveAttribute(
+      "data-spinning",
+      "true",
+    );
+  });
 });

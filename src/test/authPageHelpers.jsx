@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+import { Fragment, StrictMode } from "react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { vi } from "vitest";
 import { AuthContext } from "../auth/AuthContext";
@@ -7,7 +8,13 @@ import LocationProbe from "./LocationProbe";
 
 export function renderAuthPage(
   element,
-  { path = "/", state, status = AUTH_STATUS.signedOut, ...authValue } = {},
+  {
+    path = "/",
+    state,
+    strict = false,
+    status = AUTH_STATUS.signedOut,
+    ...authValue
+  } = {},
 ) {
   const value = {
     status,
@@ -19,21 +26,25 @@ export function renderAuthPage(
 
   const url = new URL(path, "http://localhost");
 
+  const Wrapper = strict ? StrictMode : Fragment;
+
   const view = render(
-    <MemoryRouter
-      initialEntries={[
-        { pathname: url.pathname, search: url.search, hash: url.hash, state },
-      ]}
-      useTransitions={false}
-    >
-      <AuthContext.Provider value={value}>
-        <Routes>
-          <Route path={path.split(/[?#]/)[0]} element={element} />
-          <Route path="*" element={null} />
-        </Routes>
-      </AuthContext.Provider>
-      <LocationProbe />
-    </MemoryRouter>,
+    <Wrapper>
+      <MemoryRouter
+        initialEntries={[
+          { pathname: url.pathname, search: url.search, hash: url.hash, state },
+        ]}
+        useTransitions={false}
+      >
+        <AuthContext.Provider value={value}>
+          <Routes>
+            <Route path={path.split(/[?#]/)[0]} element={element} />
+            <Route path="*" element={null} />
+          </Routes>
+        </AuthContext.Provider>
+        <LocationProbe />
+      </MemoryRouter>
+    </Wrapper>,
   );
 
   return { ...view, auth: value };

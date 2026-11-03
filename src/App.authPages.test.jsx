@@ -209,4 +209,57 @@ describe("auth pages in the app", () => {
       password: "newpassword1",
     });
   });
+
+  it("verifies the email from the link and clears the banner", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    const unverified = {
+      ...SESSION,
+      user: { ...SESSION.user, emailVerifiedAt: null },
+    };
+    const fetchSpy = vi.fn(async (url) => {
+      if (url === "/api/auth/refresh") {
+        return jsonResponse(200, unverified);
+      }
+      return jsonResponse(200, {
+        user: { ...SESSION.user, emailVerifiedAt: "2026-11-04T00:00:00.000Z" },
+      });
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    setSessionHint();
+
+    renderApp("/verify-email#token=tok1");
+
+    expect(
+      await screen.findByRole("heading", { name: "Email verified" }),
+    ).toBeInTheDocument();
+    const verifyCall = fetchSpy.mock.calls.find(
+      ([url]) => url === "/api/auth/verify-email",
+    );
+    expect(JSON.parse(verifyCall[1].body)).toEqual({ token: "tok1" });
+
+    await userEvent.click(screen.getByRole("link", { name: "Go to the app" }));
+
+    expect(await screen.findByRole("main")).toBeInTheDocument();
+    expect(document.querySelector(".verify-banner")).toBeNull();
+  });
+
+  it("shows the verification banner inside the app for unverified users", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        jsonResponse(200, {
+          ...SESSION,
+          user: { ...SESSION.user, emailVerifiedAt: null },
+        }),
+      ),
+    );
+    setSessionHint();
+
+    renderApp("/");
+
+    expect(
+      await screen.findByRole("region", { name: "Email verification" }),
+    ).toBeInTheDocument();
+  });
 });

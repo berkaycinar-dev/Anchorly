@@ -15,6 +15,7 @@ export const authRoutes = [
   { key: "Register", path: "/register", titleKey: "signUp" },
   { key: "Forgot", path: "/forgot-password", titleKey: "authForgotTitle" },
   { key: "Reset", path: "/reset-password", titleKey: "authResetTitle" },
+  { key: "Verify", path: "/verify-email", titleKey: "verifySuccessTitle" },
 ];
 
 export const PROJECT_DETAIL_PATH = "/projects/:projectId";

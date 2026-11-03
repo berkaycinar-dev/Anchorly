@@ -90,6 +90,7 @@ describe("routes", () => {
       "/register",
       "/forgot-password",
       "/reset-password",
+      "/verify-email",
     ]);
     expect(routes.some((route) => route.path === "/login")).toBe(false);
   });

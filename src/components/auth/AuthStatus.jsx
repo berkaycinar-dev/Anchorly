@@ -1,9 +1,20 @@
 import Icon from "../Icon";
 
-function AuthStatus({ icon, tone = "info", title, children, actions }) {
+function AuthStatus({
+  icon,
+  tone = "info",
+  spinning = false,
+  title,
+  children,
+  actions,
+}) {
   return (
     <div className="auth-status">
-      <span className="auth-status-icon" data-tone={tone}>
+      <span
+        className="auth-status-icon"
+        data-tone={tone}
+        data-spinning={spinning || undefined}
+      >
         <Icon icon={icon} size="lg" />
       </span>
       <h1 className="auth-title">{title}</h1>

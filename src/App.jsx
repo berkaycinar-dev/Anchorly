@@ -34,6 +34,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import VerificationBanner from "./components/auth/VerificationBanner";
 import {
   addDaysToDateString,
   getLocalDateString,
@@ -547,6 +549,7 @@ function AppContent() {
             element={<ForgotPasswordPage t={t} />}
           />
           <Route path="/reset-password" element={<ResetPasswordPage t={t} />} />
+          <Route path="/verify-email" element={<VerifyEmailPage t={t} />} />
         </Routes>
       </div>
     );
@@ -565,6 +568,7 @@ function AppContent() {
           onNavigate={sidebar.closeOverlay}
         />
         <main className="main-content">
+          <VerificationBanner t={t} />
           <Header />
           <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
 

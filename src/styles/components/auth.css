@@ -212,3 +212,82 @@
   align-items: center;
   justify-content: center;
 }
+
+.verify-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-tint);
+  font-size: var(--text-sm);
+}
+
+.verify-banner-icon {
+  flex: none;
+  color: var(--color-accent-text);
+}
+
+.verify-banner-text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.verify-banner-action,
+.verify-banner-close {
+  flex: none;
+  border: none;
+  background: none;
+  color: var(--color-accent-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.verify-banner-action {
+  padding: 6px 4px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.verify-banner-action:disabled {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.verify-banner-close {
+  display: flex;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+}
+
+@media (pointer: coarse) {
+  .verify-banner-action,
+  .verify-banner-close {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@media (max-width: 599px) {
+  .verify-banner {
+    flex-wrap: wrap;
+  }
+
+  .verify-banner-text {
+    flex-basis: calc(100% - 80px);
+  }
+}
+
+.auth-status-icon[data-spinning] svg {
+  animation: btn-spin 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-status-icon[data-spinning] svg {
+    animation-duration: 3s;
+  }
+}
