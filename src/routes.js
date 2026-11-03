@@ -12,8 +12,14 @@ export const routes = [
 
 export const PROJECT_DETAIL_PATH = "/projects/:projectId";
 
+export const ARCHIVE_SERIES_PATH = "/archive/series/:groupId";
+
 export function getProjectPath(projectId) {
   return `/projects/${encodeURIComponent(projectId)}`;
+}
+
+export function getArchiveSeriesPath(groupId) {
+  return `/archive/series/${encodeURIComponent(groupId)}`;
 }
 
 export function getRouteForPathname(pathname) {
@@ -25,6 +31,10 @@ export function getRouteForPathname(pathname) {
 
   if (matchPath(PROJECT_DETAIL_PATH, pathname)) {
     return routes.find((candidate) => candidate.key === "Projects");
+  }
+
+  if (matchPath(ARCHIVE_SERIES_PATH, pathname)) {
+    return routes.find((candidate) => candidate.key === "Archive");
   }
 
   return null;

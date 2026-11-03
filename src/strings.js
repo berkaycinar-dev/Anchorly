@@ -97,13 +97,69 @@ export const strings = {
     archivePageTitle: "Arşiv",
     archivePageDescription:
       "Bugüne kadar eklenmiş ve silinmemiş tüm görevler burada listelenir.",
-    statusAll: "Tüm Durumlar",
-    statusActive: "Devam Eden",
-    statusCompleted: "Tamamlanan",
-    clearFilters: "Temizle",
-    archiveStatusLabel: "Durum",
-    archiveStartDateLabel: "Başlangıç tarihi",
-    archiveEndDateLabel: "Bitiş tarihi",
+    archiveTabsLabel: "Arşiv bölümleri",
+    archiveTabSeries: "Tekrarlı seriler",
+    archiveTabOneTime: "Tek seferlik",
+    archiveSummarySeries: "Aktif seri",
+    archiveSummaryPendingToday: "Bugün bekleyen",
+    archiveSummaryCompletion: "Genel tamamlama",
+    seriesListLabel: "Tekrarlı seriler",
+    seriesNextLabel: "Sonraki",
+    seriesFinished: "Bitti",
+    seriesRowMeta: (repeat, done, elapsed) =>
+      `${repeat} · ${elapsed} tekrarın ${done} tanesi yapıldı`,
+    seriesRowLabel: (title) => `${title} serisini aç`,
+    seriesEmptyTitle: "Henüz tekrarlı seri yok",
+    seriesEmptySubtitle: "Tekrar eden bir görev eklediğinde burada görünür.",
+    backToArchive: "← Arşive Dön",
+    seriesDatesTitle: "Tarihler",
+    seriesGoToToday: "Bugüne git",
+    seriesFilterLabel: "Tarih filtresi",
+    seriesFilterAll: "Tümü",
+    seriesFilterDone: "Yapılan",
+    seriesFilterTodo: "Bekleyen",
+    seriesNoDates: "Bu filtrede tarih yok.",
+    occurrenceDone: "Yapıldı",
+    occurrenceMissed: "Kaçırıldı",
+    occurrenceToday: "Bugün",
+    occurrenceUpcoming: "Yaklaşan",
+    occurrenceToggleLabel: (title, date) =>
+      `${title} görevinin ${date} tekrarını tamamla`,
+    occurrenceOpenLabel: (date) => `${date} tekrarının ayrıntılarını aç`,
+    relativeDay: (days) => {
+      if (days === 0) {
+        return "Bugün";
+      }
+
+      if (days === 1) {
+        return "Yarın";
+      }
+
+      if (days === -1) {
+        return "Dün";
+      }
+
+      return days > 0 ? `${days} gün sonra` : `${-days} gün önce`;
+    },
+    paginationLabel: "Sayfalama",
+    paginationPrevious: "Önceki sayfa",
+    paginationNext: "Sonraki sayfa",
+    paginationPage: (page) => `Sayfa ${page}`,
+    paginationStatus: (page, pageCount) => `Sayfa ${page} / ${pageCount}`,
+    paginationRange: (from, to, total) => `${total} tarihten ${from}–${to}`,
+    seriesCompletionTitle: "Tamamlama",
+    seriesStatusTitle: "Seri durumu",
+    seriesMissedLabel: "Kaçırılan",
+    seriesNextRepeatLabel: "Sonraki tekrar",
+    seriesRuleTitle: "Tekrar kuralı",
+    seriesStartLabel: "Başlangıç",
+    seriesEndLabel: "Bitiş",
+    oneTimeFilterLabel: "Durum filtresi",
+    oneTimeFilterAll: "Tümü",
+    oneTimeFilterTodo: "Tamamlanmayan",
+    oneTimeFilterDone: "Tamamlanan",
+    oneTimeEmptyTitle: "Bu filtrede görev yok",
+    oneTimeEmptySubtitle: "Filtreyi değiştirerek diğer görevlere bakabilirsin.",
     newProjectLabel: "Yeni proje",
     newProjectTaskLabel: "Yeni proje görevi",
 
@@ -464,13 +520,69 @@ export const strings = {
     archivePageTitle: "Archive",
     archivePageDescription:
       "Every task you've added so far, unless deleted, is listed here.",
-    statusAll: "All Statuses",
-    statusActive: "Active",
-    statusCompleted: "Completed",
-    clearFilters: "Clear",
-    archiveStatusLabel: "Status",
-    archiveStartDateLabel: "Start date",
-    archiveEndDateLabel: "End date",
+    archiveTabsLabel: "Archive sections",
+    archiveTabSeries: "Recurring series",
+    archiveTabOneTime: "One-time",
+    archiveSummarySeries: "Active series",
+    archiveSummaryPendingToday: "Pending today",
+    archiveSummaryCompletion: "Overall completion",
+    seriesListLabel: "Recurring series",
+    seriesNextLabel: "Next",
+    seriesFinished: "Finished",
+    seriesRowMeta: (repeat, done, elapsed) =>
+      `${repeat} · ${done} of ${elapsed} repeats done`,
+    seriesRowLabel: (title) => `Open series ${title}`,
+    seriesEmptyTitle: "No recurring series yet",
+    seriesEmptySubtitle: "Add a repeating task and it will show up here.",
+    backToArchive: "← Back to Archive",
+    seriesDatesTitle: "Dates",
+    seriesGoToToday: "Go to today",
+    seriesFilterLabel: "Date filter",
+    seriesFilterAll: "All",
+    seriesFilterDone: "Done",
+    seriesFilterTodo: "Pending",
+    seriesNoDates: "No dates match this filter.",
+    occurrenceDone: "Done",
+    occurrenceMissed: "Missed",
+    occurrenceToday: "Today",
+    occurrenceUpcoming: "Upcoming",
+    occurrenceToggleLabel: (title, date) =>
+      `Complete the ${date} repeat of ${title}`,
+    occurrenceOpenLabel: (date) => `Open details of the ${date} repeat`,
+    relativeDay: (days) => {
+      if (days === 0) {
+        return "Today";
+      }
+
+      if (days === 1) {
+        return "Tomorrow";
+      }
+
+      if (days === -1) {
+        return "Yesterday";
+      }
+
+      return days > 0 ? `In ${days} days` : `${-days} days ago`;
+    },
+    paginationLabel: "Pagination",
+    paginationPrevious: "Previous page",
+    paginationNext: "Next page",
+    paginationPage: (page) => `Page ${page}`,
+    paginationStatus: (page, pageCount) => `Page ${page} / ${pageCount}`,
+    paginationRange: (from, to, total) => `${from}–${to} of ${total} dates`,
+    seriesCompletionTitle: "Completion",
+    seriesStatusTitle: "Series status",
+    seriesMissedLabel: "Missed",
+    seriesNextRepeatLabel: "Next repeat",
+    seriesRuleTitle: "Repeat rule",
+    seriesStartLabel: "Start",
+    seriesEndLabel: "End",
+    oneTimeFilterLabel: "Status filter",
+    oneTimeFilterAll: "All",
+    oneTimeFilterTodo: "Not completed",
+    oneTimeFilterDone: "Completed",
+    oneTimeEmptyTitle: "No tasks match this filter",
+    oneTimeEmptySubtitle: "Change the filter to see other tasks.",
     newProjectLabel: "New project",
     newProjectTaskLabel: "New project task",
 

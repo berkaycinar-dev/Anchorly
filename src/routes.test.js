@@ -2,8 +2,10 @@ import { describe, it, expect } from "vitest";
 import {
   routes,
   PROJECT_DETAIL_PATH,
+  ARCHIVE_SERIES_PATH,
   getRouteForPathname,
   getProjectPath,
+  getArchiveSeriesPath,
 } from "./routes";
 import { strings } from "./strings";
 
@@ -47,12 +49,21 @@ describe("routes", () => {
     expect(getProjectPath("abc")).toBe("/projects/abc");
   });
 
+  it("describes the archive series path", () => {
+    expect(ARCHIVE_SERIES_PATH).toBe("/archive/series/:groupId");
+  });
+
+  it("builds the path of a single archive series", () => {
+    expect(getArchiveSeriesPath("g 1")).toBe("/archive/series/g%201");
+  });
+
   it.each([
     ["/", "Dashboard"],
     ["/today", "Today"],
     ["/routine", "Daily Routine"],
     ["/calendar", "Calendar"],
     ["/archive", "Archive"],
+    ["/archive/series/abc", "Archive"],
     ["/projects", "Projects"],
     ["/projects/abc", "Projects"],
     ["/settings", "Settings"],
@@ -60,10 +71,14 @@ describe("routes", () => {
     expect(getRouteForPathname(pathname).key).toBe(expectedKey);
   });
 
-  it.each(["/missing", "/todayx", "/today/extra", "/projects/a/b"])(
-    "finds no page for %s",
-    (pathname) => {
-      expect(getRouteForPathname(pathname)).toBeNull();
-    },
-  );
+  it.each([
+    "/missing",
+    "/todayx",
+    "/today/extra",
+    "/projects/a/b",
+    "/archive/series",
+    "/archive/series/a/b",
+  ])("finds no page for %s", (pathname) => {
+    expect(getRouteForPathname(pathname)).toBeNull();
+  });
 });

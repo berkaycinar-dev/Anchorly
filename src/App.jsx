@@ -18,7 +18,12 @@ import ToastProvider from "./components/toast/ToastProvider";
 import DashboardPage from "./pages/DashboardPage";
 import TodayPage from "./pages/TodayPage";
 import { strings } from "./strings";
-import { routes, PROJECT_DETAIL_PATH, getRouteForPathname } from "./routes";
+import {
+  routes,
+  PROJECT_DETAIL_PATH,
+  ARCHIVE_SERIES_PATH,
+  getRouteForPathname,
+} from "./routes";
 import DailyRoutinePage from "./pages/DailyRoutinePage";
 import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
@@ -102,6 +107,8 @@ function AppContent() {
   const selectedProjectId = projectMatch ? projectMatch.params.projectId : null;
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) || null;
+  const seriesMatch = useMatch(ARCHIVE_SERIES_PATH);
+  const selectedSeriesId = seriesMatch ? seriesMatch.params.groupId : null;
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState("Work");
@@ -142,9 +149,6 @@ function AppContent() {
   }
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
-  const [archiveStatusFilter, setArchiveStatusFilter] = useState("all");
-  const [archiveStartDate, setArchiveStartDate] = useState("");
-  const [archiveEndDate, setArchiveEndDate] = useState("");
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDueDate, setNewProjectDueDate] = useState("");
 
@@ -232,25 +236,6 @@ function AppContent() {
       return matchesSearch && matchesFilter;
     });
   }, [todayScopedTasks, searchText, filter]);
-
-  const filteredArchiveTasks = useMemo(
-    () =>
-      tasks.filter((task) => {
-        const matchesStatus =
-          archiveStatusFilter === "all" ||
-          (archiveStatusFilter === "completed" && task.completed) ||
-          (archiveStatusFilter === "active" && !task.completed);
-
-        const matchesStartDate =
-          archiveStartDate === "" || task.date >= archiveStartDate;
-
-        const matchesEndDate =
-          archiveEndDate === "" || task.date <= archiveEndDate;
-
-        return matchesStatus && matchesStartDate && matchesEndDate;
-      }),
-    [tasks, archiveStatusFilter, archiveStartDate, archiveEndDate],
-  );
 
   const weeklyProductivity = useMemo(
     () => getWeeklyProductivity(language),
@@ -484,13 +469,9 @@ function AppContent() {
     ),
     Archive: (
       <ArchivePage
-        archiveStatusFilter={archiveStatusFilter}
-        setArchiveStatusFilter={setArchiveStatusFilter}
-        archiveStartDate={archiveStartDate}
-        setArchiveStartDate={setArchiveStartDate}
-        archiveEndDate={archiveEndDate}
-        setArchiveEndDate={setArchiveEndDate}
-        filteredArchiveTasks={filteredArchiveTasks}
+        tasks={tasks}
+        today={today}
+        selectedSeriesId={selectedSeriesId}
         toggleTask={toggleTask}
         deleteTask={deleteTask}
         setSelectedTaskId={setSelectedTaskId}
@@ -574,6 +555,18 @@ function AppContent() {
                   pages.Projects
                 ) : (
                   <Navigate to="/projects" replace />
+                )
+              }
+            />
+            <Route
+              path={ARCHIVE_SERIES_PATH}
+              element={
+                tasks.some(
+                  (task) => task.repeatGroupId === selectedSeriesId,
+                ) ? (
+                  pages.Archive
+                ) : (
+                  <Navigate to="/archive" replace />
                 )
               }
             />
