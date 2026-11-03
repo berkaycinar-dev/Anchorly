@@ -8,6 +8,7 @@ import describeAuthError from "../auth/authErrors";
 import { AUTH_STATUS } from "../auth/authStatus";
 import getSafeNextPath, { withNextPath } from "../auth/safeNextPath";
 import useAuth from "../auth/useAuth";
+import getDeviceName from "../auth/deviceName";
 import useCountdown, { formatCountdown } from "../auth/useCountdown";
 import {
   PASSWORD_MIN_LENGTH,
@@ -83,6 +84,12 @@ function RegisterPage({ t, language }) {
 
     if (displayName !== "") {
       input.displayName = displayName;
+    }
+
+    const deviceName = getDeviceName();
+
+    if (deviceName) {
+      input.deviceName = deviceName;
     }
 
     setSubmitting(true);

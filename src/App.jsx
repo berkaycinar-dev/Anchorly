@@ -35,6 +35,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
+import AccountPage from "./pages/AccountPage";
 import VerificationBanner from "./components/auth/VerificationBanner";
 import {
   addDaysToDateString,
@@ -599,6 +600,16 @@ function AppContent() {
                   pages.Archive
                 ) : (
                   <Navigate to="/archive" replace />
+                )
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                authEnabled ? (
+                  <AccountPage t={t} language={language} />
+                ) : (
+                  <Navigate to="/" replace />
                 )
               }
             />

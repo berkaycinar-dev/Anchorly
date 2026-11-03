@@ -18,6 +18,12 @@ export const authRoutes = [
   { key: "Verify", path: "/verify-email", titleKey: "verifySuccessTitle" },
 ];
 
+export const accountRoute = {
+  key: "Account",
+  path: "/account",
+  titleKey: "accountPageLink",
+};
+
 export const PROJECT_DETAIL_PATH = "/projects/:projectId";
 
 export const ARCHIVE_SERIES_PATH = "/archive/series/:groupId";
@@ -35,6 +41,10 @@ export function getRouteForPathname(pathname) {
 
   if (route) {
     return route;
+  }
+
+  if (matchPath(accountRoute.path, pathname)) {
+    return accountRoute;
   }
 
   if (matchPath(PROJECT_DETAIL_PATH, pathname)) {

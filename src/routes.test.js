@@ -3,6 +3,7 @@ import {
   routes,
   PROJECT_DETAIL_PATH,
   ARCHIVE_SERIES_PATH,
+  accountRoute,
   authRoutes,
   getAuthRouteForPathname,
   getRouteForPathname,
@@ -82,6 +83,15 @@ describe("routes", () => {
     "/archive/series/a/b",
   ])("finds no page for %s", (pathname) => {
     expect(getRouteForPathname(pathname)).toBeNull();
+  });
+
+  it("keeps the account page out of the sidebar routes but resolves its title", () => {
+    expect(routes.some((route) => route.path === accountRoute.path)).toBe(
+      false,
+    );
+    expect(getRouteForPathname("/account")).toBe(accountRoute);
+    expect(strings.tr[accountRoute.titleKey]).toBeTruthy();
+    expect(strings.en[accountRoute.titleKey]).toBeTruthy();
   });
 
   it("lists the auth pages outside the sidebar routes", () => {

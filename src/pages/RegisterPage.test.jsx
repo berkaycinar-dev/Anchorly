@@ -90,6 +90,27 @@ describe("RegisterPage", () => {
     });
   });
 
+  it("sends the derived device name", async () => {
+    vi.spyOn(navigator, "userAgent", "get").mockReturnValue(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    );
+    const user = userEvent.setup();
+    const register = vi.fn(() => new Promise(() => {}));
+    renderRegister({ register });
+
+    await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
+    await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
+    await submit(user);
+
+    expect(register).toHaveBeenCalledWith({
+      email: "ada@b.co",
+      password: "password1",
+      language: "en",
+      deviceName: "Chrome · Windows",
+    });
+    vi.restoreAllMocks();
+  });
+
   it("omits the display name when it is left empty", async () => {
     const user = userEvent.setup();
     const register = vi.fn(() => new Promise(() => {}));

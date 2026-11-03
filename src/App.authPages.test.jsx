@@ -263,3 +263,54 @@ describe("auth pages in the app", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("account page in the app", () => {
+  it("redirects signed-out visitors to sign in with a return path", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    vi.stubGlobal("fetch", vi.fn());
+
+    renderApp("/account");
+
+    await waitFor(() => {
+      expect(getCurrentPath()).toBe("/login");
+    });
+    expect(screen.getByTestId("location")).toHaveAttribute(
+      "data-search",
+      "?next=%2Faccount",
+    );
+  });
+
+  it("redirects home while authentication is disabled", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "false");
+
+    renderApp("/account");
+
+    await waitFor(() => {
+      expect(getCurrentPath()).toBe("/");
+    });
+  });
+
+  it("shows the account page inside the app shell for a restored session", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    setSessionHint();
+    const fetchSpy = vi.fn(async (url) => {
+      if (url === "/api/auth/refresh") {
+        return jsonResponse(200, SESSION);
+      }
+      if (url === "/api/me/sessions") {
+        return jsonResponse(200, []);
+      }
+      return jsonResponse(404, {});
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+
+    renderApp("/account");
+
+    expect(
+      await screen.findByRole("region", { name: "Profile" }),
+    ).toBeInTheDocument();
+    expect(getCurrentPath()).toBe("/account");
+    expect(document.querySelector(".sidebar")).not.toBeNull();
+    expect(document.title).toBe("Anchorly — Account");
+  });
+});

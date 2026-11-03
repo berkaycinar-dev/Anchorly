@@ -11,6 +11,7 @@ import LoginPage from "./LoginPage";
 const t = strings.en;
 
 afterEach(() => {
+  vi.restoreAllMocks();
   vi.useRealTimers();
 });
 
@@ -74,6 +75,23 @@ describe("LoginPage", () => {
       "href",
       "/register?next=%2Fprojects",
     );
+  });
+
+  it("sends the derived device name with the credentials", async () => {
+    vi.spyOn(navigator, "userAgent", "get").mockReturnValue(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    );
+    const user = userEvent.setup();
+    const login = vi.fn(() => new Promise(() => {}));
+    renderLogin({ login });
+
+    await fillAndSubmit(user, "dev@anchorly.dev", "secret123");
+
+    expect(login).toHaveBeenCalledWith({
+      email: "dev@anchorly.dev",
+      password: "secret123",
+      deviceName: "Chrome · Windows",
+    });
   });
 
   it("shows field errors and does not call login for empty fields", async () => {
