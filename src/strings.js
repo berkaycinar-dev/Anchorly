@@ -81,6 +81,10 @@ export const strings = {
     verifyAlreadyVerified: "E-posta adresin zaten doğrulanmış.",
     verifyBannerTitle: "E-postanı doğrula",
     verifyBannerBody: (email) => `${email} adresine bir bağlantı gönderdik.`,
+    guestBannerLabel: "Misafir modu",
+    guestBannerTitle: "Verilerin yalnızca bu cihazda.",
+    guestBannerBody: "Hesap oluşturursan her cihazdan ulaşırsın.",
+    guestBannerAction: "Hesap oluştur",
     verifyBannerLabel: "E-posta doğrulama",
     accountProfileTitle: "Profil",
     accountDisplayNameLabel: "Görünen ad",
@@ -111,7 +115,7 @@ export const strings = {
     accountOthersRevoked: "Diğer cihazlardaki oturumlar kapatıldı.",
     accountDataTitle: "Veri",
     accountExportDescription:
-      "Hesabında sunucuda saklanan verilerin JSON dosyası.",
+      "Hesabında sunucuda saklanan görev, rutin, proje ve ayarlarının JSON dosyası. Dosya ekleri bu cihazda kaldığı için dahil değildir.",
     accountExport: "Verilerimi dışa aktar",
     accountExportNeedsVerification:
       "Dışa aktarmak için önce e-postanı doğrula.",
@@ -640,6 +644,10 @@ export const strings = {
     verifyAlreadyVerified: "Your email address is already verified.",
     verifyBannerTitle: "Verify your email",
     verifyBannerBody: (email) => `We sent a link to ${email}.`,
+    guestBannerLabel: "Guest mode",
+    guestBannerTitle: "Your data is only on this device.",
+    guestBannerBody: "Create an account to reach it from any device.",
+    guestBannerAction: "Create account",
     verifyBannerLabel: "Email verification",
     accountProfileTitle: "Profile",
     accountDisplayNameLabel: "Display name",
@@ -671,7 +679,7 @@ export const strings = {
     accountOthersRevoked: "Sessions on other devices were ended.",
     accountDataTitle: "Data",
     accountExportDescription:
-      "A JSON file with the data stored on the server for your account.",
+      "A JSON file with the tasks, routines, projects and settings stored on the server for your account. File attachments stay on this device, so they are not included.",
     accountExport: "Export my data",
     accountExportNeedsVerification:
       "Verify your email first to export your data.",

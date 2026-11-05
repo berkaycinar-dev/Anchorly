@@ -252,6 +252,12 @@
   font-weight: var(--font-weight-semibold);
 }
 
+a.verify-banner-action {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .verify-banner-action:disabled {
   color: var(--color-text-muted);
   cursor: default;

@@ -334,3 +334,42 @@ describe("account page in the app", () => {
     expect(document.title).toBe("Anchorly — Account");
   });
 });
+
+describe("guest banner in the app", () => {
+  it("shows to guests when accounts are enabled", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    vi.stubGlobal("fetch", vi.fn());
+
+    renderApp("/");
+
+    expect(
+      await screen.findByRole("region", { name: "Guest mode" }),
+    ).toBeInTheDocument();
+  });
+
+  it("is not shown while accounts are disabled", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "false");
+
+    renderApp("/");
+
+    expect(await screen.findByRole("main")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Guest mode" })).toBeNull();
+  });
+
+  it("is not shown to a signed-in user", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async (url, init) =>
+          respondToDataRoute(url, init) ?? jsonResponse(200, SESSION),
+      ),
+    );
+    setSessionHint();
+
+    renderApp("/");
+
+    expect(await screen.findByRole("main")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Guest mode" })).toBeNull();
+  });
+});
