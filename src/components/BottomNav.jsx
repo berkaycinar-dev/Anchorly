@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router";
 import Icon from "./Icon";
 import { NAV_ICONS } from "./navIcons";
 import { routes, getRouteForPathname } from "../routes";
+import BottomNavAccount from "./BottomNavAccount";
 
 const PRIMARY_ROUTE_KEYS = ["Dashboard", "Today", "Daily Routine", "Calendar"];
 const TAB_TITLE_KEYS = { "Daily Routine": "routineTab" };
@@ -38,9 +39,9 @@ function BottomNav({ t, badges = {} }) {
   const morePanelId = useId();
 
   const currentRoute = getRouteForPathname(pathname);
-  const isMoreActive = moreRoutes.some(
-    (route) => route.key === currentRoute?.key,
-  );
+  const isMoreActive =
+    currentRoute?.key === "Account" ||
+    moreRoutes.some((route) => route.key === currentRoute?.key);
 
   useLayoutEffect(() => {
     const nav = navRef.current;
@@ -166,6 +167,11 @@ function BottomNav({ t, badges = {} }) {
             </NavLink>
           </li>
         ))}
+        <BottomNavAccount
+          t={t}
+          getItemClassName={getMoreItemClassName}
+          onNavigate={closeMore}
+        />
       </ul>
 
       <ul ref={tabsRef} className="bottom-nav-tabs">
