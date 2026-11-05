@@ -19,7 +19,9 @@ function createReadyStore(initial, load) {
 describe("optimistic store refresh", () => {
   it("replaces the confirmed state with what the server has now", async () => {
     const results = [["a"], ["a", "b"]];
-    const store = createReadyStore(null, () => Promise.resolve(results.shift()));
+    const store = createReadyStore(null, () =>
+      Promise.resolve(results.shift()),
+    );
     await store.start();
     const listener = vi.fn();
     store.subscribe(listener);
