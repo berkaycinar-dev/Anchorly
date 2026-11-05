@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
+import { QUEUED } from "../outbox/queued";
 import createOptimisticStore from "./createOptimisticStore";
 
 describe("optimistic store", () => {
@@ -66,5 +67,23 @@ describe("optimistic store", () => {
 
     expect(store.getStatus()).toBe("ready");
     expect(store.getSnapshot()).toEqual(["server"]);
+  });
+
+  it("keeps the applied change and skips settle when the request was queued", async () => {
+    const store = createOptimisticStore({
+      initialState: [],
+      load: () => Promise.resolve(["a"]),
+    });
+    await store.start();
+    const settle = vi.fn(() => ["settled"]);
+
+    await store.mutate({
+      apply: (items) => [...items, "local"],
+      send: () => Promise.resolve(QUEUED),
+      settle,
+    });
+
+    expect(settle).not.toHaveBeenCalled();
+    expect(store.getSnapshot()).toEqual(["a", "local"]);
   });
 });

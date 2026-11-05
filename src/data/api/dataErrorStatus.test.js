@@ -17,6 +17,11 @@ describe("getDataErrorKind", () => {
     expect(getDataErrorKind(apiError(0, TIMEOUT))).toBe("network");
   });
 
+  it("treats a proxy or gateway answer as a network problem", () => {
+    expect(getDataErrorKind(apiError(504, "BAD_GATEWAY"))).toBe("network");
+    expect(getDataErrorKind(apiError(500, "UNKNOWN_ERROR"))).toBe("network");
+  });
+
   it("treats other server answers and unknown errors as other problems", () => {
     expect(getDataErrorKind(apiError(400, "VALIDATION_ERROR"))).toBe("other");
     expect(getDataErrorKind(apiError(500, "INTERNAL"))).toBe("other");

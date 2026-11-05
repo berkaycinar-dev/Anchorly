@@ -1,4 +1,4 @@
-import { ApiError, NETWORK_ERROR, TIMEOUT } from "./ApiError";
+import { ApiError, isUnreachable } from "./ApiError";
 
 let latest = { id: 0, kind: null };
 const listeners = new Set();
@@ -13,9 +13,7 @@ export function getDataErrorKind(error) {
       return null;
     }
 
-    return error.code === NETWORK_ERROR || error.code === TIMEOUT
-      ? "network"
-      : "other";
+    return isUnreachable(error) ? "network" : "other";
   }
 
   return "other";

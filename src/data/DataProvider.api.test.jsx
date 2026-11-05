@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { AuthContext } from "../auth/AuthContext";
 import { AUTH_STATUS } from "../auth/authStatus";
+import { ApiError } from "./api/ApiError";
 import DataProvider from "./DataProvider";
 import { DataContext } from "./DataContext";
 import useRepository from "./useRepository";
@@ -74,9 +75,10 @@ describe("DataProvider with an account", () => {
     expect(screen.getByText("app content")).toBeInTheDocument();
   });
 
-  it("uses the API repositories with the client while signed in", () => {
+  it("uses the API repositories with the client while signed in", async () => {
     const createApiRepositories = vi.fn(() => createApiSet());
-    const auth = authValue();
+    const request = vi.fn(() => Promise.resolve([]));
+    const auth = authValue({ api: { client: { id: "client", request } } });
 
     renderWithAuth(
       <DataProvider
@@ -90,9 +92,18 @@ describe("DataProvider with an account", () => {
     );
 
     expect(createApiRepositories).toHaveBeenCalledWith({
-      client: auth.api.client,
+      client: expect.objectContaining({
+        id: "client",
+        request: expect.any(Function),
+      }),
       today: "2026-11-05",
     });
+
+    const { client } = createApiRepositories.mock.calls[0][0];
+
+    await client.request("GET", "/tasks");
+
+    expect(request).toHaveBeenCalledWith("GET", "/tasks", {});
   });
 
   it("refreshes every repository when the connection comes back", async () => {
@@ -136,6 +147,162 @@ describe("DataProvider with an account", () => {
     });
 
     expect(repositories.tasks.refresh).not.toHaveBeenCalled();
+  });
+
+  it("sends the changes saved earlier before it starts the repositories", async () => {
+    localStorage.setItem(
+      "outbox:user-1",
+      JSON.stringify([
+        {
+          method: "PATCH",
+          path: "/tasks/1",
+          body: { title: "x" },
+          time: "2026-11-05T09:00:00.000Z",
+        },
+      ]),
+    );
+    let finishRequest;
+    const request = vi.fn(
+      () =>
+        new Promise((resolve) => {
+          finishRequest = () => resolve({});
+        }),
+    );
+    const apiSet = createApiSet("loading");
+
+    renderWithAuth(
+      <DataProvider createApiRepositories={() => apiSet}>
+        <Probe />
+      </DataProvider>,
+      authValue({ api: { client: { request } } }),
+    );
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(apiSet.tasks.start).not.toHaveBeenCalled();
+
+    await act(async () => finishRequest());
+
+    expect(apiSet.tasks.start).toHaveBeenCalledTimes(1);
+    expect(localStorage.getItem("outbox:user-1")).toBeNull();
+  });
+
+  it("refreshes the repositories once the saved changes have been sent", async () => {
+    localStorage.setItem(
+      "outbox:user-1",
+      JSON.stringify([
+        {
+          method: "PATCH",
+          path: "/tasks/1",
+          body: {},
+          time: "2026-11-05T09:00:00.000Z",
+        },
+      ]),
+    );
+    const apiSet = createApiSet();
+    const request = vi.fn(() => Promise.resolve({}));
+
+    renderWithAuth(
+      <DataProvider createApiRepositories={() => apiSet}>
+        <Probe />
+      </DataProvider>,
+      authValue({ api: { client: { request } } }),
+    );
+
+    await act(async () => {});
+
+    expect(apiSet.tasks.refresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not refresh while changes are still waiting to be sent", async () => {
+    localStorage.setItem(
+      "outbox:user-1",
+      JSON.stringify([
+        {
+          method: "PATCH",
+          path: "/tasks/1",
+          body: {},
+          time: "2026-11-05T09:00:00.000Z",
+        },
+      ]),
+    );
+    const apiSet = createApiSet();
+    const request = vi.fn(() =>
+      Promise.reject(
+        new ApiError({ status: 0, code: "NETWORK_ERROR", message: "x" }),
+      ),
+    );
+
+    renderWithAuth(
+      <DataProvider createApiRepositories={() => apiSet}>
+        <Probe />
+      </DataProvider>,
+      authValue({ api: { client: { request } } }),
+    );
+
+    await act(async () => {
+      window.dispatchEvent(new Event("online"));
+    });
+
+    expect(apiSet.tasks.refresh).not.toHaveBeenCalled();
+    expect(localStorage.getItem("outbox:user-1")).not.toBeNull();
+  });
+
+  it("sends the waiting changes again when the connection comes back", async () => {
+    localStorage.setItem(
+      "outbox:user-1",
+      JSON.stringify([
+        {
+          method: "PATCH",
+          path: "/tasks/1",
+          body: {},
+          time: "2026-11-05T09:00:00.000Z",
+        },
+      ]),
+    );
+    const request = vi
+      .fn()
+      .mockRejectedValueOnce(
+        new ApiError({ status: 0, code: "NETWORK_ERROR", message: "x" }),
+      )
+      .mockResolvedValue({});
+
+    renderWithAuth(
+      <DataProvider createApiRepositories={() => createApiSet()}>
+        <Probe />
+      </DataProvider>,
+      authValue({ api: { client: { request } } }),
+    );
+
+    await act(async () => {});
+
+    expect(localStorage.getItem("outbox:user-1")).not.toBeNull();
+
+    await act(async () => {
+      window.dispatchEvent(new Event("online"));
+    });
+
+    expect(request).toHaveBeenCalledTimes(2);
+    expect(localStorage.getItem("outbox:user-1")).toBeNull();
+  });
+
+  it("has no outbox on the local repositories", () => {
+    const { result } = renderHook(() => useContext(DataContext), {
+      wrapper: ({ children }) => (
+        <AuthContext.Provider
+          value={authValue({
+            status: AUTH_STATUS.signedOut,
+            user: null,
+            api: null,
+          })}
+        >
+          <DataProvider createRepositories={() => createApiSet()}>
+            {children}
+          </DataProvider>
+        </AuthContext.Provider>
+      ),
+    });
+
+    expect(result.current.outbox).toBeNull();
   });
 
   it("shows a loading screen instead of the app while the session is restored", () => {

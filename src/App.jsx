@@ -39,6 +39,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import AccountPage from "./pages/AccountPage";
 import GuestBanner from "./components/auth/GuestBanner";
+import SyncStatusBar from "./components/data/SyncStatusBar";
 import VerificationBanner from "./components/auth/VerificationBanner";
 import {
   addDaysToDateString,
@@ -576,6 +577,7 @@ function AppContent() {
         <main className="main-content">
           <VerificationBanner t={t} />
           <GuestBanner t={t} />
+          <SyncStatusBar t={t} />
           <Header />
           <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
 

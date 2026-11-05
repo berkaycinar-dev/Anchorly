@@ -109,6 +109,21 @@ describe("createApiClient request", () => {
     await expect(client.request("DELETE", "/me/sessions")).resolves.toBeNull();
   });
 
+  it("sends the extra headers of a request", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse(200, {}));
+    const client = createApiClient({ fetchImpl });
+
+    await client.request("PATCH", "/tasks/1", {
+      body: {},
+      headers: { "X-Client-Time": "2026-11-05T10:00:00.000Z" },
+    });
+
+    expect(fetchImpl.mock.calls[0][1].headers).toMatchObject({
+      Accept: "application/json",
+      "X-Client-Time": "2026-11-05T10:00:00.000Z",
+    });
+  });
+
   it("adds the bearer token only to authenticated requests", async () => {
     const fetchImpl = vi.fn(async () => jsonResponse(200, {}));
     const client = createApiClient({ fetchImpl });

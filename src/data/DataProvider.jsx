@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { AUTH_STATUS } from "../auth/authStatus";
 import DataGate from "../components/data/DataGate";
@@ -8,23 +8,33 @@ import defaultCreateApiRepositories from "./api/createApiRepositories";
 import { reportDataError } from "./api/dataErrorStatus";
 import withErrorReporting from "./api/withErrorReporting";
 import { DataContext } from "./DataContext";
+import createOutbox from "./outbox/createOutbox";
 import createLocalRepositories from "./local/createLocalRepositories";
 
 function createDataContextValue({
   client,
+  userId,
   createRepositories,
   createApiRepositories,
   today,
   reload,
 }) {
+  const outbox = client
+    ? createOutbox({
+        client,
+        userId,
+        onSynced: () => refresh(),
+        onDropped: reportDataError,
+      })
+    : null;
   const repositories = client
     ? Object.fromEntries(
-        Object.entries(createApiRepositories({ client, today })).map(
-          ([name, repository]) => [
-            name,
-            withErrorReporting(repository, reportDataError),
-          ],
-        ),
+        Object.entries(
+          createApiRepositories({ client: outbox.client, today }),
+        ).map(([name, repository]) => [
+          name,
+          withErrorReporting(repository, reportDataError),
+        ]),
       )
     : createRepositories({ today });
   const startedNames = new Set();
@@ -39,6 +49,13 @@ function createDataContextValue({
   }
 
   function startAll() {
+    if (outbox && outbox.getSnapshot().pending > 0) {
+      outbox
+        .flush()
+        .then(() => Object.keys(repositories).forEach(ensureStarted));
+      return;
+    }
+
     Object.keys(repositories).forEach(ensureStarted);
   }
 
@@ -51,16 +68,29 @@ function createDataContextValue({
   }
 
   function refresh() {
+    if (outbox && outbox.getSnapshot().pending > 0) {
+      return outbox.flush();
+    }
+
     return Promise.all(
       Object.values(repositories).map((repository) => repository.refresh?.()),
     );
   }
 
-  return { repositories, ensureStarted, startAll, retry, refresh, reload };
+  return {
+    repositories,
+    outbox,
+    ensureStarted,
+    startAll,
+    retry,
+    refresh,
+    reload,
+  };
 }
 
 function DataSession({
   client,
+  userId,
   onSignOut,
   onReload,
   createRepositories,
@@ -71,12 +101,19 @@ function DataSession({
   const [value] = useState(() =>
     createDataContextValue({
       client,
+      userId,
       createRepositories,
       createApiRepositories,
       today,
       reload: onReload,
     }),
   );
+
+  useEffect(() => {
+    value.outbox?.activate();
+
+    return () => value.outbox?.deactivate();
+  }, [value]);
 
   return (
     <DataContext.Provider value={value}>
@@ -112,6 +149,7 @@ export default function DataProvider({
     <DataSession
       key={`${sessionKey}:${generation}`}
       client={client}
+      userId={auth?.user?.id ?? ""}
       onSignOut={auth?.logout}
       onReload={reload}
       createRepositories={createRepositories}

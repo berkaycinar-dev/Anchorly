@@ -136,3 +136,79 @@ describe("sidebar account area", () => {
     );
   });
 });
+
+describe("changes waiting to be sent", () => {
+  it("shows the waiting changes in the app while the server cannot be reached", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    localStorage.setItem(
+      "outbox:user-1",
+      JSON.stringify([
+        {
+          method: "PATCH",
+          path: "/tasks/11111111-1111-4111-8111-111111111111",
+          body: { title: "Offline edit" },
+          time: "2026-11-05T09:00:00.000Z",
+        },
+      ]),
+    );
+    const fetchSpy = vi.fn(async (url, init) => {
+      if (init?.method === "PATCH") {
+        throw new TypeError("Failed to fetch");
+      }
+
+      return (
+        respondToDataRoute(url, init) ??
+        (url === "/api/auth/refresh"
+          ? jsonResponse(200, SESSION)
+          : jsonResponse(204))
+      );
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    setSessionHint();
+
+    renderApp("/");
+
+    expect(
+      await screen.findByText(
+        "You are offline. 1 change will be sent when you are back online.",
+      ),
+    ).toBeInTheDocument();
+    expect(localStorage.getItem("outbox:user-1")).not.toBeNull();
+  });
+
+  it("sends the waiting changes with the time they were made and clears them", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    localStorage.setItem(
+      "outbox:user-1",
+      JSON.stringify([
+        {
+          method: "PATCH",
+          path: "/tasks/11111111-1111-4111-8111-111111111111",
+          body: { title: "Offline edit" },
+          time: "2026-11-05T09:00:00.000Z",
+        },
+      ]),
+    );
+    const fetchSpy = vi.fn(
+      async (url, init) =>
+        respondToDataRoute(url, init) ??
+        (url === "/api/auth/refresh"
+          ? jsonResponse(200, SESSION)
+          : jsonResponse(200, {})),
+    );
+    vi.stubGlobal("fetch", fetchSpy);
+    setSessionHint();
+
+    renderApp("/");
+
+    expect(await screen.findByRole("main")).toBeInTheDocument();
+
+    const patch = fetchSpy.mock.calls.find(
+      ([, init]) => init?.method === "PATCH",
+    );
+
+    expect(patch[0]).toBe("/api/tasks/11111111-1111-4111-8111-111111111111");
+    expect(patch[1].headers["X-Client-Time"]).toBe("2026-11-05T09:00:00.000Z");
+    expect(localStorage.getItem("outbox:user-1")).toBeNull();
+  });
+});

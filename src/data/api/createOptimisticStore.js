@@ -1,3 +1,5 @@
+import { QUEUED } from "../outbox/queued";
+
 function ignore() {}
 
 export default function createOptimisticStore({ initialState, load }) {
@@ -110,7 +112,10 @@ export default function createOptimisticStore({ initialState, load }) {
 
     return request.then(
       (result) => {
-        confirmed = settle(apply(confirmed), result);
+        confirmed =
+          result === QUEUED
+            ? apply(confirmed)
+            : settle(apply(confirmed), result);
         pending = pending.filter((other) => other !== entry);
         publish();
       },

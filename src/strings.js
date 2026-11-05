@@ -85,6 +85,12 @@ export const strings = {
     guestBannerTitle: "Verilerin yalnızca bu cihazda.",
     guestBannerBody: "Hesap oluşturursan her cihazdan ulaşırsın.",
     guestBannerAction: "Hesap oluştur",
+    syncStatusLabel: "Senkronizasyon durumu",
+    syncOffline: "Çevrimdışısın. Değişiklikler internet gelince gönderilecek.",
+    syncOfflinePending: (count) =>
+      `Çevrimdışısın. ${count} değişiklik internet gelince gönderilecek.`,
+    syncPending: (count) => `${count} değişiklik gönderiliyor…`,
+    syncDone: "Tüm değişiklikler senkronize edildi.",
     verifyBannerLabel: "E-posta doğrulama",
     accountProfileTitle: "Profil",
     accountDisplayNameLabel: "Görünen ad",
@@ -648,6 +654,14 @@ export const strings = {
     guestBannerTitle: "Your data is only on this device.",
     guestBannerBody: "Create an account to reach it from any device.",
     guestBannerAction: "Create account",
+    syncStatusLabel: "Sync status",
+    syncOffline:
+      "You are offline. Changes will be sent when you are back online.",
+    syncOfflinePending: (count) =>
+      `You are offline. ${count} ${count === 1 ? "change" : "changes"} will be sent when you are back online.`,
+    syncPending: (count) =>
+      `Sending ${count} ${count === 1 ? "change" : "changes"}…`,
+    syncDone: "All changes are synced.",
     verifyBannerLabel: "Email verification",
     accountProfileTitle: "Profile",
     accountDisplayNameLabel: "Display name",
