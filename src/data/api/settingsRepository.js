@@ -1,58 +1,15 @@
 import { DEFAULT_SETTINGS } from "../../constants/settings";
 import { normalizeSettings } from "../settingsTransforms";
+import createOptimisticStore from "./createOptimisticStore";
 
 const SETTINGS_PATH = "/me/settings";
 
-function ignore() {}
-
 export default function createApiSettingsRepository({ client }) {
-  const listeners = new Set();
-  let status = "loading";
-  let confirmed = normalizeSettings(DEFAULT_SETTINGS);
-  let snapshot = confirmed;
-  let pending = [];
-  let queue = Promise.resolve();
-  let startPromise = null;
-
-  function publish() {
-    const next = pending.reduce(
-      (settings, entry) => ({ ...settings, ...entry.patch }),
-      confirmed,
-    );
-
-    if (JSON.stringify(next) !== JSON.stringify(snapshot)) {
-      snapshot = next;
-    }
-
-    listeners.forEach((listener) => listener());
-  }
-
-  function subscribe(listener) {
-    listeners.add(listener);
-
-    return () => {
-      listeners.delete(listener);
-    };
-  }
-
-  function start() {
-    if (!startPromise) {
-      startPromise = client.request("GET", SETTINGS_PATH).then(
-        (serverSettings) => {
-          confirmed = normalizeSettings(serverSettings);
-          status = "ready";
-          publish();
-        },
-        () => {
-          status = "error";
-          startPromise = null;
-          publish();
-        },
-      );
-    }
-
-    return startPromise;
-  }
+  const store = createOptimisticStore({
+    initialState: normalizeSettings(DEFAULT_SETTINGS),
+    load: async () =>
+      normalizeSettings(await client.request("GET", SETTINGS_PATH)),
+  });
 
   function update(patch) {
     const unknownKey = Object.keys(patch).find(
@@ -64,42 +21,24 @@ export default function createApiSettingsRepository({ client }) {
     }
 
     if (Object.keys(patch).length === 0) {
-      return Promise.resolve(snapshot);
+      return Promise.resolve(store.getSnapshot());
     }
 
-    const entry = { patch };
-
-    pending = [...pending, entry];
-    publish();
-
-    const request = queue
-      .then(() => start())
-      .then(() => client.request("PATCH", SETTINGS_PATH, { body: patch }));
-
-    queue = request.then(ignore, ignore);
-
-    return request.then(
-      (serverSettings) => {
-        confirmed = normalizeSettings(serverSettings);
-        pending = pending.filter((other) => other !== entry);
-        publish();
-
-        return snapshot;
-      },
-      (error) => {
-        pending = pending.filter((other) => other !== entry);
-        publish();
-
-        throw error;
-      },
-    );
+    return store
+      .mutate({
+        apply: (settings) => ({ ...settings, ...patch }),
+        send: () => client.request("PATCH", SETTINGS_PATH, { body: patch }),
+        settle: (appliedSettings, serverSettings) =>
+          normalizeSettings(serverSettings),
+      })
+      .then(() => store.getSnapshot());
   }
 
   return {
-    getStatus: () => status,
-    getSnapshot: () => snapshot,
-    subscribe,
-    start,
+    getStatus: store.getStatus,
+    getSnapshot: store.getSnapshot,
+    subscribe: store.subscribe,
+    start: store.start,
     update,
   };
 }
