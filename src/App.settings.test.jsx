@@ -2,6 +2,7 @@ import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { setSessionHint } from "./data/local/sessionHint";
+import { respondToDataRoute } from "./test/dataRoutes";
 import { renderApp } from "./test/renderApp";
 
 function getAppRoot() {
@@ -152,10 +153,12 @@ describe("App settings account category", () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
     vi.stubGlobal(
       "fetch",
-      vi.fn(async (url) =>
-        url === "/api/auth/refresh"
-          ? jsonResponse(200, SESSION)
-          : jsonResponse(204),
+      vi.fn(
+        async (url, init) =>
+          respondToDataRoute(url, init, "tr") ??
+          (url === "/api/auth/refresh"
+            ? jsonResponse(200, SESSION)
+            : jsonResponse(204)),
       ),
     );
     setSessionHint();
@@ -163,7 +166,9 @@ describe("App settings account category", () => {
 
     renderApp("/settings");
 
-    const nav = screen.getByRole("navigation", { name: "Ayar kategorileri" });
+    const nav = await screen.findByRole("navigation", {
+      name: "Ayar kategorileri",
+    });
 
     await user.click(await within(nav).findByRole("button", { name: "Hesap" }));
 
@@ -178,7 +183,13 @@ describe("App settings account category", () => {
     await user.click(within(panel).getByRole("button", { name: "Çıkış yap" }));
 
     await waitFor(() => {
-      expect(within(nav).queryByRole("button", { name: "Hesap" })).toBeNull();
+      const currentNav = screen.getByRole("navigation", {
+        name: "Ayar kategorileri",
+      });
+
+      expect(
+        within(currentNav).queryByRole("button", { name: "Hesap" }),
+      ).toBeNull();
     });
     expect(screen.getByRole("region", { name: "Görünüm" })).toBeInTheDocument();
   });

@@ -1,10 +1,31 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../auth/AuthContext";
+import { AUTH_STATUS } from "../auth/authStatus";
+import DataGate from "../components/data/DataGate";
+import DataLoadingScreen from "../components/data/DataLoadingScreen";
 import { getLocalDateString } from "../utils/dateHelpers";
+import defaultCreateApiRepositories from "./api/createApiRepositories";
+import { reportDataError } from "./api/dataErrorStatus";
+import withErrorReporting from "./api/withErrorReporting";
 import { DataContext } from "./DataContext";
 import createLocalRepositories from "./local/createLocalRepositories";
 
-function createDataContextValue(createRepositories, today) {
-  const repositories = createRepositories({ today });
+function createDataContextValue({
+  client,
+  createRepositories,
+  createApiRepositories,
+  today,
+}) {
+  const repositories = client
+    ? Object.fromEntries(
+        Object.entries(createApiRepositories({ client, today })).map(
+          ([name, repository]) => [
+            name,
+            withErrorReporting(repository, reportDataError),
+          ],
+        ),
+      )
+    : createRepositories({ today });
   const startedNames = new Set();
 
   function ensureStarted(name) {
@@ -16,17 +37,76 @@ function createDataContextValue(createRepositories, today) {
     repositories[name].start();
   }
 
-  return { repositories, ensureStarted };
+  function startAll() {
+    Object.keys(repositories).forEach(ensureStarted);
+  }
+
+  function retry() {
+    Object.values(repositories).forEach((repository) => {
+      if (repository.getStatus() === "error") {
+        repository.start();
+      }
+    });
+  }
+
+  return { repositories, ensureStarted, startAll, retry };
+}
+
+function DataSession({
+  client,
+  onSignOut,
+  createRepositories,
+  createApiRepositories,
+  today,
+  children,
+}) {
+  const [value] = useState(() =>
+    createDataContextValue({
+      client,
+      createRepositories,
+      createApiRepositories,
+      today,
+    }),
+  );
+
+  return (
+    <DataContext.Provider value={value}>
+      {client ? (
+        <DataGate onSignOut={onSignOut}>{children}</DataGate>
+      ) : (
+        children
+      )}
+    </DataContext.Provider>
+  );
 }
 
 export default function DataProvider({
   children,
   createRepositories = createLocalRepositories,
+  createApiRepositories = defaultCreateApiRepositories,
   today,
 }) {
-  const [value] = useState(() =>
-    createDataContextValue(createRepositories, today ?? getLocalDateString()),
-  );
+  const auth = useContext(AuthContext);
+  const status = auth?.status ?? AUTH_STATUS.disabled;
 
-  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
+  if (status === AUTH_STATUS.loading) {
+    return <DataLoadingScreen />;
+  }
+
+  const client =
+    status === AUTH_STATUS.signedIn ? (auth.api?.client ?? null) : null;
+  const sessionKey = client ? `api:${auth.user?.id ?? ""}` : "local";
+
+  return (
+    <DataSession
+      key={sessionKey}
+      client={client}
+      onSignOut={auth?.logout}
+      createRepositories={createRepositories}
+      createApiRepositories={createApiRepositories}
+      today={today ?? getLocalDateString()}
+    >
+      {children}
+    </DataSession>
+  );
 }

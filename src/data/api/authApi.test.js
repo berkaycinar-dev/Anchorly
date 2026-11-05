@@ -22,6 +22,12 @@ function createFakeClient(response = null) {
 }
 
 describe("createAuthApi", () => {
+  it("exposes the client it was built on", () => {
+    const client = createFakeClient();
+
+    expect(createAuthApi(client).client).toBe(client);
+  });
+
   it("registers without authentication and starts the session", async () => {
     const client = createFakeClient(session("token-1"));
     const api = createAuthApi(client);

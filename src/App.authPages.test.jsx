@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { setSessionHint } from "./data/local/sessionHint";
+import { respondToDataRoute } from "./test/dataRoutes";
 import { getCurrentPath, renderApp } from "./test/renderApp";
 
 function jsonResponse(status, body) {
@@ -66,7 +67,10 @@ describe("auth pages in the app", () => {
 
   it("signs in through the API and lands on the panel", async () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
-    const fetchSpy = vi.fn(async () => jsonResponse(200, SESSION));
+    const fetchSpy = vi.fn(
+      async (url, init) =>
+        respondToDataRoute(url, init) ?? jsonResponse(200, SESSION),
+    );
     vi.stubGlobal("fetch", fetchSpy);
     const user = userEvent.setup();
 
@@ -93,7 +97,10 @@ describe("auth pages in the app", () => {
 
   it("registers with the interface language", async () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
-    const fetchSpy = vi.fn(async () => jsonResponse(201, SESSION));
+    const fetchSpy = vi.fn(
+      async (url, init) =>
+        respondToDataRoute(url, init) ?? jsonResponse(201, SESSION),
+    );
     vi.stubGlobal("fetch", fetchSpy);
     const user = userEvent.setup();
 
@@ -118,7 +125,10 @@ describe("auth pages in the app", () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => jsonResponse(200, SESSION)),
+      vi.fn(
+        async (url, init) =>
+          respondToDataRoute(url, init) ?? jsonResponse(200, SESSION),
+      ),
     );
     setSessionHint();
 
@@ -216,9 +226,13 @@ describe("auth pages in the app", () => {
       ...SESSION,
       user: { ...SESSION.user, emailVerifiedAt: null },
     };
-    const fetchSpy = vi.fn(async (url) => {
+    const fetchSpy = vi.fn(async (url, init) => {
       if (url === "/api/auth/refresh") {
         return jsonResponse(200, unverified);
+      }
+      const dataResponse = respondToDataRoute(url, init);
+      if (dataResponse) {
+        return dataResponse;
       }
       return jsonResponse(200, {
         user: { ...SESSION.user, emailVerifiedAt: "2026-11-04T00:00:00.000Z" },
@@ -247,11 +261,13 @@ describe("auth pages in the app", () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () =>
-        jsonResponse(200, {
-          ...SESSION,
-          user: { ...SESSION.user, emailVerifiedAt: null },
-        }),
+      vi.fn(
+        async (url, init) =>
+          respondToDataRoute(url, init) ??
+          jsonResponse(200, {
+            ...SESSION,
+            user: { ...SESSION.user, emailVerifiedAt: null },
+          }),
       ),
     );
     setSessionHint();
@@ -293,9 +309,13 @@ describe("account page in the app", () => {
   it("shows the account page inside the app shell for a restored session", async () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
     setSessionHint();
-    const fetchSpy = vi.fn(async (url) => {
+    const fetchSpy = vi.fn(async (url, init) => {
       if (url === "/api/auth/refresh") {
         return jsonResponse(200, SESSION);
+      }
+      const dataResponse = respondToDataRoute(url, init);
+      if (dataResponse) {
+        return dataResponse;
       }
       if (url === "/api/me/sessions") {
         return jsonResponse(200, []);

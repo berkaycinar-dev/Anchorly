@@ -32,6 +32,11 @@ export default function createOptimisticStore({ initialState, load }) {
 
   function start() {
     if (!startPromise) {
+      if (status === "error") {
+        status = "loading";
+        publish();
+      }
+
       startPromise = load().then(
         (state) => {
           confirmed = state;

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { setSessionHint } from "./data/local/sessionHint";
 import { TABLET_MEDIA_QUERY } from "./hooks/useSidebar";
+import { respondToDataRoute } from "./test/dataRoutes";
 import { renderApp } from "./test/renderApp";
 
 function jsonResponse(status, body) {
@@ -63,10 +64,12 @@ describe("sidebar account area", () => {
 
   it("shows the restored user and signs out through the API", async () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
-    const fetchSpy = vi.fn(async (url) =>
-      url === "/api/auth/refresh"
-        ? jsonResponse(200, SESSION)
-        : jsonResponse(204),
+    const fetchSpy = vi.fn(
+      async (url, init) =>
+        respondToDataRoute(url, init) ??
+        (url === "/api/auth/refresh"
+          ? jsonResponse(200, SESSION)
+          : jsonResponse(204)),
     );
     vi.stubGlobal("fetch", fetchSpy);
     setSessionHint();
@@ -74,11 +77,10 @@ describe("sidebar account area", () => {
 
     renderApp("/");
 
-    expect(
-      within(getSidebar()).getByRole("status", { name: "Loading account" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading your data");
+    expect(getSidebar()).toBeNull();
 
-    const trigger = await within(getSidebar()).findByRole("button", {
+    const trigger = await screen.findByRole("button", {
       name: "Dev User, account menu",
     });
 
@@ -98,7 +100,10 @@ describe("sidebar account area", () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => jsonResponse(200, SESSION)),
+      vi.fn(
+        async (url, init) =>
+          respondToDataRoute(url, init) ?? jsonResponse(200, SESSION),
+      ),
     );
     window.matchMedia = (media) => ({
       matches: media === TABLET_MEDIA_QUERY,
@@ -111,7 +116,9 @@ describe("sidebar account area", () => {
 
     renderApp("/");
 
-    await user.click(screen.getByRole("button", { name: /^Anchorly, / }));
+    await user.click(
+      await screen.findByRole("button", { name: /^Anchorly, / }),
+    );
     await user.click(
       await within(getSidebar()).findByRole("button", {
         name: "Dev User, account menu",

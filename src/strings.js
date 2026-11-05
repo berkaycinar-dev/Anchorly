@@ -525,6 +525,15 @@ export const strings = {
       "Tarayıcı depolamasına erişilemiyor; yaptığın değişiklikler sayfayı yenileyince kaybolacak. Gizli sekmeyi veya tarayıcı izinlerini kontrol et.",
     storageReadWarning:
       "Kayıtlı verilerin bir kısmı okunamadı, varsayılan değerler yüklendi. Okunamayan veri tarayıcı depolamasında yedek olarak saklandı.",
+    dataLoading: "Verilerin yükleniyor",
+    dataLoadErrorTitle: "Verilerin yüklenemedi",
+    dataLoadErrorBody:
+      "Sunucuya ulaşılamadı veya bir sorun oluştu. Bağlantını kontrol edip tekrar dene.",
+    dataRetry: "Tekrar dene",
+    dataSaveFailedNetwork:
+      "Değişiklik kaydedilemedi: sunucuya ulaşılamadı. Değişiklik geri alındı.",
+    dataSaveFailedOther:
+      "Değişiklik kaydedilemedi ve geri alındı. Lütfen tekrar dene.",
   },
   en: {
     dashboard: "Dashboard",
@@ -1060,5 +1069,14 @@ export const strings = {
       "Browser storage is not available; your changes will be lost when you reload the page. Check private browsing mode or browser permissions.",
     storageReadWarning:
       "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
+    dataLoading: "Loading your data",
+    dataLoadErrorTitle: "Your data could not be loaded",
+    dataLoadErrorBody:
+      "The server could not be reached or something went wrong. Check your connection and try again.",
+    dataRetry: "Try again",
+    dataSaveFailedNetwork:
+      "Your change could not be saved: the server could not be reached. The change was undone.",
+    dataSaveFailedOther:
+      "Your change could not be saved and was undone. Please try again.",
   },
 };

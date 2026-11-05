@@ -37,4 +37,34 @@ describe("optimistic store", () => {
 
     expect(store.getSnapshot()).toEqual(["server", "local"]);
   });
+
+  it("goes back to loading while a failed load is retried", async () => {
+    let attempt = 0;
+    let finishRetry;
+    const store = createOptimisticStore({
+      initialState: [],
+      load: () => {
+        attempt += 1;
+
+        if (attempt === 1) {
+          return Promise.reject(new Error("offline"));
+        }
+
+        return new Promise((resolve) => {
+          finishRetry = () => resolve(["server"]);
+        });
+      },
+    });
+    await store.start();
+    expect(store.getStatus()).toBe("error");
+
+    const retry = store.start();
+
+    expect(store.getStatus()).toBe("loading");
+    finishRetry();
+    await retry;
+
+    expect(store.getStatus()).toBe("ready");
+    expect(store.getSnapshot()).toEqual(["server"]);
+  });
 });
