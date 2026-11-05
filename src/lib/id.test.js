@@ -1,5 +1,5 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
-import { createId, isUuid } from "./id";
+import { createId, createOccurrenceId, isUuid } from "./id";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -65,5 +65,43 @@ describe("createId", () => {
     });
 
     expect(createId()).toBe("ffffffff-ffff-4fff-bfff-ffffffffffff");
+  });
+});
+
+describe("createOccurrenceId", () => {
+  const GROUP = "3f2504e0-4f89-41d3-9a0c-0305e82c3301";
+
+  it("returns a valid version 5 uuid", () => {
+    const id = createOccurrenceId(GROUP, "2026-10-11");
+
+    expect(isUuid(id)).toBe(true);
+    expect(id[14]).toBe("5");
+    expect("89ab").toContain(id[19]);
+  });
+
+  it("returns the same id for the same series and date", () => {
+    expect(createOccurrenceId(GROUP, "2026-10-11")).toBe(
+      createOccurrenceId(GROUP, "2026-10-11"),
+    );
+  });
+
+  it("returns a different id for another date or another series", () => {
+    const ids = new Set([
+      createOccurrenceId(GROUP, "2026-10-11"),
+      createOccurrenceId(GROUP, "2026-10-12"),
+      createOccurrenceId("another-group", "2026-10-11"),
+    ]);
+
+    expect(ids.size).toBe(3);
+  });
+
+  it("returns a different id for every day of the horizon", () => {
+    const ids = new Set(
+      Array.from({ length: 400 }, (_, index) =>
+        createOccurrenceId(GROUP, `day-${index}`),
+      ),
+    );
+
+    expect(ids.size).toBe(400);
   });
 });

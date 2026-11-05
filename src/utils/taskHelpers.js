@@ -1,10 +1,16 @@
 import { REPEAT_HORIZON_DAYS } from "../constants/initialData";
-import { createId } from "../lib/id";
+import { createOccurrenceId } from "../lib/id";
 import {
   addDaysToDateString,
   getLocalDateString,
   getNextRepeatDate,
 } from "./dateHelpers";
+
+function getOccurrenceOrder(dateString) {
+  const [year, month, day] = dateString.split("-").map(Number);
+
+  return Date.UTC(year, month - 1, day);
+}
 
 export function generateRepeatOccurrences(
   baseTask,
@@ -31,11 +37,11 @@ export function generateRepeatOccurrences(
     if (!existingDatesInGroup.has(nextDate)) {
       newOccurrences.push({
         ...baseTask,
-        id: createId(),
+        id: createOccurrenceId(baseTask.repeatGroupId, nextDate),
         date: nextDate,
         completed: false,
         completedAt: null,
-        order: Date.now() + safetyCounter,
+        order: getOccurrenceOrder(nextDate),
         steps: baseTask.steps.map((step) => ({ ...step, done: false })),
         attachments: [],
       });
