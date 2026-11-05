@@ -87,9 +87,10 @@ export default function createApiClient({
       body,
       token,
       signal,
+      headers: extraHeaders,
       timeoutMs: requestTimeoutMs = timeoutMs,
     } = options;
-    const headers = { Accept: "application/json" };
+    const headers = { Accept: "application/json", ...extraHeaders };
 
     if (body !== undefined) {
       headers["Content-Type"] = "application/json";

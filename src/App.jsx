@@ -12,6 +12,8 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
 import useSidebar from "./hooks/useSidebar";
+import ImportPrompt from "./components/account/ImportPrompt";
+import DataErrorToasts from "./components/data/DataErrorToasts";
 import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
 import ToastProvider from "./components/toast/ToastProvider";
@@ -36,6 +38,8 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import AccountPage from "./pages/AccountPage";
+import GuestBanner from "./components/auth/GuestBanner";
+import SyncStatusBar from "./components/data/SyncStatusBar";
 import VerificationBanner from "./components/auth/VerificationBanner";
 import {
   addDaysToDateString,
@@ -560,6 +564,8 @@ function AppContent() {
     <div className={`app theme-${theme}`} style={fontStyle}>
       <ToastProvider closeLabel={t.closeButton}>
         <StorageToasts t={t} />
+        <DataErrorToasts t={t} />
+        <ImportPrompt t={t} />
         <Sidebar
           t={t}
           badges={sidebarBadges}
@@ -570,6 +576,8 @@ function AppContent() {
         />
         <main className="main-content">
           <VerificationBanner t={t} />
+          <GuestBanner t={t} />
+          <SyncStatusBar t={t} />
           <Header />
           <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
 

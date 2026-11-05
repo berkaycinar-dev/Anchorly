@@ -578,9 +578,44 @@ describe("useTasks updateTaskRepeat", () => {
     expect(dates[0]).toBe("2026-10-10");
     expect(dates[1]).toBe("2026-10-17");
     expect(dates[17]).toBe("2027-02-06");
-    expect(
-      result.current.tasks.every((task) => task.repeatGroupId === "group-1"),
-    ).toBe(true);
+  });
+
+  it("starts a new series when the repeat changes", () => {
+    const { result } = renderTasksWith([dailyTask]);
+
+    act(() => {
+      result.current.updateTaskRepeat(IDS[0], "weekly");
+    });
+
+    const groupIds = new Set(
+      result.current.tasks.map((task) => task.repeatGroupId),
+    );
+
+    expect(groupIds.size).toBe(1);
+    expect(groupIds.has("group-1")).toBe(false);
+    expect(isUuid([...groupIds][0])).toBe(true);
+  });
+
+  it("keeps the earlier copies in the old series when the repeat changes", () => {
+    const earlierCopy = {
+      ...dailyTask,
+      id: IDS[1],
+      date: "2026-10-09",
+      completed: true,
+      completedAt: "2026-10-09",
+    };
+    const { result } = renderTasksWith([earlierCopy, dailyTask]);
+
+    act(() => {
+      result.current.updateTaskRepeat(IDS[0], "weekly");
+    });
+
+    expect(findTask(result.current.tasks, IDS[1]).repeatGroupId).toBe(
+      "group-1",
+    );
+    expect(findTask(result.current.tasks, IDS[0]).repeatGroupId).not.toBe(
+      "group-1",
+    );
   });
 
   it("does not change the tasks for an unknown id", () => {

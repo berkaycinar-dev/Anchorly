@@ -11,6 +11,7 @@ export default function createAuthApi(client) {
   }
 
   return {
+    client,
     clearSession,
 
     async register(input) {

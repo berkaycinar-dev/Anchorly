@@ -80,6 +80,21 @@ describe("addFutureOccurrences", () => {
     expect(first.id).not.toBe(baseTask.id);
   });
 
+  it("gives a copy the same id and order every time it is generated", () => {
+    const baseTask = createRepeatingTask();
+
+    const first = generateRepeatOccurrences(baseTask, [baseTask], "2026-10-10");
+    const second = generateRepeatOccurrences(
+      baseTask,
+      [baseTask],
+      "2026-10-10",
+    );
+
+    expect(second).toEqual(first);
+    expect(new Set(first.map((task) => task.id)).size).toBe(120);
+    expect(first[0].order).toBe(Date.UTC(2026, 9, 11));
+  });
+
   it("does not regenerate dates that already exist in the same group", () => {
     const baseTask = createRepeatingTask();
     const existing = createRepeatingTask({ id: "task-2", date: "2026-10-11" });

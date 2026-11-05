@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate } from "react-router";
 import DataSection from "../components/account/DataSection";
 import DeleteAccountSection from "../components/account/DeleteAccountSection";
+import ImportSection from "../components/account/ImportSection";
 import PasswordSection from "../components/account/PasswordSection";
 import ProfileSection from "../components/account/ProfileSection";
 import SessionsSection from "../components/account/SessionsSection";
@@ -37,6 +38,7 @@ function AccountPage({ t, language }) {
         language={language}
         refreshKey={sessionsRefreshKey}
       />
+      <ImportSection t={t} />
       <DataSection t={t} />
       <DeleteAccountSection t={t} />
     </div>

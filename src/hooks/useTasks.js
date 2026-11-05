@@ -185,7 +185,7 @@ export default function useTasks(today) {
 
     repository.update(taskId, {
       repeat: newRepeat,
-      repeatGroupId: oldGroupId || createId(),
+      repeatGroupId: createId(),
     });
 
     const updatedTasks = repository.getSnapshot();

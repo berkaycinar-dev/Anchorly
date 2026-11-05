@@ -81,6 +81,16 @@ export const strings = {
     verifyAlreadyVerified: "E-posta adresin zaten doğrulanmış.",
     verifyBannerTitle: "E-postanı doğrula",
     verifyBannerBody: (email) => `${email} adresine bir bağlantı gönderdik.`,
+    guestBannerLabel: "Misafir modu",
+    guestBannerTitle: "Verilerin yalnızca bu cihazda.",
+    guestBannerBody: "Hesap oluşturursan her cihazdan ulaşırsın.",
+    guestBannerAction: "Hesap oluştur",
+    syncStatusLabel: "Senkronizasyon durumu",
+    syncOffline: "Çevrimdışısın. Değişiklikler internet gelince gönderilecek.",
+    syncOfflinePending: (count) =>
+      `Çevrimdışısın. ${count} değişiklik internet gelince gönderilecek.`,
+    syncPending: (count) => `${count} değişiklik gönderiliyor…`,
+    syncDone: "Tüm değişiklikler senkronize edildi.",
     verifyBannerLabel: "E-posta doğrulama",
     accountProfileTitle: "Profil",
     accountDisplayNameLabel: "Görünen ad",
@@ -111,14 +121,36 @@ export const strings = {
     accountOthersRevoked: "Diğer cihazlardaki oturumlar kapatıldı.",
     accountDataTitle: "Veri",
     accountExportDescription:
-      "Hesabında sunucuda saklanan verilerin JSON dosyası.",
+      "Hesabında sunucuda saklanan görev, rutin, proje ve ayarlarının JSON dosyası. Dosya ekleri bu cihazda kaldığı için dahil değildir.",
     accountExport: "Verilerimi dışa aktar",
     accountExportNeedsVerification:
       "Dışa aktarmak için önce e-postanı doğrula.",
     accountExported: "Dosya indirildi.",
+    importDialogTitle:
+      "Bu cihazdaki görevlerini hesabına aktarmak ister misin?",
+    importDialogBody: "Bu cihazda şunlar var:",
+    importDialogHint:
+      "Aktarırsan her cihazdan ulaşabilirsin. Hesabında aynı kayıt varsa hesaptaki korunur. Cihazdaki kopya yedeklenip temizlenir; ayarların ve dosya eklerin etkilenmez.",
+    importCountTasks: (count) => `${count} görev`,
+    importCountRoutines: (count) => `${count} rutin`,
+    importCountProjects: (count) => `${count} proje`,
+    importConfirm: "Aktar",
+    importRetry: "Tekrar dene",
+    importDecline: "Hayır, aktarma",
+    importDeclineHint: "Sonra Hesap sayfasından aktarabilirsin.",
+    importDoneTitle: "Aktarım tamamlandı",
+    importDoneBody: "Hesabına eklenenler:",
+    importDoneAction: "Tamam",
+    importSkippedNote: (count) =>
+      `${count} kayıt hesapta zaten olduğu için atlandı.`,
+    importKeptNote: "Cihazdaki kopya temizlenemedi, cihazda kaldı.",
+    importSectionTitle: "Bu cihazdaki veriler",
+    importSectionDescription:
+      "Bu cihazda hesabına eklenmemiş görev, rutin veya proje var.",
+    importOpen: "Bu cihazdaki verileri aktar",
     accountDangerTitle: "Hesabı sil",
     accountDeleteDescription:
-      "Hesabın ve sunucudaki verilerin kalıcı olarak silinir. Bu cihazdaki görev, rutin ve projelerin cihazında kalır.",
+      "Hesabın ve sunucudaki görev, rutin ve projelerin kalıcı olarak silinir. Bu cihazda kalan yerel veriler ve yedekler cihazında durur.",
     accountDelete: "Hesabı sil",
     accountDeleteDialogTitle: "Hesabı kalıcı olarak sil?",
     accountDeleteDialogBody:
@@ -525,6 +557,15 @@ export const strings = {
       "Tarayıcı depolamasına erişilemiyor; yaptığın değişiklikler sayfayı yenileyince kaybolacak. Gizli sekmeyi veya tarayıcı izinlerini kontrol et.",
     storageReadWarning:
       "Kayıtlı verilerin bir kısmı okunamadı, varsayılan değerler yüklendi. Okunamayan veri tarayıcı depolamasında yedek olarak saklandı.",
+    dataLoading: "Verilerin yükleniyor",
+    dataLoadErrorTitle: "Verilerin yüklenemedi",
+    dataLoadErrorBody:
+      "Sunucuya ulaşılamadı veya bir sorun oluştu. Bağlantını kontrol edip tekrar dene.",
+    dataRetry: "Tekrar dene",
+    dataSaveFailedNetwork:
+      "Değişiklik kaydedilemedi: sunucuya ulaşılamadı. Değişiklik geri alındı.",
+    dataSaveFailedOther:
+      "Değişiklik kaydedilemedi ve geri alındı. Lütfen tekrar dene.",
   },
   en: {
     dashboard: "Dashboard",
@@ -609,6 +650,18 @@ export const strings = {
     verifyAlreadyVerified: "Your email address is already verified.",
     verifyBannerTitle: "Verify your email",
     verifyBannerBody: (email) => `We sent a link to ${email}.`,
+    guestBannerLabel: "Guest mode",
+    guestBannerTitle: "Your data is only on this device.",
+    guestBannerBody: "Create an account to reach it from any device.",
+    guestBannerAction: "Create account",
+    syncStatusLabel: "Sync status",
+    syncOffline:
+      "You are offline. Changes will be sent when you are back online.",
+    syncOfflinePending: (count) =>
+      `You are offline. ${count} ${count === 1 ? "change" : "changes"} will be sent when you are back online.`,
+    syncPending: (count) =>
+      `Sending ${count} ${count === 1 ? "change" : "changes"}…`,
+    syncDone: "All changes are synced.",
     verifyBannerLabel: "Email verification",
     accountProfileTitle: "Profile",
     accountDisplayNameLabel: "Display name",
@@ -640,14 +693,38 @@ export const strings = {
     accountOthersRevoked: "Sessions on other devices were ended.",
     accountDataTitle: "Data",
     accountExportDescription:
-      "A JSON file with the data stored on the server for your account.",
+      "A JSON file with the tasks, routines, projects and settings stored on the server for your account. File attachments stay on this device, so they are not included.",
     accountExport: "Export my data",
     accountExportNeedsVerification:
       "Verify your email first to export your data.",
     accountExported: "File downloaded.",
+    importDialogTitle:
+      "Do you want to move the tasks on this device to your account?",
+    importDialogBody: "This device has:",
+    importDialogHint:
+      "Once moved, you can reach them from any device. If your account already has the same record, the account's version is kept. The copy on this device is backed up and cleared; your settings and file attachments are not affected.",
+    importCountTasks: (count) => `${count} ${count === 1 ? "task" : "tasks"}`,
+    importCountRoutines: (count) =>
+      `${count} ${count === 1 ? "routine" : "routines"}`,
+    importCountProjects: (count) =>
+      `${count} ${count === 1 ? "project" : "projects"}`,
+    importConfirm: "Move",
+    importRetry: "Try again",
+    importDecline: "No, don't move",
+    importDeclineHint: "You can move them later from the Account page.",
+    importDoneTitle: "Move complete",
+    importDoneBody: "Added to your account:",
+    importDoneAction: "Done",
+    importSkippedNote: (count) =>
+      `${count} ${count === 1 ? "record was" : "records were"} skipped because the account already had ${count === 1 ? "it" : "them"}.`,
+    importKeptNote: "The copy on this device could not be cleared and stayed.",
+    importSectionTitle: "Data on this device",
+    importSectionDescription:
+      "This device has tasks, routines or projects that are not in your account yet.",
+    importOpen: "Move the data on this device",
     accountDangerTitle: "Delete account",
     accountDeleteDescription:
-      "Your account and the data on the server are deleted permanently. The tasks, routines and projects on this device stay on the device.",
+      "Your account and the tasks, routines and projects on the server are deleted permanently. Any local data and backups on this device stay on the device.",
     accountDelete: "Delete account",
     accountDeleteDialogTitle: "Delete your account permanently?",
     accountDeleteDialogBody:
@@ -1060,5 +1137,14 @@ export const strings = {
       "Browser storage is not available; your changes will be lost when you reload the page. Check private browsing mode or browser permissions.",
     storageReadWarning:
       "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
+    dataLoading: "Loading your data",
+    dataLoadErrorTitle: "Your data could not be loaded",
+    dataLoadErrorBody:
+      "The server could not be reached or something went wrong. Check your connection and try again.",
+    dataRetry: "Try again",
+    dataSaveFailedNetwork:
+      "Your change could not be saved: the server could not be reached. The change was undone.",
+    dataSaveFailedOther:
+      "Your change could not be saved and was undone. Please try again.",
   },
 };
