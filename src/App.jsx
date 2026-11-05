@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
 import useSidebar from "./hooks/useSidebar";
+import ImportPrompt from "./components/account/ImportPrompt";
 import DataErrorToasts from "./components/data/DataErrorToasts";
 import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
@@ -562,6 +563,7 @@ function AppContent() {
       <ToastProvider closeLabel={t.closeButton}>
         <StorageToasts t={t} />
         <DataErrorToasts t={t} />
+        <ImportPrompt t={t} />
         <Sidebar
           t={t}
           badges={sidebarBadges}

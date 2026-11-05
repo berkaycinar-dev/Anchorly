@@ -116,9 +116,31 @@ export const strings = {
     accountExportNeedsVerification:
       "Dışa aktarmak için önce e-postanı doğrula.",
     accountExported: "Dosya indirildi.",
+    importDialogTitle:
+      "Bu cihazdaki görevlerini hesabına aktarmak ister misin?",
+    importDialogBody: "Bu cihazda şunlar var:",
+    importDialogHint:
+      "Aktarırsan her cihazdan ulaşabilirsin. Hesabında aynı kayıt varsa hesaptaki korunur. Cihazdaki kopya yedeklenip temizlenir; ayarların ve dosya eklerin etkilenmez.",
+    importCountTasks: (count) => `${count} görev`,
+    importCountRoutines: (count) => `${count} rutin`,
+    importCountProjects: (count) => `${count} proje`,
+    importConfirm: "Aktar",
+    importRetry: "Tekrar dene",
+    importDecline: "Hayır, aktarma",
+    importDeclineHint: "Sonra Hesap sayfasından aktarabilirsin.",
+    importDoneTitle: "Aktarım tamamlandı",
+    importDoneBody: "Hesabına eklenenler:",
+    importDoneAction: "Tamam",
+    importSkippedNote: (count) =>
+      `${count} kayıt hesapta zaten olduğu için atlandı.`,
+    importKeptNote: "Cihazdaki kopya temizlenemedi, cihazda kaldı.",
+    importSectionTitle: "Bu cihazdaki veriler",
+    importSectionDescription:
+      "Bu cihazda hesabına eklenmemiş görev, rutin veya proje var.",
+    importOpen: "Bu cihazdaki verileri aktar",
     accountDangerTitle: "Hesabı sil",
     accountDeleteDescription:
-      "Hesabın ve sunucudaki verilerin kalıcı olarak silinir. Bu cihazdaki görev, rutin ve projelerin cihazında kalır.",
+      "Hesabın ve sunucudaki görev, rutin ve projelerin kalıcı olarak silinir. Bu cihazda kalan yerel veriler ve yedekler cihazında durur.",
     accountDelete: "Hesabı sil",
     accountDeleteDialogTitle: "Hesabı kalıcı olarak sil?",
     accountDeleteDialogBody:
@@ -654,9 +676,33 @@ export const strings = {
     accountExportNeedsVerification:
       "Verify your email first to export your data.",
     accountExported: "File downloaded.",
+    importDialogTitle:
+      "Do you want to move the tasks on this device to your account?",
+    importDialogBody: "This device has:",
+    importDialogHint:
+      "Once moved, you can reach them from any device. If your account already has the same record, the account's version is kept. The copy on this device is backed up and cleared; your settings and file attachments are not affected.",
+    importCountTasks: (count) => `${count} ${count === 1 ? "task" : "tasks"}`,
+    importCountRoutines: (count) =>
+      `${count} ${count === 1 ? "routine" : "routines"}`,
+    importCountProjects: (count) =>
+      `${count} ${count === 1 ? "project" : "projects"}`,
+    importConfirm: "Move",
+    importRetry: "Try again",
+    importDecline: "No, don't move",
+    importDeclineHint: "You can move them later from the Account page.",
+    importDoneTitle: "Move complete",
+    importDoneBody: "Added to your account:",
+    importDoneAction: "Done",
+    importSkippedNote: (count) =>
+      `${count} ${count === 1 ? "record was" : "records were"} skipped because the account already had ${count === 1 ? "it" : "them"}.`,
+    importKeptNote: "The copy on this device could not be cleared and stayed.",
+    importSectionTitle: "Data on this device",
+    importSectionDescription:
+      "This device has tasks, routines or projects that are not in your account yet.",
+    importOpen: "Move the data on this device",
     accountDangerTitle: "Delete account",
     accountDeleteDescription:
-      "Your account and the data on the server are deleted permanently. The tasks, routines and projects on this device stay on the device.",
+      "Your account and the tasks, routines and projects on the server are deleted permanently. Any local data and backups on this device stay on the device.",
     accountDelete: "Delete account",
     accountDeleteDialogTitle: "Delete your account permanently?",
     accountDeleteDialogBody:

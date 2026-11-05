@@ -1,9 +1,11 @@
 import { act, render, renderHook, screen } from "@testing-library/react";
+import { useContext } from "react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { AuthContext } from "../auth/AuthContext";
 import { AUTH_STATUS } from "../auth/authStatus";
 import DataProvider from "./DataProvider";
+import { DataContext } from "./DataContext";
 import useRepository from "./useRepository";
 
 function createFakeRepository(initialStatus = "ready") {
@@ -272,5 +274,39 @@ describe("DataProvider with an account", () => {
 
     expect(createRepositories).toHaveBeenCalledTimes(1);
     expect(createApiRepositories).not.toHaveBeenCalled();
+  });
+
+  it("creates fresh repositories when a reload is asked for", () => {
+    const createApiRepositories = vi.fn(() => createApiSet());
+    const { result } = renderHook(() => useContext(DataContext), {
+      wrapper: ({ children }) => (
+        <AuthContext.Provider value={authValue()}>
+          <DataProvider createApiRepositories={createApiRepositories}>
+            {children}
+          </DataProvider>
+        </AuthContext.Provider>
+      ),
+    });
+    const firstRepositories = result.current.repositories;
+
+    act(() => result.current.reload());
+
+    expect(createApiRepositories).toHaveBeenCalledTimes(2);
+    expect(result.current.repositories).not.toBe(firstRepositories);
+  });
+
+  it("also reloads the local repositories", () => {
+    const createRepositories = vi.fn(() => createApiSet());
+    const { result } = renderHook(() => useContext(DataContext), {
+      wrapper: ({ children }) => (
+        <DataProvider createRepositories={createRepositories}>
+          {children}
+        </DataProvider>
+      ),
+    });
+
+    act(() => result.current.reload());
+
+    expect(createRepositories).toHaveBeenCalledTimes(2);
   });
 });

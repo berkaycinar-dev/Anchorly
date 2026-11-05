@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { AUTH_STATUS } from "../auth/authStatus";
 import DataGate from "../components/data/DataGate";
@@ -15,6 +15,7 @@ function createDataContextValue({
   createRepositories,
   createApiRepositories,
   today,
+  reload,
 }) {
   const repositories = client
     ? Object.fromEntries(
@@ -49,12 +50,13 @@ function createDataContextValue({
     });
   }
 
-  return { repositories, ensureStarted, startAll, retry };
+  return { repositories, ensureStarted, startAll, retry, reload };
 }
 
 function DataSession({
   client,
   onSignOut,
+  onReload,
   createRepositories,
   createApiRepositories,
   today,
@@ -66,6 +68,7 @@ function DataSession({
       createRepositories,
       createApiRepositories,
       today,
+      reload: onReload,
     }),
   );
 
@@ -87,6 +90,8 @@ export default function DataProvider({
   today,
 }) {
   const auth = useContext(AuthContext);
+  const [generation, setGeneration] = useState(0);
+  const reload = useCallback(() => setGeneration((count) => count + 1), []);
   const status = auth?.status ?? AUTH_STATUS.disabled;
 
   if (status === AUTH_STATUS.loading) {
@@ -99,9 +104,10 @@ export default function DataProvider({
 
   return (
     <DataSession
-      key={sessionKey}
+      key={`${sessionKey}:${generation}`}
       client={client}
       onSignOut={auth?.logout}
+      onReload={reload}
       createRepositories={createRepositories}
       createApiRepositories={createApiRepositories}
       today={today ?? getLocalDateString()}
