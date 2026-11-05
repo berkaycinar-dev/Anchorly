@@ -7,9 +7,9 @@
 ![Vitest](https://img.shields.io/badge/Tested%20with-Vitest-6E9F18?logo=vitest&logoColor=white)
 ![Storage](https://img.shields.io/badge/Veri-Taray%C4%B1c%C4%B1da%20saklan%C4%B1r-orange)
 
-Anchorly, React ile geliştirdiğim bir görev ve alışkanlık panosu. Günlük görevler, rutinler, takvim ve projeler tek yerde; verilerin tarayıcından dışarı çıkmaz.
+Anchorly, React ile geliştirdiğim bir görev ve alışkanlık panosu. Günlük görevler, rutinler, takvim ve projeler tek yerde; hesap açmazsan verilerin tarayıcından dışarı çıkmaz. Hesapla kullanırsan veriler sunucuda saklanır ve cihazların arasında seninle gelir.
 
-**Canlı demo:** https://anchorly-nine.vercel.app/
+**Canlı demo:** https://anchorly-app.vercel.app/
 
 | Panel (açık tema)                                          | Panel (koyu tema)                                         |
 | ---------------------------------------------------------- | --------------------------------------------------------- |
@@ -132,8 +132,9 @@ src/
 
 ## Bilinen sınırlamalar
 
-- Veriler tarayıcıda (`localStorage`) saklanır. Cihazlar veya tarayıcılar arasında senkronize olmaz ve tarayıcı boyutunu sınırlar.
-- Hesaplar `VITE_AUTH_ENABLED` bayrağının arkasında ekleniyor; görev, rutin ve proje verisi henüz sunucuda saklanmıyor. Backend ayrı bir depoda: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
+- Hesap olmadan veriler tarayıcıda (`localStorage`) saklanır. Cihazlar veya tarayıcılar arasında senkronize olmaz ve tarayıcı boyutunu sınırlar.
+- Backend ücretsiz bir barındırma planında çalışır ve 15 dakika istek almazsa uykuya geçer; bu yüzden duraklamadan sonraki ilk istek bir dakikaya kadar sürebilir.
+- Doğrulama ve parola sıfırlama e-postaları henüz gönderilmiyor; canlı backend bağlantıları sunucu günlüğüne yazar. Backend ayrı bir depoda: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 
@@ -144,7 +145,9 @@ src/
 - [x] GitHub Actions ile sürekli entegrasyon
 - [x] Veri erişim katmanı: `DataProvider` arkasında repository'ler
 - [x] Mobil görünüm
-- [ ] Cihazlar arası veri için backend, veritabanı ve kimlik doğrulama (geliştiriliyor: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api))
+- [x] Cihazlar arası veri için backend, veritabanı ve kimlik doğrulama ([anchorly-api](https://github.com/berkaycinar-dev/anchorly-api)); çevrimdışı değişiklikler sonra eşitlenir
+- [x] Yayına alma: frontend Vercel'de, API Render'da, PostgreSQL Neon'da
+- [ ] Doğrulama ve parola sıfırlama için gerçek e-posta gönderimi
 - [ ] Klavye ve ekran okuyucu erişilebilirliği incelemesi
 - [ ] Yüklenebilir web uygulaması (PWA) ve Android uygulaması
 

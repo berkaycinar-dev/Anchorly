@@ -7,9 +7,9 @@
 ![Vitest](https://img.shields.io/badge/Tested%20with-Vitest-6E9F18?logo=vitest&logoColor=white)
 ![Storage](https://img.shields.io/badge/Data-Stored%20in%20browser-orange)
 
-Anchorly is a task and habit dashboard built with React. Daily tasks, routines, a calendar and projects live in one place, and your data never leaves your browser.
+Anchorly is a task and habit dashboard built with React. Daily tasks, routines, a calendar and projects live in one place, and without an account your data never leaves your browser. With an account it is stored on the server and follows you across devices.
 
-**Live demo:** https://anchorly-nine.vercel.app/
+**Live demo:** https://anchorly-app.vercel.app/
 
 | Dashboard (light theme)                                         | Dashboard (dark theme)                                        |
 | --------------------------------------------------------------- | ------------------------------------------------------------- |
@@ -132,8 +132,9 @@ src/
 
 ## Known limitations
 
-- Data is stored in the browser (`localStorage`). It is not synced between devices or browsers, and the browser limits its size.
-- Accounts are being added behind the `VITE_AUTH_ENABLED` flag; task, routine and project data is not stored on the server yet. The backend lives in a separate repository: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
+- Without an account, data is stored in the browser (`localStorage`). It is not synced between devices or browsers, and the browser limits its size.
+- The backend runs on a free hosting plan and sleeps after 15 minutes without requests, so the first request after a pause can take up to a minute.
+- Verification and reset emails are not sent yet; the live backend prints the links to its server log. The backend lives in a separate repository: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 
@@ -144,7 +145,9 @@ src/
 - [x] Continuous integration with GitHub Actions
 - [x] Data access layer: repositories behind a `DataProvider`
 - [x] Mobile layout
-- [ ] Backend, database and authentication for cross-device data (in progress: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api))
+- [x] Backend, database and authentication for cross-device data ([anchorly-api](https://github.com/berkaycinar-dev/anchorly-api)), with offline changes synced later
+- [x] Deployment: frontend on Vercel, API on Render, PostgreSQL on Neon
+- [ ] Real email delivery for verification and password reset
 - [ ] Keyboard and screen reader accessibility review
 - [ ] Installable web app (PWA) and Android app
 
