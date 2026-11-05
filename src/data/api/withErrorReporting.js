@@ -3,6 +3,7 @@ const READ_ONLY_MEMBERS = new Set([
   "getSnapshot",
   "subscribe",
   "start",
+  "refresh",
 ]);
 
 export default function withErrorReporting(repository, onError) {

@@ -397,6 +397,22 @@ export default function createApiTasksRepository({ client, today }) {
     return createMany(copies).then(ignore, ignore);
   }
 
+  function pruneOrphanLocalFields() {
+    const knownIds = new Set(store.getSnapshot().map((task) => task.id));
+
+    clearLocalFields(
+      Object.keys(localFields.getSnapshot()).filter((id) => !knownIds.has(id)),
+    );
+  }
+
+  function refresh() {
+    return store.refresh().then(() => {
+      if (store.getStatus() === "ready") {
+        pruneOrphanLocalFields();
+      }
+    });
+  }
+
   function start() {
     if (!startPromise) {
       localFields.persistInitialState();
@@ -406,13 +422,7 @@ export default function createApiTasksRepository({ client, today }) {
           return undefined;
         }
 
-        const knownIds = new Set(store.getSnapshot().map((task) => task.id));
-
-        clearLocalFields(
-          Object.keys(localFields.getSnapshot()).filter(
-            (id) => !knownIds.has(id),
-          ),
-        );
+        pruneOrphanLocalFields();
 
         return createFutureOccurrences();
       });
@@ -426,6 +436,7 @@ export default function createApiTasksRepository({ client, today }) {
     getSnapshot,
     subscribe,
     start,
+    refresh,
     create,
     createMany,
     update,

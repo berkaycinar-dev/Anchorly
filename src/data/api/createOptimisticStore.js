@@ -8,6 +8,8 @@ export default function createOptimisticStore({ initialState, load }) {
   let pending = [];
   let queue = Promise.resolve();
   let startPromise = null;
+  let refreshPromise = null;
+  let localVersion = 0;
 
   function publish() {
     const next = pending.reduce(
@@ -54,8 +56,43 @@ export default function createOptimisticStore({ initialState, load }) {
     return startPromise;
   }
 
+  function refresh() {
+    if (status !== "ready") {
+      return Promise.resolve();
+    }
+
+    if (!refreshPromise) {
+      const versionAtStart = localVersion;
+
+      const run = queue
+        .then(() => load())
+        .then((state) => {
+          if (
+            status !== "ready" ||
+            localVersion !== versionAtStart ||
+            JSON.stringify(state) === JSON.stringify(confirmed)
+          ) {
+            return;
+          }
+
+          confirmed = state;
+          publish();
+        })
+        .catch(ignore)
+        .then(() => {
+          refreshPromise = null;
+        });
+
+      refreshPromise = run;
+      queue = run;
+    }
+
+    return refreshPromise;
+  }
+
   function mutate({ apply, send, settle = (state) => state }) {
     if (!send) {
+      localVersion += 1;
       confirmed = apply(confirmed);
       publish();
 
@@ -91,6 +128,7 @@ export default function createOptimisticStore({ initialState, load }) {
     getSnapshot: () => snapshot,
     subscribe,
     start,
+    refresh,
     mutate,
   };
 }

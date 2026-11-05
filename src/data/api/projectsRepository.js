@@ -73,6 +73,7 @@ export default function createApiProjectsRepository({ client }) {
     getSnapshot: store.getSnapshot,
     subscribe: store.subscribe,
     start: store.start,
+    refresh: store.refresh,
     create,
     update,
     remove,

@@ -21,6 +21,7 @@ function createFakeRepository(initialStatus = "ready") {
     },
     start: vi.fn(() => Promise.resolve()),
     create: vi.fn(() => Promise.reject(new Error("offline"))),
+    refresh: vi.fn(() => Promise.resolve()),
     setStatus(next) {
       status = next;
       listeners.forEach((listener) => listener());
@@ -92,6 +93,49 @@ describe("DataProvider with an account", () => {
       client: auth.api.client,
       today: "2026-11-05",
     });
+  });
+
+  it("refreshes every repository when the connection comes back", async () => {
+    const repositories = createApiSet();
+
+    renderWithAuth(
+      <DataProvider
+        createRepositories={() => createApiSet()}
+        createApiRepositories={() => repositories}
+        today="2026-11-05"
+      >
+        <Probe />
+      </DataProvider>,
+      authValue(),
+    );
+
+    act(() => {
+      window.dispatchEvent(new Event("online"));
+    });
+
+    expect(repositories.tasks.refresh).toHaveBeenCalledTimes(1);
+    expect(repositories.projects.refresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not refresh while the data is still loading", () => {
+    const repositories = createApiSet("loading");
+
+    renderWithAuth(
+      <DataProvider
+        createRepositories={() => createApiSet()}
+        createApiRepositories={() => repositories}
+        today="2026-11-05"
+      >
+        <Probe />
+      </DataProvider>,
+      authValue(),
+    );
+
+    act(() => {
+      window.dispatchEvent(new Event("online"));
+    });
+
+    expect(repositories.tasks.refresh).not.toHaveBeenCalled();
   });
 
   it("shows a loading screen instead of the app while the session is restored", () => {

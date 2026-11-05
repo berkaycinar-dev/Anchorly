@@ -17,5 +17,6 @@ export const DEFAULT_SETTINGS = {
   language: "tr",
   fontFamily: "Inter",
   weekStartDay: "monday",
+  timezone: "UTC",
   dashboardLayout: DEFAULT_DASHBOARD_LAYOUT,
 };

@@ -50,6 +50,14 @@ describe("withErrorReporting", () => {
     expect(onError).not.toHaveBeenCalled();
   });
 
+  it("leaves refresh untouched so a failed refresh is never reported", () => {
+    const refresh = vi.fn(() => Promise.resolve());
+    const repository = createRepository({ refresh });
+    const wrapped = withErrorReporting(repository, vi.fn());
+
+    expect(wrapped.refresh).toBe(refresh);
+  });
+
   it("leaves status, snapshot, subscribe and start untouched", () => {
     const repository = createRepository();
     const wrapped = withErrorReporting(repository, vi.fn());

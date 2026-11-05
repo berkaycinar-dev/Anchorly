@@ -10,6 +10,7 @@ const SERVER_SETTINGS = {
   language: "en",
   fontFamily: "Poppins",
   weekStartDay: "sunday",
+  timezone: "Europe/Istanbul",
   dashboardLayout: [{ id: "calendar", size: "wide" }],
 };
 

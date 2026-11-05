@@ -423,4 +423,36 @@ describe("api tasks repository", () => {
       expect(client.getStoredTasks()).toHaveLength(1);
     });
   });
+  describe("refresh", () => {
+    it("brings in a task another device removed and drops its local fields", async () => {
+      const { client, repository } = createSubject([FIRST, SECOND]);
+      await repository.start();
+      await repository.create({ ...NEW_TASK, attachments: [ATTACHMENT] });
+      await client.request("POST", "/tasks/bulk", {
+        body: { operations: [{ type: "delete", id: NEW_TASK.id }] },
+      });
+
+      await repository.refresh();
+
+      expect(repository.getSnapshot().map((task) => task.id)).toEqual([
+        FIRST.id,
+        SECOND.id,
+      ]);
+      expect(JSON.parse(localStorage.getItem("taskLocalFields"))).toEqual({});
+    });
+
+    it("shows a task another device added", async () => {
+      const { client, repository } = createSubject([FIRST]);
+      await repository.start();
+      const other = createApiTasksRepository({ client, today: TODAY });
+      await other.start();
+      await other.create(SECOND);
+
+      await repository.refresh();
+
+      expect(repository.getSnapshot().map((task) => task.id)).toContain(
+        SECOND.id,
+      );
+    });
+  });
 });

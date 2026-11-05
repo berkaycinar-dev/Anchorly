@@ -39,6 +39,7 @@ export default function createApiSettingsRepository({ client }) {
     getSnapshot: store.getSnapshot,
     subscribe: store.subscribe,
     start: store.start,
+    refresh: store.refresh,
     update,
   };
 }

@@ -5,6 +5,7 @@ const STORED_SETTINGS = {
   language: "en",
   fontFamily: "Roboto",
   weekStartDay: "sunday",
+  timezone: "Europe/Istanbul",
   dashboardLayout: [
     { id: "calendar", size: "wide" },
     { id: "streaks", size: "small" },

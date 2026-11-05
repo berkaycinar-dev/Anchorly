@@ -1,7 +1,10 @@
 import { DEFAULT_SETTINGS } from "../constants/settings";
 
 const EMPTY_DATA = {
-  "/me/settings": DEFAULT_SETTINGS,
+  "/me/settings": {
+    ...DEFAULT_SETTINGS,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  },
   "/projects": [],
   "/routines": [],
   "/routines/checks": [],

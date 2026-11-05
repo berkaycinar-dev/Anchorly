@@ -50,7 +50,13 @@ function createDataContextValue({
     });
   }
 
-  return { repositories, ensureStarted, startAll, retry, reload };
+  function refresh() {
+    return Promise.all(
+      Object.values(repositories).map((repository) => repository.refresh?.()),
+    );
+  }
+
+  return { repositories, ensureStarted, startAll, retry, refresh, reload };
 }
 
 function DataSession({
