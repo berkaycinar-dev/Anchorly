@@ -1,19 +1,13 @@
-import { DEFAULT_SETTINGS, THEMES } from "../../constants/settings";
-import { normalizeDashboardLayout } from "../../constants/dashboardCards";
+import { DEFAULT_SETTINGS } from "../../constants/settings";
+import { SETTING_TRANSFORMS } from "../settingsTransforms";
 import combineLocalStores from "./combineLocalStores";
 import createLocalStore from "./createLocalStore";
-
-const TRANSFORMS = {
-  theme: (savedTheme) =>
-    THEMES.includes(savedTheme) ? savedTheme : DEFAULT_SETTINGS.theme,
-  dashboardLayout: normalizeDashboardLayout,
-};
 
 export default function createLocalSettingsRepository() {
   const stores = Object.fromEntries(
     Object.entries(DEFAULT_SETTINGS).map(([key, fallback]) => [
       key,
-      createLocalStore(key, fallback, TRANSFORMS[key]),
+      createLocalStore(key, fallback, SETTING_TRANSFORMS[key]),
     ]),
   );
   const combined = combineLocalStores(stores);
