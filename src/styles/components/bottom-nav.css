@@ -120,8 +120,10 @@
   right: calc(8px + var(--safe-area-right));
   bottom: calc(100% + 8px);
   min-width: 220px;
+  max-height: calc(100dvh - var(--bottom-nav-height) - 24px);
   margin: 0;
   padding: 8px;
+  overflow-y: auto;
   list-style: none;
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -133,13 +135,31 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
   min-height: 44px;
   padding: 0 12px;
+  border: none;
   border-radius: 8px;
+  background-color: transparent;
   color: var(--color-text-secondary);
+  font: inherit;
   font-size: 16px;
   font-weight: 500;
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-more-danger {
+  color: var(--color-danger);
+}
+
+.bottom-nav-more-separator {
+  height: 1px;
+  margin: 8px 4px;
+  background-color: var(--color-border);
+  list-style: none;
 }
 
 .bottom-nav-more-item-active {
