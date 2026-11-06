@@ -1,10 +1,20 @@
+import { useEffect, useState } from "react";
 import { strings } from "../../strings";
 import Logo from "../Logo";
 import useFallbackPreferences from "./useFallbackPreferences";
 
+export const SLOW_LOADING_MS = 6000;
+
 function DataLoadingScreen() {
   const { language, theme, fontFamily } = useFallbackPreferences();
+  const [slow, setSlow] = useState(false);
   const t = strings[language];
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSlow(true), SLOW_LOADING_MS);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div
@@ -16,6 +26,7 @@ function DataLoadingScreen() {
           <Logo size={56} />
         </div>
         <p className="data-gate-text">{t.dataLoading}</p>
+        {slow ? <p className="data-gate-text">{t.dataLoadingSlow}</p> : null}
       </main>
     </div>
   );

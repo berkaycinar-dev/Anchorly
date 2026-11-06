@@ -32,8 +32,8 @@ export default function createAuthApi(client) {
       );
     },
 
-    refreshSession() {
-      return client.refreshSession();
+    refreshSession(options) {
+      return client.refreshSession(options);
     },
 
     async logout() {

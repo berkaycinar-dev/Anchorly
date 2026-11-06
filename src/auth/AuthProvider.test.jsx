@@ -1,13 +1,17 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { useEffect } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "../data/api/ApiError";
 import {
   hasSessionHint,
   SESSION_HINT_KEY,
   setSessionHint,
 } from "../data/local/sessionHint";
-import AuthProvider from "./AuthProvider";
+import AuthProvider, {
+  STARTUP_REFRESH_ATTEMPTS,
+  STARTUP_REFRESH_TIMEOUT_MS,
+  STARTUP_RETRY_DELAY_MS,
+} from "./AuthProvider";
 import { SIGNED_IN_MESSAGE, SIGNED_OUT_MESSAGE } from "./authChannel";
 import { AUTH_STATUS } from "./authStatus";
 import useAuth from "./useAuth";
@@ -150,6 +154,24 @@ function status() {
   return screen.getByTestId("status").textContent;
 }
 
+function serverError(statusCode = 503) {
+  return new ApiError({
+    status: statusCode,
+    code: "UNKNOWN_ERROR",
+    message: "Unavailable",
+  });
+}
+
+async function advance(milliseconds) {
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(milliseconds);
+  });
+}
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 function postedTypes(hub) {
   return [...hub.channels].flatMap((channel) =>
     channel.posted.map((message) => message.type),
@@ -220,9 +242,92 @@ describe("AuthProvider on start", () => {
     expect(screen.getByTestId("startup-error")).toHaveTextContent("");
   });
 
-  it("keeps the hint and reports the error when the server cannot be reached", async () => {
+  it("asks for the session with the long startup timeout", async () => {
     setSessionHint();
-    renderAuth({
+    const { api } = renderAuth();
+
+    await waitFor(() => {
+      expect(status()).toBe(AUTH_STATUS.signedIn);
+    });
+    expect(api.refreshSession).toHaveBeenCalledWith({
+      timeoutMs: STARTUP_REFRESH_TIMEOUT_MS,
+    });
+  });
+
+  it("does not retry when the server rejects the session", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const { api } = renderAuth({
+      api: createFakeApi({
+        refreshSession: vi.fn(async () => {
+          throw unauthorized();
+        }),
+      }),
+    });
+
+    await advance(STARTUP_RETRY_DELAY_MS * STARTUP_REFRESH_ATTEMPTS);
+
+    expect(api.refreshSession).toHaveBeenCalledTimes(1);
+    expect(status()).toBe(AUTH_STATUS.signedOut);
+  });
+
+  it("keeps loading and tries again when the server cannot be reached at first", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const refreshSession = vi
+      .fn()
+      .mockRejectedValueOnce(networkError())
+      .mockResolvedValueOnce(session());
+    renderAuth({ api: createFakeApi({ refreshSession }) });
+
+    await advance(STARTUP_RETRY_DELAY_MS - 1);
+
+    expect(refreshSession).toHaveBeenCalledTimes(1);
+    expect(status()).toBe(AUTH_STATUS.loading);
+
+    await advance(1);
+
+    expect(refreshSession).toHaveBeenCalledTimes(2);
+    expect(status()).toBe(AUTH_STATUS.signedIn);
+    expect(hasSessionHint()).toBe(true);
+  });
+
+  it("tries again when the server answers with an error while it wakes up", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const refreshSession = vi
+      .fn()
+      .mockRejectedValueOnce(serverError(504))
+      .mockResolvedValueOnce(session());
+    renderAuth({ api: createFakeApi({ refreshSession }) });
+
+    await advance(STARTUP_RETRY_DELAY_MS);
+
+    expect(refreshSession).toHaveBeenCalledTimes(2);
+    expect(status()).toBe(AUTH_STATUS.signedIn);
+  });
+
+  it("does not retry other client errors", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const { api } = renderAuth({
+      api: createFakeApi({
+        refreshSession: vi.fn(async () => {
+          throw serverError(429);
+        }),
+      }),
+    });
+
+    await advance(STARTUP_RETRY_DELAY_MS * STARTUP_REFRESH_ATTEMPTS);
+
+    expect(api.refreshSession).toHaveBeenCalledTimes(1);
+    expect(status()).toBe(AUTH_STATUS.signedOut);
+  });
+
+  it("keeps the hint and reports the error when the server stays unreachable", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const { api } = renderAuth({
       api: createFakeApi({
         refreshSession: vi.fn(async () => {
           throw networkError();
@@ -230,13 +335,42 @@ describe("AuthProvider on start", () => {
       }),
     });
 
-    await waitFor(() => {
-      expect(status()).toBe(AUTH_STATUS.signedOut);
-    });
+    await advance(STARTUP_RETRY_DELAY_MS * STARTUP_REFRESH_ATTEMPTS);
+
+    expect(api.refreshSession).toHaveBeenCalledTimes(STARTUP_REFRESH_ATTEMPTS);
+    expect(status()).toBe(AUTH_STATUS.signedOut);
     expect(hasSessionHint()).toBe(true);
     expect(screen.getByTestId("startup-error")).toHaveTextContent(
       "NETWORK_ERROR",
     );
+  });
+
+  it("forgets the hint when a retry finds the session rejected", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const refreshSession = vi
+      .fn()
+      .mockRejectedValueOnce(networkError())
+      .mockRejectedValueOnce(unauthorized());
+    renderAuth({ api: createFakeApi({ refreshSession }) });
+
+    await advance(STARTUP_RETRY_DELAY_MS);
+
+    expect(status()).toBe(AUTH_STATUS.signedOut);
+    expect(hasSessionHint()).toBe(false);
+  });
+
+  it("stops retrying when it is unmounted", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const refreshSession = vi.fn().mockRejectedValue(networkError());
+    const { unmount } = renderAuth({ api: createFakeApi({ refreshSession }) });
+
+    await advance(0);
+    unmount();
+    await advance(STARTUP_RETRY_DELAY_MS * STARTUP_REFRESH_ATTEMPTS);
+
+    expect(refreshSession).toHaveBeenCalledTimes(1);
   });
 
   it("does not write the hint back when it was removed during the restore", async () => {

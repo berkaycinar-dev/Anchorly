@@ -152,11 +152,13 @@ export default function createApiClient({
     return parsed.value;
   }
 
-  async function performRefresh() {
+  async function performRefresh(options) {
     const hadSession = accessToken !== null;
 
     try {
-      const session = await send("POST", REFRESH_PATH, {});
+      const session = await send("POST", REFRESH_PATH, {
+        timeoutMs: options.timeoutMs,
+      });
       accessToken = session.accessToken;
       return session;
     } catch (error) {
@@ -172,9 +174,9 @@ export default function createApiClient({
     }
   }
 
-  function refreshSession() {
+  function refreshSession(options = {}) {
     if (!refreshPromise) {
-      refreshPromise = performRefresh().finally(() => {
+      refreshPromise = performRefresh(options).finally(() => {
         refreshPromise = null;
       });
     }

@@ -80,6 +80,15 @@ describe("createAuthApi", () => {
     expect(client.refreshSession).toHaveBeenCalledTimes(1);
   });
 
+  it("passes the refresh options on to the client", async () => {
+    const client = createFakeClient();
+    const api = createAuthApi(client);
+
+    await api.refreshSession({ timeoutMs: 5000 });
+
+    expect(client.refreshSession).toHaveBeenCalledWith({ timeoutMs: 5000 });
+  });
+
   it("logs out with authentication and clears the token", async () => {
     const client = createFakeClient();
     const api = createAuthApi(client);

@@ -18,12 +18,22 @@ import { AUTH_STATUS } from "./authStatus";
 
 const SESSION_EXPIRED_EVENT = "sessionExpired";
 
+export const STARTUP_REFRESH_TIMEOUT_MS = 90000;
+export const STARTUP_REFRESH_ATTEMPTS = 3;
+export const STARTUP_RETRY_DELAY_MS = 2000;
+
 function createDefaultAuthApi({ onSessionExpired }) {
   return createAuthApi(createApiClient({ onSessionExpired }));
 }
 
 function isUnauthorized(error) {
   return error instanceof ApiError && error.status === 401;
+}
+
+function isTransient(error) {
+  return (
+    error instanceof ApiError && (error.status === 0 || error.status >= 500)
+  );
 }
 
 function signedOutState(startupError = null) {
@@ -106,23 +116,49 @@ export default function AuthProvider({
 
   useEffect(() => {
     if (!shouldRestore) {
-      return;
+      return undefined;
     }
 
-    api.refreshSession().then(
-      (session) => {
-        showSignedIn(session.user);
-      },
-      (error) => {
-        if (isUnauthorized(error)) {
-          clearSessionHint();
-          showSignedOut();
-          return;
-        }
+    let cancelled = false;
+    let retryTimer = null;
 
-        showSignedOut(error);
-      },
-    );
+    function attempt(number) {
+      api.refreshSession({ timeoutMs: STARTUP_REFRESH_TIMEOUT_MS }).then(
+        (session) => {
+          if (!cancelled) {
+            showSignedIn(session.user);
+          }
+        },
+        (error) => {
+          if (cancelled) {
+            return;
+          }
+
+          if (isUnauthorized(error)) {
+            clearSessionHint();
+            showSignedOut();
+            return;
+          }
+
+          if (isTransient(error) && number < STARTUP_REFRESH_ATTEMPTS) {
+            retryTimer = setTimeout(
+              () => attempt(number + 1),
+              STARTUP_RETRY_DELAY_MS,
+            );
+            return;
+          }
+
+          showSignedOut(error);
+        },
+      );
+    }
+
+    attempt(1);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(retryTimer);
+    };
   }, [api, shouldRestore, showSignedIn, showSignedOut]);
 
   useEffect(() => {

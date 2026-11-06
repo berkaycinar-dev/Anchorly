@@ -464,6 +464,37 @@ describe("createApiClient session refresh", () => {
     expect(client.getAccessToken()).toBe("token-9");
   });
 
+  it("lets a direct refresh wait longer than the default timeout", async () => {
+    vi.useFakeTimers();
+    const client = createApiClient({ fetchImpl: hangingFetch() });
+    const longTimeoutMs = DEFAULT_TIMEOUT_MS * 4;
+
+    const pending = client
+      .refreshSession({ timeoutMs: longTimeoutMs })
+      .catch((caught) => caught);
+    await vi.advanceTimersByTimeAsync(DEFAULT_TIMEOUT_MS + 1);
+    let settled = false;
+    pending.then(() => {
+      settled = true;
+    });
+    await Promise.resolve();
+    expect(settled).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(longTimeoutMs);
+
+    expect((await pending).code).toBe(TIMEOUT);
+  });
+
+  it("uses the default timeout for a direct refresh without options", async () => {
+    vi.useFakeTimers();
+    const client = createApiClient({ fetchImpl: hangingFetch() });
+
+    const pending = client.refreshSession().catch((caught) => caught);
+    await vi.advanceTimersByTimeAsync(DEFAULT_TIMEOUT_MS);
+
+    expect((await pending).code).toBe(TIMEOUT);
+  });
+
   it("does not report an expired session when there was none", async () => {
     const onSessionExpired = vi.fn();
     const fetchImpl = vi.fn(async () =>

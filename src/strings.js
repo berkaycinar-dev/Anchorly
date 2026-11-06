@@ -558,6 +558,8 @@ export const strings = {
     storageReadWarning:
       "Kayıtlı verilerin bir kısmı okunamadı, varsayılan değerler yüklendi. Okunamayan veri tarayıcı depolamasında yedek olarak saklandı.",
     dataLoading: "Verilerin yükleniyor",
+    dataLoadingSlow:
+      "Sunucu uyanıyor olabilir, bu bir dakikayı bulabilir. Oturumun korunuyor.",
     dataLoadErrorTitle: "Verilerin yüklenemedi",
     dataLoadErrorBody:
       "Sunucuya ulaşılamadı veya bir sorun oluştu. Bağlantını kontrol edip tekrar dene.",
@@ -1138,6 +1140,8 @@ export const strings = {
     storageReadWarning:
       "Some saved data could not be read, so default values were loaded. The unreadable data was kept as a backup in browser storage.",
     dataLoading: "Loading your data",
+    dataLoadingSlow:
+      "The server may be waking up, this can take up to a minute. You are still signed in.",
     dataLoadErrorTitle: "Your data could not be loaded",
     dataLoadErrorBody:
       "The server could not be reached or something went wrong. Check your connection and try again.",
