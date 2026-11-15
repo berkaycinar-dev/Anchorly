@@ -1,90 +1,120 @@
-import AddTaskForm from "../components/AddTaskForm";
+import AddTaskBar from "../components/AddTaskBar";
+import TaskDetailPanel from "../components/TaskDetailPanel";
 import TaskList from "../components/TaskList";
+import { parseLocalDate } from "../utils/dateHelpers";
 
 function TodayPage({
-  searchText,
-  setSearchText,
+  today,
   newTaskTitle,
   setNewTaskTitle,
-  newTaskCategory,
-  setNewTaskCategory,
   newTaskDate,
   setNewTaskDate,
+  newTaskTime,
+  setNewTaskTime,
+  newTaskRepeat,
+  setNewTaskRepeat,
   addTask,
   titleInputRef,
-  filter,
-  setFilter,
-  filteredTasks,
+  tasks,
+  stats,
   toggleTask,
+  toggleImportant,
   deleteTask,
+  selectedTask,
   setSelectedTaskId,
+  closeTaskDetail,
+  detailActions,
+  projects,
   reorderTasks,
   t,
 }) {
+  const dateText = parseLocalDate(today).toLocaleDateString(t.dateLocale, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   return (
-    <>
-      <div className="search-box">
-        <input
-          type="text"
-          enterKeyHint="search"
-          autoComplete="off"
-          aria-label={t.searchLabel}
-          placeholder={t.searchPlaceholder}
-          value={searchText}
-          onChange={(event) => setSearchText(event.target.value)}
-        />
-      </div>
+    <div
+      className={
+        selectedTask ? "today-layout today-layout-with-panel" : "today-layout"
+      }
+    >
+      <div className="today-main">
+        <header className="today-header">
+          <p className="today-date">{dateText}</p>
+          <h2 className="page-title">{t.today}</h2>
+        </header>
 
-      <AddTaskForm
-        newTaskTitle={newTaskTitle}
-        setNewTaskTitle={setNewTaskTitle}
-        newTaskCategory={newTaskCategory}
-        setNewTaskCategory={setNewTaskCategory}
-        newTaskDate={newTaskDate}
-        setNewTaskDate={setNewTaskDate}
-        addTask={addTask}
-        titleInputRef={titleInputRef}
-        t={t}
-      />
+        <ul className="today-stats">
+          <li className="today-stat">
+            <span className="today-stat-value">{stats.remaining}</span>
+            {t.todayRemaining}
+          </li>
+          <li className="today-stat">
+            <span className="today-stat-value">{stats.completed}</span>
+            {t.filterCompleted}
+          </li>
+          <li
+            className={
+              stats.overdue > 0 ? "today-stat today-stat-overdue" : "today-stat"
+            }
+          >
+            <span className="today-stat-value">{stats.overdue}</span>
+            {t.statOverdue}
+          </li>
+        </ul>
 
-      <section className="task-section">
-        <div className="task-section-header">
-          <h2>{t.todaysTasksTitle}</h2>
-
-          <div className="filters">
-            <button
-              className={filter === "all" ? "active-filter" : ""}
-              onClick={() => setFilter("all")}
-            >
-              {t.filterAll}
-            </button>
-
-            <button
-              className={filter === "active" ? "active-filter" : ""}
-              onClick={() => setFilter("active")}
-            >
-              {t.filterActive}
-            </button>
-
-            <button
-              className={filter === "completed" ? "active-filter" : ""}
-              onClick={() => setFilter("completed")}
-            >
-              {t.filterCompleted}
-            </button>
-          </div>
-        </div>
-
-        <TaskList
-          tasks={filteredTasks}
-          toggleTask={toggleTask}
-          deleteTask={deleteTask}
-          onSelectTask={setSelectedTaskId}
-          onReorderTasks={reorderTasks}
+        <AddTaskBar
+          title={newTaskTitle}
+          setTitle={setNewTaskTitle}
+          date={newTaskDate}
+          setDate={setNewTaskDate}
+          time={newTaskTime}
+          setTime={setNewTaskTime}
+          repeat={newTaskRepeat}
+          setRepeat={setNewTaskRepeat}
+          onSubmit={addTask}
+          inputRef={titleInputRef}
           t={t}
         />
-      </section>
-    </>
+
+        <section className="task-section" aria-label={t.todaysTasksTitle}>
+          <TaskList
+            variant="today"
+            tasks={tasks}
+            projects={projects}
+            today={today}
+            toggleTask={toggleTask}
+            deleteTask={deleteTask}
+            onSelectTask={setSelectedTaskId}
+            onReorderTasks={reorderTasks}
+            onToggleImportant={toggleImportant}
+            selectedTaskId={selectedTask?.id ?? null}
+            t={t}
+          />
+        </section>
+      </div>
+
+      <TaskDetailPanel
+        task={selectedTask}
+        onClose={closeTaskDetail}
+        onToggleTask={toggleTask}
+        onToggleImportant={toggleImportant}
+        onDeleteTask={detailActions.onDeleteTask}
+        onUpdateTitle={detailActions.onUpdateTitle}
+        onUpdateDate={detailActions.onUpdateDate}
+        onUpdateTime={detailActions.onUpdateTime}
+        onUpdateDescription={detailActions.onUpdateDescription}
+        onAddStep={detailActions.onAddStep}
+        onToggleStep={detailActions.onToggleStep}
+        onDeleteStep={detailActions.onDeleteStep}
+        onUpdateRepeat={detailActions.onUpdateRepeat}
+        projects={projects}
+        onAssignProject={detailActions.onAssignProject}
+        t={t}
+      />
+    </div>
   );
 }
 

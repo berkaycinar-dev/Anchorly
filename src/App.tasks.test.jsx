@@ -5,7 +5,6 @@ import { renderApp } from "./test/renderApp";
 import {
   getCompletedToggle,
   getDeleteButton,
-  getFilterButton,
   getSidebarBadge,
   getSidebarLink,
   getTaskCheckbox,
@@ -140,58 +139,6 @@ describe("App deleting a task", () => {
     expect(queryTaskItem("Task 1")).not.toBeInTheDocument();
     expect(getTaskItem("Task 2")).toBeInTheDocument();
     expect(readStoredTasks().map((task) => task.id)).toEqual([SECOND_ID]);
-  });
-});
-
-describe("App searching and filtering tasks", () => {
-  it("shows only the tasks that match the search text", async () => {
-    const user = userEvent.setup();
-    seedTasks([
-      createStoredTask(FIRST_ID, "Buy milk"),
-      createStoredTask(SECOND_ID, "Write report", { order: 1 }),
-    ]);
-    renderApp("/today");
-
-    await user.type(screen.getByPlaceholderText("Search tasks..."), "MILK");
-
-    expect(getTaskItem("Buy milk")).toBeInTheDocument();
-    expect(queryTaskItem("Write report")).not.toBeInTheDocument();
-  });
-
-  it("shows only active tasks with the Active filter", async () => {
-    const user = userEvent.setup();
-    seedTasks([
-      createStoredTask(FIRST_ID, "Task 1"),
-      createStoredTask(SECOND_ID, "Task 2", {
-        order: 1,
-        completed: true,
-        completedAt: TODAY,
-      }),
-    ]);
-    renderApp("/today");
-
-    await user.click(getFilterButton("Active"));
-
-    expect(getTaskItem("Task 1")).toBeInTheDocument();
-    expect(queryTaskItem("Task 2")).not.toBeInTheDocument();
-  });
-
-  it("shows only completed tasks with the Completed filter", async () => {
-    const user = userEvent.setup();
-    seedTasks([
-      createStoredTask(FIRST_ID, "Task 1"),
-      createStoredTask(SECOND_ID, "Task 2", {
-        order: 1,
-        completed: true,
-        completedAt: TODAY,
-      }),
-    ]);
-    renderApp("/today");
-
-    await user.click(getFilterButton("Completed"));
-
-    expect(getTaskItem("Task 2")).toBeInTheDocument();
-    expect(queryTaskItem("Task 1")).not.toBeInTheDocument();
   });
 });
 

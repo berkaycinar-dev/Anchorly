@@ -797,3 +797,8 @@
     transition: none;
   }
 }
+
+.board-chip[data-tone="time"] {
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}

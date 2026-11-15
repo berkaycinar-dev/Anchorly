@@ -69,14 +69,14 @@ describe("App keyboard-only task flow", () => {
     await tabTo(user, () => getTaskTitleButton("Write report"));
     await user.keyboard("{Enter}");
 
-    const dialog = screen.getByRole("dialog", { name: "Write report" });
+    const panel = screen.getByRole("complementary", { name: "Task details" });
 
-    expect(screen.getByRole("heading", { name: "Write report" })).toHaveFocus();
+    expect(panel).toHaveFocus();
 
     await tabTo(user, () => screen.getByRole("button", { name: "Close" }));
     await user.keyboard("{Enter}");
 
-    expect(dialog).not.toBeInTheDocument();
+    expect(panel).not.toBeInTheDocument();
     expect(getTaskTitleButton("Write report")).toHaveFocus();
 
     const before = getActiveTitles();

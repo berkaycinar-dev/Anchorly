@@ -116,6 +116,54 @@ describe("api tasks repository", () => {
     });
   });
 
+  it("keeps the important flag, time and created date on this device", async () => {
+    const { repository } = createSubject();
+    await repository.start();
+
+    await repository.create({
+      ...NEW_TASK,
+      important: true,
+      dueTime: "14:30",
+      createdAt: "2026-10-10",
+    });
+
+    expect(findTask(repository, NEW_TASK.id)).toMatchObject({
+      important: true,
+      dueTime: "14:30",
+      createdAt: "2026-10-10",
+    });
+  });
+
+  it("does not send the important flag, time or created date to the server", async () => {
+    const { client, repository } = createSubject();
+    await repository.start();
+
+    await repository.create({
+      ...NEW_TASK,
+      important: true,
+      dueTime: "14:30",
+      createdAt: "2026-10-10",
+    });
+
+    const { body } = client.calls.at(-1);
+
+    expect(body).not.toHaveProperty("important");
+    expect(body).not.toHaveProperty("dueTime");
+    expect(body).not.toHaveProperty("createdAt");
+  });
+
+  it("changes the important flag without a request", async () => {
+    const { client, repository } = createSubject();
+    await repository.start();
+
+    const callsBefore = client.calls.length;
+
+    await repository.update(FIRST.id, { important: true });
+
+    expect(findTask(repository, FIRST.id).important).toBe(true);
+    expect(client.calls).toHaveLength(callsBefore);
+  });
+
   it("shows the local fields again after a reload", async () => {
     const { client, repository } = createSubject();
     await repository.start();

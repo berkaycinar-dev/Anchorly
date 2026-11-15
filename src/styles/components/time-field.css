@@ -1,0 +1,102 @@
+.time-field-popover {
+  position: fixed;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 176px;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  box-shadow: var(--shadow-modal);
+  color: var(--color-text-primary);
+}
+
+.time-field-columns {
+  position: relative;
+  display: flex;
+  gap: 8px;
+}
+
+/* The band the numbers stop in, like a slot machine window. */
+.time-field-columns::before {
+  content: "";
+  position: absolute;
+  top: 80px;
+  right: 0;
+  left: 0;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent-tint);
+  pointer-events: none;
+}
+
+.time-field-column {
+  position: relative;
+  flex: 1;
+  height: 200px;
+  padding: 80px 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 30%,
+    #000 70%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 30%,
+    #000 70%,
+    transparent
+  );
+}
+
+.time-field-column::-webkit-scrollbar {
+  display: none;
+}
+
+.time-field-option {
+  display: block;
+  width: 100%;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-md);
+  font-variant-numeric: tabular-nums;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  cursor: pointer;
+}
+
+.time-field-option[data-selected="true"] {
+  color: var(--color-accent-text);
+  font-size: var(--text-lg, 18px);
+  font-weight: var(--font-weight-semibold);
+}
+
+.time-field-option:focus-visible,
+.time-field-done:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.time-field-done {
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}

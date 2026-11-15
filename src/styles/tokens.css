@@ -121,6 +121,7 @@
 }
 
 .theme-purple {
+  color-scheme: dark;
   --color-accent: #9333ea;
   --color-bg-page: #1e1b2e;
   --color-bg-card: #2a2440;
@@ -157,6 +158,7 @@
 }
 
 .theme-blue {
+  color-scheme: dark;
   --color-accent: #3b82f6;
   --color-bg-page: #0f172a;
   --color-bg-card: #1e293b;
@@ -229,6 +231,7 @@
 }
 
 .theme-green {
+  color-scheme: dark;
   --color-accent: #22c55e;
   --color-bg-page: #050e09;
   --color-bg-card: #07180f;
@@ -301,6 +304,7 @@
 }
 
 .theme-black {
+  color-scheme: dark;
   --color-accent: #e5e5e5;
   --color-bg-page: #0a0a0a;
   --color-bg-card: #141414;

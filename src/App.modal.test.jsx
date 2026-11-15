@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import { renderApp } from "./test/renderApp";
@@ -29,9 +29,13 @@ async function openTaskDialog(user) {
     ]),
   );
 
-  renderApp("/today");
+  renderApp("/calendar");
 
-  await user.click(screen.getByText("Task 1"));
+  await user.click(
+    within(document.querySelector(".calendar-panel")).getByRole("button", {
+      name: "Task 1",
+    }),
+  );
 }
 
 describe("App task detail dialog", () => {

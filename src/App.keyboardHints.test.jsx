@@ -8,14 +8,6 @@ beforeEach(() => {
 });
 
 describe("App keyboard hints", () => {
-  it("shows a search key for the task search field", () => {
-    renderApp("/today");
-
-    expect(
-      screen.getByRole("textbox", { name: "Search tasks" }),
-    ).toHaveAttribute("enterkeyhint", "search");
-  });
-
   it.each([
     ["/today", "New task"],
     ["/routine", "New routine"],

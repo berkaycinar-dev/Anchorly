@@ -17,7 +17,17 @@ import {
   restrictToVerticalAxis,
 } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
+import {
+  Calendar,
+  Clock,
+  Folder,
+  ListChecks,
+  Repeat,
+  Star,
+} from "lucide-react";
+import Icon from "./Icon";
 import { getCategoryLabel } from "../utils/categoryHelpers";
+import { parseLocalDate } from "../utils/dateHelpers";
 
 const DRAG_MODIFIERS = [restrictToVerticalAxis, restrictToParentElement];
 const SILENT_ANNOUNCEMENTS = {
@@ -26,6 +36,18 @@ const SILENT_ANNOUNCEMENTS = {
   onDragEnd: () => undefined,
   onDragCancel: () => undefined,
 };
+
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+function getOverdueDays(task, today) {
+  if (task.completed || !task.date || !today || task.date >= today) {
+    return 0;
+  }
+
+  return Math.round(
+    (parseLocalDate(today) - parseLocalDate(task.date)) / DAY_IN_MS,
+  );
+}
 
 function SortableTaskItem({ id, children }) {
   const { setNodeRef, listeners, transform, transition, isDragging } =
@@ -48,8 +70,14 @@ function TaskList({
   deleteTask,
   onSelectTask,
   onReorderTasks,
+  selectedTaskId = null,
+  variant = "classic",
+  projects = [],
+  today = "",
+  onToggleImportant,
   t,
 }) {
+  const isTodayVariant = variant === "today";
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
   const [announcement, setAnnouncement] = useState("");
   const pendingFocus = useRef(null);
@@ -178,13 +206,114 @@ function TaskList({
   }
 
   function getCardClassName(task, sortable) {
+    const selected = task.id === selectedTaskId ? " task-card-selected" : "";
+
     if (task.completed) {
-      return "task-card completed-task";
+      return `task-card completed-task${selected}`;
     }
 
     return sortable?.isDragging
-      ? "task-card task-card-sortable task-card-dragging"
-      : "task-card task-card-sortable";
+      ? `task-card task-card-sortable task-card-dragging${selected}`
+      : `task-card task-card-sortable${selected}`;
+  }
+
+  function renderTodayMeta(task) {
+    const steps = task.steps ?? [];
+    const doneSteps = steps.filter((step) => step.done).length;
+    const overdueDays = getOverdueDays(task, today);
+    const project = projects.find((item) => item.id === task.projectId);
+    const items = [];
+
+    if (steps.length > 0) {
+      items.push(
+        <span key="steps" className="task-meta-item">
+          <Icon icon={ListChecks} size="sm" />
+          <span className="visually-hidden">{t.stepsLabel}</span>
+          {doneSteps}/{steps.length}
+        </span>,
+      );
+    }
+
+    if (task.dueTime) {
+      items.push(
+        <span key="time" className="task-meta-item task-meta-accent">
+          <Icon icon={Clock} size="sm" />
+          <span className="visually-hidden">{t.timeLabel}</span>
+          {task.dueTime}
+        </span>,
+      );
+    }
+
+    if (overdueDays > 0) {
+      items.push(
+        <span key="overdue" className="task-meta-item task-meta-overdue">
+          <Icon icon={Calendar} size="sm" />
+          {t.overdueDaysLabel(overdueDays)}
+        </span>,
+      );
+    } else if (task.date && task.date !== today) {
+      items.push(
+        <span key="date" className="task-meta-item">
+          <Icon icon={Calendar} size="sm" />
+          {parseLocalDate(task.date).toLocaleDateString(t.dateLocale, {
+            day: "numeric",
+            month: "short",
+          })}
+        </span>,
+      );
+    }
+
+    if (task.repeat && task.repeat !== "none") {
+      items.push(
+        <span key="repeat" className="task-meta-item">
+          <Icon icon={Repeat} size="sm" />
+          {task.repeat === "daily" ? t.repeatDaily : t.repeatWeekly}
+        </span>,
+      );
+    }
+
+    if (project) {
+      items.push(
+        <span key="project" className="task-meta-item">
+          <Icon icon={Folder} size="sm" />
+          {project.name}
+        </span>,
+      );
+    }
+
+    return items.length > 0 ? <div className="task-meta">{items}</div> : null;
+  }
+
+  function renderClassicMeta(task) {
+    return (
+      <div className="task-meta">
+        <span className="task-badge task-badge-category">
+          {getCategoryLabel(task.category, t)}
+        </span>
+
+        {task.date && (
+          <span className="task-badge task-badge-date">{task.date}</span>
+        )}
+
+        {task.dueTime && (
+          <span className="task-badge task-badge-time">
+            <span className="visually-hidden">{t.timeLabel}</span>
+            {task.dueTime}
+          </span>
+        )}
+
+        {task.repeat !== "none" && (
+          <span
+            className="task-badge task-badge-repeat"
+            title={
+              task.repeat === "daily" ? t.repeatDailyHint : t.repeatWeeklyHint
+            }
+          >
+            🔁
+          </span>
+        )}
+      </div>
+    );
   }
 
   function renderTaskCard(task, sortable) {
@@ -197,6 +326,7 @@ function TaskList({
         ref={sortable?.ref}
         style={sortable?.style}
         data-task-id={task.id}
+        aria-current={task.id === selectedTaskId ? "true" : undefined}
         className={getCardClassName(task, sortable)}
         onKeyDown={(event) => handleKeyDown(event, task)}
         {...sortable?.listeners}
@@ -220,28 +350,7 @@ function TaskList({
             {task.title}
           </button>
 
-          <div className="task-meta">
-            <span className="task-badge task-badge-category">
-              {getCategoryLabel(task.category, t)}
-            </span>
-
-            {task.date && (
-              <span className="task-badge task-badge-date">{task.date}</span>
-            )}
-
-            {task.repeat !== "none" && (
-              <span
-                className="task-badge task-badge-repeat"
-                title={
-                  task.repeat === "daily"
-                    ? t.repeatDailyHint
-                    : t.repeatWeeklyHint
-                }
-              >
-                🔁
-              </span>
-            )}
-          </div>
+          {isTodayVariant ? renderTodayMeta(task) : renderClassicMeta(task)}
         </div>
 
         {isDraggable && (
@@ -269,6 +378,21 @@ function TaskList({
           </div>
         )}
 
+        {isTodayVariant && (
+          <button
+            type="button"
+            className={
+              task.important ? "task-star task-star-active" : "task-star"
+            }
+            data-focus="star"
+            aria-pressed={task.important === true}
+            aria-label={t.importantTaskLabel(task.title)}
+            onClick={() => onToggleImportant(task.id)}
+          >
+            <Icon icon={Star} size="md" />
+          </button>
+        )}
+
         <button
           type="button"
           className="task-delete-button"
@@ -282,7 +406,14 @@ function TaskList({
   }
 
   return (
-    <div className="task-list-container" ref={containerRef}>
+    <div
+      className={
+        isTodayVariant
+          ? "task-list-container task-list-today"
+          : "task-list-container"
+      }
+      ref={containerRef}
+    >
       <div className="visually-hidden" role="status">
         {announcement}
       </div>
