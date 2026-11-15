@@ -30,86 +30,88 @@ function seed(language, tasks) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-async function openDialog(user, overrides) {
-  seed("en", [createTask(overrides)]);
-  renderApp("/today");
+const DETAIL_SURFACES = {
+  panel: {
+    async open(user, language) {
+      renderApp("/today");
 
-  await user.click(screen.getByRole("button", { name: "Task 1" }));
+      await user.click(screen.getByRole("button", { name: "Task 1" }));
 
-  return screen.getByRole("dialog", { name: "Task 1" });
+      return screen.getByRole("complementary", {
+        name: language === "tr" ? "Görev ayrıntıları" : "Task details",
+      });
+    },
+  },
+  dialog: {
+    async open(user) {
+      renderApp("/calendar");
+
+      await user.click(
+        within(document.querySelector(".calendar-panel")).getByRole("button", {
+          name: "Task 1",
+        }),
+      );
+
+      return screen.getByRole("dialog", { name: "Task 1" });
+    },
+  },
+};
+
+async function openDetail(surface, user, overrides, language = "en") {
+  seed(language, [createTask(overrides)]);
+
+  return DETAIL_SURFACES[surface].open(user, language);
 }
 
 describe("Today page labels", () => {
-  it("labels the search box", () => {
-    seed("en", [createTask()]);
-    renderApp("/today");
-
-    expect(
-      screen.getByRole("textbox", { name: "Search tasks" }),
-    ).toBeInTheDocument();
-  });
-
-  it("labels the add task form controls", () => {
+  it("labels the add task bar controls", () => {
     seed("en", [createTask()]);
     renderApp("/today");
 
     expect(
       screen.getByRole("textbox", { name: "New task" }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("combobox", { name: "Category" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Add" })).toBeInTheDocument();
     expect(screen.getByLabelText("Date")).toHaveAttribute("type", "date");
+    expect(screen.getByRole("button", { name: "Time" })).toHaveAttribute(
+      "aria-haspopup",
+      "true",
+    );
+    expect(
+      screen.getByRole("combobox", { name: "Repeat" }),
+    ).toBeInTheDocument();
   });
 
-  it("labels the search box and form in Turkish", () => {
+  it("labels the add task bar controls in Turkish", () => {
     seed("tr", [createTask()]);
     renderApp("/today");
 
     expect(
-      screen.getByRole("textbox", { name: "Görev ara" }),
-    ).toBeInTheDocument();
-    expect(
       screen.getByRole("textbox", { name: "Yeni görev" }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Saat" })).toHaveAttribute(
+      "aria-haspopup",
+      "true",
+    );
     expect(
-      screen.getByRole("combobox", { name: "Kategori" }),
+      screen.getByRole("combobox", { name: "Tekrar" }),
     ).toBeInTheDocument();
   });
-});
 
-describe("task category badge", () => {
-  it("shows the category in Turkish", () => {
-    seed("tr", [createTask({ category: "Self Development" })]);
+  it("names the important star after the task", () => {
+    seed("en", [createTask()]);
     renderApp("/today");
 
-    const card = screen.getByRole("button", { name: "Task 1" }).closest("li");
-
-    expect(within(card).getByText("Kişisel Gelişim")).toBeInTheDocument();
-    expect(within(card).queryByText("Self Development")).toBeNull();
-  });
-
-  it("translates the stored Health category", () => {
-    seed("tr", [createTask({ category: "Health" })]);
-    renderApp("/today");
-
-    expect(screen.getByText("Sağlık")).toBeInTheDocument();
-  });
-
-  it("shows the category in English", () => {
-    seed("en", [createTask({ category: "Personal" })]);
-    renderApp("/today");
-
-    const card = screen.getByRole("button", { name: "Task 1" }).closest("li");
-
-    expect(within(card).getByText("Personal")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: '"Task 1" is important' }),
+    ).toHaveAttribute("aria-pressed", "false");
   });
 });
 
-describe("task detail dialog labels", () => {
+describe.each(["panel", "dialog"])("task detail %s labels", (surface) => {
   it("labels the task checkbox in the header", async () => {
     const user = userEvent.setup();
-    const dialog = await openDialog(user);
+    const dialog = await openDetail(surface, user);
 
     expect(
       within(dialog).getByRole("checkbox", { name: 'Complete "Task 1"' }),
@@ -118,7 +120,7 @@ describe("task detail dialog labels", () => {
 
   it("connects every field to its visible label", async () => {
     const user = userEvent.setup();
-    const dialog = await openDialog(user);
+    const dialog = await openDetail(surface, user);
 
     expect(
       within(dialog).getByRole("textbox", { name: "Description" }),
@@ -130,10 +132,17 @@ describe("task detail dialog labels", () => {
     expect(
       within(dialog).getByRole("combobox", { name: "Repeat" }),
     ).toBeInTheDocument();
-    expect(within(dialog).getByLabelText("Attachments")).toHaveAttribute(
-      "type",
-      "file",
-    );
+    if (surface === "dialog") {
+      expect(within(dialog).getByLabelText("Attachments")).toHaveAttribute(
+        "type",
+        "file",
+      );
+    } else {
+      expect(within(dialog).getByLabelText("Time")).toHaveAttribute(
+        "aria-haspopup",
+        "true",
+      );
+    }
     expect(
       within(dialog).getByRole("combobox", { name: "Project" }),
     ).toBeInTheDocument();
@@ -141,7 +150,7 @@ describe("task detail dialog labels", () => {
 
   it("gives the new step input its own name", async () => {
     const user = userEvent.setup();
-    const dialog = await openDialog(user);
+    const dialog = await openDetail(surface, user);
 
     expect(
       within(dialog).getByRole("textbox", { name: "New step" }),
@@ -150,7 +159,7 @@ describe("task detail dialog labels", () => {
 
   it("names the step checkbox and delete button after the step", async () => {
     const user = userEvent.setup();
-    const dialog = await openDialog(user, {
+    const dialog = await openDetail(surface, user, {
       steps: [{ id: "step-1", text: "Buy milk", done: false }],
     });
 
@@ -164,35 +173,33 @@ describe("task detail dialog labels", () => {
     ).toBeInTheDocument();
   });
 
-  it("names the attachment delete button after the file", async () => {
-    const user = userEvent.setup();
-    const dialog = await openDialog(user, {
-      attachments: [
-        {
-          id: "attachment-1",
-          name: "note.txt",
-          type: "text/plain",
-          data: "data:text/plain;base64,aGk=",
-        },
-      ],
-    });
+  it.runIf(surface === "dialog")(
+    "names the attachment delete button after the file",
+    async () => {
+      const user = userEvent.setup();
+      const dialog = await openDetail(surface, user, {
+        attachments: [
+          {
+            id: "attachment-1",
+            name: "note.txt",
+            type: "text/plain",
+            data: "data:text/plain;base64,aGk=",
+          },
+        ],
+      });
 
-    expect(
-      within(dialog).getByRole("button", {
-        name: 'Delete attachment "note.txt"',
-      }),
-    ).toBeInTheDocument();
-  });
+      expect(
+        within(dialog).getByRole("button", {
+          name: 'Delete attachment "note.txt"',
+        }),
+      ).toBeInTheDocument();
+    },
+  );
 
   it("uses Turkish labels when the language is Turkish", async () => {
     const user = userEvent.setup();
 
-    seed("tr", [createTask()]);
-    renderApp("/today");
-
-    await user.click(screen.getByRole("button", { name: "Task 1" }));
-
-    const dialog = screen.getByRole("dialog", { name: "Task 1" });
+    const dialog = await openDetail(surface, user, {}, "tr");
 
     expect(
       within(dialog).getByRole("textbox", { name: "Açıklama" }),
@@ -200,10 +207,9 @@ describe("task detail dialog labels", () => {
     expect(
       within(dialog).getByRole("textbox", { name: "Yeni adım" }),
     ).toBeInTheDocument();
-    expect(within(dialog).getByLabelText("Dosyalar")).toHaveAttribute(
-      "type",
-      "file",
-    );
+    expect(
+      within(dialog).getByRole("combobox", { name: "Proje" }),
+    ).toBeInTheDocument();
   });
 });
 

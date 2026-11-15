@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getLocalDateString, parseLocalDate } from "../utils/dateHelpers";
+import { compareTasksForDay } from "../utils/taskTime";
 
 const MAX_DOTS = 3;
 
@@ -23,7 +24,7 @@ function CalendarAgenda({
   function getTasksForDate(dateString) {
     return tasks
       .filter((task) => task.date === dateString)
-      .sort((a, b) => Number(a.completed) - Number(b.completed));
+      .sort(compareTasksForDay);
   }
 
   const selectedTasks = getTasksForDate(selectedDate);
@@ -139,6 +140,12 @@ function CalendarAgenda({
                   }
                   onClick={() => onSelectTask(task.id)}
                 >
+                  {task.dueTime && (
+                    <span className="calendar-task-time">
+                      <span className="visually-hidden">{t.timeLabel}</span>
+                      {task.dueTime}
+                    </span>
+                  )}
                   {task.title}
                 </button>
               </li>

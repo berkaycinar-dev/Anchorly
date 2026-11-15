@@ -38,10 +38,27 @@ export default function useTasks(today) {
       repeat: "none",
       repeatGroupId: null,
       attachments: [],
+      important: false,
+      dueTime: "",
+      createdAt: today,
       ...taskData,
     };
 
+    if (newTask.repeat !== "none" && newTask.date && !newTask.repeatGroupId) {
+      newTask.repeatGroupId = createId();
+    }
+
     repository.create(newTask);
+
+    const occurrences = generateRepeatOccurrences(
+      newTask,
+      repository.getSnapshot(),
+      today,
+    );
+
+    if (occurrences.length > 0) {
+      repository.createMany(occurrences);
+    }
   }
 
   const toggleTask = useCallback(
@@ -108,6 +125,14 @@ export default function useTasks(today) {
 
       return { ...task, date: newDate };
     });
+  }
+
+  function toggleTaskImportant(taskId) {
+    updateTask(taskId, (task) => ({ ...task, important: !task.important }));
+  }
+
+  function updateTaskTime(taskId, newTime) {
+    updateTask(taskId, (task) => ({ ...task, dueTime: newTime }));
   }
 
   function addTaskStep(taskId, stepText) {
@@ -245,6 +270,8 @@ export default function useTasks(today) {
     updateTaskDescription,
     updateTaskDate,
     updateTaskRepeat,
+    toggleTaskImportant,
+    updateTaskTime,
     addTaskStep,
     toggleTaskStep,
     deleteTaskStep,

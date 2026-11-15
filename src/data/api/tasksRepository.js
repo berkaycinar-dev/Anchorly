@@ -17,7 +17,13 @@ const SERVER_FIELDS = [
   "repeat",
   "repeatGroupId",
 ];
-const LOCAL_FIELDS = ["attachments", "boardStatus"];
+const LOCAL_FIELDS = [
+  "attachments",
+  "boardStatus",
+  "important",
+  "dueTime",
+  "createdAt",
+];
 const MAX_BULK_OPERATIONS = 500;
 const MAX_BULK_BYTES = 90000;
 
@@ -133,6 +139,18 @@ function cleanLocalEntry(entry) {
     cleaned.boardStatus = entry.boardStatus;
   }
 
+  if (entry.important === true) {
+    cleaned.important = true;
+  }
+
+  if (entry.dueTime) {
+    cleaned.dueTime = entry.dueTime;
+  }
+
+  if (entry.createdAt) {
+    cleaned.createdAt = entry.createdAt;
+  }
+
   return cleaned;
 }
 
@@ -156,10 +174,8 @@ export default function createApiTasksRepository({ client, today }) {
       viewLocalFields = extras;
       view = tasks.map((task) => ({
         ...task,
-        attachments: extras[task.id]?.attachments ?? [],
-        ...(extras[task.id]?.boardStatus
-          ? { boardStatus: extras[task.id].boardStatus }
-          : {}),
+        attachments: [],
+        ...extras[task.id],
       }));
     }
 

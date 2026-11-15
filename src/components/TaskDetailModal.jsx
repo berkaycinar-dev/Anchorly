@@ -1,84 +1,33 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { createId } from "../lib/id";
-import { useToast, useToastHost } from "./toast/useToast";
+import {
+  Calendar,
+  Clock,
+  Folder,
+  Paperclip,
+  Plus,
+  Repeat,
+  Star,
+  StickyNote,
+  Trash2,
+  X,
+} from "lucide-react";
+import Icon from "./Icon";
+import { parseLocalDate } from "../utils/dateHelpers";
+import { useToastHost } from "./toast/useToast";
 import DateField from "./DateField";
-
-function useBackdropClose(dialogRef) {
-  const pressStartedOnBackdrop = useRef(false);
-
-  return {
-    onMouseDown(event) {
-      pressStartedOnBackdrop.current = event.target === event.currentTarget;
-    },
-    onClick(event) {
-      const shouldClose =
-        pressStartedOnBackdrop.current && event.target === event.currentTarget;
-
-      pressStartedOnBackdrop.current = false;
-
-      if (shouldClose) {
-        dialogRef.current.close();
-      }
-    },
-  };
-}
-
-function ConfirmDeleteDialog({
-  message,
-  cancelLabel,
-  confirmLabel,
-  onCancel,
-  onConfirm,
-}) {
-  const dialogRef = useRef(null);
-  const messageId = useId();
-  const backdropClose = useBackdropClose(dialogRef);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-
-    if (!dialog.hasAttribute("open")) {
-      dialog.showModal();
-    }
-  }, []);
-
-  return (
-    <dialog
-      ref={dialogRef}
-      className="confirm-dialog"
-      role="alertdialog"
-      aria-labelledby={messageId}
-      onClose={onCancel}
-      onMouseDown={backdropClose.onMouseDown}
-      onClick={backdropClose.onClick}
-    >
-      <div className="confirm-box">
-        <p id={messageId} className="confirm-message">
-          {message}
-        </p>
-
-        <div className="confirm-actions">
-          <button
-            className="btn btn-secondary"
-            onClick={() => dialogRef.current.close()}
-          >
-            {cancelLabel}
-          </button>
-          <button className="btn btn-danger" onClick={onConfirm}>
-            {confirmLabel}
-          </button>
-        </div>
-      </div>
-    </dialog>
-  );
-}
+import TimeField from "./TimeField";
+import ConfirmDeleteDialog from "./taskDetail/ConfirmDeleteDialog";
+import { useAttachmentUpload } from "./taskDetail/useAttachmentUpload";
+import { useBackdropClose } from "./taskDetail/useBackdropClose";
 
 function TaskDetailModal({
   task,
   onClose,
   onToggleTask,
+  onToggleImportant,
   onUpdateTitle,
   onUpdateDate,
+  onUpdateTime,
   onUpdateDescription,
   onAddStep,
   onToggleStep,
@@ -101,15 +50,20 @@ function TaskDetailModal({
   const titleId = useId();
   const fieldId = useId();
   const descriptionId = `${fieldId}-description`;
+  const timeId = `${fieldId}-time`;
   const dateId = `${fieldId}-date`;
   const repeatId = `${fieldId}-repeat`;
   const fileId = `${fieldId}-file`;
   const projectId = `${fieldId}-project`;
   const stepInputId = `${fieldId}-step`;
   const setToastHost = useToastHost();
-  const toast = useToast();
   const backdropClose = useBackdropClose(dialogRef);
   const hasTask = Boolean(task);
+  const handleFileUpload = useAttachmentUpload({
+    taskId: task?.id,
+    onAddAttachment,
+    t,
+  });
 
   useEffect(() => {
     if (!hasTask) {
@@ -141,36 +95,6 @@ function TaskDetailModal({
     event.preventDefault();
     onAddStep(task.id, newStepText);
     setNewStepText("");
-  }
-
-  function handleFileUpload(event) {
-    const file = event.target.files[0];
-
-    if (!file) {
-      return;
-    }
-
-    const maxSizeInBytes = 1024 * 1024;
-
-    if (file.size > maxSizeInBytes) {
-      toast.error(t.fileTooLargeWarning);
-      event.target.value = "";
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      onAddAttachment(task.id, {
-        id: createId(),
-        name: file.name,
-        type: file.type,
-        data: reader.result,
-      });
-    };
-
-    reader.readAsDataURL(file);
-    event.target.value = "";
   }
 
   function startEditingTitle() {
@@ -243,12 +167,12 @@ function TaskDetailModal({
       onMouseDown={backdropClose.onMouseDown}
       onClick={backdropClose.onClick}
     >
-      <div className="modal-box">
-        <div className="modal-header">
-          <div className="modal-complete-toggle">
+      <div className="task-detail-panel task-detail-panel-dialog">
+        <div className="task-detail-scroll">
+          <div className="task-detail-header">
             <input
               type="checkbox"
-              className="themed-checkbox"
+              className="task-checkbox"
               aria-label={t.completeTaskLabel(task.title)}
               checked={task.completed}
               onChange={() => onToggleTask(task.id)}
@@ -260,7 +184,7 @@ function TaskDetailModal({
                 type="text"
                 enterKeyHint="done"
                 autoComplete="off"
-                className="modal-title-input"
+                className="task-detail-title task-detail-title-input"
                 value={editedTitle}
                 autoFocus
                 onChange={(event) => setEditedTitle(event.target.value)}
@@ -272,168 +196,269 @@ function TaskDetailModal({
                 id={titleId}
                 ref={titleRef}
                 tabIndex={-1}
-                className={task.completed ? "modal-title-done" : ""}
+                className={
+                  task.completed
+                    ? "task-detail-title task-detail-title-done"
+                    : "task-detail-title"
+                }
                 onDoubleClick={startEditingTitle}
                 title={t.editTitleHint}
               >
                 {task.title}
               </h2>
             )}
-          </div>
 
-          <div className="modal-header-actions">
-            <button
-              className="btn btn-danger"
-              onClick={handleDeleteTask}
-              aria-label={t.deleteButtonAria}
-            >
-              {t.deleteButton}
-            </button>
-
-            <button className="btn btn-secondary" onClick={requestClose}>
-              {t.closeButton}
-            </button>
-          </div>
-        </div>
-
-        <label htmlFor={descriptionId}>{t.descriptionLabel}</label>
-        <textarea
-          id={descriptionId}
-          value={task.description || ""}
-          onChange={(event) => onUpdateDescription(task.id, event.target.value)}
-          placeholder={t.descriptionPlaceholder}
-        />
-        <label htmlFor={dateId}>{t.dateLabel}</label>
-        <div className="detail-date-row">
-          <DateField
-            id={dateId}
-            value={task.date || ""}
-            onChange={(date) => onUpdateDate(task.id, date)}
-            t={t}
-          />
-
-          {task.date && (
             <button
               type="button"
-              className="btn btn-secondary"
-              onClick={() => onUpdateDate(task.id, "")}
+              className={
+                task.important
+                  ? "task-star task-star-active task-detail-star"
+                  : "task-star task-detail-star"
+              }
+              aria-pressed={task.important === true}
+              aria-label={t.importantTaskLabel(task.title)}
+              onClick={() => onToggleImportant(task.id)}
             >
-              {t.removeDateButton}
+              <Icon icon={Star} size="md" />
             </button>
-          )}
-        </div>
+          </div>
 
-        <label htmlFor={repeatId}>{t.repeatLabel}</label>
-        <select
-          id={repeatId}
-          className="task-repeat-select"
-          value={task.repeat || "none"}
-          disabled={!task.date}
-          onChange={(event) => onUpdateRepeat(task.id, event.target.value)}
-        >
-          <option value="none">{t.repeatNone}</option>
-          <option value="daily">{t.repeatDaily}</option>
-          <option value="weekly">{t.repeatWeekly}</option>
-        </select>
-
-        {!task.date && <p className="task-repeat-hint">{t.repeatHint}</p>}
-
-        <label htmlFor={fileId}>{t.attachmentsLabel}</label>
-        <div className="attachments-list">
-          {task.attachments.map((attachment) => (
-            <div className="attachment-item" key={attachment.id}>
-              <a
-                href={attachment.data}
-                download={attachment.name}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="attachment-link"
-              >
-                {attachment.type.startsWith("image/") ? (
-                  <img
-                    src={attachment.data}
-                    alt={attachment.name}
-                    className="attachment-preview"
+          <section className="task-detail-section">
+            <ul className="task-steps-list">
+              {(task.steps || []).map((step) => (
+                <li key={step.id}>
+                  <input
+                    type="checkbox"
+                    className="task-checkbox task-step-checkbox"
+                    aria-label={t.completeStepLabel(step.text)}
+                    checked={step.done}
+                    onChange={() => onToggleStep(task.id, step.id)}
                   />
-                ) : (
-                  <span className="attachment-name">📄 {attachment.name}</span>
-                )}
-              </a>
+                  <span className={step.done ? "step-done" : ""}>
+                    {step.text}
+                  </span>
+                  <button
+                    type="button"
+                    className="step-delete-button"
+                    aria-label={t.deleteStepLabel(step.text)}
+                    onClick={() => onDeleteStep(task.id, step.id)}
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-              <button
-                type="button"
-                className="attachment-delete-button"
-                aria-label={t.deleteAttachmentLabel(attachment.name)}
-                onClick={() => onDeleteAttachment(task.id, attachment.id)}
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <input
-          id={fileId}
-          type="file"
-          onChange={handleFileUpload}
-          className="attachment-input"
-        />
-
-        <div className="detail-field">
-          <label htmlFor={projectId}>{t.project}</label>
-          <select
-            id={projectId}
-            value={task.projectId ?? ""}
-            onChange={(e) => onAssignProject(task.id, e.target.value || null)}
-          >
-            <option value="">{t.noProject}</option>
-            {projects.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <label htmlFor={stepInputId}>{t.stepsLabel}</label>
-        <ul className="task-steps-list">
-          {(task.steps || []).map((step) => (
-            <li key={step.id}>
+            <form className="task-step-form" onSubmit={handleAddStep}>
+              <span className="task-step-plus" aria-hidden="true">
+                <Icon icon={Plus} size="md" />
+              </span>
               <input
-                type="checkbox"
-                className="themed-checkbox"
-                aria-label={t.completeStepLabel(step.text)}
-                checked={step.done}
-                onChange={() => onToggleStep(task.id, step.id)}
+                id={stepInputId}
+                type="text"
+                enterKeyHint="done"
+                autoComplete="off"
+                aria-label={t.newStepLabel}
+                placeholder={t.addStepButtonLabel}
+                value={newStepText}
+                onChange={(event) => setNewStepText(event.target.value)}
               />
-              <span className={step.done ? "step-done" : ""}>{step.text}</span>
-              <button
-                type="button"
-                className="step-delete-button"
-                aria-label={t.deleteStepLabel(step.text)}
-                onClick={() => onDeleteStep(task.id, step.id)}
-              >
-                <span aria-hidden="true">×</span>
+              <button type="submit" className="visually-hidden">
+                {t.addButton}
               </button>
-            </li>
-          ))}
-        </ul>
+            </form>
+          </section>
 
-        <form className="task-step-form" onSubmit={handleAddStep}>
-          <input
-            id={stepInputId}
-            type="text"
-            enterKeyHint="done"
-            autoComplete="off"
-            aria-label={t.newStepLabel}
-            placeholder={t.newStepPlaceholder}
-            value={newStepText}
-            onChange={(event) => setNewStepText(event.target.value)}
-          />
-          <button type="submit" className="btn btn-primary">
-            {t.addButton}
+          <section className="task-detail-section">
+            <div className="task-detail-row">
+              <Icon icon={Clock} size="lg" />
+              <label htmlFor={timeId}>{t.timeLabel}</label>
+              <div className="task-detail-row-control">
+                <TimeField
+                  id={timeId}
+                  className="task-detail-input task-detail-time"
+                  value={task.dueTime || ""}
+                  onChange={(time) => onUpdateTime(task.id, time)}
+                  t={t}
+                />
+
+                {task.dueTime && (
+                  <button
+                    type="button"
+                    className="task-detail-clear"
+                    aria-label={t.clearTimeLabel}
+                    onClick={() => onUpdateTime(task.id, "")}
+                  >
+                    <Icon icon={X} size="sm" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="task-detail-row">
+              <Icon icon={Calendar} size="lg" />
+              <label htmlFor={dateId}>{t.dateLabel}</label>
+              <div className="task-detail-row-control">
+                <DateField
+                  id={dateId}
+                  value={task.date || ""}
+                  onChange={(date) => onUpdateDate(task.id, date)}
+                  t={t}
+                />
+
+                {task.date && (
+                  <button
+                    type="button"
+                    className="task-detail-clear"
+                    aria-label={t.removeDateButton}
+                    onClick={() => onUpdateDate(task.id, "")}
+                  >
+                    <Icon icon={X} size="sm" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="task-detail-row">
+              <Icon icon={Repeat} size="lg" />
+              <label htmlFor={repeatId}>{t.repeatLabel}</label>
+              <div className="task-detail-row-control">
+                <select
+                  id={repeatId}
+                  className="task-detail-input"
+                  value={task.repeat || "none"}
+                  disabled={!task.date}
+                  onChange={(event) =>
+                    onUpdateRepeat(task.id, event.target.value)
+                  }
+                >
+                  <option value="none">{t.repeatNone}</option>
+                  <option value="daily">{t.repeatDaily}</option>
+                  <option value="weekly">{t.repeatWeekly}</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="task-detail-row">
+              <Icon icon={Folder} size="lg" />
+              <label htmlFor={projectId}>{t.project}</label>
+              <div className="task-detail-row-control">
+                <select
+                  id={projectId}
+                  className="task-detail-input"
+                  value={task.projectId ?? ""}
+                  onChange={(event) =>
+                    onAssignProject(task.id, event.target.value || null)
+                  }
+                >
+                  <option value="">{t.noProject}</option>
+                  {projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="task-detail-row task-detail-row-files">
+              <Icon icon={Paperclip} size="lg" />
+              <label htmlFor={fileId}>{t.attachmentsLabel}</label>
+              <div className="task-detail-row-control">
+                <input
+                  id={fileId}
+                  type="file"
+                  onChange={handleFileUpload}
+                  className="task-detail-file"
+                />
+              </div>
+            </div>
+
+            {task.attachments.length > 0 && (
+              <div className="attachments-list">
+                {task.attachments.map((attachment) => (
+                  <div className="attachment-item" key={attachment.id}>
+                    <a
+                      href={attachment.data}
+                      download={attachment.name}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="attachment-link"
+                    >
+                      {attachment.type.startsWith("image/") ? (
+                        <img
+                          src={attachment.data}
+                          alt={attachment.name}
+                          className="attachment-preview"
+                        />
+                      ) : (
+                        <span className="attachment-name">
+                          📄 {attachment.name}
+                        </span>
+                      )}
+                    </a>
+
+                    <button
+                      type="button"
+                      className="attachment-delete-button"
+                      aria-label={t.deleteAttachmentLabel(attachment.name)}
+                      onClick={() => onDeleteAttachment(task.id, attachment.id)}
+                    >
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <section className="task-detail-note">
+            <Icon icon={StickyNote} size="lg" />
+            <label htmlFor={descriptionId} className="visually-hidden">
+              {t.descriptionLabel}
+            </label>
+            <textarea
+              id={descriptionId}
+              className="task-detail-description"
+              value={task.description || ""}
+              onChange={(event) =>
+                onUpdateDescription(task.id, event.target.value)
+              }
+              placeholder={t.descriptionPlaceholder}
+            />
+          </section>
+        </div>
+
+        <div className="task-detail-footer">
+          <button
+            type="button"
+            className="task-detail-icon-button task-detail-close"
+            aria-label={t.closeButton}
+            onClick={requestClose}
+          >
+            <Icon icon={X} size="lg" />
           </button>
-        </form>
+
+          <span className="task-detail-created">
+            {task.createdAt
+              ? t.taskCreatedOn(
+                  parseLocalDate(task.createdAt).toLocaleDateString(
+                    t.dateLocale,
+                    { day: "numeric", month: "long" },
+                  ),
+                )
+              : ""}
+          </span>
+
+          <button
+            type="button"
+            className="task-detail-icon-button task-detail-delete"
+            aria-label={t.deleteButtonAria}
+            onClick={handleDeleteTask}
+          >
+            <Icon icon={Trash2} size="lg" />
+          </button>
+        </div>
       </div>
 
       {isDeleteConfirmOpen && (

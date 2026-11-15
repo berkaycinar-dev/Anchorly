@@ -84,6 +84,8 @@ function AppContent() {
     updateTaskDescription,
     updateTaskDate,
     updateTaskRepeat,
+    toggleTaskImportant,
+    updateTaskTime,
     addTaskStep,
     toggleTaskStep,
     deleteTaskStep,
@@ -126,11 +128,10 @@ function AppContent() {
   const selectedSeriesId = seriesMatch ? seriesMatch.params.groupId : null;
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [newTaskCategory, setNewTaskCategory] = useState("Work");
   const [newTaskDate, setNewTaskDate] = useState("");
+  const [newTaskTime, setNewTaskTime] = useState("");
+  const [newTaskRepeat, setNewTaskRepeat] = useState("none");
   const newTaskTitleInputRef = useRef(null);
-  const [filter, setFilter] = useState("all");
-  const [searchText, setSearchText] = useState("");
 
   const {
     theme,
@@ -162,6 +163,19 @@ function AppContent() {
     setSelectedTaskId(null);
     afterClose?.();
   }
+
+  const routeKey = currentRoute?.key ?? null;
+  const [previousRouteKey, setPreviousRouteKey] = useState(routeKey);
+
+  if (previousRouteKey !== routeKey) {
+    setPreviousRouteKey(routeKey);
+
+    if (previousRouteKey === "Today") {
+      setSelectedTaskId(null);
+    }
+  }
+
+  const isTaskDetailInPanel = routeKey === "Today";
   const [newRoutineTitle, setNewRoutineTitle] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [newProjectName, setNewProjectName] = useState("");
@@ -210,6 +224,27 @@ function AppContent() {
     [tasks, today],
   );
 
+  const todayPageTasks = useMemo(
+    () =>
+      tasks.filter(
+        (task) =>
+          isTaskVisibleToday(task, today) ||
+          (!task.completed && task.date && task.date < today),
+      ),
+    [tasks, today],
+  );
+
+  const todayPageStats = useMemo(
+    () => ({
+      remaining: todayPageTasks.filter((task) => !task.completed).length,
+      completed: todayPageTasks.filter((task) => task.completed).length,
+      overdue: todayPageTasks.filter(
+        (task) => !task.completed && task.date && task.date < today,
+      ).length,
+    }),
+    [todayPageTasks, today],
+  );
+
   const todayStats = useMemo(() => {
     const total = todayScopedTasks.length;
     const completed = todayScopedTasks.filter(
@@ -232,25 +267,10 @@ function AppContent() {
   ).length;
 
   const sidebarBadges = {
-    Today: todayStats.active,
+    Today: todayPageStats.remaining,
     "Daily Routine": remainingRoutineCount,
     Projects: projects.filter((project) => !project.archived).length,
   };
-
-  const filteredTasks = useMemo(() => {
-    const searchLower = searchText.toLowerCase();
-
-    return todayScopedTasks.filter((task) => {
-      const matchesSearch = task.title.toLowerCase().includes(searchLower);
-
-      const matchesFilter =
-        filter === "all" ||
-        (filter === "active" && !task.completed) ||
-        (filter === "completed" && task.completed);
-
-      return matchesSearch && matchesFilter;
-    });
-  }, [todayScopedTasks, searchText, filter]);
 
   const weeklyProductivity = useMemo(
     () => getWeeklyProductivity(language),
@@ -328,15 +348,20 @@ function AppContent() {
       return;
     }
 
+    const hasRepeat = newTaskRepeat !== "none";
+
     addTask({
-      title: newTaskTitle,
-      category: newTaskCategory,
-      date: newTaskDate,
+      title: newTaskTitle.trim(),
+      category: "Other",
+      date: hasRepeat && newTaskDate === "" ? today : newTaskDate,
+      dueTime: newTaskTime,
+      repeat: newTaskRepeat,
     });
 
     setNewTaskTitle("");
-    setNewTaskCategory("Work");
     setNewTaskDate("");
+    setNewTaskTime("");
+    setNewTaskRepeat("none");
   }
 
   function handleAddRoutine(event) {
@@ -371,6 +396,21 @@ function AppContent() {
     deleteTask(taskId);
     closeTaskDetail();
   }
+
+  const taskDetailActions = {
+    onDeleteTask: handleDeleteTaskFromModal,
+    onUpdateTitle: updateTaskTitle,
+    onUpdateDate: updateTaskDate,
+    onUpdateTime: updateTaskTime,
+    onUpdateDescription: updateTaskDescription,
+    onAddStep: addTaskStep,
+    onToggleStep: toggleTaskStep,
+    onDeleteStep: deleteTaskStep,
+    onUpdateRepeat: updateTaskRepeat,
+    onAddAttachment: addTaskAttachment,
+    onDeleteAttachment: deleteTaskAttachment,
+    onAssignProject: handleAssignProject,
+  };
 
   function handleAssignProject(taskId, projectId) {
     const targetProject = projects.find((project) => project.id === projectId);
@@ -425,22 +465,27 @@ function AppContent() {
     ),
     Today: (
       <TodayPage
-        searchText={searchText}
-        setSearchText={setSearchText}
+        today={today}
         newTaskTitle={newTaskTitle}
         setNewTaskTitle={setNewTaskTitle}
-        newTaskCategory={newTaskCategory}
-        setNewTaskCategory={setNewTaskCategory}
         newTaskDate={newTaskDate}
         setNewTaskDate={setNewTaskDate}
+        newTaskTime={newTaskTime}
+        setNewTaskTime={setNewTaskTime}
+        newTaskRepeat={newTaskRepeat}
+        setNewTaskRepeat={setNewTaskRepeat}
         addTask={handleAddTask}
         titleInputRef={newTaskTitleInputRef}
-        filter={filter}
-        setFilter={setFilter}
-        filteredTasks={filteredTasks}
+        tasks={todayPageTasks}
+        stats={todayPageStats}
         toggleTask={toggleTask}
+        toggleImportant={toggleTaskImportant}
         deleteTask={deleteTask}
+        selectedTask={isTaskDetailInPanel ? selectedTask : null}
         setSelectedTaskId={setSelectedTaskId}
+        closeTaskDetail={closeTaskDetail}
+        detailActions={taskDetailActions}
+        projects={projects}
         reorderTasks={reorderTasks}
         t={t}
       />
@@ -579,7 +624,9 @@ function AppContent() {
           <GuestBanner t={t} />
           <SyncStatusBar t={t} />
           <Header />
-          <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
+          {routeKey !== "Today" && (
+            <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
+          )}
 
           <Routes>
             {routes.map((route) => (
@@ -629,22 +676,24 @@ function AppContent() {
 
         <TaskDetailModal
           key={selectedTaskId ?? "none"}
-          task={selectedTask}
+          task={isTaskDetailInPanel ? null : selectedTask}
           onClose={closeTaskDetail}
           onToggleTask={toggleTask}
-          onUpdateDescription={updateTaskDescription}
-          onUpdateTitle={updateTaskTitle}
-          onUpdateDate={updateTaskDate}
-          onDeleteTask={handleDeleteTaskFromModal}
-          onAddStep={addTaskStep}
-          onToggleStep={toggleTaskStep}
-          onDeleteStep={deleteTaskStep}
-          onUpdateRepeat={updateTaskRepeat}
-          onAddAttachment={addTaskAttachment}
-          onDeleteAttachment={deleteTaskAttachment}
+          onToggleImportant={toggleTaskImportant}
+          onUpdateDescription={taskDetailActions.onUpdateDescription}
+          onUpdateTitle={taskDetailActions.onUpdateTitle}
+          onUpdateDate={taskDetailActions.onUpdateDate}
+          onUpdateTime={taskDetailActions.onUpdateTime}
+          onDeleteTask={taskDetailActions.onDeleteTask}
+          onAddStep={taskDetailActions.onAddStep}
+          onToggleStep={taskDetailActions.onToggleStep}
+          onDeleteStep={taskDetailActions.onDeleteStep}
+          onUpdateRepeat={taskDetailActions.onUpdateRepeat}
+          onAddAttachment={taskDetailActions.onAddAttachment}
+          onDeleteAttachment={taskDetailActions.onDeleteAttachment}
           t={t}
           projects={projects}
-          onAssignProject={handleAssignProject}
+          onAssignProject={taskDetailActions.onAssignProject}
         />
       </ToastProvider>
     </div>

@@ -50,7 +50,8 @@ describe("App and day changes", () => {
     });
 
     expect(screen.getByText("Tomorrow task")).toBeInTheDocument();
-    expect(screen.queryByText("Today task")).not.toBeInTheDocument();
+    expect(screen.getByText("Today task")).toBeInTheDocument();
+    expect(screen.getByText("1 day overdue")).toBeInTheDocument();
   });
 
   it("shows today's task at 00:30 (still yesterday in UTC)", () => {

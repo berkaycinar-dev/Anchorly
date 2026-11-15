@@ -574,3 +574,18 @@
     display: none;
   }
 }
+
+.calendar-task-time {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-subtle);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar-agenda-task .calendar-task-time {
+  margin-right: var(--space-2);
+}

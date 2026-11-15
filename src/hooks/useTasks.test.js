@@ -64,6 +64,40 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
+describe("useTasks important and time", () => {
+  it("toggles the important flag", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.toggleTaskImportant(IDS[0]);
+    });
+
+    expect(findTask(result.current.tasks, IDS[0]).important).toBe(true);
+
+    act(() => {
+      result.current.toggleTaskImportant(IDS[0]);
+    });
+
+    expect(findTask(result.current.tasks, IDS[0]).important).toBe(false);
+  });
+
+  it("sets and clears the time of a task", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.updateTaskTime(IDS[1], "14:30");
+    });
+
+    expect(findTask(result.current.tasks, IDS[1]).dueTime).toBe("14:30");
+
+    act(() => {
+      result.current.updateTaskTime(IDS[1], "");
+    });
+
+    expect(findTask(result.current.tasks, IDS[1]).dueTime).toBe("");
+  });
+});
+
 describe("useTasks reorderTasks", () => {
   it("moves the dragged task to the position of the target task", () => {
     const { result } = renderTasks();
@@ -167,7 +201,30 @@ describe("useTasks addTask", () => {
       repeat: "none",
       repeatGroupId: null,
       attachments: [],
+      important: false,
+      dueTime: "",
+      createdAt: "2026-10-10",
     });
+  });
+
+  it("starts a repeat group and creates the next occurrences for a repeating task", () => {
+    const { result } = renderTasks();
+
+    act(() => {
+      result.current.addTask({
+        title: "Water plants",
+        date: "2026-10-10",
+        repeat: "daily",
+      });
+    });
+
+    const created = result.current.tasks.filter(
+      (task) => task.title === "Water plants",
+    );
+
+    expect(created.length).toBeGreaterThan(1);
+    expect(created[0].repeatGroupId).not.toBeNull();
+    expect(new Set(created.map((task) => task.repeatGroupId)).size).toBe(1);
   });
 
   it("gives the new task a UUID id", () => {

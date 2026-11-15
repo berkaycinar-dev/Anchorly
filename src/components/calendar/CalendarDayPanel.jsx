@@ -5,6 +5,7 @@ import { getCategoryLabel } from "../../utils/categoryHelpers";
 import { getCompletionPercent } from "../../utils/calendarHelpers";
 import { getCategoryTone } from "../../utils/dashboardData";
 import { parseLocalDate } from "../../utils/dateHelpers";
+import { compareTasksForDay } from "../../utils/taskTime";
 
 function CalendarDayPanel({
   id,
@@ -55,9 +56,7 @@ function CalendarDayPanel({
   const eyebrow = (
     isToday ? t.calendarTodayEyebrow(weekday) : weekday
   ).toLocaleUpperCase(locale);
-  const orderedTasks = [...tasks].sort(
-    (a, b) => Number(a.completed) - Number(b.completed),
-  );
+  const orderedTasks = [...tasks].sort(compareTasksForDay);
   const completedCount = tasks.filter((task) => task.completed).length;
   const percent = getCompletionPercent(tasks) ?? 0;
 
@@ -140,6 +139,12 @@ function CalendarDayPanel({
                 >
                   {task.title}
                 </button>
+                {task.dueTime && (
+                  <span className="calendar-task-time">
+                    <span className="visually-hidden">{t.timeLabel}</span>
+                    {task.dueTime}
+                  </span>
+                )}
                 <span
                   className="dashboard-chip"
                   data-tone={getCategoryTone(task.category)}

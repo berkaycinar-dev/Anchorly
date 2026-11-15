@@ -44,13 +44,20 @@ function ProjectTaskCardContent({ task, today, t }) {
         </span>
       )}
 
-      {(task.date || attachmentCount > 0) && (
+      {(task.date || task.dueTime || attachmentCount > 0) && (
         <span className="board-card-meta">
           {task.date && (
             <span className="board-chip" data-tone={getDateTone(task, today)}>
               {task.date === today && !task.completed
                 ? t.today
                 : formatShortDate(task.date, t.dateLocale)}
+            </span>
+          )}
+
+          {task.dueTime && (
+            <span className="board-chip" data-tone="time">
+              <span className="visually-hidden">{t.timeLabel}</span>
+              {task.dueTime}
             </span>
           )}
 
