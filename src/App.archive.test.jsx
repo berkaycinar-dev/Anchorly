@@ -57,12 +57,28 @@ beforeEach(() => {
 });
 
 describe("App archive series list", () => {
-  it("lists each recurring series as one row with summary cards", () => {
+  it("opens on the one-time tab placed before the recurring series tab", () => {
+    seed(createSeriesTasks());
+    renderApp("/archive");
+
+    const tabs = screen.getAllByRole("tab");
+
+    expect(tabs.map((tab) => tab.textContent)).toEqual([
+      "One-time",
+      "Recurring series",
+    ]);
+    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("lists each recurring series as one row with summary cards", async () => {
+    const user = userEvent.setup();
+
     seed([
       ...createSeriesTasks(),
       createStoredTask("once-1", "Buy stamps", { repeat: "none" }),
     ]);
     renderApp("/archive");
+    await user.click(screen.getByRole("tab", { name: "Recurring series" }));
 
     expect(
       screen.getByRole("tab", { name: "Recurring series" }),
@@ -76,9 +92,12 @@ describe("App archive series list", () => {
     expect(screen.getByText("Overall completion")).toBeInTheDocument();
   });
 
-  it("shows an empty state when there are no recurring tasks", () => {
+  it("shows an empty state when there are no recurring tasks", async () => {
+    const user = userEvent.setup();
+
     seed([createStoredTask("once-1", "Buy stamps")]);
     renderApp("/archive");
+    await user.click(screen.getByRole("tab", { name: "Recurring series" }));
 
     expect(screen.getByText("No recurring series yet")).toBeInTheDocument();
   });
@@ -88,6 +107,7 @@ describe("App archive series list", () => {
 
     seed(createSeriesTasks());
     renderApp("/archive");
+    await user.click(screen.getByRole("tab", { name: "Recurring series" }));
 
     await user.click(
       screen.getByRole("link", { name: "Open series Morning walk" }),

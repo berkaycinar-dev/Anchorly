@@ -5,8 +5,8 @@ import SeriesList from "../components/archive/SeriesList";
 import { buildSeriesList } from "../utils/archiveSeries";
 
 const TABS = [
-  { value: "series", labelKey: "archiveTabSeries" },
   { value: "oneTime", labelKey: "archiveTabOneTime" },
+  { value: "series", labelKey: "archiveTabSeries" },
 ];
 
 export default function ArchivePage({
@@ -19,7 +19,7 @@ export default function ArchivePage({
   reorderTasks,
   t,
 }) {
-  const [tab, setTab] = useState("series");
+  const [tab, setTab] = useState("oneTime");
   const seriesList = useMemo(
     () => buildSeriesList(tasks, today),
     [tasks, today],
