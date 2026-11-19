@@ -10,10 +10,13 @@ import {
   Trash2,
 } from "lucide-react";
 import Icon from "../Icon";
-import DateField from "../DateField";
+import AddTaskBar from "../AddTaskBar";
 import TaskList from "../TaskList";
 import ProjectBoard from "./ProjectBoard";
-import { getCategoryLabel } from "../../utils/categoryHelpers";
+import {
+  CATEGORY_OPTIONS,
+  getCategoryLabel,
+} from "../../utils/categoryHelpers";
 import {
   filterTasksByCategory,
   formatLongDate,
@@ -22,15 +25,6 @@ import {
   getProjectInitial,
   getProjectProgress,
 } from "../../utils/projectHelpers";
-
-const CATEGORY_OPTIONS = [
-  "Work",
-  "Personal",
-  "Self Development",
-  "Health",
-  "Project",
-  "Other",
-];
 
 function ProjectDetail({
   project,
@@ -41,8 +35,6 @@ function ProjectDetail({
   addProjectTask,
   newProjectTaskTitle,
   setNewProjectTaskTitle,
-  newProjectTaskDate,
-  setNewProjectTaskDate,
   toggleTask,
   moveTaskToColumn,
   deleteTask,
@@ -196,29 +188,16 @@ function ProjectDetail({
       </div>
 
       {isTaskFormOpen && (
-        <form className="project-task-form" onSubmit={addProjectTask}>
-          <input
-            type="text"
-            enterKeyHint="done"
-            autoComplete="off"
-            autoFocus
-            aria-label={t.newProjectTaskLabel}
-            placeholder={t.newProjectTaskPlaceholder}
-            value={newProjectTaskTitle}
-            onChange={(event) => setNewProjectTaskTitle(event.target.value)}
-          />
-
-          <DateField
-            label={t.dateLabel}
-            value={newProjectTaskDate}
-            onChange={setNewProjectTaskDate}
-            t={t}
-          />
-
-          <button type="submit" className="btn btn-primary">
-            {t.addProjectTaskButton}
-          </button>
-        </form>
+        <AddTaskBar
+          title={newProjectTaskTitle}
+          setTitle={setNewProjectTaskTitle}
+          onSubmit={addProjectTask}
+          label={t.newProjectTaskLabel}
+          placeholder={t.newProjectTaskPlaceholder}
+          showTools={false}
+          autoFocus
+          t={t}
+        />
       )}
 
       {view === "board" ? (

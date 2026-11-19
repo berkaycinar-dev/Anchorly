@@ -391,21 +391,8 @@
   margin-left: auto;
 }
 
-.project-task-form {
-  display: flex;
-  gap: var(--space-3);
-}
-
-.project-task-form input {
-  flex: 1;
-  min-width: 0;
-  padding: 10px 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 16px;
-  background-color: var(--color-bg-input);
-  color: var(--color-text-primary);
+.project-detail .add-task-bar {
+  margin-bottom: 0;
 }
 
 .board {
@@ -609,10 +596,6 @@
     justify-content: space-between;
   }
 
-  .project-task-form {
-    flex-direction: column;
-  }
-
   .project-add-task {
     margin-left: 0;
   }
@@ -683,14 +666,6 @@
   .project-form input {
     font-size: 14px;
   }
-
-  .project-task-form input {
-    font-size: 14px;
-  }
-
-  .project-task-form .date-field {
-    flex: 0 0 200px;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -754,8 +729,7 @@
     font-size: 16px;
   }
 
-  .project-form input,
-  .project-task-form input {
+  .project-form input {
     font-size: 16px;
   }
 }
