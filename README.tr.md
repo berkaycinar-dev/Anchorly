@@ -35,6 +35,8 @@ Anchorly, React ile geliştirdiğim bir görev ve alışkanlık panosu. Günlük
 - **Duyarlı tasarım:** 375 px telefondan masaüstüne kadar her ekranda çalışır: telefonda alt sekme çubuğu, tablette ikonlu kenar çubuğu, masaüstünde tam kenar çubuğu.
 - **Sayfa adresleri:** her sayfanın kendi adresi var; tarayıcının geri tuşu ve yer imleri çalışır.
 - **Kişiselleştirme:** 7 tema (gray, purple, blue, red, green, pink, black), Türkçe ve İngilizce, üç yazı tipi (Inter, Poppins, Manrope), haftanın Pazartesi ya da Pazar başlaması.
+- **Hesap güvenliği:** hesap sayfasından onay bağlantısıyla e-posta adresi değiştirme; yeni parola bilinen bir veri sızıntısında geçiyorsa açık bir uyarı.
+- **Güvenlik başlıkları:** site sıkı bir Content Security Policy ile sunulur (script, stil ve bağlantılar yalnızca sitenin kendisinden), başka sitelerin içine gömülemez, `nosniff` ve dar bir `Permissions-Policy` vardır. Yazı tipleri uygulamayla birlikte gelir; Google Fonts'a istek gitmez.
 - **Klavye kısayolu:** yazı alanı dışındayken `n` tuşu Bugün sayfasına gidip yeni görev alanına odaklanır.
 - **Doğru yerel tarih:** "bugün" yerel saat diliminize göre belirlenir ve gece yarısı kendiliğinden yenilenir.
 - **Veri güvenliği:**
@@ -134,7 +136,7 @@ src/
 
 - Hesap olmadan veriler tarayıcıda (`localStorage`) saklanır. Cihazlar veya tarayıcılar arasında senkronize olmaz ve tarayıcı boyutunu sınırlar.
 - Backend ücretsiz bir barındırma planında çalışır ve 15 dakika istek almazsa uykuya geçer; bu yüzden duraklamadan sonraki ilk istek bir dakikaya kadar sürebilir.
-- Doğrulama ve parola sıfırlama e-postaları henüz gönderilmiyor; canlı backend bağlantıları sunucu günlüğüne yazar. Backend ayrı bir depoda: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
+- E-postalar (doğrulama, parola sıfırlama, e-posta değiştirme) Resend'in test modunda gider; alan adı doğrulanana kadar yalnızca hesap sahibinin adresine ulaşır. Backend ayrı bir depoda: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
 
 ---
 
@@ -147,7 +149,8 @@ src/
 - [x] Mobil görünüm
 - [x] Cihazlar arası veri için backend, veritabanı ve kimlik doğrulama ([anchorly-api](https://github.com/berkaycinar-dev/anchorly-api)); çevrimdışı değişiklikler sonra eşitlenir
 - [x] Yayına alma: frontend Vercel'de, API Render'da, PostgreSQL Neon'da
-- [ ] Doğrulama ve parola sıfırlama için gerçek e-posta gönderimi
+- [x] Güvenlik sıkılaştırması: Content Security Policy ve diğer başlıklar, kendi sunucumuzdaki yazı tipleri, e-posta değiştirme, sızmış parola uyarısı, CI'da bağımlılık taraması ve Dependabot
+- [ ] Her adrese e-posta gönderimi (doğrulanmış alan adı gerekir)
 - [ ] Klavye ve ekran okuyucu erişilebilirliği incelemesi
 - [ ] Yüklenebilir web uygulaması (PWA) ve Android uygulaması
 
