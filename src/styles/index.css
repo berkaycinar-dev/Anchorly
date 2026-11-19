@@ -5,6 +5,7 @@
 
 @import "./components/sidebar.css";
 @import "./components/bottom-nav.css";
+@import "./components/mobile-brand-bar.css";
 @import "./components/alert.css";
 @import "./components/auth.css";
 @import "./components/buttons.css";

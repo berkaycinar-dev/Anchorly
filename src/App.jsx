@@ -11,6 +11,7 @@ import {
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
+import MobileBrandBar from "./components/MobileBrandBar";
 import useSidebar from "./hooks/useSidebar";
 import ImportPrompt from "./components/account/ImportPrompt";
 import DataErrorToasts from "./components/data/DataErrorToasts";
@@ -628,6 +629,7 @@ function AppContent() {
             key={routeKey ?? "other"}
             className={routeKey === "Dashboard" ? undefined : "page-enter"}
           >
+            {routeKey === "Dashboard" && <MobileBrandBar t={t} />}
             {routeKey !== "Today" && (
               <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
             )}
