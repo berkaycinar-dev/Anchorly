@@ -89,79 +89,70 @@ describe("api tasks repository", () => {
     await repository.create({
       ...NEW_TASK,
       attachments: [ATTACHMENT],
-      boardStatus: "doing",
+      createdAt: "2026-10-10",
     });
 
     const { body } = client.calls.at(-1);
 
     expect(client.calls.at(-1).path).toBe("/tasks");
     expect(body).not.toHaveProperty("attachments");
-    expect(body).not.toHaveProperty("boardStatus");
+    expect(body).not.toHaveProperty("createdAt");
     expect(body.id).toBe(NEW_TASK.id);
   });
 
-  it("keeps attachments and board status on this device", async () => {
+  it("sends the board status, important flag and time to the server", async () => {
+    const { client, repository } = createSubject();
+    await repository.start();
+
+    await repository.create({
+      ...NEW_TASK,
+      boardStatus: "doing",
+      important: true,
+      dueTime: "14:30",
+    });
+
+    expect(client.calls.at(-1).body).toMatchObject({
+      boardStatus: "doing",
+      important: true,
+      dueTime: "14:30",
+    });
+    expect(findTask(repository, NEW_TASK.id)).toMatchObject({
+      boardStatus: "doing",
+      important: true,
+      dueTime: "14:30",
+    });
+  });
+
+  it("keeps attachments and the created date on this device", async () => {
     const { repository } = createSubject();
     await repository.start();
 
     await repository.create({
       ...NEW_TASK,
       attachments: [ATTACHMENT],
+      createdAt: "2026-10-10",
       boardStatus: "doing",
     });
 
     expect(findTask(repository, NEW_TASK.id)).toMatchObject({
       attachments: [ATTACHMENT],
-      boardStatus: "doing",
+      createdAt: "2026-10-10",
+    });
+    expect(JSON.parse(localStorage.getItem("taskLocalFields"))).toEqual({
+      [NEW_TASK.id]: { attachments: [ATTACHMENT], createdAt: "2026-10-10" },
     });
   });
 
-  it("keeps the important flag, time and created date on this device", async () => {
-    const { repository } = createSubject();
-    await repository.start();
-
-    await repository.create({
-      ...NEW_TASK,
-      important: true,
-      dueTime: "14:30",
-      createdAt: "2026-10-10",
-    });
-
-    expect(findTask(repository, NEW_TASK.id)).toMatchObject({
-      important: true,
-      dueTime: "14:30",
-      createdAt: "2026-10-10",
-    });
-  });
-
-  it("does not send the important flag, time or created date to the server", async () => {
+  it("sends a change of the important flag to the server", async () => {
     const { client, repository } = createSubject();
     await repository.start();
-
-    await repository.create({
-      ...NEW_TASK,
-      important: true,
-      dueTime: "14:30",
-      createdAt: "2026-10-10",
-    });
-
-    const { body } = client.calls.at(-1);
-
-    expect(body).not.toHaveProperty("important");
-    expect(body).not.toHaveProperty("dueTime");
-    expect(body).not.toHaveProperty("createdAt");
-  });
-
-  it("changes the important flag without a request", async () => {
-    const { client, repository } = createSubject();
-    await repository.start();
-
-    const callsBefore = client.calls.length;
 
     await repository.update(FIRST.id, { important: true });
 
     expect(findTask(repository, FIRST.id).important).toBe(true);
-    expect(client.calls).toHaveLength(callsBefore);
+    expect(getBulkOperations(client)).toEqual([
+      [{ type: "update", id: FIRST.id, patch: { important: true } }],
+    ]);
   });
 
   it("shows the local fields again after a reload", async () => {
@@ -175,21 +166,82 @@ describe("api tasks repository", () => {
     expect(findTask(reloaded, NEW_TASK.id).attachments).toEqual([ATTACHMENT]);
   });
 
-  it("stores a change of local fields without a request", async () => {
+  it("shows a board status set on another device after a reload", async () => {
+    const { client, repository } = createSubject();
+    await repository.start();
+    await repository.update(FIRST.id, { boardStatus: "doing" });
+    localStorage.clear();
+
+    const otherDevice = createSubject(undefined, client).repository;
+    await otherDevice.start();
+
+    expect(findTask(otherDevice, FIRST.id).boardStatus).toBe("doing");
+  });
+
+  it("stores a change of attachments without a request", async () => {
     const { client, repository } = createSubject();
     await repository.start();
 
     await repository.update(FIRST.id, {
       ...FIRST,
       attachments: [ATTACHMENT],
-      boardStatus: "todo",
     });
 
     expect(describeCalls(client)).toEqual(["GET /tasks"]);
+    expect(findTask(repository, FIRST.id).attachments).toEqual([ATTACHMENT]);
+  });
+
+  it("uploads the board status, important flag and time saved on this device before", async () => {
+    localStorage.setItem(
+      "taskLocalFields",
+      JSON.stringify({
+        [FIRST.id]: {
+          boardStatus: "doing",
+          important: true,
+          dueTime: "09:00",
+          attachments: [ATTACHMENT],
+        },
+      }),
+    );
+    const { client, repository } = createSubject();
+
+    await repository.start();
+
+    expect(getBulkOperations(client)).toEqual([
+      [
+        {
+          type: "update",
+          id: FIRST.id,
+          patch: { boardStatus: "doing", important: true, dueTime: "09:00" },
+        },
+      ],
+    ]);
     expect(findTask(repository, FIRST.id)).toMatchObject({
+      boardStatus: "doing",
+      important: true,
+      dueTime: "09:00",
       attachments: [ATTACHMENT],
-      boardStatus: "todo",
     });
+    expect(JSON.parse(localStorage.getItem("taskLocalFields"))).toEqual({
+      [FIRST.id]: { attachments: [ATTACHMENT] },
+    });
+  });
+
+  it("does not overwrite a board status the server already has", async () => {
+    localStorage.setItem(
+      "taskLocalFields",
+      JSON.stringify({ [FIRST.id]: { boardStatus: "doing" } }),
+    );
+    const { client, repository } = createSubject([
+      { ...FIRST, boardStatus: "todo" },
+      SECOND,
+    ]);
+
+    await repository.start();
+
+    expect(getBulkOperations(client)).toEqual([]);
+    expect(findTask(repository, FIRST.id).boardStatus).toBe("todo");
+    expect(JSON.parse(localStorage.getItem("taskLocalFields"))).toEqual({});
   });
 
   it("removes the local fields of a removed task", async () => {

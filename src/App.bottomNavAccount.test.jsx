@@ -113,10 +113,9 @@ describe("account entries in the bottom menu", () => {
 
     const { nav } = await openMore();
 
-    expect(nav.getByRole("link", { name: "Account" })).toHaveAttribute(
-      "href",
-      "/account",
-    );
+    expect(
+      nav.getByRole("link", { name: "Dev User, Account" }),
+    ).toHaveAttribute("href", "/account");
     expect(nav.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
     expect(nav.queryByRole("link", { name: "Sign in" })).toBeNull();
     expect(nav.queryByRole("link", { name: "Sign up" })).toBeNull();
@@ -130,7 +129,7 @@ describe("account entries in the bottom menu", () => {
 
     const { user, nav } = await openMore();
 
-    await user.click(nav.getByRole("link", { name: "Account" }));
+    await user.click(nav.getByRole("link", { name: "Dev User, Account" }));
 
     expect(getCurrentPath()).toBe("/account");
     expect(nav.getByRole("button", { name: "More" })).toHaveClass(

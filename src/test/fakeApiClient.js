@@ -26,6 +26,9 @@ const TASK_FIELDS = [
   "order",
   "repeat",
   "repeatGroupId",
+  "boardStatus",
+  "important",
+  "dueTime",
 ];
 
 const TASK_DEFAULTS = {

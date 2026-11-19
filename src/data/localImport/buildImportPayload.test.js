@@ -79,6 +79,9 @@ describe("buildImportPayload", () => {
         order: 0,
         repeat: "none",
         repeatGroupId: null,
+        boardStatus: null,
+        important: false,
+        dueTime: "",
       },
     ]);
     expect(result.summary).toEqual({
@@ -88,6 +91,34 @@ describe("buildImportPayload", () => {
       routineChecks: 0,
     });
     expect(result.hasData).toBe(true);
+  });
+
+  it("keeps the board status, important flag and time of a task", () => {
+    const result = build({
+      tasks: [
+        task({ boardStatus: "doing", important: true, dueTime: "09:30" }),
+      ],
+    });
+
+    expect(result.payload.tasks[0]).toMatchObject({
+      boardStatus: "doing",
+      important: true,
+      dueTime: "09:30",
+    });
+  });
+
+  it("drops an unknown board status and an invalid time", () => {
+    const result = build({
+      tasks: [
+        task({ boardStatus: "done", important: "yes", dueTime: "25:00" }),
+      ],
+    });
+
+    expect(result.payload.tasks[0]).toMatchObject({
+      boardStatus: null,
+      important: false,
+      dueTime: "",
+    });
   });
 
   it("turns invalid values into safe ones", () => {
