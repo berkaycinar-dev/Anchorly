@@ -69,7 +69,7 @@ describe("VerifyEmailPage", () => {
 
     const link = await screen.findByRole("link", { name: t.verifyGoToApp });
     expect(link).toHaveAttribute("href", "/");
-    expect(setUser).toHaveBeenCalledWith(VERIFIED_USER);
+    await waitFor(() => expect(setUser).toHaveBeenCalledWith(VERIFIED_USER));
   });
 
   it("offers sign in after success when signed out", async () => {
