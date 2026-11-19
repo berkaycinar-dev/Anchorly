@@ -233,6 +233,23 @@ describe("App projects board", () => {
     );
   });
 
+  it("adds a project task without a date", async () => {
+    const user = userEvent.setup();
+    seed([]);
+    renderApp(`/projects/${PROJECT_ID}`);
+
+    await user.click(screen.getByRole("button", { name: "Add task" }));
+
+    expect(screen.queryByLabelText("Date")).not.toBeInTheDocument();
+
+    await user.type(
+      screen.getByRole("textbox", { name: "New project task" }),
+      "No date task{Enter}",
+    );
+
+    expect(JSON.parse(localStorage.getItem("tasks"))[0].date).toBe("");
+  });
+
   it("shows a task with the stored in progress status in the middle column", () => {
     seed([
       createStoredTask("11111111-1111-4111-8111-111111111111", "Moved task", {

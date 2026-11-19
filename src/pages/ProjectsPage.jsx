@@ -19,8 +19,6 @@ export default function ProjectsPage({
   addProjectTask,
   newProjectTaskTitle,
   setNewProjectTaskTitle,
-  newProjectTaskDate,
-  setNewProjectTaskDate,
   selectedProjectId,
   toggleTask,
   moveTaskToColumn,
@@ -63,8 +61,6 @@ export default function ProjectsPage({
             addProjectTask={addProjectTask}
             newProjectTaskTitle={newProjectTaskTitle}
             setNewProjectTaskTitle={setNewProjectTaskTitle}
-            newProjectTaskDate={newProjectTaskDate}
-            setNewProjectTaskDate={setNewProjectTaskDate}
             toggleTask={toggleTask}
             moveTaskToColumn={moveTaskToColumn}
             deleteTask={deleteTask}
