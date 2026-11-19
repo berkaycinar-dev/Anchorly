@@ -43,6 +43,16 @@ describe("describeAuthError", () => {
     expect(result.alert).toBeNull();
   });
 
+  it("puts a breached password message on the password field", () => {
+    const result = describeAuthError(
+      apiError({ code: "PASSWORD_BREACHED" }),
+      t,
+    );
+
+    expect(result.fields).toEqual({ password: t.authPasswordBreached });
+    expect(result.alert).toBeNull();
+  });
+
   it("maps validation details to field messages", () => {
     const result = describeAuthError(
       apiError({

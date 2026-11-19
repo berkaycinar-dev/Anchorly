@@ -171,6 +171,26 @@ describe("RegisterPage", () => {
     );
   });
 
+  it("shows a breached password under the password field", async () => {
+    const user = userEvent.setup();
+    const register = vi
+      .fn()
+      .mockRejectedValue(
+        new ApiError({ status: 400, code: "PASSWORD_BREACHED", message: "x" }),
+      );
+    renderRegister({ register });
+
+    await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
+    await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
+    await submit(user);
+
+    expect(await screen.findByText(t.authPasswordBreached)).toBeInTheDocument();
+    expect(screen.getByLabelText(t.authPasswordLabel)).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+  });
+
   it("redirects signed-in users to the panel", () => {
     renderRegister({ status: AUTH_STATUS.signedIn });
 

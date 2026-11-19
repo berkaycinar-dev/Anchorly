@@ -41,6 +41,8 @@ export const strings = {
     authEmailInvalid: "Geçerli bir e-posta adresi gir.",
     authPasswordRequired: "Parolanı gir.",
     authPasswordTooShort: "Parola en az 8 karakter olmalı.",
+    authPasswordBreached:
+      "Bu parola bilinen bir veri sızıntısında yer alıyor. Başka bir parola seç.",
     authPasswordTooLong: "Parola en fazla 128 karakter olabilir.",
     authInvalidCredentials: "E-posta veya parola hatalı.",
     authEmailTaken: "Bu e-posta adresi zaten kayıtlı.",
@@ -625,6 +627,8 @@ export const strings = {
     authEmailInvalid: "Enter a valid email address.",
     authPasswordRequired: "Enter your password.",
     authPasswordTooShort: "Password must be at least 8 characters.",
+    authPasswordBreached:
+      "This password has appeared in a known data breach. Choose a different one.",
     authPasswordTooLong: "Password can be at most 128 characters.",
     authInvalidCredentials: "Incorrect email or password.",
     authEmailTaken: "This email address is already registered.",
