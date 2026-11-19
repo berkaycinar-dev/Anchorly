@@ -86,6 +86,7 @@ function AppContent() {
     updateTaskRepeat,
     toggleTaskImportant,
     updateTaskTime,
+    updateTaskCategory,
     addTaskStep,
     toggleTaskStep,
     deleteTaskStep,
@@ -218,7 +219,6 @@ function AppContent() {
   }, [t, currentRoute]);
 
   const [newProjectTaskTitle, setNewProjectTaskTitle] = useState("");
-  const [newProjectTaskDate, setNewProjectTaskDate] = useState(today);
   const todayScopedTasks = useMemo(
     () => tasks.filter((task) => isTaskVisibleToday(task, today)),
     [tasks, today],
@@ -402,6 +402,7 @@ function AppContent() {
     onUpdateTitle: updateTaskTitle,
     onUpdateDate: updateTaskDate,
     onUpdateTime: updateTaskTime,
+    onUpdateCategory: updateTaskCategory,
     onUpdateDescription: updateTaskDescription,
     onAddStep: addTaskStep,
     onToggleStep: toggleTaskStep,
@@ -428,12 +429,11 @@ function AppContent() {
     addTask({
       title: newProjectTaskTitle,
       category: "Project",
-      date: newProjectTaskDate,
+      date: "",
       projectId: selectedProjectId,
     });
 
     setNewProjectTaskTitle("");
-    setNewProjectTaskDate(today);
   }
 
   function addTaskToDate(title, date) {
@@ -555,8 +555,6 @@ function AppContent() {
         addProjectTask={addProjectTask}
         newProjectTaskTitle={newProjectTaskTitle}
         setNewProjectTaskTitle={setNewProjectTaskTitle}
-        newProjectTaskDate={newProjectTaskDate}
-        setNewProjectTaskDate={setNewProjectTaskDate}
         selectedProjectId={selectedProjectId}
         toggleTask={toggleTask}
         moveTaskToColumn={moveTaskToColumn}
@@ -624,52 +622,57 @@ function AppContent() {
           <GuestBanner t={t} />
           <SyncStatusBar t={t} />
           <Header />
-          {routeKey !== "Today" && (
-            <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
-          )}
+          <div
+            key={routeKey ?? "other"}
+            className={routeKey === "Dashboard" ? undefined : "page-enter"}
+          >
+            {routeKey !== "Today" && (
+              <h2 className="page-title">{t[currentRoute.titleKey]}</h2>
+            )}
 
-          <Routes>
-            {routes.map((route) => (
+            <Routes>
+              {routes.map((route) => (
+                <Route
+                  key={route.key}
+                  path={route.path}
+                  element={pages[route.key]}
+                />
+              ))}
               <Route
-                key={route.key}
-                path={route.path}
-                element={pages[route.key]}
+                path={PROJECT_DETAIL_PATH}
+                element={
+                  selectedProject ? (
+                    pages.Projects
+                  ) : (
+                    <Navigate to="/projects" replace />
+                  )
+                }
               />
-            ))}
-            <Route
-              path={PROJECT_DETAIL_PATH}
-              element={
-                selectedProject ? (
-                  pages.Projects
-                ) : (
-                  <Navigate to="/projects" replace />
-                )
-              }
-            />
-            <Route
-              path={ARCHIVE_SERIES_PATH}
-              element={
-                tasks.some(
-                  (task) => task.repeatGroupId === selectedSeriesId,
-                ) ? (
-                  pages.Archive
-                ) : (
-                  <Navigate to="/archive" replace />
-                )
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                authEnabled ? (
-                  <AccountPage t={t} language={language} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              <Route
+                path={ARCHIVE_SERIES_PATH}
+                element={
+                  tasks.some(
+                    (task) => task.repeatGroupId === selectedSeriesId,
+                  ) ? (
+                    pages.Archive
+                  ) : (
+                    <Navigate to="/archive" replace />
+                  )
+                }
+              />
+              <Route
+                path="/account"
+                element={
+                  authEnabled ? (
+                    <AccountPage t={t} language={language} />
+                  ) : (
+                    <Navigate to="/" replace />
+                  )
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </main>
 
         <BottomNav t={t} badges={sidebarBadges} />
@@ -684,6 +687,7 @@ function AppContent() {
           onUpdateTitle={taskDetailActions.onUpdateTitle}
           onUpdateDate={taskDetailActions.onUpdateDate}
           onUpdateTime={taskDetailActions.onUpdateTime}
+          onUpdateCategory={taskDetailActions.onUpdateCategory}
           onDeleteTask={taskDetailActions.onDeleteTask}
           onAddStep={taskDetailActions.onAddStep}
           onToggleStep={taskDetailActions.onToggleStep}
