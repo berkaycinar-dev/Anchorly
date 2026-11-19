@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate } from "react-router";
 import DataSection from "../components/account/DataSection";
 import DeleteAccountSection from "../components/account/DeleteAccountSection";
+import EmailSection from "../components/account/EmailSection";
 import ImportSection from "../components/account/ImportSection";
 import PasswordSection from "../components/account/PasswordSection";
 import ProfileSection from "../components/account/ProfileSection";
@@ -29,6 +30,7 @@ function AccountPage({ t, language }) {
   return (
     <div className="account-page">
       <ProfileSection t={t} />
+      <EmailSection t={t} />
       <PasswordSection
         t={t}
         onChanged={() => setSessionsRefreshKey((key) => key + 1)}

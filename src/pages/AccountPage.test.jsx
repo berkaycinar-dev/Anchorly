@@ -21,6 +21,7 @@ describe("AccountPage", () => {
 
     for (const title of [
       t.accountProfileTitle,
+      t.accountEmailTitle,
       t.accountPasswordTitle,
       t.accountSessionsTitle,
       t.accountDataTitle,

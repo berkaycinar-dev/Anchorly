@@ -101,6 +101,25 @@ export const strings = {
     accountProfileSaved: "Profil güncellendi.",
     accountEmailVerified: "Doğrulandı",
     accountEmailUnverified: "Doğrulanmadı",
+    accountEmailTitle: "E-posta adresi",
+    accountEmailNote: (email) =>
+      `Şu anki adresin: ${email}. Yeni adrese bir onay bağlantısı göndereceğiz.`,
+    accountNewEmailLabel: "Yeni e-posta",
+    accountSendEmailLink: "Bağlantı gönder",
+    accountEmailLinkSent: (email) =>
+      `Onay bağlantısını ${email} adresine gönderdik. Bağlantıyı açana kadar adresin değişmez.`,
+    accountEmailUnchanged: "Bu zaten şu anki adresin.",
+    accountEmailTaken: "Bu adres başka bir hesapta kullanılıyor.",
+    accountEmailNotSent: "E-posta gönderilemedi. Biraz sonra tekrar dene.",
+    accountGoToAccount: "Hesabıma git",
+    confirmEmailLoadingTitle: "Yeni adresin onaylanıyor",
+    confirmEmailSuccessTitle: "E-posta adresin değişti",
+    confirmEmailSuccessBody: (email) =>
+      `Bundan sonra ${email} ile giriş yapacaksın.`,
+    confirmEmailTakenTitle: "Adres değiştirilemedi",
+    confirmEmailTakenBody:
+      "Bu adres bu arada başka bir hesapta kullanılmaya başlandı.",
+    confirmEmailFailedTitle: "Onaylanamadı",
     accountPasswordTitle: "Parola",
     accountPasswordNote:
       "Parolanı değiştirince diğer cihazlardaki oturumlar kapanır.",
@@ -690,6 +709,24 @@ export const strings = {
     accountProfileSaved: "Profile updated.",
     accountEmailVerified: "Verified",
     accountEmailUnverified: "Not verified",
+    accountEmailTitle: "Email address",
+    accountEmailNote: (email) =>
+      `Your current address is ${email}. We will send a confirmation link to the new one.`,
+    accountNewEmailLabel: "New email",
+    accountSendEmailLink: "Send link",
+    accountEmailLinkSent: (email) =>
+      `We sent a confirmation link to ${email}. Your address stays the same until you open it.`,
+    accountEmailUnchanged: "This is already your current address.",
+    accountEmailTaken: "Another account uses this address.",
+    accountEmailNotSent: "The email could not be sent. Try again in a moment.",
+    accountGoToAccount: "Go to my account",
+    confirmEmailLoadingTitle: "Confirming your new address",
+    confirmEmailSuccessTitle: "Email address changed",
+    confirmEmailSuccessBody: (email) => `From now on, sign in with ${email}.`,
+    confirmEmailTakenTitle: "Address not changed",
+    confirmEmailTakenBody:
+      "Another account started using this address in the meantime.",
+    confirmEmailFailedTitle: "Could not confirm",
     accountPasswordTitle: "Password",
     accountPasswordNote:
       "Changing your password signs you out on your other devices.",

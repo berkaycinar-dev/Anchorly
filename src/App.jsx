@@ -37,6 +37,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
+import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 import AccountPage from "./pages/AccountPage";
 import GuestBanner from "./components/auth/GuestBanner";
 import SyncStatusBar from "./components/data/SyncStatusBar";
@@ -600,6 +601,7 @@ function AppContent() {
           />
           <Route path="/reset-password" element={<ResetPasswordPage t={t} />} />
           <Route path="/verify-email" element={<VerifyEmailPage t={t} />} />
+          <Route path="/confirm-email" element={<ConfirmEmailPage t={t} />} />
         </Routes>
       </div>
     );
