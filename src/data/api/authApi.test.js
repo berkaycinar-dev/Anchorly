@@ -197,6 +197,33 @@ describe("createAuthApi", () => {
     });
   });
 
+  it("asks for an email change and returns the pending address", async () => {
+    const client = createFakeClient({ pendingEmail: "new@example.com" });
+
+    await expect(
+      createAuthApi(client).requestEmailChange({
+        newEmail: "new@example.com",
+        password: "devpassword",
+      }),
+    ).resolves.toBe("new@example.com");
+    expect(client.request).toHaveBeenCalledWith("POST", "/me/email", {
+      body: { newEmail: "new@example.com", password: "devpassword" },
+    });
+  });
+
+  it("confirms an email change without authentication and returns the user", async () => {
+    const client = createFakeClient({ user });
+
+    await expect(
+      createAuthApi(client).confirmEmailChange("change-token"),
+    ).resolves.toEqual(user);
+    expect(client.request).toHaveBeenCalledWith(
+      "POST",
+      "/auth/confirm-email-change",
+      { auth: false, body: { token: "change-token" } },
+    );
+  });
+
   it("deletes the account and clears the token", async () => {
     const client = createFakeClient();
 

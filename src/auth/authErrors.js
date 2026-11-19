@@ -44,6 +44,8 @@ export default function describeAuthError(error, t) {
       message: t.authEmailTaken,
       offerSignIn: true,
     };
+  } else if (error.code === "PASSWORD_BREACHED") {
+    result.fields.password = t.authPasswordBreached;
   } else if (error.code === "INVALID_EMAIL_TOKEN") {
     result.tokenInvalid = true;
   } else if (error.code === "VALIDATION_ERROR") {

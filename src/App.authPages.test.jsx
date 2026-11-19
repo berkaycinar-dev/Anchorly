@@ -257,6 +257,45 @@ describe("auth pages in the app", () => {
     expect(document.querySelector(".verify-banner")).toBeNull();
   });
 
+  it("confirms a new email address from the link and opens the account page", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    const changed = {
+      ...SESSION.user,
+      email: "new@example.com",
+      emailVerifiedAt: "2026-11-19T00:00:00.000Z",
+    };
+    const fetchSpy = vi.fn(async (url, init) => {
+      if (url === "/api/auth/refresh") {
+        return jsonResponse(200, SESSION);
+      }
+      if (url === "/api/auth/confirm-email-change") {
+        return jsonResponse(200, { user: changed });
+      }
+      return respondToDataRoute(url, init) ?? jsonResponse(200, []);
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    setSessionHint();
+
+    renderApp("/confirm-email#token=tok2");
+
+    expect(
+      await screen.findByRole("heading", { name: "Email address changed" }),
+    ).toBeInTheDocument();
+    const confirmCall = fetchSpy.mock.calls.find(
+      ([url]) => url === "/api/auth/confirm-email-change",
+    );
+    expect(JSON.parse(confirmCall[1].body)).toEqual({ token: "tok2" });
+
+    await userEvent.click(
+      await screen.findByRole("link", { name: "Go to my account" }),
+    );
+
+    expect(getCurrentPath()).toBe("/account");
+    expect(
+      await screen.findByRole("region", { name: "Email address" }),
+    ).toHaveTextContent("new@example.com");
+  });
+
   it("shows the verification banner inside the app for unverified users", async () => {
     vi.stubEnv("VITE_AUTH_ENABLED", "true");
     vi.stubGlobal(

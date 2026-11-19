@@ -98,6 +98,25 @@ describe("PasswordSection", () => {
     expect(onChanged).not.toHaveBeenCalled();
   });
 
+  it("shows a breached new password on the new password field", async () => {
+    const user = userEvent.setup();
+    const changePassword = vi
+      .fn()
+      .mockRejectedValue(
+        new ApiError({ status: 400, code: "PASSWORD_BREACHED", message: "x" }),
+      );
+    const { onChanged } = renderPassword({ changePassword });
+
+    await fill(user);
+
+    expect(await screen.findByText(t.authPasswordBreached)).toBeInTheDocument();
+    expect(screen.getByLabelText(t.authNewPasswordLabel)).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(onChanged).not.toHaveBeenCalled();
+  });
+
   it("locks the button after rate limiting", async () => {
     const user = userEvent.setup();
     const changePassword = vi.fn().mockRejectedValue(

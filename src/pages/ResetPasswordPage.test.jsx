@@ -116,6 +116,23 @@ describe("ResetPasswordPage", () => {
     ).toBeEnabled();
   });
 
+  it("shows a breached password under the field", async () => {
+    const user = userEvent.setup();
+    const resetPassword = vi
+      .fn()
+      .mockRejectedValue(
+        new ApiError({ status: 400, code: "PASSWORD_BREACHED", message: "x" }),
+      );
+    renderReset({ resetPassword });
+
+    await submitPassword(user);
+
+    expect(await screen.findByText(t.authPasswordBreached)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: t.authLinkInvalidTitle }),
+    ).not.toBeInTheDocument();
+  });
+
   it("shows the rate limit alert with a locked button", async () => {
     const user = userEvent.setup();
     const resetPassword = vi.fn().mockRejectedValue(

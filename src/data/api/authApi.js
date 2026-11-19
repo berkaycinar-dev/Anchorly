@@ -86,6 +86,22 @@ export default function createAuthApi(client) {
       });
     },
 
+    async requestEmailChange({ newEmail, password }) {
+      const { pendingEmail } = await client.request("POST", "/me/email", {
+        body: { newEmail, password },
+      });
+      return pendingEmail;
+    },
+
+    async confirmEmailChange(token) {
+      const { user } = await client.request(
+        "POST",
+        "/auth/confirm-email-change",
+        { auth: false, body: { token } },
+      );
+      return user;
+    },
+
     async deleteAccount(password) {
       await client.request("DELETE", "/me", { body: { password } });
       clearSession();

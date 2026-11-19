@@ -16,6 +16,11 @@ export const authRoutes = [
   { key: "Forgot", path: "/forgot-password", titleKey: "authForgotTitle" },
   { key: "Reset", path: "/reset-password", titleKey: "authResetTitle" },
   { key: "Verify", path: "/verify-email", titleKey: "verifySuccessTitle" },
+  {
+    key: "ConfirmEmail",
+    path: "/confirm-email",
+    titleKey: "confirmEmailSuccessTitle",
+  },
 ];
 
 export const accountRoute = {
