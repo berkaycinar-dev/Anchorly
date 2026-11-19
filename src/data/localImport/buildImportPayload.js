@@ -24,6 +24,8 @@ const TASK_CATEGORIES = [
   "Project",
 ];
 const REPEAT_RULES = ["none", "daily", "weekly"];
+const BOARD_STATUSES = ["todo", "doing"];
+const DUE_TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
 const DEMO_REFERENCE_DATE = "2000-01-01";
 const DEMO_TASKS = createInitialTasks(DEMO_REFERENCE_DATE);
 const DEMO_TASK_FIELDS = [
@@ -154,6 +156,14 @@ function sanitizeTask(task, index) {
       Number.isSafeInteger(task.order) && task.order >= 0 ? task.order : index,
     repeat: REPEAT_RULES.includes(task.repeat) ? task.repeat : "none",
     repeatGroupId: isStrictUuid(task.repeatGroupId) ? task.repeatGroupId : null,
+    boardStatus: BOARD_STATUSES.includes(task.boardStatus)
+      ? task.boardStatus
+      : null,
+    important: task.important === true,
+    dueTime:
+      typeof task.dueTime === "string" && DUE_TIME_PATTERN.test(task.dueTime)
+        ? task.dueTime
+        : "",
   };
 }
 

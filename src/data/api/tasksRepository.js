@@ -16,14 +16,16 @@ const SERVER_FIELDS = [
   "order",
   "repeat",
   "repeatGroupId",
-];
-const LOCAL_FIELDS = [
-  "attachments",
   "boardStatus",
   "important",
   "dueTime",
-  "createdAt",
 ];
+const LOCAL_FIELDS = ["attachments", "createdAt"];
+const LEGACY_LOCAL_DEFAULTS = {
+  boardStatus: null,
+  important: false,
+  dueTime: "",
+};
 const MAX_BULK_OPERATIONS = 500;
 const MAX_BULK_BYTES = 90000;
 
@@ -133,18 +135,6 @@ function cleanLocalEntry(entry) {
 
   if (entry.attachments?.length > 0) {
     cleaned.attachments = entry.attachments;
-  }
-
-  if (entry.boardStatus) {
-    cleaned.boardStatus = entry.boardStatus;
-  }
-
-  if (entry.important === true) {
-    cleaned.important = true;
-  }
-
-  if (entry.dueTime) {
-    cleaned.dueTime = entry.dueTime;
   }
 
   if (entry.createdAt) {
@@ -421,6 +411,48 @@ export default function createApiTasksRepository({ client, today }) {
     );
   }
 
+  function uploadLegacyLocalFields() {
+    const extras = localFields.getSnapshot();
+    const legacyKeys = Object.keys(LEGACY_LOCAL_DEFAULTS);
+    const updates = [];
+
+    store.getSnapshot().forEach((task) => {
+      const legacy = pick(extras[task.id] ?? {}, legacyKeys);
+      const patch = Object.fromEntries(
+        Object.entries(legacy).filter(
+          ([field, value]) =>
+            value !== LEGACY_LOCAL_DEFAULTS[field] &&
+            (task[field] ?? LEGACY_LOCAL_DEFAULTS[field]) ===
+              LEGACY_LOCAL_DEFAULTS[field],
+        ),
+      );
+
+      if (Object.keys(patch).length > 0) {
+        updates.push({ id: task.id, patch });
+      }
+    });
+
+    if (
+      Object.values(extras).some((entry) =>
+        legacyKeys.some((key) => key in entry),
+      )
+    ) {
+      localFields.set((current) =>
+        Object.fromEntries(
+          Object.entries(current)
+            .map(([id, entry]) => [id, omit(entry, legacyKeys)])
+            .filter(([, entry]) => Object.keys(entry).length > 0),
+        ),
+      );
+    }
+
+    if (updates.length === 0) {
+      return Promise.resolve();
+    }
+
+    return updateMany(updates).then(ignore, ignore);
+  }
+
   function refresh() {
     return store.refresh().then(() => {
       if (store.getStatus() === "ready") {
@@ -440,7 +472,7 @@ export default function createApiTasksRepository({ client, today }) {
 
         pruneOrphanLocalFields();
 
-        return createFutureOccurrences();
+        return uploadLegacyLocalFields().then(createFutureOccurrences);
       });
     }
 
