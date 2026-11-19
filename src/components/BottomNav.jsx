@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router";
 import Icon from "./Icon";
 import { NAV_ICONS } from "./navIcons";
 import { routes, getRouteForPathname } from "../routes";
-import BottomNavAccount from "./BottomNavAccount";
+import { BottomNavAccountCard, BottomNavSignOut } from "./BottomNavAccount";
 
 const PRIMARY_ROUTE_KEYS = ["Dashboard", "Today", "Daily Routine", "Calendar"];
 const TAB_TITLE_KEYS = { "Daily Routine": "routineTab" };
@@ -145,34 +145,38 @@ function BottomNav({ t, badges = {} }) {
         hidden
       />
 
-      <ul
+      {isMoreOpen && (
+        <span className="bottom-nav-backdrop" aria-hidden="true" />
+      )}
+
+      <div
         id={morePanelId}
         className="bottom-nav-more-panel"
         hidden={!isMoreOpen}
       >
-        {moreRoutes.map((route) => (
-          <li key={route.key}>
-            <NavLink
-              to={route.path}
-              className={getMoreItemClassName}
-              onClick={closeMore}
-            >
-              <Icon
-                icon={NAV_ICONS[route.key]}
-                size="lg"
-                className="nav-icon"
-              />
-              <span className="nav-label">{t[route.titleKey]}</span>
-              {renderBadge(route.key, "nav-badge")}
-            </NavLink>
-          </li>
-        ))}
-        <BottomNavAccount
-          t={t}
-          getItemClassName={getMoreItemClassName}
-          onNavigate={closeMore}
-        />
-      </ul>
+        <span className="bottom-nav-sheet-handle" aria-hidden="true" />
+        <BottomNavAccountCard t={t} onNavigate={closeMore} />
+        <ul className="bottom-nav-more-list">
+          {moreRoutes.map((route) => (
+            <li key={route.key}>
+              <NavLink
+                to={route.path}
+                className={getMoreItemClassName}
+                onClick={closeMore}
+              >
+                <Icon
+                  icon={NAV_ICONS[route.key]}
+                  size="lg"
+                  className="nav-icon"
+                />
+                <span className="nav-label">{t[route.titleKey]}</span>
+                {renderBadge(route.key, "nav-badge")}
+              </NavLink>
+            </li>
+          ))}
+          <BottomNavSignOut t={t} onNavigate={closeMore} />
+        </ul>
+      </div>
 
       <ul ref={tabsRef} className="bottom-nav-tabs">
         {primaryRoutes.map((route) => (

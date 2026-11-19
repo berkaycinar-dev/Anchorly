@@ -1,27 +1,70 @@
-import { NavLink } from "react-router";
-import { LogIn, LogOut, User, UserPlus } from "lucide-react";
+import { Link, NavLink } from "react-router";
+import { ChevronRight, LogOut } from "lucide-react";
 import Icon from "./Icon";
 import useAuth from "../auth/useAuth";
 import { AUTH_STATUS } from "../auth/authStatus";
 import { accountRoute } from "../routes";
 import { useToast } from "./toast/useToast";
+import { getDisplayName, getInitials } from "./accountName";
 
-function renderLink({ to, icon, label, getItemClassName, onNavigate }) {
-  return (
-    <li key={to}>
-      <NavLink to={to} className={getItemClassName} onClick={onNavigate}>
-        <Icon icon={icon} size="lg" className="nav-icon" />
-        <span className="nav-label">{label}</span>
+function isAccountHidden(status) {
+  return status === AUTH_STATUS.disabled || status === AUTH_STATUS.loading;
+}
+
+export function BottomNavAccountCard({ t, onNavigate }) {
+  const { status, user } = useAuth();
+
+  if (isAccountHidden(status)) {
+    return null;
+  }
+
+  if (status === AUTH_STATUS.signedIn && user) {
+    const name = getDisplayName(user);
+
+    return (
+      <NavLink
+        to={accountRoute.path}
+        className={({ isActive }) =>
+          isActive
+            ? "bottom-nav-account-card bottom-nav-account-card-active"
+            : "bottom-nav-account-card"
+        }
+        aria-label={`${name}, ${t.accountPageLink}`}
+        onClick={onNavigate}
+      >
+        <span className="bottom-nav-account-avatar" aria-hidden="true">
+          {getInitials(name)}
+        </span>
+        <span className="bottom-nav-account-text">
+          <span className="bottom-nav-account-name">{name}</span>
+          <span className="bottom-nav-account-email">{user.email}</span>
+        </span>
+        <Icon
+          icon={ChevronRight}
+          size="md"
+          className="bottom-nav-account-chevron"
+        />
       </NavLink>
-    </li>
+    );
+  }
+
+  return (
+    <div className="bottom-nav-account-actions">
+      <Link to="/login" className="btn btn-primary" onClick={onNavigate}>
+        {t.signIn}
+      </Link>
+      <Link to="/register" className="btn btn-secondary" onClick={onNavigate}>
+        {t.signUp}
+      </Link>
+    </div>
   );
 }
 
-function BottomNavAccount({ t, getItemClassName, onNavigate }) {
+export function BottomNavSignOut({ t, onNavigate }) {
   const { status, user, logout } = useAuth();
   const toast = useToast();
 
-  if (status === AUTH_STATUS.disabled || status === AUTH_STATUS.loading) {
+  if (isAccountHidden(status) || status !== AUTH_STATUS.signedIn || !user) {
     return null;
   }
 
@@ -34,51 +77,19 @@ function BottomNavAccount({ t, getItemClassName, onNavigate }) {
     }
   }
 
-  const isSignedIn = status === AUTH_STATUS.signedIn && user;
-
   return (
     <>
       <li className="bottom-nav-more-separator" role="separator" />
-      {isSignedIn ? (
-        <>
-          {renderLink({
-            to: accountRoute.path,
-            icon: User,
-            label: t.accountPageLink,
-            getItemClassName,
-            onNavigate,
-          })}
-          <li>
-            <button
-              type="button"
-              className="bottom-nav-more-item bottom-nav-more-danger"
-              onClick={signOut}
-            >
-              <Icon icon={LogOut} size="lg" className="nav-icon" />
-              <span className="nav-label">{t.signOut}</span>
-            </button>
-          </li>
-        </>
-      ) : (
-        <>
-          {renderLink({
-            to: "/login",
-            icon: LogIn,
-            label: t.signIn,
-            getItemClassName,
-            onNavigate,
-          })}
-          {renderLink({
-            to: "/register",
-            icon: UserPlus,
-            label: t.signUp,
-            getItemClassName,
-            onNavigate,
-          })}
-        </>
-      )}
+      <li>
+        <button
+          type="button"
+          className="bottom-nav-more-item bottom-nav-more-danger"
+          onClick={signOut}
+        >
+          <Icon icon={LogOut} size="lg" className="nav-icon" />
+          <span className="nav-label">{t.signOut}</span>
+        </button>
+      </li>
     </>
   );
 }
-
-export default BottomNavAccount;
