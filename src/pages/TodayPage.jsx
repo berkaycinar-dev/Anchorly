@@ -105,6 +105,7 @@ function TodayPage({
         onUpdateTitle={detailActions.onUpdateTitle}
         onUpdateDate={detailActions.onUpdateDate}
         onUpdateTime={detailActions.onUpdateTime}
+        onUpdateCategory={detailActions.onUpdateCategory}
         onUpdateDescription={detailActions.onUpdateDescription}
         onAddStep={detailActions.onAddStep}
         onToggleStep={detailActions.onToggleStep}

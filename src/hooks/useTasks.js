@@ -131,6 +131,10 @@ export default function useTasks(today) {
     updateTask(taskId, (task) => ({ ...task, important: !task.important }));
   }
 
+  function updateTaskCategory(taskId, newCategory) {
+    updateTask(taskId, (task) => ({ ...task, category: newCategory }));
+  }
+
   function updateTaskTime(taskId, newTime) {
     updateTask(taskId, (task) => ({ ...task, dueTime: newTime }));
   }
@@ -272,6 +276,7 @@ export default function useTasks(today) {
     updateTaskRepeat,
     toggleTaskImportant,
     updateTaskTime,
+    updateTaskCategory,
     addTaskStep,
     toggleTaskStep,
     deleteTaskStep,

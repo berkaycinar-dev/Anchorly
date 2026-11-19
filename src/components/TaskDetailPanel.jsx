@@ -8,6 +8,7 @@ import {
   Repeat,
   Star,
   StickyNote,
+  Tag,
   Trash2,
   X,
 } from "lucide-react";
@@ -16,6 +17,7 @@ import TimeField from "./TimeField";
 import Icon from "./Icon";
 import ConfirmDeleteDialog from "./taskDetail/ConfirmDeleteDialog";
 import { parseLocalDate } from "../utils/dateHelpers";
+import { CATEGORY_OPTIONS, getCategoryLabel } from "../utils/categoryHelpers";
 
 function TaskDetailPanelBody({
   task,
@@ -25,6 +27,7 @@ function TaskDetailPanelBody({
   onUpdateTitle,
   onUpdateDate,
   onUpdateTime,
+  onUpdateCategory,
   onUpdateDescription,
   onAddStep,
   onToggleStep,
@@ -45,6 +48,7 @@ function TaskDetailPanelBody({
   const dateId = `${fieldId}-date`;
   const repeatId = `${fieldId}-repeat`;
   const projectId = `${fieldId}-project`;
+  const categoryId = `${fieldId}-category`;
   const descriptionId = `${fieldId}-description`;
   const stepInputId = `${fieldId}-step`;
 
@@ -275,6 +279,27 @@ function TaskDetailPanelBody({
                 <option value="none">{t.repeatNone}</option>
                 <option value="daily">{t.repeatDaily}</option>
                 <option value="weekly">{t.repeatWeekly}</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="task-detail-row">
+            <Icon icon={Tag} size="lg" />
+            <label htmlFor={categoryId}>{t.categoryLabel}</label>
+            <div className="task-detail-row-control">
+              <select
+                id={categoryId}
+                className="task-detail-input"
+                value={task.category || "Other"}
+                onChange={(event) =>
+                  onUpdateCategory(task.id, event.target.value)
+                }
+              >
+                {CATEGORY_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {getCategoryLabel(option, t)}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

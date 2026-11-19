@@ -46,6 +46,20 @@ describe("App task detail dialog", () => {
     expect(screen.getByRole("dialog", { name: "Task 1" })).toBeInTheDocument();
   });
 
+  it("changes the task category from the dialog", async () => {
+    const user = userEvent.setup();
+    await openTaskDialog(user);
+
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Category" }),
+      "Health",
+    );
+
+    expect(JSON.parse(localStorage.getItem("tasks"))[0].category).toBe(
+      "Health",
+    );
+  });
+
   it("closes when the Close button is pressed", async () => {
     const user = userEvent.setup();
     await openTaskDialog(user);

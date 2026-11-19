@@ -7,6 +7,8 @@ const CATEGORY_STRING_KEYS = {
   Project: "categoryProject",
 };
 
+export const CATEGORY_OPTIONS = Object.keys(CATEGORY_STRING_KEYS);
+
 export function getCategoryLabel(category, t) {
   const key = CATEGORY_STRING_KEYS[category];
 
