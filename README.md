@@ -37,6 +37,7 @@ Anchorly is a task and habit dashboard built with React. Daily tasks, routines, 
 - **Personalisation:** 7 themes (gray, purple, blue, red, green, pink, black), Turkish and English, three fonts (Inter, Poppins, Manrope), week starting on Monday or Sunday.
 - **Account security:** change the email address from the account page with a confirmation link, and get a clear message when a new password appears in a known data breach.
 - **Security headers:** the site is served with a strict Content Security Policy (scripts, styles and connections only from the site itself), no framing, `nosniff` and a narrow `Permissions-Policy`. Fonts are bundled with the app, so no request goes to Google Fonts.
+- **Legal pages:** a privacy notice (with the KVKK information notice) and terms of use at `/privacy` and `/terms`, in Turkish and English, open to everyone. Sign-up needs a consent checkbox, and signed-in users are asked again when the terms change.
 - **Keyboard shortcut:** press `n` outside a text field to jump to Today and focus the new task input.
 - **Correct local dates:** "today" follows your local time zone and refreshes itself at midnight.
 - **Data safety:**
@@ -137,6 +138,7 @@ src/
 - Without an account, data is stored in the browser (`localStorage`). It is not synced between devices or browsers, and the browser limits its size.
 - The backend runs on a free hosting plan and sleeps after 15 minutes without requests, so the first request after a pause can take up to a minute.
 - Emails (verification, password reset, email change) go out through Resend in test mode, so only the account owner's address receives them until a domain is verified. The backend lives in a separate repository: [anchorly-api](https://github.com/berkaycinar-dev/anchorly-api).
+- The contact address in the legal texts is a placeholder (`privacy@anchorly.invalid` in `src/constants/legal.js`) until the domain is set up.
 
 ---
 
@@ -150,6 +152,7 @@ src/
 - [x] Backend, database and authentication for cross-device data ([anchorly-api](https://github.com/berkaycinar-dev/anchorly-api)), with offline changes synced later
 - [x] Deployment: frontend on Vercel, API on Render, PostgreSQL on Neon
 - [x] Security hardening: Content Security Policy and other headers, self-hosted fonts, email change, breached password message, dependency audit in CI and Dependabot
+- [x] Legal pages: privacy notice, terms of use and recorded consent
 - [ ] Email delivery to every address (needs a verified domain)
 - [ ] Keyboard and screen reader accessibility review
 - [ ] Installable web app (PWA) and Android app
