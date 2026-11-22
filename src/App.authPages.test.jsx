@@ -111,6 +111,7 @@ describe("auth pages in the app", () => {
       "new@anchorly.local",
     );
     await user.type(screen.getByLabelText("Password"), "password1");
+    await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: "Create account" }));
 
     await waitFor(() => {
@@ -118,7 +119,10 @@ describe("auth pages in the app", () => {
     });
     const [url, init] = fetchSpy.mock.calls[0];
     expect(url).toBe("/api/auth/register");
-    expect(JSON.parse(init.body).language).toBe("en");
+    expect(JSON.parse(init.body)).toMatchObject({
+      language: "en",
+      acceptTerms: true,
+    });
   });
 
   it("sends a restored session straight away from the auth page", async () => {
@@ -410,5 +414,30 @@ describe("guest banner in the app", () => {
 
     expect(await screen.findByRole("main")).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Guest mode" })).toBeNull();
+  });
+
+  it("shows the legal pages without the app shell even while authentication is disabled", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "false");
+
+    renderApp("/privacy");
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Privacy Notice" }),
+    ).toBeInTheDocument();
+    expect(document.querySelector(".sidebar")).toBeNull();
+    expect(document.title).toBe("Anchorly — Privacy Notice");
+    expect(getCurrentPath()).toBe("/privacy");
+  });
+
+  it("shows the terms to a signed-out visitor", async () => {
+    vi.stubEnv("VITE_AUTH_ENABLED", "true");
+    vi.stubGlobal("fetch", vi.fn());
+
+    renderApp("/terms");
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Terms of Use" }),
+    ).toBeInTheDocument();
+    expect(getCurrentPath()).toBe("/terms");
   });
 });

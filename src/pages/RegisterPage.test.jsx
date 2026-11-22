@@ -21,6 +21,11 @@ function submit(user) {
   return user.click(screen.getByRole("button", { name: t.authRegisterTitle }));
 }
 
+async function acceptAndSubmit(user) {
+  await user.click(screen.getByRole("checkbox"));
+  await submit(user);
+}
+
 describe("RegisterPage", () => {
   it("renders name, email and password with the optional marker and hint", () => {
     renderRegister();
@@ -80,12 +85,13 @@ describe("RegisterPage", () => {
     );
     await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
     await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
-    await submit(user);
+    await acceptAndSubmit(user);
 
     expect(register).toHaveBeenCalledWith({
       email: "ada@b.co",
       password: "password1",
       language: "en",
+      acceptTerms: true,
       displayName: "Ada",
     });
   });
@@ -100,12 +106,13 @@ describe("RegisterPage", () => {
 
     await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
     await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
-    await submit(user);
+    await acceptAndSubmit(user);
 
     expect(register).toHaveBeenCalledWith({
       email: "ada@b.co",
       password: "password1",
       language: "en",
+      acceptTerms: true,
       deviceName: "Chrome · Windows",
     });
     vi.restoreAllMocks();
@@ -118,12 +125,13 @@ describe("RegisterPage", () => {
 
     await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
     await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
-    await submit(user);
+    await acceptAndSubmit(user);
 
     expect(register.mock.calls[0][0]).toEqual({
       email: "ada@b.co",
       password: "password1",
       language: "en",
+      acceptTerms: true,
     });
   });
 
@@ -138,7 +146,7 @@ describe("RegisterPage", () => {
 
     await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
     await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
-    await submit(user);
+    await acceptAndSubmit(user);
 
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent(t.authEmailTaken);
@@ -162,7 +170,7 @@ describe("RegisterPage", () => {
 
     await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
     await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
-    await submit(user);
+    await acceptAndSubmit(user);
 
     expect(await screen.findByText(t.authEmailInvalid)).toBeInTheDocument();
     expect(screen.getByLabelText(t.authEmailLabel)).toHaveAttribute(
@@ -182,7 +190,7 @@ describe("RegisterPage", () => {
 
     await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
     await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
-    await submit(user);
+    await acceptAndSubmit(user);
 
     expect(await screen.findByText(t.authPasswordBreached)).toBeInTheDocument();
     expect(screen.getByLabelText(t.authPasswordLabel)).toHaveAttribute(
@@ -195,5 +203,49 @@ describe("RegisterPage", () => {
     renderRegister({ status: AUTH_STATUS.signedIn });
 
     expect(getCurrentPath()).toBe("/");
+  });
+
+  it("asks for the terms before calling the API", async () => {
+    const user = userEvent.setup();
+    const { auth } = renderRegister();
+    const checkbox = screen.getByRole("checkbox");
+
+    await user.type(screen.getByLabelText(t.authEmailLabel), "ada@b.co");
+    await user.type(screen.getByLabelText(t.authPasswordLabel), "password1");
+    await submit(user);
+
+    expect(screen.getByText(t.authAcceptTermsRequired)).toBeInTheDocument();
+    expect(checkbox).toHaveFocus();
+    expect(checkbox).toHaveAttribute("aria-invalid", "true");
+    expect(checkbox).toHaveAccessibleDescription(t.authAcceptTermsRequired);
+    expect(auth.register).not.toHaveBeenCalled();
+
+    await user.click(checkbox);
+
+    expect(screen.queryByText(t.authAcceptTermsRequired)).toBeNull();
+    expect(checkbox).not.toHaveAttribute("aria-invalid");
+  });
+
+  it("labels the checkbox with links that open the documents in a new tab", () => {
+    renderRegister();
+
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
+    expect(screen.getByRole("checkbox")).toHaveAccessibleName(
+      `${t.authAcceptTermsBefore}${t.authAcceptTermsTermsLink} ${t.legalOpensInNewTab}${t.authAcceptTermsMiddle}${t.authAcceptTermsPrivacyLink} ${t.legalOpensInNewTab}${t.authAcceptTermsAfter}`,
+    );
+
+    const terms = screen.getByRole("link", {
+      name: new RegExp(t.authAcceptTermsTermsLink),
+    });
+    const privacy = screen.getByRole("link", {
+      name: new RegExp(t.authAcceptTermsPrivacyLink),
+    });
+
+    expect(terms).toHaveAttribute("href", "/terms");
+    expect(privacy).toHaveAttribute("href", "/privacy");
+    for (const link of [terms, privacy]) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
   });
 });
