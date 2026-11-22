@@ -23,6 +23,11 @@ export const authRoutes = [
   },
 ];
 
+export const legalRoutes = [
+  { key: "Privacy", path: "/privacy", titleKey: "legalPrivacyTitle" },
+  { key: "Terms", path: "/terms", titleKey: "legalTermsTitle" },
+];
+
 export const accountRoute = {
   key: "Account",
   path: "/account",
@@ -66,5 +71,11 @@ export function getRouteForPathname(pathname) {
 export function getAuthRouteForPathname(pathname) {
   return (
     authRoutes.find((candidate) => matchPath(candidate.path, pathname)) ?? null
+  );
+}
+
+export function getLegalRouteForPathname(pathname) {
+  return (
+    legalRoutes.find((candidate) => matchPath(candidate.path, pathname)) ?? null
   );
 }

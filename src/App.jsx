@@ -14,6 +14,8 @@ import BottomNav from "./components/BottomNav";
 import MobileBrandBar from "./components/MobileBrandBar";
 import useSidebar from "./hooks/useSidebar";
 import ImportPrompt from "./components/account/ImportPrompt";
+import TermsUpdateDialog from "./components/legal/TermsUpdateDialog";
+import useTermsPending from "./components/legal/useTermsPending";
 import DataErrorToasts from "./components/data/DataErrorToasts";
 import StorageToasts from "./components/StorageToasts";
 import TaskDetailModal from "./components/TaskDetailModal";
@@ -26,6 +28,7 @@ import {
   PROJECT_DETAIL_PATH,
   ARCHIVE_SERIES_PATH,
   getAuthRouteForPathname,
+  getLegalRouteForPathname,
   getRouteForPathname,
 } from "./routes";
 import DailyRoutinePage from "./pages/DailyRoutinePage";
@@ -33,6 +36,7 @@ import CalendarPage from "./pages/CalendarPage";
 import ArchivePage from "./pages/ArchivePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
+import LegalPage from "./pages/LegalPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -121,8 +125,11 @@ function AppContent() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { enabled: authEnabled } = useAuth();
+  const termsPending = useTermsPending();
+  const legalRoute = getLegalRouteForPathname(pathname);
   const authRoute = authEnabled ? getAuthRouteForPathname(pathname) : null;
-  const currentRoute = authRoute ?? getRouteForPathname(pathname) ?? routes[0];
+  const currentRoute =
+    legalRoute ?? authRoute ?? getRouteForPathname(pathname) ?? routes[0];
   const projectMatch = useMatch(PROJECT_DETAIL_PATH);
   const selectedProjectId = projectMatch ? projectMatch.params.projectId : null;
   const selectedProject =
@@ -585,6 +592,18 @@ function AppContent() {
     "--font-main": `'${fontFamily}', system-ui, sans-serif`,
   };
 
+  if (legalRoute) {
+    return (
+      <div className={`auth-shell theme-${theme}`} style={fontStyle}>
+        <LegalPage
+          t={t}
+          language={language}
+          documentKey={legalRoute.key === "Privacy" ? "privacy" : "terms"}
+        />
+      </div>
+    );
+  }
+
   if (authRoute) {
     return (
       <div className={`auth-shell theme-${theme}`} style={fontStyle}>
@@ -611,7 +630,8 @@ function AppContent() {
       <ToastProvider closeLabel={t.closeButton}>
         <StorageToasts t={t} />
         <DataErrorToasts t={t} />
-        <ImportPrompt t={t} />
+        <TermsUpdateDialog t={t} />
+        {termsPending ? null : <ImportPrompt t={t} />}
         <Sidebar
           t={t}
           badges={sidebarBadges}

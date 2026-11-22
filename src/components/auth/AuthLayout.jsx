@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import Logo from "../Logo";
+import LegalLinks from "../legal/LegalLinks";
 import Card from "../ui/Card";
 
 function AuthLayout({ t, title, subtitle, footer, children }) {
@@ -22,6 +23,7 @@ function AuthLayout({ t, title, subtitle, footer, children }) {
       <Link to="/" className="auth-guest-link">
         {t.authContinueAsGuest}
       </Link>
+      <LegalLinks t={t} className="legal-links auth-legal-links" />
     </main>
   );
 }
