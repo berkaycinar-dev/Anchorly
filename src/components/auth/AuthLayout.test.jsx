@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { strings } from "../../strings";
@@ -44,5 +44,17 @@ describe("AuthLayout", () => {
     expect(
       screen.getByRole("link", { name: "Go" }).closest(".ui-card"),
     ).not.toBeNull();
+  });
+
+  it("links to the privacy notice and the terms", () => {
+    renderLayout({ title: "Sign in" });
+    const links = screen.getByRole("navigation", { name: t.legalLinksLabel });
+
+    expect(
+      within(links).getByRole("link", { name: t.legalPrivacyLink }),
+    ).toHaveAttribute("href", "/privacy");
+    expect(
+      within(links).getByRole("link", { name: t.legalTermsLink }),
+    ).toHaveAttribute("href", "/terms");
   });
 });

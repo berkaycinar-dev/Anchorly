@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
-import { Languages, Palette, User } from "lucide-react";
+import { Info, Languages, Palette, User } from "lucide-react";
+import { Link } from "react-router";
 import Icon from "../components/Icon";
 import AccountPanel from "../components/settings/AccountPanel";
 import SegmentedOptions from "../components/settings/SegmentedOptions";
@@ -32,6 +33,7 @@ export default function SettingsPage({
       : []),
     { id: "look", label: t.settingsCategoryLook, icon: Palette },
     { id: "region", label: t.settingsCategoryRegion, icon: Languages },
+    { id: "about", label: t.settingsCategoryAbout, icon: Info },
   ];
 
   const activeId = categories.some(
@@ -134,6 +136,35 @@ export default function SettingsPage({
                   value={weekStartDay}
                   onChange={setWeekStartDay}
                 />
+              </SettingsRow>
+            </>
+          )}
+
+          {activeId === "about" && (
+            <>
+              <SettingsRow
+                label={t.legalPrivacyTitle}
+                description={t.settingsPrivacyDescription}
+              >
+                <Link
+                  to="/privacy"
+                  className="btn btn-secondary settings-action"
+                  aria-label={`${t.settingsOpenDocument}: ${t.legalPrivacyTitle}`}
+                >
+                  {t.settingsOpenDocument}
+                </Link>
+              </SettingsRow>
+              <SettingsRow
+                label={t.legalTermsTitle}
+                description={t.settingsTermsDescription}
+              >
+                <Link
+                  to="/terms"
+                  className="btn btn-secondary settings-action"
+                  aria-label={`${t.settingsOpenDocument}: ${t.legalTermsTitle}`}
+                >
+                  {t.settingsOpenDocument}
+                </Link>
               </SettingsRow>
             </>
           )}

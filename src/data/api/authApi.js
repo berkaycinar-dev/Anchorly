@@ -80,6 +80,13 @@ export default function createAuthApi(client) {
       return user;
     },
 
+    async acceptTerms() {
+      const { user } = await client.request("POST", "/me/terms", {
+        body: { accept: true },
+      });
+      return user;
+    },
+
     async changePassword({ currentPassword, newPassword }) {
       await client.request("POST", "/me/password", {
         body: { currentPassword, newPassword },

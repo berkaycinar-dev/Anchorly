@@ -6,6 +6,8 @@ import {
   accountRoute,
   authRoutes,
   getAuthRouteForPathname,
+  getLegalRouteForPathname,
+  legalRoutes,
   getRouteForPathname,
   getProjectPath,
   getArchiveSeriesPath,
@@ -116,6 +118,18 @@ describe("routes", () => {
     for (const route of authRoutes) {
       expect(strings.tr[route.titleKey]).toBeTruthy();
       expect(strings.en[route.titleKey]).toBeTruthy();
+    }
+  });
+
+  it("finds the legal pages and gives them translated titles", () => {
+    expect(getLegalRouteForPathname("/privacy").key).toBe("Privacy");
+    expect(getLegalRouteForPathname("/terms").key).toBe("Terms");
+    expect(getLegalRouteForPathname("/login")).toBeNull();
+    expect(getLegalRouteForPathname("/privacy/extra")).toBeNull();
+
+    for (const route of legalRoutes) {
+      expect(typeof strings.tr[route.titleKey]).toBe("string");
+      expect(typeof strings.en[route.titleKey]).toBe("string");
     }
   });
 });

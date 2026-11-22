@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
+import { CircleAlert } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router";
 import AuthAlert from "../components/auth/AuthAlert";
 import AuthLayout from "../components/auth/AuthLayout";
+import Icon from "../components/Icon";
 import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
 import describeAuthError from "../auth/authErrors";
@@ -16,6 +18,19 @@ import {
   validatePassword,
 } from "../auth/validateAuthForm";
 
+function NewTabLink({ t, to, children }) {
+  return (
+    <Link
+      to={to}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${children} ${t.legalOpensInNewTab}`}
+    >
+      {children}
+    </Link>
+  );
+}
+
 function RegisterPage({ t, language }) {
   const { status, register } = useAuth();
   const [searchParams] = useSearchParams();
@@ -23,12 +38,15 @@ function RegisterPage({ t, language }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [alert, setAlert] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [remaining, startCountdown] = useCountdown();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const termsRef = useRef(null);
+  const termsId = useId();
 
   if (status === AUTH_STATUS.signedIn) {
     return <Navigate to={nextPath} replace />;
@@ -66,6 +84,10 @@ function RegisterPage({ t, language }) {
       errors.password = passwordError;
     }
 
+    if (!acceptedTerms) {
+      errors.terms = t.authAcceptTermsRequired;
+    }
+
     setFieldErrors(errors);
     setAlert(null);
 
@@ -79,7 +101,17 @@ function RegisterPage({ t, language }) {
       return;
     }
 
-    const input = { email: email.trim(), password, language };
+    if (errors.terms) {
+      termsRef.current.focus();
+      return;
+    }
+
+    const input = {
+      email: email.trim(),
+      password,
+      language,
+      acceptTerms: true,
+    };
     const displayName = name.trim();
 
     if (displayName !== "") {
@@ -117,6 +149,11 @@ function RegisterPage({ t, language }) {
   function handlePasswordChange(event) {
     setPassword(event.target.value);
     setFieldErrors((current) => ({ ...current, password: undefined }));
+  }
+
+  function handleTermsChange(event) {
+    setAcceptedTerms(event.target.checked);
+    setFieldErrors((current) => ({ ...current, terms: undefined }));
   }
 
   return (
@@ -177,6 +214,43 @@ function RegisterPage({ t, language }) {
           hint={t.authPasswordHint}
           hintDone={password.length >= PASSWORD_MIN_LENGTH}
         />
+        <div className="auth-consent">
+          <div className="auth-consent-row">
+            <input
+              ref={termsRef}
+              id={termsId}
+              type="checkbox"
+              name="acceptTerms"
+              className="themed-checkbox"
+              checked={acceptedTerms}
+              onChange={handleTermsChange}
+              aria-invalid={fieldErrors.terms ? true : undefined}
+              aria-describedby={
+                fieldErrors.terms ? `${termsId}-error` : undefined
+              }
+            />
+            <label htmlFor={termsId} className="auth-consent-label">
+              {t.authAcceptTermsBefore}
+              <NewTabLink t={t} to="/terms">
+                {t.authAcceptTermsTermsLink}
+              </NewTabLink>
+              {t.authAcceptTermsMiddle}
+              <NewTabLink t={t} to="/privacy">
+                {t.authAcceptTermsPrivacyLink}
+              </NewTabLink>
+              {t.authAcceptTermsAfter}
+            </label>
+          </div>
+          {fieldErrors.terms ? (
+            <p
+              id={`${termsId}-error`}
+              className="text-field-message text-field-error"
+            >
+              <Icon icon={CircleAlert} size="sm" />
+              {fieldErrors.terms}
+            </p>
+          ) : null}
+        </div>
         <Button
           type="submit"
           size="lg"

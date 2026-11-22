@@ -184,6 +184,16 @@ describe("createAuthApi", () => {
     });
   });
 
+  it("accepts the current terms and returns the updated user", async () => {
+    const updated = { ...user, termsAccepted: true };
+    const client = createFakeClient({ user: updated });
+
+    await expect(createAuthApi(client).acceptTerms()).resolves.toEqual(updated);
+    expect(client.request).toHaveBeenCalledWith("POST", "/me/terms", {
+      body: { accept: true },
+    });
+  });
+
   it("changes the password", async () => {
     const client = createFakeClient();
 

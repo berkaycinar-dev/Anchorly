@@ -1,3 +1,5 @@
+import { LEGAL_CONTACT_EMAIL } from "./constants/legal";
+
 export const strings = {
   tr: {
     dashboard: "Panel",
@@ -602,6 +604,248 @@ export const strings = {
       "Değişiklik kaydedilemedi: sunucuya ulaşılamadı. Değişiklik geri alındı.",
     dataSaveFailedOther:
       "Değişiklik kaydedilemedi ve geri alındı. Lütfen tekrar dene.",
+    legalPrivacyTitle: "Gizlilik ve KVKK Aydınlatma Metni",
+    legalTermsTitle: "Kullanım Koşulları",
+    legalPrivacyLink: "Gizlilik",
+    legalTermsLink: "Koşullar",
+    legalLinksLabel: "Yasal metinler",
+    legalUpdated: (date) => `Son güncelleme: ${date}`,
+    legalBackToApp: "Anchorly'ye dön",
+    legalOpensInNewTab: "(yeni sekmede açılır)",
+    authAcceptTermsBefore: "",
+    authAcceptTermsTermsLink: "Kullanım Koşulları",
+    authAcceptTermsMiddle: "'nı kabul ediyorum ve ",
+    authAcceptTermsPrivacyLink: "Gizlilik ve KVKK Aydınlatma Metni",
+    authAcceptTermsAfter: "'ni okudum.",
+    authAcceptTermsRequired:
+      "Devam etmek için Kullanım Koşulları'nı kabul etmelisin.",
+    termsUpdateTitle: "Kullanım Koşulları güncellendi",
+    termsUpdateBody:
+      "Anchorly'yi kullanmaya devam etmek için güncel Kullanım Koşulları'nı kabul etmen gerekiyor. Gizlilik ve KVKK Aydınlatma Metni'ni de okuyabilirsin.",
+    termsUpdateAccept: "Kabul ediyorum",
+    settingsCategoryAbout: "Hakkında",
+    settingsPrivacyDescription:
+      "Hangi verileri neden işlediğimiz, ne kadar sakladığımız ve hakların",
+    settingsTermsDescription: "Anchorly'yi kullanma kuralları",
+    settingsOpenDocument: "Aç",
+    legalDocuments: {
+      privacy: {
+        intro: [
+          "Bu metin, Anchorly'yi kullanırken kişisel verilerinin nasıl işlendiğini 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun (KVKK) 10. maddesi uyarınca açıklar.",
+          "Kısaca: yalnızca uygulamanın çalışması ve güvenliği için gereken verileri işleriz. Reklam, analitik ya da profil çıkarma yapmayız ve verilerini satmayız.",
+        ],
+        sections: [
+          {
+            id: "controller",
+            heading: "1. Veri sorumlusu",
+            blocks: [
+              "Veri sorumlusu Anchorly'dir.",
+              `Bu metinle ilgili sorular ve KVKK başvuruların için: ${LEGAL_CONTACT_EMAIL}`,
+            ],
+          },
+          {
+            id: "data",
+            heading: "2. İşlenen veriler",
+            blocks: [
+              {
+                items: [
+                  "Hesap bilgileri: e-posta adresin, isteğe bağlı olarak adın ve parolanın geri döndürülemez özeti (argon2id). Parolanın kendisini saklamayız.",
+                  "Uygulama içeriği: görevlerin, rutinlerin, rutin işaretlerin, projelerin ve bunlara yazdığın notlar.",
+                  "Ayarlar: tema, dil, yazı tipi, haftanın ilk günü, panel düzeni ve saat dilimi.",
+                  "Oturum ve güvenlik kayıtları: oturumların (tarayıcı ve işletim sisteminden oluşan cihaz adı, açılış ve son kullanım zamanı), istek sınırı sayaçlarında kısa süre tutulan IP adresin, e-posta bağlantılarının özeti ve Kullanım Koşulları'nı kabul ettiğin tarih ile metnin sürümü.",
+                ],
+              },
+              "Görevlere eklediğin dosyalar sunucuya gönderilmez, yalnızca kendi cihazında kalır. Hesap açmadan (misafir olarak) kullandığında bütün veriler yalnızca tarayıcında tutulur ve bize ulaşmaz.",
+            ],
+          },
+          {
+            id: "purposes",
+            heading: "3. İşleme amaçları ve hukuki sebepler",
+            blocks: [
+              {
+                items: [
+                  "Hesabını oluşturmak, verilerini saklamak ve cihazların arasında eşitlemek: sözleşmenin kurulması ve ifası (KVKK m. 5/2-c).",
+                  "Hesap e-postalarını göndermek (doğrulama, parola sıfırlama, e-posta değişikliği): sözleşmenin ifası (m. 5/2-c).",
+                  "Hesabını ve hizmeti korumak (istek sınırları, oturum yönetimi, sızmış parola kontrolü): veri güvenliğini sağlama yükümlülüğümüz (m. 12) ve meşru menfaatimiz (m. 5/2-f).",
+                  "Kullanım Koşulları'nın kabul edildiğini gösterebilmek: bir hakkın tesisi, kullanılması veya korunması (m. 5/2-e).",
+                ],
+              },
+              "Açık rızaya dayanan bir veri işleme faaliyetimiz yoktur.",
+            ],
+          },
+          {
+            id: "collection",
+            heading: "4. Toplama yöntemi",
+            blocks: [
+              "Verileri elektronik ortamda; kayıt ve hesap formlarından, uygulamayı kullanırken girdiğin içerikten ve tarayıcının her istekte gönderdiği teknik bilgilerden (IP adresi, tarayıcı bilgisi) otomatik olarak toplarız.",
+            ],
+          },
+          {
+            id: "transfer",
+            heading: "5. Aktarım ve hizmet sağlayıcılar",
+            blocks: [
+              "Hizmeti sunabilmek için verilerin, bizim adımıza çalışan şu altyapı sağlayıcılarının sunucularında işlenir:",
+              {
+                items: [
+                  "Vercel (ABD): web sitesinin barındırılması; siteyi açtığında IP adresi gibi teknik bilgiler.",
+                  "Render (sunucular Frankfurt, Almanya): uygulama sunucusu (API).",
+                  "Neon (sunucular Frankfurt, Almanya): veritabanı; hesabındaki bütün veriler.",
+                  "Resend (ABD): hesap e-postalarının gönderilmesi; e-posta adresin ve e-postanın içeriği.",
+                ],
+              },
+              "Bu sağlayıcıların sunucuları Türkiye dışında olduğu için bu işlem KVKK'nın 9. maddesi kapsamında yurt dışına aktarım niteliğindedir.",
+              "Parola kontrolü için Have I Been Pwned hizmetine parolanın SHA-1 özetinin yalnızca ilk 5 karakteri gönderilir. Bu bilgiden parolan ya da kimliğin anlaşılamaz.",
+              "Bunların dışında verilerini yalnızca kanunen zorunlu olduğunda yetkili kamu kurum ve kuruluşlarıyla paylaşırız.",
+            ],
+          },
+          {
+            id: "retention",
+            heading: "6. Saklama süreleri",
+            blocks: [
+              {
+                items: [
+                  "Hesap verileri hesabın açık olduğu sürece saklanır. Hesabını sildiğinde bütün verilerin hemen ve kalıcı olarak silinir.",
+                  "Sildiğin görev, proje ve rutinler 30 gün sonra kalıcı olarak silinir.",
+                  "Oturum kayıtları süresi dolduğunda, kapatılan oturumlar ise 30 gün sonra silinir.",
+                  "E-posta bağlantıları süresi dolduğunda (en geç 24 saat), istek sınırı sayaçları ise sınır süresi bittiğinde (en geç 1 saat) silinir.",
+                  "Silinen veriler, altyapı sağlayıcılarının kısa süreli yedeklerinde ve sunucu kayıtlarında sınırlı bir süre daha kalabilir.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "storage",
+            heading: "7. Çerezler ve yerel depolama",
+            blocks: [
+              "Yalnızca oturumunu açık tutmak için zorunlu olan tek bir çerez kullanırız (anchorly_refresh; en fazla 30 gün geçerli, JavaScript tarafından okunamaz).",
+              "Ayarların, misafir verilerin ve henüz gönderilemeyen değişikliklerin tarayıcının yerel deposunda (localStorage) tutulur.",
+              "Analitik, reklam ya da takip çerezi kullanmadığımız için çerez onayı istemiyoruz. Yazı tiplerini de kendi sunucumuzdan yüklüyoruz, yani siteyi açtığında bilgilerin Google'a gitmez.",
+            ],
+          },
+          {
+            id: "security",
+            heading: "8. Güvenlik",
+            blocks: [
+              "Bütün bağlantılar HTTPS ile şifrelenir. Parolalar argon2id ile özetlenir. Giriş, kayıt ve diğer hassas işlemler istek sınırlarıyla korunur ve her kullanıcı yalnızca kendi verilerine erişebilir.",
+            ],
+          },
+          {
+            id: "rights",
+            heading: "9. KVKK kapsamındaki hakların",
+            blocks: [
+              "KVKK'nın 11. maddesi uyarınca şu haklara sahipsin:",
+              {
+                items: [
+                  "Kişisel verilerinin işlenip işlenmediğini öğrenmek ve işlendiyse bilgi istemek,",
+                  "İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenmek,",
+                  "Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilmek,",
+                  "Eksik veya yanlış işlenmişse düzeltilmesini istemek,",
+                  "Silinmesini veya yok edilmesini istemek,",
+                  "Düzeltme ve silme işlemlerinin aktarılan üçüncü kişilere bildirilmesini istemek,",
+                  "Yalnızca otomatik sistemlerle analiz edilmesi sonucu aleyhine bir sonuç çıkmasına itiraz etmek,",
+                  "Kanuna aykırı işleme nedeniyle zarara uğrarsan zararının giderilmesini istemek.",
+                ],
+              },
+              "Bu haklardan bazılarını uygulamanın içinden hemen kullanabilirsin: Hesap sayfasından verilerini indirebilir, adını, e-posta adresini ve parolanı değiştirebilir, hesabını silebilirsin.",
+              `Diğer talepler için ${LEGAL_CONTACT_EMAIL} adresine yazabilirsin. Başvurunu en geç 30 gün içinde ücretsiz olarak yanıtlarız. Yanıtımızı yeterli bulmazsan Kişisel Verileri Koruma Kurulu'na şikâyette bulunabilirsin.`,
+            ],
+          },
+          {
+            id: "changes",
+            heading: "10. Değişiklikler",
+            blocks: [
+              "Bu metni güncelleyebiliriz. Güncel tarih her zaman sayfanın başında yazar. Önemli değişikliklerde seni uygulamanın içinde bilgilendiririz.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        intro: [
+          'Bu koşullar Anchorly web sitesini ve uygulamasını ("hizmet") kullanımını düzenler. Hesap oluşturarak bu koşulları kabul etmiş olursun.',
+        ],
+        sections: [
+          {
+            id: "service",
+            heading: "1. Hizmet",
+            blocks: [
+              "Anchorly; görevlerini, rutinlerini, takvimini ve projelerini düzenlemen için ücretsiz bir uygulamadır. Hesap açmadan kullandığında veriler yalnızca cihazında kalır. Hesap açtığında sunucuda saklanır ve cihazların arasında eşitlenir.",
+              "Hizmet geliştirilmeye devam eden kişisel bir projedir. Özellikler zamanla değişebilir, eklenebilir ya da kaldırılabilir.",
+            ],
+          },
+          {
+            id: "account",
+            heading: "2. Hesabın",
+            blocks: [
+              {
+                items: [
+                  "Hesap açmak için en az 13 yaşında olmalısın. 18 yaşından küçüksen hizmeti velinin izniyle kullanmalısın.",
+                  "Kendine ait, doğru bir e-posta adresi kullanmalısın.",
+                  "Parolanı gizli tutmak ve hesabındaki işlemler senin sorumluluğundadır. Hesabının izinsiz kullanıldığını düşünürsen parolanı değiştir ve diğer oturumları kapat.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "use",
+            heading: "3. Kabul edilebilir kullanım",
+            blocks: [
+              "Hizmeti kullanırken şunları yapmamalısın:",
+              {
+                items: [
+                  "Hukuka aykırı içerik saklamak veya hizmeti hukuka aykırı amaçlarla kullanmak,",
+                  "Başkalarının hesaplarına ya da verilerine erişmeye çalışmak,",
+                  "Hizmeti aşırı yükleyecek otomatik istekler göndermek, güvenlik önlemlerini aşmaya çalışmak veya izinsiz güvenlik testi yapmak,",
+                  "Zararlı yazılım yaymak ya da hizmetin çalışmasını bozmaya çalışmak.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "content",
+            heading: "4. İçeriğin",
+            blocks: [
+              "Uygulamaya girdiğin içerik sana aittir. Bize yalnızca hizmeti sunmak için gereken ölçüde (saklamak, göstermek ve cihazların arasında eşitlemek) bu içeriği işleme izni vermiş olursun. İçeriğini başka bir amaçla kullanmayız.",
+            ],
+          },
+          {
+            id: "availability",
+            heading: "5. Hizmetin durumu ve sorumluluk",
+            blocks: [
+              'Hizmet "olduğu gibi" sunulur. Kesintisiz ya da hatasız çalışacağını garanti edemeyiz. Bakım, arıza veya altyapı sağlayıcılarından kaynaklanan kesintiler olabilir.',
+              "Önemli verilerini Hesap sayfasındaki dışa aktarma özelliğiyle düzenli olarak yedeklemeni öneririz.",
+              "Kanunun izin verdiği ölçüde, hizmetin kullanımından doğan dolaylı zararlardan ve veri kaybından sorumlu değiliz. Bu sınırlama kast ve ağır ihmal hallerini kapsamaz.",
+            ],
+          },
+          {
+            id: "termination",
+            heading: "6. Hesabın kapatılması",
+            blocks: [
+              "Hesabını dilediğin zaman Hesap sayfasından silebilirsin. Bu koşulları ağır biçimde ihlal eden hesapları askıya alabilir veya silebiliriz.",
+              "Hizmeti tamamen sonlandırmaya karar verirsek bunu makul bir süre önceden duyururuz ve verilerini dışa aktarabilmen için zaman tanırız.",
+            ],
+          },
+          {
+            id: "changes",
+            heading: "7. Değişiklikler",
+            blocks: [
+              "Bu koşulları güncelleyebiliriz. Önemli değişikliklerde uygulama, devam etmeden önce güncel koşulları kabul etmeni ister. Kabul etmek istemezsen hesabını silebilirsin.",
+            ],
+          },
+          {
+            id: "law",
+            heading: "8. Uygulanacak hukuk",
+            blocks: [
+              "Bu koşullara Türkiye Cumhuriyeti hukuku uygulanır. Tüketici olarak kanundan doğan hakların ve tüketici hakem heyetleri ile tüketici mahkemelerine başvurma hakkın saklıdır.",
+            ],
+          },
+          {
+            id: "contact",
+            heading: "9. İletişim",
+            blocks: [`Sorular için: ${LEGAL_CONTACT_EMAIL}`],
+          },
+        ],
+      },
+    },
   },
   en: {
     dashboard: "Dashboard",
@@ -1218,5 +1462,246 @@ export const strings = {
       "Your change could not be saved: the server could not be reached. The change was undone.",
     dataSaveFailedOther:
       "Your change could not be saved and was undone. Please try again.",
+    legalPrivacyTitle: "Privacy Notice",
+    legalTermsTitle: "Terms of Use",
+    legalPrivacyLink: "Privacy",
+    legalTermsLink: "Terms",
+    legalLinksLabel: "Legal",
+    legalUpdated: (date) => `Last updated: ${date}`,
+    legalBackToApp: "Back to Anchorly",
+    legalOpensInNewTab: "(opens in a new tab)",
+    authAcceptTermsBefore: "I accept the ",
+    authAcceptTermsTermsLink: "Terms of Use",
+    authAcceptTermsMiddle: " and have read the ",
+    authAcceptTermsPrivacyLink: "Privacy Notice",
+    authAcceptTermsAfter: ".",
+    authAcceptTermsRequired: "Please accept the Terms of Use to continue.",
+    termsUpdateTitle: "Our Terms of Use have changed",
+    termsUpdateBody:
+      "To keep using Anchorly, please accept the current Terms of Use. You can also read our Privacy Notice.",
+    termsUpdateAccept: "I accept",
+    settingsCategoryAbout: "About",
+    settingsPrivacyDescription:
+      "Which data we process and why, how long we keep it and your rights",
+    settingsTermsDescription: "The rules for using Anchorly",
+    settingsOpenDocument: "Open",
+    legalDocuments: {
+      privacy: {
+        intro: [
+          "This notice explains how your personal data is processed when you use Anchorly, as required by Article 10 of the Turkish Personal Data Protection Law No. 6698 (KVKK).",
+          "In short: we only process the data the app needs to work and stay secure. We do no advertising, analytics or profiling, and we never sell your data.",
+        ],
+        sections: [
+          {
+            id: "controller",
+            heading: "1. Data controller",
+            blocks: [
+              "The data controller is Anchorly.",
+              `For questions about this notice and requests about your data: ${LEGAL_CONTACT_EMAIL}`,
+            ],
+          },
+          {
+            id: "data",
+            heading: "2. Data we process",
+            blocks: [
+              {
+                items: [
+                  "Account details: your email address, optionally your name, and a one-way hash of your password (argon2id). We never store the password itself.",
+                  "App content: your tasks, routines, routine check-ins, projects and the notes you write in them.",
+                  "Settings: theme, language, font, first day of the week, dashboard layout and time zone.",
+                  "Session and security records: your sessions (a device name made of the browser and operating system, when each started and was last used), your IP address kept briefly in rate-limit counters, hashes of email links, and the date and version of the Terms of Use you accepted.",
+                ],
+              },
+              "Files you attach to tasks are never sent to the server; they stay on your device. If you use Anchorly without an account (as a guest), all data stays in your browser and never reaches us.",
+            ],
+          },
+          {
+            id: "purposes",
+            heading: "3. Purposes and legal grounds",
+            blocks: [
+              {
+                items: [
+                  "Creating your account, storing your data and syncing it between your devices: entering into and performing our contract with you (KVKK Art. 5/2-c).",
+                  "Sending account emails (verification, password reset, email change): performing the contract (Art. 5/2-c).",
+                  "Protecting your account and the service (rate limits, session management, breached password checks): our duty to keep data secure (Art. 12) and our legitimate interest (Art. 5/2-f).",
+                  "Being able to show that the Terms of Use were accepted: establishing, exercising or defending a right (Art. 5/2-e).",
+                ],
+              },
+              "We do not carry out any processing based on explicit consent.",
+            ],
+          },
+          {
+            id: "collection",
+            heading: "4. How we collect data",
+            blocks: [
+              "We collect data electronically: from the sign-up and account forms, from the content you enter while using the app, and automatically from the technical details your browser sends with every request (IP address, browser details).",
+            ],
+          },
+          {
+            id: "transfer",
+            heading: "5. Transfers and service providers",
+            blocks: [
+              "To run the service, your data is processed on the servers of these infrastructure providers, who work on our behalf:",
+              {
+                items: [
+                  "Vercel (USA): hosting the website; technical details such as your IP address when you open the site.",
+                  "Render (servers in Frankfurt, Germany): the application server (API).",
+                  "Neon (servers in Frankfurt, Germany): the database; all the data in your account.",
+                  "Resend (USA): sending account emails; your email address and the content of the email.",
+                ],
+              },
+              "Because these servers are outside Türkiye, this counts as a transfer abroad under Article 9 of the KVKK.",
+              "For the password check, only the first 5 characters of the SHA-1 hash of your password are sent to the Have I Been Pwned service. Neither your password nor your identity can be worked out from this.",
+              "Apart from this, we share your data only with authorised public authorities when the law requires it.",
+            ],
+          },
+          {
+            id: "retention",
+            heading: "6. How long we keep data",
+            blocks: [
+              {
+                items: [
+                  "Account data is kept while your account is open. When you delete your account, all your data is deleted immediately and permanently.",
+                  "Tasks, projects and routines you delete are permanently removed after 30 days.",
+                  "Session records are removed when they expire, and signed-out sessions after 30 days.",
+                  "Email links are removed when they expire (within 24 hours), and rate-limit counters when their window ends (within 1 hour).",
+                  "Deleted data may remain for a limited time in our infrastructure providers' short-term backups and server logs.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "storage",
+            heading: "7. Cookies and local storage",
+            blocks: [
+              "We use a single cookie, which is strictly necessary to keep you signed in (anchorly_refresh; valid for at most 30 days and not readable by JavaScript).",
+              "Your settings, guest data and changes that could not be sent yet are kept in your browser's local storage (localStorage).",
+              "We use no analytics, advertising or tracking cookies, so we do not ask for cookie consent. Fonts are served from our own server too, so opening the site sends nothing to Google.",
+            ],
+          },
+          {
+            id: "security",
+            heading: "8. Security",
+            blocks: [
+              "All connections are encrypted with HTTPS. Passwords are hashed with argon2id. Sign-in, sign-up and other sensitive actions are protected by rate limits, and every user can access only their own data.",
+            ],
+          },
+          {
+            id: "rights",
+            heading: "9. Your rights under the KVKK",
+            blocks: [
+              "Under Article 11 of the KVKK you have the right to:",
+              {
+                items: [
+                  "learn whether your personal data is processed and, if so, request information about it,",
+                  "learn the purpose of the processing and whether the data is used for that purpose,",
+                  "know the third parties in Türkiye or abroad to whom it is transferred,",
+                  "ask for incomplete or inaccurate data to be corrected,",
+                  "ask for your data to be deleted or destroyed,",
+                  "ask for corrections and deletions to be passed on to the third parties who received the data,",
+                  "object to a result against you that comes only from automated analysis,",
+                  "claim compensation if you suffer damage because of unlawful processing.",
+                ],
+              },
+              "You can use some of these rights straight from the app: on the Account page you can download your data, change your name, email address and password, and delete your account.",
+              `For anything else, write to ${LEGAL_CONTACT_EMAIL}. We answer free of charge within 30 days at the latest. If you are not satisfied with our answer, you can complain to the Personal Data Protection Board (KVKK Kurulu).`,
+            ],
+          },
+          {
+            id: "changes",
+            heading: "10. Changes",
+            blocks: [
+              "We may update this notice. The current date is always shown at the top of the page. We will let you know inside the app about important changes.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        intro: [
+          'These terms govern your use of the Anchorly website and app (the "service"). By creating an account you accept these terms.',
+        ],
+        sections: [
+          {
+            id: "service",
+            heading: "1. The service",
+            blocks: [
+              "Anchorly is a free app for organising your tasks, routines, calendar and projects. Without an account your data stays only on your device. With an account it is stored on the server and synced between your devices.",
+              "The service is a personal project that is still being developed. Features may change, be added or be removed over time.",
+            ],
+          },
+          {
+            id: "account",
+            heading: "2. Your account",
+            blocks: [
+              {
+                items: [
+                  "You must be at least 13 years old to create an account. If you are under 18, use the service with your parent's or guardian's permission.",
+                  "Use an accurate email address that belongs to you.",
+                  "You are responsible for keeping your password secret and for what happens in your account. If you think someone else has used your account, change your password and sign out your other sessions.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "use",
+            heading: "3. Acceptable use",
+            blocks: [
+              "When using the service, do not:",
+              {
+                items: [
+                  "store unlawful content or use the service for unlawful purposes,",
+                  "try to access other people's accounts or data,",
+                  "send automated requests that overload the service, try to get around security measures, or run security tests without permission,",
+                  "spread malware or try to disrupt the service.",
+                ],
+              },
+            ],
+          },
+          {
+            id: "content",
+            heading: "4. Your content",
+            blocks: [
+              "The content you put into the app belongs to you. You only allow us to process it as far as needed to run the service (storing it, showing it and syncing it between your devices). We do not use your content for anything else.",
+            ],
+          },
+          {
+            id: "availability",
+            heading: "5. Availability and liability",
+            blocks: [
+              'The service is provided "as is". We cannot promise that it will always work without interruptions or errors. Maintenance, faults or problems at our infrastructure providers may cause outages.',
+              "We recommend backing up important data regularly with the export feature on the Account page.",
+              "As far as the law allows, we are not liable for indirect damage or data loss arising from use of the service. This limit does not apply to intent or gross negligence.",
+            ],
+          },
+          {
+            id: "termination",
+            heading: "6. Closing an account",
+            blocks: [
+              "You can delete your account at any time on the Account page. We may suspend or delete accounts that seriously break these terms.",
+              "If we decide to shut down the service, we will announce it reasonably in advance and give you time to export your data.",
+            ],
+          },
+          {
+            id: "changes",
+            heading: "7. Changes",
+            blocks: [
+              "We may update these terms. For important changes, the app will ask you to accept the current terms before you continue. If you do not want to accept them, you can delete your account.",
+            ],
+          },
+          {
+            id: "law",
+            heading: "8. Governing law",
+            blocks: [
+              "These terms are governed by the laws of the Republic of Türkiye. Your statutory rights as a consumer, including applying to consumer arbitration committees and consumer courts, are not affected.",
+            ],
+          },
+          {
+            id: "contact",
+            heading: "9. Contact",
+            blocks: [`Questions: ${LEGAL_CONTACT_EMAIL}`],
+          },
+        ],
+      },
+    },
   },
 };
