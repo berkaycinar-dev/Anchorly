@@ -1802,3 +1802,17 @@ summary:focus-visible {
     transition: none;
   }
 }
+
+/* Scroll reveal (reveal.js): hidden until the element enters the viewport. */
+.rv {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.rv.rv-on {
+  opacity: 1;
+  transform: none;
+}
