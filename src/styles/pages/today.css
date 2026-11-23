@@ -116,6 +116,11 @@
   font-size: 16px;
 }
 
+/* The bar's own border shows focus; the global :focus-visible ring would draw a second frame inside it. */
+.add-task-bar-input:focus-visible {
+  outline: none;
+}
+
 .add-task-tools {
   display: flex;
   flex-shrink: 0;
