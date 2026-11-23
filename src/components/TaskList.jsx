@@ -19,6 +19,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import {
   Calendar,
+  ClipboardList,
   Clock,
   Folder,
   ListChecks,
@@ -118,7 +119,9 @@ function TaskList({
   if (tasks.length === 0) {
     return (
       <div className="empty-state">
-        <span className="empty-state-icon">📋</span>
+        <span className="empty-state-icon" aria-hidden="true">
+          <Icon icon={ClipboardList} size="xl" />
+        </span>
         <p className="empty-state-title">{t.emptyTaskTitle}</p>
         <p className="empty-state-subtitle">{t.emptyTaskSubtitle}</p>
       </div>

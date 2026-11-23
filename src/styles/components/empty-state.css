@@ -17,8 +17,15 @@
 }
 
 .empty-state-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-tint);
+  color: var(--color-accent-text);
 }
 
 .empty-state-title {
