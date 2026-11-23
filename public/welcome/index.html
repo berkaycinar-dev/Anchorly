@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anchorly — Görev, rutin ve takvim tek yerde</title>
+    <meta
+      name="description"
+      content="Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan sakin bir uygulama. Kayıt gerekmez; hesap açmazsan verilerin cihazında kalır."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="Anchorly" />
+    <meta
+      property="og:title"
+      content="Anchorly — Görev, rutin ve takvim tek yerde"
+    />
+    <meta
+      property="og:description"
+      content="Görevlerini, alışkanlıklarını ve takvimini bir arada tutan sakin bir uygulama."
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="/anchorly-svg.svg" />
+    <link rel="stylesheet" href="/welcome/landing.css" />
+    <script src="/welcome/tour.js" defer></script>
+  </head>
+  <body>
+    <header class="hdr wrap">
+      <a class="brand" href="#ust"
+        ><svg
+          class="brand-logo"
+          width="34"
+          height="34"
+          viewBox="0 0 64 64"
+          aria-hidden="true"
+        >
+          <defs>
+            <mask
+              id="lgh"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="64"
+              height="64"
+            >
+              <rect width="64" height="64" fill="#fff"></rect>
+              <polygon
+                points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"
+                fill="none"
+                stroke="#000"
+                stroke-width="2.4"
+                stroke-linejoin="round"
+              ></polygon>
+              <g
+                transform="translate(12.8 13.85) scale(0.6)"
+                fill="none"
+                stroke="#000"
+                stroke-linecap="round"
+              >
+                <circle cx="32" cy="10" r="6" stroke-width="5"></circle>
+                <line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line>
+                <line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line>
+                <path
+                  d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z"
+                  fill="#000"
+                  stroke="none"
+                ></path>
+              </g>
+            </mask>
+          </defs>
+          <polygon
+            points="32,4 56,18 56,46 32,60 8,46 8,18"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"
+            mask="url(#lgh)"
+          ></polygon></svg
+        ><span class="brand-name">Anchorly</span></a
+      >
+      <nav class="nav-links" aria-label="Sayfa bölümleri">
+        <a class="nav-link" href="#neden">Neden</a
+        ><a class="nav-link" href="#sayfalar">Sayfalar</a
+        ><a class="nav-link" href="#temalar">Temalar</a
+        ><a class="nav-link" href="#sss">SSS</a>
+        <a class="nav-link" href="/login">Giriş yap</a>
+      </nav>
+      <span class="hdr-cta"
+        ><a
+          class="lang-switch"
+          href="/welcome/en/"
+          hreflang="en"
+          lang="en"
+          aria-label="English"
+          title="English"
+          ><svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
+            ></path></svg
+          >EN</a
+        ><a class="btn-primary" href="/?welcome=tr"
+          >Anchorly'yi aç<svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 8h9M8.5 4l4 4-4 4"
+              fill="none"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path></svg></a
+      ></span>
+    </header>
+    <main>
+      <section id="ust" class="hero wrap">
+        <div class="hero-chips">
+          <span>Görevler</span><span aria-hidden="true">·</span
+          ><span>Rutinler</span><span aria-hidden="true">·</span
+          ><span>Takvim</span><span aria-hidden="true">·</span
+          ><span>Projeler</span>
+        </div>
+        <h1>Günün dağılmasın, <span>tek yerde toplansın.</span></h1>
+        <p class="hero-sub">
+          Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan
+          sakin bir uygulama. Uzun listelerin altında ezilmeden günü kendi
+          hızında yaşamak isteyenler için.
+        </p>
+        <div class="hero-actions">
+          <a class="btn-primary btn-lg" href="/?welcome=tr"
+            >Anchorly'yi aç<svg
+              width="18"
+              height="18"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8h9M8.5 4l4 4-4 4"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path></svg></a
+          ><a class="btn-ghost" href="#neden">Neden Anchorly?</a>
+        </div>
+        <p class="hero-note">
+          Telefon, tablet ve bilgisayarda · Türkçe ve İngilizce
+        </p>
+      </section>
+      <section
+        id="tour"
+        class="tour wrap"
+        aria-label="Uygulama önizlemesi"
+      ></section>
+      <section id="neden" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Neden Anchorly</div>
+          <h2>Gününü üç ayrı uygulamada değil, tek bir yerde gör.</h2>
+          <p class="lead">
+            Yapılacaklar listesi, alışkanlık takibi ve takvim çoğu zaman ayrı
+            uygulamalarda durur. Hepsine tek tek bakmadan günün nasıl geçeceğini
+            görmek zorlaşır. Anchorly bu üçünü aynı yerde ve birbirine bağlı
+            tutar.
+          </p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Sabah neye odaklanacağın belli</h3>
+            <p>
+              <strong>Bugün</strong> sayfası yalnızca bugünü ilgilendiren
+              görevleri gösterir: bugüne tarihlenenler, tarihsiz olanlar ve
+              gecikenler. İleri tarihli işler, günü gelince listene düşer.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Alışkanlıklar ayrı bir yerde</h3>
+            <p>
+              Su içmek, kitap okumak ya da yürüyüşe çıkmak gibi her gün yaptığın
+              şeyler görev listene karışmaz. Bunları
+              <strong>Günlük Rutin</strong> sayfasındaki haftalık çizelgede
+              işaretlersin.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Geriye dönüp bakabilirsin</h3>
+            <p>
+              <strong>Takvim</strong> her günün tamamlanma oranını,
+              <strong>Arşiv</strong> ise eklediğin tüm görevleri ve tekrarlı
+              serilerin ilerlemesini saklar. Neyi yapıp neyi aksattığını görmek
+              devam etmeyi kolaylaştırır.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="nasil" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Nasıl işliyor</div>
+          <h2>Kurulum yok, kayıt yok; hemen başlarsın.</h2>
+          <p class="lead">
+            Anchorly tarayıcıda çalışır. İndirmen gereken bir şey yok, hesap
+            açman da gerekmiyor.
+          </p>
+        </div>
+        <ol class="grid">
+          <li class="card">
+            <span class="step-num" aria-hidden="true">1</span>
+            <h3>Aç ve yaz</h3>
+            <p>
+              Anchorly'yi açtığında doğrudan uygulamaya girersin. İlk görevini
+              ya da rutinini hemen ekleyebilirsin.
+            </p>
+          </li>
+          <li class="card">
+            <span class="step-num" aria-hidden="true">2</span>
+            <h3>Verilerin cihazında kalır</h3>
+            <p>
+              Hesap açmadan kullandığın sürece her şey yalnızca bu cihazdaki
+              tarayıcıda saklanır.
+            </p>
+          </li>
+          <li class="card">
+            <span class="step-num" aria-hidden="true">3</span>
+            <h3>İstersen hesap aç</h3>
+            <p>
+              Verilerine başka cihazlardan da ulaşmak istediğinde hesap açarsın.
+              Bu cihazda eklediklerini hesabına aktarmak isteyip istemediğin
+              sorulur.
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section id="fark" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Görev mi, rutin mi?</div>
+          <h2>İki farklı şey, iki ayrı yer.</h2>
+          <p class="lead">
+            Yapıp bitirdiğin iş görevdir; her gün sürdürdüğün alışkanlık ise
+            rutindir.
+          </p>
+        </div>
+        <div class="grid grid-compare">
+          <div class="card compare">
+            <div class="eyebrow">Yapılınca biter</div>
+            <h3>Görev</h3>
+            <p>
+              Tarihi olabilir, bir projeye bağlanabilir; istersen her gün ya da
+              her hafta tekrarlanır. Tamamlananlar Arşiv'de kalır.
+            </p>
+            <div class="example">Örneğin: Faturayı öde</div>
+            <div class="shows-in">
+              Göründüğü yerler: Bugün · Takvim · Arşiv · Projeler
+            </div>
+          </div>
+          <div class="card compare">
+            <div class="eyebrow">Her gün sürer</div>
+            <h3>Rutin</h3>
+            <p>
+              Biten bir iş değil, sürdürdüğün bir düzendir. Her gün için ayrı
+              bir kutuyu işaretlersin; hafta ve ay boyunca nasıl gittiğini
+              görürsün.
+            </p>
+            <div class="example">Örneğin: Su iç</div>
+            <div class="shows-in">Göründüğü yerler: Günlük Rutin · Panel</div>
+          </div>
+        </div>
+      </section>
+      <section id="sayfalar" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Sayfalar</div>
+          <h2>Her sayfa tek bir işe odaklanır.</h2>
+          <p class="lead">
+            Uygulamada sekiz sayfa var; hangisinin ne işe yaradığına buradan
+            bakabilirsin.
+          </p>
+        </div>
+        <div class="grid grid-pages">
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"
+                ></path></svg
+            ></span>
+            <h3>Panel</h3>
+            <p>
+              Açılış sayfası. Günün sözü, özet sayılar ve istediğin kartlar
+              burada.
+            </p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 3a9 9 0 100 18 9 9 0 000-18zM8 12l3 3 5-6"
+                ></path></svg
+            ></span>
+            <h3>Bugün</h3>
+            <p>
+              Bugünün görevleri, tarihsiz görevler ve gecikenler. Seçtiğin
+              görevin ayrıntıları hemen yanında açılır.
+            </p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M4 12a8 8 0 0114-5.3L20 9M20 4v5h-5M20 12a8 8 0 01-14 5.3L4 15M4 20v-5h5"
+                ></path></svg
+            ></span>
+            <h3>Günlük Rutin</h3>
+            <p>Alışkanlıkların için haftalık görünüm ve aylık ilerleme.</p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"></path></svg
+            ></span>
+            <h3>Takvim</h3>
+            <p>
+              Ayın tamamı tek ekranda; her günün görevleri ve tamamlanma oranı.
+            </p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"></path></svg
+            ></span>
+            <h3>Arşiv</h3>
+            <p>
+              Eklediğin tüm görevler ve tekrarlı seriler, ilerlemeleriyle
+              birlikte.
+            </p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                ></path></svg
+            ></span>
+            <h3>Projeler</h3>
+            <p>
+              Birbirine bağlı işleri bir projede topla; pano ya da liste
+              görünümünde takip et.
+            </p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 15a3 3 0 100-6 3 3 0 000 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"
+                ></path></svg
+            ></span>
+            <h3>Ayarlar</h3>
+            <p>Tema, yazı tipi ve dil seçimi.</p>
+          </div>
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0"
+                ></path></svg
+            ></span>
+            <h3>Hesap</h3>
+            <p>
+              İsteğe bağlı. Hesapla verilerine başka cihazlardan da ulaşırsın.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="temalar" class="sec wrap">
+        <div class="band">
+          <div class="intro">
+            <div class="eyebrow">Sana göre görünsün</div>
+            <h2>Yedi tema, yedi ayrı ruh hali.</h2>
+            <p class="lead">
+              Bunlar uygulamadaki gerçek temalar; yukarıdaki önizlemede de
+              deneyebilirsin. Dördü koyu, üçü açık.
+            </p>
+          </div>
+          <ul class="theme-grid">
+            <li>
+              <div class="theme-mini" data-theme="gray" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Gri</div>
+              <div class="theme-mode">Açık</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="purple" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Mor</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="blue" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Mavi</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="red" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Kırmızı</div>
+              <div class="theme-mode">Açık</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="green" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Yeşil</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="pink" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Pembe</div>
+              <div class="theme-mode">Açık</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="black" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Siyah</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+          </ul>
+          <div class="facts">
+            <div>
+              <div class="fact-title">3 yazı tipi</div>
+              <p>Inter, Poppins ya da Manrope.</p>
+            </div>
+            <div>
+              <div class="fact-title">TR · EN</div>
+              <p>Arayüz Türkçe ya da İngilizce.</p>
+            </div>
+            <div>
+              <div class="fact-title">Her ekrana uygun</div>
+              <p>
+                Masaüstünde kenar çubuğu, tablette ikonlu çubuk, telefonda alt
+                menü.
+              </p>
+            </div>
+            <div>
+              <div class="fact-title">Veriler sende</div>
+              <p>
+                Hesap açmak zorunlu değil; açmazsan verilerin bu cihazda kalır.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="sss" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Sık sorulanlar</div>
+          <h2>Aklına takılabilecekler.</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq" open>
+            <summary>Hesap açmam gerekiyor mu?</summary>
+            <p>
+              Hayır. “Anchorly'yi aç” düğmesine basınca doğrudan uygulamaya
+              girersin. Hesap yalnızca verilerini başka cihazlarda da kullanmak
+              istersen gerekir.
+            </p>
+          </details>
+          <details class="faq">
+            <summary>Verilerim nerede duruyor?</summary>
+            <p>
+              Hesap açmazsan kendi cihazında, tarayıcının içinde durur. Hesap
+              açarsan hesabında saklanır ve diğer cihazlarından da görünür. Bu
+              cihazda daha önce eklediklerini hesabına aktarmak isteyip
+              istemediğin sorulur.
+            </p>
+          </details>
+          <details class="faq">
+            <summary>Telefonda kullanabilir miyim?</summary>
+            <p>
+              Evet. Uygulama telefonda, tablette ve bilgisayarda ekrana uygun
+              bir düzenle açılır.
+            </p>
+          </details>
+          <details class="faq">
+            <summary>Rutin ile tekrarlayan görev aynı şey mi?</summary>
+            <p>
+              Hayır. Rutin her gün işaretlediğin bir alışkanlıktır. Tekrarlayan
+              görev ise her gün ya da her hafta yeniden oluşan bir görevdir ve
+              Arşiv'de seri olarak görünür.
+            </p>
+          </details>
+          <details class="faq">
+            <summary>Görünümü değiştirebilir miyim?</summary>
+            <p>
+              Evet. Yedi tema, üç yazı tipi ve Türkçe ya da İngilizce seçeneği
+              var.
+            </p>
+          </details>
+        </div>
+      </section>
+      <section class="sec wrap closing">
+        <h2>Hazırsan, kapı açık.</h2>
+        <p class="lead">
+          Kayıt yok, kurulum yok. Bir görev yaz, bir rutin ekle ve sana uyup
+          uymadığını gör.
+        </p>
+        <div class="closing-action">
+          <a class="btn-primary btn-lg" href="/?welcome=tr"
+            >Anchorly'yi aç<svg
+              width="18"
+              height="18"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8h9M8.5 4l4 4-4 4"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path></svg
+          ></a>
+        </div>
+      </section>
+    </main>
+    <footer class="ftr wrap">
+      <div class="ftr-person">
+        <a class="ftr-name" href="https://github.com/berkaycinar-dev"
+          >Berkay Çınar</a
+        ><span>Anchorly'nin geliştiricisi</span>
+      </div>
+      <nav class="ftr-links" aria-label="Alt bilgi">
+        <a href="/login">Giriş yap</a> <a href="/privacy">Gizlilik ve KVKK</a
+        ><a href="/terms">Kullanım Koşulları</a
+        ><a href="https://github.com/berkaycinar-dev/Anchorly"
+          >Kaynak kod GitHub'da →</a
+        >
+      </nav>
+    </footer>
+  </body>
+</html>
