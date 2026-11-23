@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddTaskBar from "../components/AddTaskBar";
 import RoutineDayView from "../components/RoutineDayView";
 import RoutineWeekView from "../components/routine/RoutineWeekView";
 import useMediaQuery, { WIDE_SCREEN_MEDIA_QUERY } from "../hooks/useMediaQuery";
@@ -113,20 +114,16 @@ export default function DailyRoutinePage({
         </button>
       </div>
 
-      <form className="routine-form" onSubmit={addRoutine}>
-        <input
-          type="text"
-          enterKeyHint="done"
-          autoComplete="off"
-          aria-label={t.newRoutineLabel}
-          placeholder={t.newRoutinePlaceholder}
-          value={newRoutineTitle}
-          onChange={(event) => setNewRoutineTitle(event.target.value)}
-        />
-        <button type="submit" className="btn btn-primary">
-          {t.addRoutineButton}
-        </button>
-      </form>
+      <AddTaskBar
+        title={newRoutineTitle}
+        setTitle={setNewRoutineTitle}
+        onSubmit={addRoutine}
+        label={t.newRoutineLabel}
+        placeholder={t.newRoutinePlaceholder}
+        submitLabel={t.addRoutineButton}
+        showTools={false}
+        t={t}
+      />
 
       <RoutineDayView
         routines={routines}
