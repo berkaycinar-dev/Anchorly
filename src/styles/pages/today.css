@@ -98,9 +98,31 @@
   cursor: pointer;
 }
 
-.add-task-bar-submit:focus-visible {
+.add-task-bar-submit:focus-visible,
+.add-task-bar-close:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
+}
+
+.add-task-bar-close {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .add-task-bar-close:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
 }
 
 .add-task-bar-input {
@@ -114,6 +136,11 @@
   color: var(--color-text-primary);
   font: inherit;
   font-size: 16px;
+}
+
+/* The bar's own border shows focus; the global :focus-visible ring would draw a second frame inside it. */
+.add-task-bar-input:focus-visible {
+  outline: none;
 }
 
 .add-task-tools {

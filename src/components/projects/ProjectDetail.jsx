@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   Archive,
@@ -46,6 +46,20 @@ function ProjectDetail({
   const [view, setView] = useState("board");
   const [category, setCategory] = useState("all");
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
+  const addTaskButtonRef = useRef(null);
+  const shouldRestoreFocusRef = useRef(false);
+
+  useEffect(() => {
+    if (!isTaskFormOpen && shouldRestoreFocusRef.current) {
+      shouldRestoreFocusRef.current = false;
+      addTaskButtonRef.current?.focus();
+    }
+  }, [isTaskFormOpen]);
+
+  function closeTaskForm() {
+    shouldRestoreFocusRef.current = true;
+    setIsTaskFormOpen(false);
+  }
 
   const progress = getProjectProgress(tasks);
   const visibleTasks = filterTasksByCategory(tasks, category);
@@ -176,15 +190,17 @@ function ProjectDetail({
           <Icon icon={ChevronDown} size="md" className="select-field-icon" />
         </div>
 
-        <button
-          type="button"
-          className="btn btn-primary project-add-task"
-          aria-expanded={isTaskFormOpen}
-          onClick={() => setIsTaskFormOpen((open) => !open)}
-        >
-          <Icon icon={Plus} size="md" />
-          {t.projectAddTaskOpen}
-        </button>
+        {!isTaskFormOpen && (
+          <button
+            type="button"
+            ref={addTaskButtonRef}
+            className="btn btn-primary project-add-task"
+            onClick={() => setIsTaskFormOpen(true)}
+          >
+            <Icon icon={Plus} size="md" />
+            {t.projectAddTaskOpen}
+          </button>
+        )}
       </div>
 
       {isTaskFormOpen && (
@@ -196,6 +212,7 @@ function ProjectDetail({
           placeholder={t.newProjectTaskPlaceholder}
           showTools={false}
           autoFocus
+          onClose={closeTaskForm}
           t={t}
         />
       )}

@@ -250,6 +250,49 @@ describe("App projects board", () => {
     expect(JSON.parse(localStorage.getItem("tasks"))[0].date).toBe("");
   });
 
+  it("hides the add task button while the task bar is open", async () => {
+    const user = userEvent.setup();
+    seed([]);
+    renderApp(`/projects/${PROJECT_ID}`);
+
+    await user.click(screen.getByRole("button", { name: "Add task" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Add task" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "New project task" }),
+    ).toHaveFocus();
+  });
+
+  it("closes the task bar from its close button and returns focus", async () => {
+    const user = userEvent.setup();
+    seed([]);
+    renderApp(`/projects/${PROJECT_ID}`);
+
+    await user.click(screen.getByRole("button", { name: "Add task" }));
+    await user.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(
+      screen.queryByRole("textbox", { name: "New project task" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Add task" })).toHaveFocus();
+  });
+
+  it("closes the task bar with the Escape key", async () => {
+    const user = userEvent.setup();
+    seed([]);
+    renderApp(`/projects/${PROJECT_ID}`);
+
+    await user.click(screen.getByRole("button", { name: "Add task" }));
+    await user.keyboard("{Escape}");
+
+    expect(
+      screen.queryByRole("textbox", { name: "New project task" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Add task" })).toHaveFocus();
+  });
+
   it("shows a task with the stored in progress status in the middle column", () => {
     seed([
       createStoredTask("11111111-1111-4111-8111-111111111111", "Moved task", {

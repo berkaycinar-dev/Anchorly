@@ -1,4 +1,4 @@
-import { Clock, Calendar, Plus, Repeat } from "lucide-react";
+import { Clock, Calendar, Plus, Repeat, X } from "lucide-react";
 import Icon from "./Icon";
 import TimeField from "./TimeField";
 import { parseLocalDate } from "../utils/dateHelpers";
@@ -55,8 +55,16 @@ function AddTaskBar({
   placeholder,
   showTools = true,
   autoFocus = false,
+  onClose,
   t,
 }) {
+  function handleKeyDown(event) {
+    if (onClose && event.key === "Escape") {
+      event.preventDefault();
+      onClose();
+    }
+  }
+
   return (
     <form className="add-task-bar" onSubmit={onSubmit}>
       <button
@@ -77,8 +85,21 @@ function AddTaskBar({
         placeholder={placeholder ?? t.newTaskPlaceholder}
         value={title}
         onChange={(event) => setTitle(event.target.value)}
+        onKeyDown={handleKeyDown}
         ref={inputRef}
       />
+
+      {onClose && (
+        <button
+          type="button"
+          className="add-task-bar-close"
+          aria-label={t.closeButton}
+          title={t.closeButton}
+          onClick={onClose}
+        >
+          <Icon icon={X} size="md" />
+        </button>
+      )}
 
       {showTools && (
         <div className="add-task-tools">
