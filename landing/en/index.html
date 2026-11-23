@@ -22,458 +22,125 @@
     />
     <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    />
-    <style>
-      body {
-        margin: 0;
-        background: #ffffff;
-        font-family: "Inter", system-ui, sans-serif;
-        color: #111111;
-        -webkit-font-smoothing: antialiased;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      button {
-        font-family: inherit;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      .btn-primary {
-        transition:
-          transform 0.15s ease,
-          opacity 0.15s ease;
-      }
-      .btn-primary:hover {
-        opacity: 0.88;
-        transform: translateY(-1px);
-      }
-      .btn-ghost:hover {
-        background: #f0f0f0;
-      }
-      .nav-link:hover {
-        color: #111111;
-      }
-      .card {
-        transition:
-          border-color 0.2s ease,
-          transform 0.2s ease;
-      }
-      .card:hover {
-        border-color: #c4c4c4;
-        transform: translateY(-2px);
-      }
-      a:focus-visible,
-      button:focus-visible {
-        outline: 2px solid #111111;
-        outline-offset: 3px;
-      }
-      .faq {
-        border-top: 1px solid #e2e2e2;
-      }
-      .faq summary {
-        list-style: none;
-        cursor: pointer;
-        padding: 22px 40px 22px 0;
-        font-size: 18px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        position: relative;
-        min-height: 44px;
-        box-sizing: border-box;
-      }
-      .faq summary::-webkit-details-marker {
-        display: none;
-      }
-      .faq summary::after {
-        content: "+";
-        position: absolute;
-        right: 4px;
-        top: 18px;
-        font-size: 26px;
-        font-weight: 400;
-        color: #6b6b6b;
-      }
-      .faq[open] summary::after {
-        content: "–";
-      }
-      .faq p {
-        margin: 0;
-        padding: 0 40px 24px 0;
-        font-size: 16px;
-        line-height: 1.7;
-        color: #5c5c5c;
-        max-width: 680px;
-        text-wrap: pretty;
-      }
-      @media (max-width: 640px) {
-        .sec {
-          margin-top: 64px !important;
-          padding-left: 20px !important;
-          padding-right: 20px !important;
-        }
-        .hdr {
-          padding: 14px 20px !important;
-        }
-        .nav-links {
-          display: none !important;
-        }
-        .hero {
-          padding: 32px 20px 0 !important;
-        }
-        .tour {
-          padding: 0 16px !important;
-          margin-top: 40px !important;
-        }
-        .card {
-          padding: 20px !important;
-        }
-        .band {
-          padding: 22px !important;
-        }
-        .mock-side {
-          display: none !important;
-        }
-        .mock-bottom {
-          display: flex !important;
-        }
-        .mock-main {
-          padding: 20px 16px !important;
-        }
-        .cal-title {
-          display: none !important;
-        }
-        .cal-cell {
-          min-height: 46px !important;
-          padding: 4px !important;
-        }
-        .ftr {
-          padding: 24px 20px 40px !important;
-          margin-top: 64px !important;
-        }
-        .faq summary {
-          font-size: 16px !important;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-        .btn-primary,
-        .card {
-          transition: none;
-        }
-      }
-      .lang-switch:hover {
-        background: #f0f0f0;
-      }
-      @media (max-width: 640px) {
-        .lang-switch {
-          padding: 0 12px !important;
-          margin-right: 6px !important;
-        }
-        .lang-switch svg,
-        .hdr-cta .btn-primary svg {
-          display: none;
-        }
-        .hdr-cta .btn-primary {
-          padding: 0 14px !important;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../landing.css" />
+    <script src="../tour.js" defer></script>
   </head>
   <body>
-    <div class="pg" style="background: #ffffff; color: #111111; min-width: 0">
-      <header
-        class="hdr"
-        style="
-          max-width: 1120px;
-          margin: 0 auto;
-          padding: 20px 32px;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 16px 24px;
-          box-sizing: border-box;
-        "
-      >
-        <a
-          href="#ust"
-          style="
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 44px;
-          "
-          ><svg
-            width="34"
-            height="34"
-            viewBox="0 0 64 64"
-            aria-hidden="true"
-            style="color: #111111; flex: 0 0 auto"
-          >
-            <defs>
-              <mask
-                id="lgh"
-                maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="64"
-                height="64"
+    <header class="hdr wrap">
+      <a class="brand" href="#ust"
+        ><svg
+          class="brand-logo"
+          width="34"
+          height="34"
+          viewBox="0 0 64 64"
+          aria-hidden="true"
+        >
+          <defs>
+            <mask
+              id="lgh"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="64"
+              height="64"
+            >
+              <rect width="64" height="64" fill="#fff"></rect>
+              <polygon
+                points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"
+                fill="none"
+                stroke="#000"
+                stroke-width="2.4"
+                stroke-linejoin="round"
+              ></polygon>
+              <g
+                transform="translate(12.8 13.85) scale(0.6)"
+                fill="none"
+                stroke="#000"
+                stroke-linecap="round"
               >
-                <rect width="64" height="64" fill="#fff"></rect>
-                <polygon
-                  points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"
-                  fill="none"
-                  stroke="#000"
-                  stroke-width="2.4"
-                  stroke-linejoin="round"
-                ></polygon>
-                <g
-                  transform="translate(12.8 13.85) scale(0.6)"
-                  fill="none"
-                  stroke="#000"
-                  stroke-linecap="round"
-                >
-                  <circle cx="32" cy="10" r="6" stroke-width="5"></circle>
-                  <line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line>
-                  <line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line>
-                  <path
-                    d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z"
-                    fill="#000"
-                    stroke="none"
-                  ></path>
-                </g>
-              </mask>
-            </defs>
-            <polygon
-              points="32,4 56,18 56,46 32,60 8,46 8,18"
-              fill="currentColor"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linejoin="round"
-              mask="url(#lgh)"
-            ></polygon></svg
-          ><span
-            style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em"
-            >Anchorly</span
-          ></a
-        >
-        <nav
-          class="nav-links"
-          aria-label="Page sections"
-          style="
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 8px;
-            margin-left: auto;
-            margin-right: 8px;
-          "
-        >
-          <a
-            class="nav-link"
-            href="#neden"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >Why</a
-          ><a
-            class="nav-link"
-            href="#sayfalar"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >Pages</a
-          ><a
-            class="nav-link"
-            href="#temalar"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >Themes</a
-          ><a
-            class="nav-link"
-            href="#sss"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >FAQ</a
+                <circle cx="32" cy="10" r="6" stroke-width="5"></circle>
+                <line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line>
+                <line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line>
+                <path
+                  d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z"
+                  fill="#000"
+                  stroke="none"
+                ></path>
+              </g>
+            </mask>
+          </defs>
+          <polygon
+            points="32,4 56,18 56,46 32,60 8,46 8,18"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"
+            mask="url(#lgh)"
+          ></polygon></svg
+        ><span class="brand-name">Anchorly</span></a
+      >
+      <nav class="nav-links" aria-label="Page sections">
+        <a class="nav-link" href="#neden">Why</a
+        ><a class="nav-link" href="#sayfalar">Pages</a
+        ><a class="nav-link" href="#temalar">Themes</a
+        ><a class="nav-link" href="#sss">FAQ</a>
+      </nav>
+      <span class="hdr-cta"
+        ><a
+          class="lang-switch"
+          href="../"
+          hreflang="tr"
+          lang="tr"
+          aria-label="Türkçe"
+          title="Türkçe"
+          ><svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-        </nav>
-        <span
-          class="hdr-cta"
-          style="margin-left: auto; display: inline-flex; align-items: center"
-          ><a
-            class="lang-switch"
-            href="../"
-            hreflang="tr"
-            lang="tr"
-            aria-label="Türkçe"
-            title="Türkçe"
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 6px;
-              min-height: 44px;
-              padding: 0 14px;
-              margin-right: 10px;
-              box-sizing: border-box;
-              border: 1.5px solid #111111;
-              border-radius: 999px;
-              color: #111111;
-              font-size: 14px;
-              font-weight: 700;
-              letter-spacing: 0.02em;
-            "
-            ><svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
+            <path
+              d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
+            ></path></svg
+          >TR</a
+        ><a class="btn-primary" href="https://anchorly-app.vercel.app"
+          >Open Anchorly<svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 8h9M8.5 4l4 4-4 4"
               fill="none"
-              stroke="currentColor"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
-              ></path></svg
-            >TR</a
-          ><a
-            class="btn-primary"
-            href="https://anchorly-app.vercel.app"
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 10px;
-              min-height: 44px;
-              padding: 0 20px;
-              border-radius: 12px;
-              background: #111111;
-              color: #ffffff;
-              font-size: 15px;
-              font-weight: 700;
-            "
-            >Open Anchorly<svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              aria-hidden="true"
-            >
-              <path
-                d="M3 8h9M8.5 4l4 4-4 4"
-                fill="none"
-                stroke="#ffffff"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path></svg></a
-        ></span>
-      </header>
-      <section
-        id="ust"
-        class="hero"
-        style="
-          max-width: 1120px;
-          margin: 0 auto;
-          padding: 56px 32px 0;
-          box-sizing: border-box;
-          text-align: center;
-        "
-      >
-        <div
-          style="
-            display: inline-flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px 16px;
-            padding: 8px 16px;
-            border: 1px solid #e2e2e2;
-            border-radius: 999px;
-            background: #f8f8f8;
-            color: #5c5c5c;
-            font-size: 13px;
-            font-weight: 500;
-          "
-        >
+            ></path></svg></a
+      ></span>
+    </header>
+    <main>
+      <section id="ust" class="hero wrap">
+        <div class="hero-chips">
           <span>Tasks</span><span aria-hidden="true">·</span
           ><span>Routines</span><span aria-hidden="true">·</span
           ><span>Calendar</span><span aria-hidden="true">·</span
           ><span>Projects</span>
         </div>
-        <h1
-          style="
-            margin: 26px auto 0;
-            max-width: 880px;
-            font-size: clamp(36px, 6.4vw, 72px);
-            line-height: 1.05;
-            letter-spacing: -0.035em;
-            font-weight: 800;
-            text-wrap: balance;
-          "
-        >
-          Your whole day,
-          <span style="color: #6b6b6b">in one calm place.</span>
-        </h1>
-        <p
-          class="hero-sub"
-          style="
-            margin: 22px auto 0;
-            max-width: 640px;
-            font-size: clamp(17px, 2.2vw, 20px);
-            line-height: 1.6;
-            color: #5c5c5c;
-            text-wrap: pretty;
-          "
-        >
+        <h1>Your whole day, <span>in one calm place.</span></h1>
+        <p class="hero-sub">
           Anchorly is a calm app that keeps your tasks, habits and calendar
           together. It is for people who want to live their day at their own
           pace without being buried under long lists.
         </p>
-        <div
-          style="
-            margin-top: 32px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-          "
-        >
-          <a
-            class="btn-primary"
-            href="https://anchorly-app.vercel.app"
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 10px;
-              min-height: 52px;
-              padding: 0 28px;
-              border-radius: 12px;
-              background: #111111;
-              color: #ffffff;
-              font-size: 17px;
-              font-weight: 700;
-            "
+        <div class="hero-actions">
+          <a class="btn-primary btn-lg" href="https://anchorly-app.vercel.app"
             >Open Anchorly<svg
               width="18"
               height="18"
@@ -488,382 +155,81 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               ></path></svg></a
-          ><a
-            class="btn-ghost"
-            href="#neden"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 52px;
-              padding: 0 24px;
-              border-radius: 12px;
-              border: 1px solid #e2e2e2;
-              color: #111111;
-              font-size: 17px;
-              font-weight: 600;
-            "
-            >Why Anchorly?</a
-          >
+          ><a class="btn-ghost" href="#neden">Why Anchorly?</a>
         </div>
-        <p style="margin: 18px 0 0; font-size: 14px; color: #6b6b6b">
+        <p class="hero-note">
           On phone, tablet and computer · English and Turkish
         </p>
       </section>
-      <section
-        id="tour"
-        aria-label="App preview"
-        class="tour"
-        style="
-          max-width: 1120px;
-          margin: 56px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      ></section>
-      <section
-        id="neden"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Why Anchorly
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            See your day in one place, not across three apps.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="tour" class="tour wrap" aria-label="App preview"></section>
+      <section id="neden" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Why Anchorly</div>
+          <h2>See your day in one place, not across three apps.</h2>
+          <p class="lead">
             To-do lists, habit trackers and calendars usually live in separate
             apps. Without checking each one, it is hard to tell how your day
             will go. Anchorly keeps all three together and connected.
           </p>
         </div>
-        <div
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(300px, 100%), 1fr)
-            );
-            gap: 20px;
-          "
-        >
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
-              Know what to focus on each morning
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              The <strong style="color: #111111">Today</strong> page shows only
-              what concerns today: tasks dated today, undated tasks and anything
-              overdue. Tasks set for later reach your list when their day comes.
+        <div class="grid">
+          <div class="card">
+            <h3>Know what to focus on each morning</h3>
+            <p>
+              The <strong>Today</strong> page shows only what concerns today:
+              tasks dated today, undated tasks and anything overdue. Tasks set
+              for later reach your list when their day comes.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
-              Habits get their own place
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <div class="card">
+            <h3>Habits get their own place</h3>
+            <p>
               Things you do every day, like drinking water, reading or going for
               a walk, stay out of your task list. You tick them off on a weekly
-              chart on the
-              <strong style="color: #111111">Daily Routine</strong> page.
+              chart on the <strong>Daily Routine</strong> page.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
-              Look back any time
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              <strong style="color: #111111">Calendar</strong> keeps each day's
-              completion rate, and
-              <strong style="color: #111111">Archive</strong> keeps every task
-              you have added along with the progress of your recurring series.
-              Seeing what you did and what you missed makes it easier to keep
-              going.
+          <div class="card">
+            <h3>Look back any time</h3>
+            <p>
+              <strong>Calendar</strong> keeps each day's completion rate, and
+              <strong>Archive</strong> keeps every task you have added along
+              with the progress of your recurring series. Seeing what you did
+              and what you missed makes it easier to keep going.
             </p>
           </div>
         </div>
       </section>
-      <section
-        id="nasil"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            How it works
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            No setup, no sign-up. You just start.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="nasil" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">How it works</div>
+          <h2>No setup, no sign-up. You just start.</h2>
+          <p class="lead">
             Anchorly runs in your browser. There is nothing to download and no
             account to create.
           </p>
         </div>
-        <ol
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(300px, 100%), 1fr)
-            );
-            gap: 20px;
-            list-style: none;
-            padding: 0;
-            margin-bottom: 0;
-          "
-        >
-          <li
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: #111111;
-                color: #ffffff;
-                font-size: 15px;
-                font-weight: 700;
-              "
-              >1</span
-            >
-            <h3
-              style="
-                margin: 0;
-                font-size: 21px;
-                letter-spacing: -0.02em;
-                margin-top: 16px;
-              "
-            >
-              Open it and start writing
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+        <ol class="grid">
+          <li class="card">
+            <span class="step-num" aria-hidden="true">1</span>
+            <h3>Open it and start writing</h3>
+            <p>
               Opening Anchorly takes you straight into the app, ready for your
               first task or routine.
             </p>
           </li>
-          <li
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: #111111;
-                color: #ffffff;
-                font-size: 15px;
-                font-weight: 700;
-              "
-              >2</span
-            >
-            <h3
-              style="
-                margin: 0;
-                font-size: 21px;
-                letter-spacing: -0.02em;
-                margin-top: 16px;
-              "
-            >
-              Your data stays on your device
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <li class="card">
+            <span class="step-num" aria-hidden="true">2</span>
+            <h3>Your data stays on your device</h3>
+            <p>
               As long as you use it without an account, everything is stored
               only in this device's browser.
             </p>
           </li>
-          <li
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: #111111;
-                color: #ffffff;
-                font-size: 15px;
-                font-weight: 700;
-              "
-              >3</span
-            >
-            <h3
-              style="
-                margin: 0;
-                font-size: 21px;
-                letter-spacing: -0.02em;
-                margin-top: 16px;
-              "
-            >
-              Add an account if you want
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <li class="card">
+            <span class="step-num" aria-hidden="true">3</span>
+            <h3>Add an account if you want</h3>
+            <p>
               When you want your data on other devices too, create an account.
               You will be asked whether to move what you added on this device
               into it.
@@ -871,257 +237,51 @@
           </li>
         </ol>
       </section>
-      <section
-        id="fark"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Task or routine?
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Two different things, two separate places.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="fark" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Task or routine?</div>
+          <h2>Two different things, two separate places.</h2>
+          <p class="lead">
             Something you do and finish is a task; a habit you keep up every day
             is a routine.
           </p>
         </div>
-        <div
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(420px, 100%), 1fr)
-            );
-            gap: 20px;
-          "
-        >
-          <div
-            style="
-              padding: 32px;
-              border: 1px solid #e2e2e2;
-              border-radius: 20px;
-              background: #f8f8f8;
-              display: flex;
-              flex-direction: column;
-            "
-            class="card"
-          >
-            <div
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #6b6b6b;
-              "
-            >
-              Done and finished
-            </div>
-            <h3
-              style="margin: 10px 0 0; font-size: 30px; letter-spacing: -0.03em"
-            >
-              Task
-            </h3>
-            <p
-              style="
-                margin: 14px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+        <div class="grid grid-compare">
+          <div class="card compare">
+            <div class="eyebrow">Done and finished</div>
+            <h3>Task</h3>
+            <p>
               It can have a date, belong to a project and, if you like, repeat
               every day or every week. Completed tasks stay in the Archive.
             </p>
-            <div
-              style="
-                margin-top: 22px;
-                padding: 14px 16px;
-                border: 1px solid #e2e2e2;
-                border-radius: 12px;
-                background: #ffffff;
-                font-size: 14px;
-                color: #333333;
-              "
-            >
-              For example: Pay the bill
-            </div>
-            <div style="margin-top: 14px; font-size: 13px; color: #6b6b6b">
+            <div class="example">For example: Pay the bill</div>
+            <div class="shows-in">
               Shows up in: Today · Calendar · Archive · Projects
             </div>
           </div>
-          <div
-            style="
-              padding: 32px;
-              border: 1px solid #e2e2e2;
-              border-radius: 20px;
-              background: #f8f8f8;
-              display: flex;
-              flex-direction: column;
-            "
-            class="card"
-          >
-            <div
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #6b6b6b;
-              "
-            >
-              Kept up every day
-            </div>
-            <h3
-              style="margin: 10px 0 0; font-size: 30px; letter-spacing: -0.03em"
-            >
-              Routine
-            </h3>
-            <p
-              style="
-                margin: 14px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <div class="card compare">
+            <div class="eyebrow">Kept up every day</div>
+            <h3>Routine</h3>
+            <p>
               It is not a job that ends but a rhythm you keep. You tick a box
               for each day and see how your week and month are going.
             </p>
-            <div
-              style="
-                margin-top: 22px;
-                padding: 14px 16px;
-                border: 1px solid #e2e2e2;
-                border-radius: 12px;
-                background: #ffffff;
-                font-size: 14px;
-                color: #333333;
-              "
-            >
-              For example: Drink water
-            </div>
-            <div style="margin-top: 14px; font-size: 13px; color: #6b6b6b">
-              Shows up in: Daily Routine · Dashboard
-            </div>
+            <div class="example">For example: Drink water</div>
+            <div class="shows-in">Shows up in: Daily Routine · Dashboard</div>
           </div>
         </div>
       </section>
-      <section
-        id="sayfalar"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Pages
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Each page does one job.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="sayfalar" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Pages</div>
+          <h2>Each page does one job.</h2>
+          <p class="lead">
             The app has eight pages. Here is what each one is for.
           </p>
         </div>
-        <div
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(320px, 100%), 1fr)
-            );
-            gap: 20px;
-          "
-        >
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+        <div class="grid grid-pages">
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1136,46 +296,14 @@
                   d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Dashboard
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Dashboard</h3>
+            <p>
               The start page, with a quote for the day, summary numbers and the
               cards you choose.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1190,46 +318,14 @@
                   d="M12 3a9 9 0 100 18 9 9 0 000-18zM8 12l3 3 5-6"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Today
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Today</h3>
+            <p>
               Today's tasks, undated tasks and anything overdue. The task you
               select opens right next to the list.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1244,45 +340,13 @@
                   d="M4 12a8 8 0 0114-5.3L20 9M20 4v5h-5M20 12a8 8 0 01-14 5.3L4 15M4 20v-5h5"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Daily Routine
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Daily Routine</h3>
+            <p>
               A weekly view of your habits and your progress over the month.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1295,46 +359,14 @@
               >
                 <path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Calendar
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Calendar</h3>
+            <p>
               The whole month on one screen, with each day's tasks and
               completion rate.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1347,46 +379,14 @@
               >
                 <path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Archive
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Archive</h3>
+            <p>
               Every task you have added and your recurring series, with their
               progress.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1401,46 +401,14 @@
                   d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Projects
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Projects</h3>
+            <p>
               Group related work into a project and follow it on a board or as a
               list.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1455,45 +423,11 @@
                   d="M12 15a3 3 0 100-6 3 3 0 000 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Settings
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              Choose your theme, font and language.
-            </p>
+            <h3>Settings</h3>
+            <p>Choose your theme, font and language.</p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1508,873 +442,150 @@
                   d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Account
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Account</h3>
+            <p>
               Optional. With an account you can reach your data from other
               devices too.
             </p>
           </div>
         </div>
       </section>
-      <section
-        id="temalar"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div
-          class="band"
-          style="
-            padding: clamp(24px, 5vw, 56px);
-            border: 1px solid #e2e2e2;
-            border-radius: 24px;
-            background: #f8f8f8;
-          "
-        >
-          <div style="max-width: 680px">
-            <div
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #6b6b6b;
-              "
-            >
-              Make it yours
-            </div>
-            <h2
-              style="
-                margin: 12px 0 0;
-                font-size: clamp(28px, 4.5vw, 44px);
-                line-height: 1.12;
-                letter-spacing: -0.03em;
-                font-weight: 800;
-                text-wrap: balance;
-              "
-            >
-              Seven themes, seven moods.
-            </h2>
-            <p
-              style="
-                margin: 18px 0 0;
-                font-size: 18px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+      <section id="temalar" class="sec wrap">
+        <div class="band">
+          <div class="intro">
+            <div class="eyebrow">Make it yours</div>
+            <h2>Seven themes, seven moods.</h2>
+            <p class="lead">
               These are the app's real themes, and you can try them in the
               preview above. Four are dark and three are light.
             </p>
           </div>
-          <div
-            style="
-              margin-top: 32px;
-              display: grid;
-              grid-template-columns: repeat(
-                auto-fit,
-                minmax(min(130px, 100%), 1fr)
-              );
-              gap: 14px;
-            "
-          >
+          <ul class="theme-grid">
+            <li>
+              <div class="theme-mini" data-theme="gray" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Gray</div>
+              <div class="theme-mode">Light</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="purple" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Purple</div>
+              <div class="theme-mode">Dark</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="blue" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Blue</div>
+              <div class="theme-mode">Dark</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="red" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Red</div>
+              <div class="theme-mode">Light</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="green" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Green</div>
+              <div class="theme-mode">Dark</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="pink" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Pink</div>
+              <div class="theme-mode">Light</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="black" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Black</div>
+              <div class="theme-mode">Dark</div>
+            </li>
+          </ul>
+          <div class="facts">
             <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #f4f6fb;
-                  border: 1px solid #e5e7eb;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #ffffff;
-                    border-right: 1px solid #e5e7eb;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #64748b;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #5b6371;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #5b6371;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #ffffff;
-                      border: 1px solid #e5e7eb;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(100, 116, 139, 0.12);
-                      border: 1px solid #64748b;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #64748b;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Gray
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Light</div>
+              <div class="fact-title">3 fonts</div>
+              <p>Inter, Poppins or Manrope.</p>
             </div>
             <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #1e1b2e;
-                  border: 1px solid #4c3d70;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #2a2440;
-                    border-right: 1px solid #4c3d70;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #9333ea;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #c4b5fd;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #c4b5fd;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #2a2440;
-                      border: 1px solid #4c3d70;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(147, 51, 234, 0.22);
-                      border: 1px solid #9333ea;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #9333ea;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Purple
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Dark</div>
+              <div class="fact-title">EN · TR</div>
+              <p>Use the app in English or Turkish.</p>
             </div>
             <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #0f172a;
-                  border: 1px solid #334155;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #1e293b;
-                    border-right: 1px solid #334155;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #3b82f6;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #94a3b8;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #94a3b8;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #1e293b;
-                      border: 1px solid #334155;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(59, 130, 246, 0.22);
-                      border: 1px solid #3b82f6;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #3b82f6;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Blue
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Dark</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #fef2f2;
-                  border: 1px solid #fecaca;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #ffffff;
-                    border-right: 1px solid #fecaca;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #dc2626;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #b91c1c;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #b91c1c;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #ffffff;
-                      border: 1px solid #fecaca;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(220, 38, 38, 0.12);
-                      border: 1px solid #dc2626;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #dc2626;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Red
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Light</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #050e09;
-                  border: 1px solid #1f5c38;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #07180f;
-                    border-right: 1px solid #1f5c38;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #22c55e;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #86efac;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #86efac;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #07180f;
-                      border: 1px solid #1f5c38;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(34, 197, 94, 0.22);
-                      border: 1px solid #22c55e;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #22c55e;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Green
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Dark</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #fdf2f8;
-                  border: 1px solid #fbcfe8;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #ffffff;
-                    border-right: 1px solid #fbcfe8;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #db2777;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #9d174d;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #9d174d;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #ffffff;
-                      border: 1px solid #fbcfe8;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(219, 39, 119, 0.12);
-                      border: 1px solid #db2777;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #db2777;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Pink
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Light</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #0a0a0a;
-                  border: 1px solid #2e2e2e;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #141414;
-                    border-right: 1px solid #2e2e2e;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #e5e5e5;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #a3a3a3;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #a3a3a3;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #141414;
-                      border: 1px solid #2e2e2e;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(229, 229, 229, 0.22);
-                      border: 1px solid #e5e5e5;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #e5e5e5;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Black
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Dark</div>
-            </div>
-          </div>
-          <div
-            style="
-              margin-top: 44px;
-              display: grid;
-              grid-template-columns: repeat(
-                auto-fit,
-                minmax(min(220px, 100%), 1fr)
-              );
-              gap: 28px 32px;
-            "
-          >
-            <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                3 fonts
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
-                Inter, Poppins or Manrope.
-              </p>
-            </div>
-            <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                EN · TR
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
-                Use the app in English or Turkish.
-              </p>
-            </div>
-            <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                Fits every screen
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
+              <div class="fact-title">Fits every screen</div>
+              <p>
                 A sidebar on desktop, an icon bar on tablet and a bottom menu on
                 phone.
               </p>
             </div>
             <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                Your data stays yours
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
+              <div class="fact-title">Your data stays yours</div>
+              <p>
                 An account is optional; without one your data stays on this
                 device.
               </p>
@@ -2382,48 +593,12 @@
           </div>
         </div>
       </section>
-      <section
-        id="sss"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Questions
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Things you might be wondering.
-          </h2>
+      <section id="sss" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Questions</div>
+          <h2>Things you might be wondering.</h2>
         </div>
-        <div
-          style="
-            margin-top: 32px;
-            max-width: 820px;
-            border-bottom: 1px solid #e2e2e2;
-          "
-        >
+        <div class="faq-list">
           <details class="faq" open>
             <summary>Do I need an account?</summary>
             <p>
@@ -2464,988 +639,45 @@
           </details>
         </div>
       </section>
-      <section
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="text-align: center">
-          <h2
-            style="
-              margin: 0 auto;
-              max-width: 720px;
-              font-size: clamp(30px, 5.2vw, 56px);
-              line-height: 1.08;
-              letter-spacing: -0.035em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Ready when you are.
-          </h2>
-          <p
-            style="
-              margin: 18px auto 0;
-              max-width: 480px;
-              font-size: 18px;
-              line-height: 1.6;
-              color: #5c5c5c;
-            "
-          >
-            No sign-up and nothing to install. Write a task, add a routine and
-            see whether it suits you.
-          </p>
-          <div style="margin-top: 30px">
-            <a
-              class="btn-primary"
-              href="https://anchorly-app.vercel.app"
-              style="
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                min-height: 52px;
-                padding: 0 28px;
-                border-radius: 12px;
-                background: #111111;
-                color: #ffffff;
-                font-size: 17px;
-                font-weight: 700;
-              "
-              >Open Anchorly<svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path
-                  d="M3 8h9M8.5 4l4 4-4 4"
-                  fill="none"
-                  stroke="#ffffff"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path></svg
-            ></a>
-          </div>
+      <section class="sec wrap closing">
+        <h2>Ready when you are.</h2>
+        <p class="lead">
+          No sign-up and nothing to install. Write a task, add a routine and see
+          whether it suits you.
+        </p>
+        <div class="closing-action">
+          <a class="btn-primary btn-lg" href="https://anchorly-app.vercel.app"
+            >Open Anchorly<svg
+              width="18"
+              height="18"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8h9M8.5 4l4 4-4 4"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path></svg
+          ></a>
         </div>
       </section>
-      <footer
-        class="ftr"
-        style="
-          max-width: 1120px;
-          margin: 96px auto 0;
-          padding: 32px 32px 56px;
-          box-sizing: border-box;
-          border-top: 1px solid #e2e2e2;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px 24px;
-          color: #6b6b6b;
-          font-size: 14px;
-        "
-      >
-        <div style="display: flex; flex-direction: column; gap: 4px">
-          <a
-            href="https://github.com/berkaycinar-dev"
-            style="
-              font-size: 16px;
-              font-weight: 700;
-              color: #111111;
-              text-decoration: underline;
-              text-decoration-color: #c4c4c4;
-              text-underline-offset: 4px;
-            "
-            >Berkay Çınar</a
-          ><span>Developer of Anchorly</span>
-        </div>
-        <nav
-          aria-label="Footer"
-          style="display: flex; flex-wrap: wrap; gap: 0 20px"
+    </main>
+    <footer class="ftr wrap">
+      <div class="ftr-person">
+        <a class="ftr-name" href="https://github.com/berkaycinar-dev"
+          >Berkay Çınar</a
+        ><span>Developer of Anchorly</span>
+      </div>
+      <nav class="ftr-links" aria-label="Footer">
+        <a href="https://anchorly-app.vercel.app/privacy">Privacy</a
+        ><a href="https://anchorly-app.vercel.app/terms">Terms of Use</a
+        ><a href="https://github.com/berkaycinar-dev/Anchorly"
+          >Source code on GitHub →</a
         >
-          <a
-            href="https://anchorly-app.vercel.app/privacy"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 44px;
-              color: #5c5c5c;
-              font-weight: 500;
-            "
-            >Privacy</a
-          >
-          <a
-            href="https://anchorly-app.vercel.app/terms"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 44px;
-              color: #5c5c5c;
-              font-weight: 500;
-            "
-            >Terms of Use</a
-          >
-          <a
-            href="https://github.com/berkaycinar-dev/Anchorly"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 44px;
-              color: #5c5c5c;
-              font-weight: 500;
-            "
-            >Source code on GitHub →</a
-          >
-        </nav>
-      </footer>
-    </div>
-    <script>
-      (function () {
-        "use strict";
-
-        const root = document.getElementById("tour");
-        if (!root) {
-          return;
-        }
-
-        const state = { tab: "today", theme: "gray" };
-
-        const LIGHT_CATEGORIES = {
-          work: "#1d4ed8",
-          personal: "#c2410c",
-          growth: "#7e22ce",
-          health: "#15803d",
-          project: "#0f766e",
-          other: "#4b5563",
-        };
-        const DARK_CATEGORIES = {
-          work: "#93c5fd",
-          personal: "#fdba74",
-          growth: "#d8b4fe",
-          health: "#86efac",
-          project: "#5eead4",
-          other: "#d4d4d8",
-        };
-        const THEMES = {
-          gray: {
-            label: "Gray",
-            dark: false,
-            accent: "#64748b",
-            page: "#f4f6fb",
-            card: "#ffffff",
-            subtle: "#f3f4f6",
-            text: "#1f2937",
-            text2: "#5b6371",
-            muted: "#656c79",
-            border: "#e5e7eb",
-            on: "#ffffff",
-            tint: "rgba(100,116,139,0.12)",
-            raised: "#ffffff",
-          },
-          purple: {
-            label: "Purple",
-            dark: true,
-            accent: "#9333ea",
-            page: "#1e1b2e",
-            card: "#2a2440",
-            subtle: "#241f38",
-            text: "#f3f0fa",
-            text2: "#c4b5fd",
-            muted: "#9c8cc4",
-            border: "#4c3d70",
-            on: "#ffffff",
-            tint: "rgba(147,51,234,0.22)",
-            raised: "#36304b",
-          },
-          blue: {
-            label: "Blue",
-            dark: true,
-            accent: "#3b82f6",
-            page: "#0f172a",
-            card: "#1e293b",
-            subtle: "#16223a",
-            text: "#e0f2fe",
-            text2: "#94a3b8",
-            muted: "#8896a9",
-            border: "#334155",
-            on: "#0f172a",
-            tint: "rgba(59,130,246,0.22)",
-            raised: "#2a3547",
-          },
-          red: {
-            label: "Red",
-            dark: false,
-            accent: "#dc2626",
-            page: "#fef2f2",
-            card: "#ffffff",
-            subtle: "#fee2e2",
-            text: "#7f1d1d",
-            text2: "#b91c1c",
-            muted: "#895656",
-            border: "#fecaca",
-            on: "#ffffff",
-            tint: "rgba(220,38,38,0.12)",
-            raised: "#ffffff",
-          },
-          green: {
-            label: "Green",
-            dark: true,
-            accent: "#22c55e",
-            page: "#050e09",
-            card: "#07180f",
-            subtle: "#123021",
-            text: "#dcfce7",
-            text2: "#86efac",
-            muted: "#73a184",
-            border: "#1f5c38",
-            on: "#052e13",
-            tint: "rgba(34,197,94,0.22)",
-            raised: "#14261c",
-          },
-          pink: {
-            label: "Pink",
-            dark: false,
-            accent: "#db2777",
-            page: "#fdf2f8",
-            card: "#ffffff",
-            subtle: "#fce7f3",
-            text: "#831843",
-            text2: "#9d174d",
-            muted: "#9e4a76",
-            border: "#fbcfe8",
-            on: "#ffffff",
-            tint: "rgba(219,39,119,0.12)",
-            raised: "#ffffff",
-          },
-          black: {
-            label: "Black",
-            dark: true,
-            accent: "#e5e5e5",
-            page: "#0a0a0a",
-            card: "#141414",
-            subtle: "#1c1c1c",
-            text: "#f5f5f5",
-            text2: "#a3a3a3",
-            muted: "#8a8a8a",
-            border: "#2e2e2e",
-            on: "#000000",
-            tint: "rgba(229,229,229,0.22)",
-            raised: "#222222",
-          },
-        };
-        const THEME_ORDER = [
-          "gray",
-          "purple",
-          "blue",
-          "red",
-          "green",
-          "pink",
-          "black",
-        ];
-
-        const TABS = [
-          { id: "today", label: "Today" },
-          { id: "routine", label: "Daily Routine" },
-          { id: "calendar", label: "Calendar" },
-          { id: "archive", label: "Archive" },
-        ];
-
-        const ICONS = {
-          dashboard: "M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z",
-          today: "M12 3a9 9 0 100 18 9 9 0 000-18zM8 12l3 3 5-6",
-          routine:
-            "M4 12a8 8 0 0114-5.3L20 9M20 4v5h-5M20 12a8 8 0 01-14 5.3L4 15M4 20v-5h5",
-          calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
-          archive: "M3 4h18v4H3zM5 8v12h14V8M10 12h4",
-          projects:
-            "M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z",
-          settings:
-            "M12 15a3 3 0 100-6 3 3 0 000 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1",
-          more: "M5 12h.01M12 12h.01M19 12h.01",
-        };
-
-        const NAV = [
-          { label: "Dashboard", icon: ICONS.dashboard },
-          { label: "Today", badge: "4", icon: ICONS.today, tab: "today" },
-          {
-            label: "Daily Routine",
-            badge: "2",
-            icon: ICONS.routine,
-            tab: "routine",
-          },
-          { label: "Calendar", icon: ICONS.calendar, tab: "calendar" },
-          { label: "Archive", icon: ICONS.archive, tab: "archive" },
-          { label: "Projects", badge: "3", icon: ICONS.projects },
-          { label: "Settings", icon: ICONS.settings },
-        ];
-
-        const BOTTOM_NAV = [
-          { label: "Dashboard", icon: ICONS.dashboard },
-          { label: "Today", icon: ICONS.today, tabs: ["today"] },
-          { label: "Routine", icon: ICONS.routine, tabs: ["routine"] },
-          { label: "Calendar", icon: ICONS.calendar, tabs: ["calendar"] },
-          { label: "More", icon: ICONS.more, tabs: ["archive"] },
-        ];
-
-        const CATEGORIES = {
-          work: { name: "Work", color: "var(--cat-work)" },
-          home: { name: "Personal", color: "var(--cat-personal)" },
-          growth: { name: "Self Development", color: "var(--cat-growth)" },
-          health: { name: "Health", color: "var(--cat-health)" },
-        };
-
-        const CHECK =
-          '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5" fill="none" style="stroke:var(--c-on)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
-
-        const LOGO =
-          '<svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="color:var(--c-text);flex:0 0 auto"><defs><mask id="lgm" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><rect width="64" height="64" fill="#fff"></rect><polygon points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1" fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round"></polygon><g transform="translate(12.8 13.85) scale(0.6)" fill="none" stroke="#000" stroke-linecap="round"><circle cx="32" cy="10" r="6" stroke-width="5"></circle><line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line><line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line><path d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z" fill="#000" stroke="none"></path></g></mask></defs><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="currentColor" stroke="currentColor" stroke-width="4" stroke-linejoin="round" mask="url(#lgm)"></polygon></svg>';
-
-        function icon(path, size) {
-          return (
-            '<svg width="' +
-            size +
-            '" height="' +
-            size +
-            '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' +
-            path +
-            '"></path></svg>'
-          );
-        }
-
-        function themeVars(theme) {
-          const cats = theme.dark ? DARK_CATEGORIES : LIGHT_CATEGORIES;
-          return (
-            "--c-accent:" +
-            theme.accent +
-            ";--c-page:" +
-            theme.page +
-            ";--c-card:" +
-            theme.card +
-            ";--c-subtle:" +
-            theme.subtle +
-            ";--c-text:" +
-            theme.text +
-            ";--c-text2:" +
-            theme.text2 +
-            ";--c-muted:" +
-            theme.muted +
-            ";--c-border:" +
-            theme.border +
-            ";--c-on:" +
-            theme.on +
-            ";--c-tint:" +
-            theme.tint +
-            ";--c-raised:" +
-            theme.raised +
-            ";--cat-work:" +
-            cats.work +
-            ";--cat-personal:" +
-            cats.personal +
-            ";--cat-growth:" +
-            cats.growth +
-            ";--cat-health:" +
-            cats.health +
-            ";--cat-project:" +
-            cats.project +
-            ";--cat-other:" +
-            cats.other +
-            ";"
-          );
-        }
-
-        function box(done) {
-          return (
-            "flex:0 0 22px;width:22px;height:22px;border-radius:6px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:2px solid " +
-            (done ? "var(--c-accent)" : "var(--c-muted)") +
-            ";background:" +
-            (done ? "var(--c-accent)" : "transparent")
-          );
-        }
-
-        function taskRow(title, category, done, selected) {
-          const cat = CATEGORIES[category];
-          const rowStyle =
-            "display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;border:1px solid " +
-            (selected ? "var(--c-accent)" : "var(--c-border)") +
-            ";background:" +
-            (selected ? "var(--c-tint)" : "var(--c-card)");
-          const titleStyle =
-            "flex:1;min-width:0;font-size:15px;font-weight:500;" +
-            (done
-              ? "color:var(--c-muted);text-decoration:line-through"
-              : "color:var(--c-text)");
-
-          return (
-            '<div style="' +
-            rowStyle +
-            '"><span aria-hidden="true" style="' +
-            box(done) +
-            '">' +
-            (done ? CHECK : "") +
-            '</span><span style="' +
-            titleStyle +
-            '">' +
-            title +
-            '</span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--c-text2)"><span aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:' +
-            cat.color +
-            '"></span>' +
-            cat.name +
-            "</span></div>"
-          );
-        }
-
-        function renderToday() {
-          const open = [
-            taskRow("Finish the report draft", "work", false, true),
-            taskRow("Grocery shopping", "home", false, false),
-            taskRow("Review React notes", "growth", false, false),
-            taskRow("Pay the bill", "home", false, false),
-          ].join("");
-          const done = [
-            taskRow("Answer morning emails", "work", true, false),
-            taskRow("Pack the gym bag", "health", true, false),
-          ].join("");
-
-          return (
-            '<div><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Today</h2><span style="color:var(--c-muted);font-size:14px">4 open tasks · 2 done</span></div>' +
-            '<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">' +
-            '<div style="flex:999 1 300px;min-width:0;display:flex;flex-direction:column;gap:10px">' +
-            // Mirrors the app's add bar: accent plus, placeholder, date/time/repeat tools.
-            '<div style="display:flex;align-items:center;gap:10px;min-height:48px;padding:0 14px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card);color:var(--c-muted);font-size:14px">' +
-            '<span style="display:inline-flex;color:var(--c-accent)">' +
-            icon("M12 5v14M5 12h14", 18) +
-            "</span>" +
-            '<span style="flex:1;min-width:0">Add a new task...</span>' +
-            '<span style="display:inline-flex;gap:12px">' +
-            icon(ICONS.calendar, 16) +
-            icon("M12 7v5l3 2M12 3a9 9 0 100 18 9 9 0 000-18z", 16) +
-            icon(ICONS.routine, 16) +
-            "</span></div>" +
-            '<div style="margin-top:6px;font-size:12px;font-weight:600;color:var(--c-muted)">To do</div>' +
-            open +
-            '<div style="margin-top:6px;font-size:12px;font-weight:600;color:var(--c-muted)">Completed</div>' +
-            done +
-            "</div>" +
-            '<div style="flex:1 1 230px;min-width:0;padding:18px;border:1px solid var(--c-border);background:var(--c-card);border-radius:14px">' +
-            '<div style="font-size:12px;color:var(--c-muted)">Task details</div>' +
-            '<div style="margin-top:6px;font-size:18px;font-weight:700;letter-spacing:-0.01em">Finish the report draft</div>' +
-            '<div style="margin-top:16px;display:flex;flex-direction:column;gap:12px;font-size:14px">' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Status</span><span>Pending</span></div>' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Date</span><span>Nov 6</span></div>' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Category</span><span>Work</span></div>' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Note</span><span style="text-align:right;color:var(--c-text2)">Add the intro and charts</span></div>' +
-            "</div></div></div></div>"
-          );
-        }
-
-        const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-        function renderRoutine() {
-          const head = DAY_LABELS.map(function (label, i) {
-            const style =
-              "flex:1;text-align:center;font-size:12px;line-height:1.5;color:" +
-              (i === 4 ? "var(--c-text)" : "var(--c-muted)") +
-              ";font-weight:" +
-              (i === 4 ? "700" : "500");
-            return (
-              '<span style="' +
-              style +
-              '">' +
-              label +
-              '<br><span style="font-weight:700;font-size:15px">' +
-              (2 + i) +
-              "</span></span>"
-            );
-          }).join("");
-
-          const routines = [
-            {
-              name: "Drink water",
-              month: "This month 5/6",
-              days: [1, 1, 1, 0, 1, 0, 0],
-            },
-            {
-              name: "Read",
-              month: "This month 4/6",
-              days: [1, 0, 1, 1, 0, 0, 0],
-            },
-            {
-              name: "Walk",
-              month: "This month 5/6",
-              days: [0, 1, 1, 1, 1, 0, 0],
-            },
-          ];
-
-          const rows = routines
-            .map(function (routine) {
-              const cells = routine.days
-                .map(function (day, i) {
-                  const done = day === 1;
-                  const future = i > 4;
-                  const style =
-                    "width:28px;height:28px;border-radius:8px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:2px solid " +
-                    (done
-                      ? "var(--c-accent)"
-                      : future
-                        ? "var(--c-border)"
-                        : "var(--c-muted)") +
-                    ";background:" +
-                    (done ? "var(--c-accent)" : "transparent");
-                  return (
-                    '<span style="flex:1;display:flex;justify-content:center"><span aria-hidden="true" style="' +
-                    style +
-                    '">' +
-                    (done ? CHECK : "") +
-                    "</span></span>"
-                  );
-                })
-                .join("");
-
-              return (
-                '<div style="display:flex;align-items:center;gap:8px;padding:12px 4px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card)">' +
-                '<span style="flex:0 0 110px;padding-left:12px;display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">' +
-                routine.name +
-                '</span><span style="font-size:12px;color:var(--c-muted)">' +
-                routine.month +
-                "</span></span>" +
-                cells +
-                "</div>"
-              );
-            })
-            .join("");
-
-          return (
-            '<div><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Daily Routine</h2>' +
-            '<div style="display:flex;align-items:center;gap:10px;color:var(--c-text2);font-size:14px">' +
-            icon("M15 6l-6 6 6 6", 18) +
-            "<span>Nov 2 – 8</span>" +
-            icon("M9 6l6 6-6 6", 18) +
-            "</div></div>" +
-            '<div style="margin-top:20px;overflow-x:auto"><div style="min-width:420px;display:flex;flex-direction:column;gap:10px">' +
-            '<div style="display:flex;align-items:center;gap:8px;padding:0 4px"><span style="flex:0 0 110px"></span>' +
-            head +
-            "</div>" +
-            rows +
-            "</div></div></div>"
-          );
-        }
-
-        function renderCalendar() {
-          const dotColors = [
-            "var(--cat-work)",
-            "var(--cat-personal)",
-            "var(--cat-growth)",
-            "var(--cat-health)",
-          ];
-          const taskData = {
-            3: ["Client meeting"],
-            6: ["Finish the report draft", "Grocery shopping"],
-            9: ["Prepare slides"],
-            12: ["Bill", "Class notes"],
-            17: ["Project deadline"],
-            20: ["Code review", "Shopping"],
-            24: ["Appointment"],
-            27: ["Weekly plan", "Reading"],
-          };
-          const pctData = { 3: "100%", 6: "33%" };
-          const cellBase =
-            "box-sizing:border-box;min-height:64px;padding:6px;border-radius:8px;display:flex;flex-direction:column;gap:3px;min-width:0;overflow:hidden;";
-
-          function cell(number, numberStyle, style, pct, items) {
-            return (
-              '<div class="cal-cell" style="' +
-              style +
-              '"><div style="display:flex;justify-content:space-between;gap:4px;font-size:12px;font-weight:600"><span style="' +
-              numberStyle +
-              '">' +
-              number +
-              '</span><span style="font-size:10px;font-weight:500;color:var(--c-muted)">' +
-              pct +
-              "</span></div>" +
-              items +
-              "</div>"
-            );
-          }
-
-          function faded(number) {
-            return cell(
-              number,
-              "color:var(--c-muted)",
-              cellBase +
-                "opacity:.4;background:transparent;border:1px solid transparent",
-              "",
-              "",
-            );
-          }
-
-          const cells = [];
-          for (let n = 26; n <= 31; n++) {
-            cells.push(faded(n));
-          }
-          for (let day = 1; day <= 30; day++) {
-            const weekend = (6 + day - 1) % 7 >= 5;
-            const isToday = day === 6;
-            const items = (taskData[day] || [])
-              .map(function (title, i) {
-                const titleStyle = weekend
-                  ? "display:none"
-                  : "font-size:10px;line-height:1.2;color:var(--c-text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0";
-                return (
-                  '<div style="display:flex;align-items:center;gap:4px;min-width:0"><span aria-hidden="true" style="flex:0 0 6px;width:6px;height:6px;border-radius:50%;background:' +
-                  dotColors[i % dotColors.length] +
-                  '"></span><span class="cal-title" style="' +
-                  titleStyle +
-                  '">' +
-                  title +
-                  "</span></div>"
-                );
-              })
-              .join("");
-            const style =
-              cellBase +
-              "border:" +
-              (isToday
-                ? "2px solid var(--c-accent)"
-                : "1px solid var(--c-border)") +
-              ";background:" +
-              (isToday
-                ? "var(--c-tint)"
-                : weekend
-                  ? "var(--c-subtle)"
-                  : "var(--c-card)");
-            cells.push(
-              cell(
-                day,
-                "color:var(--c-text)",
-                style,
-                pctData[day] || "",
-                items,
-              ),
-            );
-          }
-          for (let n = 1; n <= 6; n++) {
-            cells.push(faded(n));
-          }
-
-          const grid =
-            "display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) repeat(2,minmax(0,.55fr));gap:6px";
-          const head = DAY_LABELS.map(function (label) {
-            return (
-              '<span style="text-align:center;font-size:12px;color:var(--c-muted)">' +
-              label +
-              "</span>"
-            );
-          }).join("");
-
-          return (
-            '<div><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Calendar</h2><span style="color:var(--c-muted);font-size:14px">November 2026</span></div>' +
-            '<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">' +
-            '<div style="flex:999 1 340px;min-width:0">' +
-            '<div style="' +
-            grid +
-            ';margin-bottom:6px">' +
-            head +
-            "</div>" +
-            '<div style="' +
-            grid +
-            '">' +
-            cells.join("") +
-            "</div></div>" +
-            '<div style="flex:1 1 220px;min-width:0;padding:16px;border:1px solid var(--c-border);background:var(--c-card);border-radius:14px">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:12px;color:var(--c-muted)">Selected day</span><span style="font-size:12px;color:var(--c-muted)">Hide panel</span></div>' +
-            '<div style="margin-top:4px;font-size:17px;font-weight:700">Friday, Nov 6</div>' +
-            '<div style="margin-top:2px;font-size:13px;color:var(--c-muted)">6 tasks · 2 done</div>' +
-            '<div style="margin-top:10px;height:6px;border-radius:999px;background:var(--c-border);overflow:hidden"><div style="height:100%;width:33%;border-radius:999px;background:var(--c-accent)"></div></div>' +
-            '<div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;font-size:14px">' +
-            '<div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="' +
-            box(false) +
-            '"></span><span style="flex:1;min-width:0">Finish the report draft</span><span style="font-size:12px;color:var(--c-text2)">Work</span></div>' +
-            '<div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="' +
-            box(true) +
-            '">' +
-            CHECK +
-            '</span><span style="flex:1;min-width:0;color:var(--c-muted);text-decoration:line-through">Answer morning emails</span><span style="font-size:12px;color:var(--c-text2)">Work</span></div></div>' +
-            // Mirrors the app's day panel form: input plus an icon-only add button.
-            '<div style="margin-top:14px;display:flex;gap:8px">' +
-            '<span style="flex:1;min-width:0;padding:10px 12px;border:1px solid var(--c-border);border-radius:10px;font-size:13px;color:var(--c-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Add a task for Nov 6...</span>' +
-            '<span style="flex:0 0 38px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:var(--c-accent);color:var(--c-on)">' +
-            icon("M12 5v14M5 12h14", 18) +
-            "</span></div>" +
-            "</div></div></div>"
-          );
-        }
-
-        function renderArchive() {
-          const series = [
-            {
-              name: "Weekly plan",
-              color: "var(--cat-work)",
-              pattern: "Every Monday · 12 times",
-              done: 8,
-              total: 12,
-              next: "Next: Nov 9",
-            },
-            {
-              name: "Check the bills",
-              color: "var(--cat-personal)",
-              pattern: "Every Friday · 6 times",
-              done: 5,
-              total: 6,
-              next: "Next: Today",
-            },
-            {
-              name: "Water the plants",
-              color: "var(--cat-health)",
-              pattern: "Every day · 20 times",
-              done: 14,
-              total: 20,
-              next: "Next: Today",
-            },
-          ]
-            .map(function (item) {
-              const width = Math.round((item.done / item.total) * 100);
-              return (
-                '<div style="padding:14px 16px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card)"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600"><span aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:' +
-                item.color +
-                '"></span>' +
-                item.name +
-                '</span><span style="font-size:13px;color:var(--c-text2)">' +
-                item.pattern +
-                '</span></div><div style="margin-top:12px;height:6px;border-radius:999px;background:var(--c-border);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--c-accent);width:' +
-                width +
-                '%"></div></div><div style="margin-top:8px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--c-muted)"><span>' +
-                item.done +
-                " / " +
-                item.total +
-                " done</span><span>" +
-                item.next +
-                "</span></div></div>"
-              );
-            })
-            .join("");
-
-          function stat(label, value) {
-            return (
-              '<div style="padding:12px 14px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card)"><div style="font-size:12px;color:var(--c-muted)">' +
-              label +
-              '</div><div style="margin-top:2px;font-size:22px;font-weight:700">' +
-              value +
-              "</div></div>"
-            );
-          }
-
-          return (
-            '<div><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Archive</h2><span style="color:var(--c-muted);font-size:14px">Recurring series</span></div>' +
-            '<div style="margin-top:16px;display:inline-flex;padding:4px;border:1px solid var(--c-border);border-radius:10px;background:var(--c-subtle);gap:4px"><span style="padding:7px 14px;border-radius:7px;font-size:13px;color:var(--c-text2)">One-time</span><span style="padding:7px 14px;border-radius:7px;font-size:13px;font-weight:600;background:var(--c-card);color:var(--c-text);border:1px solid var(--c-border)">Recurring series</span></div>' +
-            '<div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(120px,100%),1fr));gap:10px">' +
-            stat("Active series", "3") +
-            stat("Pending today", "2") +
-            stat("Overall completion", "71%") +
-            "</div>" +
-            '<div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">' +
-            series +
-            "</div></div>"
-          );
-        }
-
-        const PANELS = {
-          today: renderToday,
-          routine: renderRoutine,
-          calendar: renderCalendar,
-          archive: renderArchive,
-        };
-
-        function renderTabs() {
-          return TABS.map(function (tab) {
-            const on = tab.id === state.tab;
-            const style =
-              "min-height:44px;padding:0 20px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid " +
-              (on ? "#111111" : "#e2e2e2") +
-              ";background:" +
-              (on ? "#111111" : "#ffffff") +
-              ";color:" +
-              (on ? "#ffffff" : "#333333");
-            return (
-              '<button type="button" data-tab="' +
-              tab.id +
-              '" aria-pressed="' +
-              on +
-              '" style="' +
-              style +
-              '">' +
-              tab.label +
-              "</button>"
-            );
-          }).join("");
-        }
-
-        function renderSidebar() {
-          const items = NAV.map(function (item) {
-            const on = item.tab === state.tab;
-            const style =
-              "position:relative;display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:8px;font-size:14px;font-weight:" +
-              (on ? "600" : "500") +
-              ";color:" +
-              (on ? "var(--c-text)" : "var(--c-text2)") +
-              ";background:" +
-              (on
-                ? "color-mix(in srgb, var(--c-text) 8%, transparent)"
-                : "transparent");
-            const bar =
-              "position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:2px;background:" +
-              (on ? "var(--c-accent)" : "transparent");
-            const badge = item.badge
-              ? '<span style="min-width:22px;padding:2px 7px;border-radius:999px;background:color-mix(in srgb, var(--c-text) 8%, transparent);color:var(--c-text2);font-size:12px;font-weight:600;text-align:center;box-sizing:border-box">' +
-                item.badge +
-                "</span>"
-              : "";
-            return (
-              '<div style="' +
-              style +
-              '"><span aria-hidden="true" style="' +
-              bar +
-              '"></span>' +
-              icon(item.icon, 18) +
-              '<span style="flex:1">' +
-              item.label +
-              "</span>" +
-              badge +
-              "</div>"
-            );
-          }).join("");
-
-          return (
-            '<div class="mock-side" style="flex:0 0 220px;box-sizing:border-box;padding:22px 12px;border-right:1px solid var(--c-border);background:var(--c-card);display:flex;flex-direction:column;gap:4px;flex-grow:1;max-width:100%">' +
-            '<div style="display:flex;align-items:center;gap:10px;padding:0 12px 14px">' +
-            LOGO +
-            '<span style="font-size:17px;font-weight:700;letter-spacing:-0.02em">Anchorly</span></div>' +
-            items +
-            '<div style="flex:1"></div>' +
-            '<div style="margin-top:12px;padding-top:14px;border-top:1px solid var(--c-border);display:flex;flex-direction:column;gap:8px"><span style="display:flex;align-items:center;justify-content:center;height:36px;border-radius:8px;background:var(--c-accent);color:var(--c-on);font-size:13px;font-weight:600">Sign in</span><span style="display:flex;align-items:center;justify-content:center;height:36px;border-radius:8px;border:1px solid var(--c-border);color:var(--c-text);font-size:13px;font-weight:600">Sign up</span></div>' +
-            "</div>"
-          );
-        }
-
-        function renderBottomNav() {
-          const items = BOTTOM_NAV.map(function (item) {
-            const on = Boolean(
-              item.tabs && item.tabs.indexOf(state.tab) !== -1,
-            );
-            const style =
-              "position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;border-radius:10px;color:" +
-              (on ? "var(--c-text)" : "var(--c-muted)") +
-              ";background:" +
-              (on
-                ? "color-mix(in srgb, var(--c-text) 8%, transparent)"
-                : "transparent");
-            const bar =
-              "position:absolute;top:-8px;left:50%;margin-left:-14px;width:28px;height:3px;border-radius:2px;background:" +
-              (on ? "var(--c-accent)" : "transparent");
-            return (
-              '<div style="' +
-              style +
-              '"><span aria-hidden="true" style="' +
-              bar +
-              '"></span>' +
-              icon(item.icon, 20) +
-              '<span style="font-size:11px;font-weight:600">' +
-              item.label +
-              "</span></div>"
-            );
-          }).join("");
-
-          return (
-            '<div class="mock-bottom" style="display:none;border-top:1px solid var(--c-border);background:var(--c-card);padding:8px 8px 10px;gap:4px">' +
-            items +
-            "</div>"
-          );
-        }
-
-        function renderThemePicker() {
-          return THEME_ORDER.map(function (id) {
-            const theme = THEMES[id];
-            const on = id === state.theme;
-            const outer =
-              "display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;box-sizing:border-box;background:" +
-              theme.page +
-              ";border:" +
-              // #8a8a8a keeps the unselected ring above 3:1 against white.
-              (on ? "2px solid #111111" : "1px solid #8a8a8a");
-            return (
-              '<button type="button" data-theme="' +
-              id +
-              '" aria-label="' +
-              theme.label +
-              '" aria-pressed="' +
-              on +
-              '" title="' +
-              theme.label +
-              '" style="width:44px;height:44px;border:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="' +
-              outer +
-              '"><span style="display:block;width:12px;height:12px;border-radius:50%;background:' +
-              theme.accent +
-              '"></span></span></button>'
-            );
-          }).join("");
-        }
-
-        function render() {
-          const theme = THEMES[state.theme];
-
-          root.innerHTML =
-            '<div role="group" aria-label="Page to preview" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px">' +
-            renderTabs() +
-            "</div>" +
-            '<div style="' +
-            themeVars(theme) +
-            'border:1px solid #e2e2e2;border-radius:18px;background:var(--c-page);color:var(--c-text);overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.12)">' +
-            '<div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--c-border);background:var(--c-card)"><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:var(--c-border)"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:var(--c-border)"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:var(--c-border)"></span><span style="margin-left:12px;font-size:13px;color:var(--c-muted)">anchorly</span></div>' +
-            '<div style="display:flex;flex-wrap:wrap;min-height:430px">' +
-            renderSidebar() +
-            '<div class="mock-main" style="flex:999 1 420px;min-width:0;box-sizing:border-box;padding:28px 32px">' +
-            PANELS[state.tab]() +
-            "</div>" +
-            "</div>" +
-            renderBottomNav() +
-            "</div>" +
-            '<div style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 18px"><span style="font-size:14px;color:#6b6b6b">Try a theme: <strong style="color:#111111">' +
-            theme.label +
-            "</strong></span>" +
-            '<div role="group" aria-label="Preview theme" style="display:flex;flex-wrap:wrap;justify-content:center;gap:2px">' +
-            renderThemePicker() +
-            "</div></div>";
-        }
-
-        root.addEventListener("click", function (event) {
-          const button = event.target.closest(
-            "button[data-tab], button[data-theme]",
-          );
-          if (!button) {
-            return;
-          }
-
-          const selector = button.dataset.tab
-            ? '[data-tab="' + button.dataset.tab + '"]'
-            : '[data-theme="' + button.dataset.theme + '"]';
-
-          if (button.dataset.tab) {
-            state.tab = button.dataset.tab;
-          } else {
-            state.theme = button.dataset.theme;
-          }
-
-          render();
-          // innerHTML replaced the clicked button; give focus back to its new copy.
-          root.querySelector(selector).focus();
-        });
-
-        render();
-      })();
-    </script>
+      </nav>
+    </footer>
   </body>
 </html>

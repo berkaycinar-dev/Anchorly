@@ -22,458 +22,125 @@
     />
     <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    />
-    <style>
-      body {
-        margin: 0;
-        background: #ffffff;
-        font-family: "Inter", system-ui, sans-serif;
-        color: #111111;
-        -webkit-font-smoothing: antialiased;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      button {
-        font-family: inherit;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      .btn-primary {
-        transition:
-          transform 0.15s ease,
-          opacity 0.15s ease;
-      }
-      .btn-primary:hover {
-        opacity: 0.88;
-        transform: translateY(-1px);
-      }
-      .btn-ghost:hover {
-        background: #f0f0f0;
-      }
-      .nav-link:hover {
-        color: #111111;
-      }
-      .card {
-        transition:
-          border-color 0.2s ease,
-          transform 0.2s ease;
-      }
-      .card:hover {
-        border-color: #c4c4c4;
-        transform: translateY(-2px);
-      }
-      a:focus-visible,
-      button:focus-visible {
-        outline: 2px solid #111111;
-        outline-offset: 3px;
-      }
-      .faq {
-        border-top: 1px solid #e2e2e2;
-      }
-      .faq summary {
-        list-style: none;
-        cursor: pointer;
-        padding: 22px 40px 22px 0;
-        font-size: 18px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        position: relative;
-        min-height: 44px;
-        box-sizing: border-box;
-      }
-      .faq summary::-webkit-details-marker {
-        display: none;
-      }
-      .faq summary::after {
-        content: "+";
-        position: absolute;
-        right: 4px;
-        top: 18px;
-        font-size: 26px;
-        font-weight: 400;
-        color: #6b6b6b;
-      }
-      .faq[open] summary::after {
-        content: "–";
-      }
-      .faq p {
-        margin: 0;
-        padding: 0 40px 24px 0;
-        font-size: 16px;
-        line-height: 1.7;
-        color: #5c5c5c;
-        max-width: 680px;
-        text-wrap: pretty;
-      }
-      @media (max-width: 640px) {
-        .sec {
-          margin-top: 64px !important;
-          padding-left: 20px !important;
-          padding-right: 20px !important;
-        }
-        .hdr {
-          padding: 14px 20px !important;
-        }
-        .nav-links {
-          display: none !important;
-        }
-        .hero {
-          padding: 32px 20px 0 !important;
-        }
-        .tour {
-          padding: 0 16px !important;
-          margin-top: 40px !important;
-        }
-        .card {
-          padding: 20px !important;
-        }
-        .band {
-          padding: 22px !important;
-        }
-        .mock-side {
-          display: none !important;
-        }
-        .mock-bottom {
-          display: flex !important;
-        }
-        .mock-main {
-          padding: 20px 16px !important;
-        }
-        .cal-title {
-          display: none !important;
-        }
-        .cal-cell {
-          min-height: 46px !important;
-          padding: 4px !important;
-        }
-        .ftr {
-          padding: 24px 20px 40px !important;
-          margin-top: 64px !important;
-        }
-        .faq summary {
-          font-size: 16px !important;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-        .btn-primary,
-        .card {
-          transition: none;
-        }
-      }
-      .lang-switch:hover {
-        background: #f0f0f0;
-      }
-      @media (max-width: 640px) {
-        .lang-switch {
-          padding: 0 12px !important;
-          margin-right: 6px !important;
-        }
-        .lang-switch svg,
-        .hdr-cta .btn-primary svg {
-          display: none;
-        }
-        .hdr-cta .btn-primary {
-          padding: 0 14px !important;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="landing.css" />
+    <script src="tour.js" defer></script>
   </head>
   <body>
-    <div class="pg" style="background: #ffffff; color: #111111; min-width: 0">
-      <header
-        class="hdr"
-        style="
-          max-width: 1120px;
-          margin: 0 auto;
-          padding: 20px 32px;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 16px 24px;
-          box-sizing: border-box;
-        "
-      >
-        <a
-          href="#ust"
-          style="
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-height: 44px;
-          "
-          ><svg
-            width="34"
-            height="34"
-            viewBox="0 0 64 64"
-            aria-hidden="true"
-            style="color: #111111; flex: 0 0 auto"
-          >
-            <defs>
-              <mask
-                id="lgh"
-                maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="64"
-                height="64"
+    <header class="hdr wrap">
+      <a class="brand" href="#ust"
+        ><svg
+          class="brand-logo"
+          width="34"
+          height="34"
+          viewBox="0 0 64 64"
+          aria-hidden="true"
+        >
+          <defs>
+            <mask
+              id="lgh"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="64"
+              height="64"
+            >
+              <rect width="64" height="64" fill="#fff"></rect>
+              <polygon
+                points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"
+                fill="none"
+                stroke="#000"
+                stroke-width="2.4"
+                stroke-linejoin="round"
+              ></polygon>
+              <g
+                transform="translate(12.8 13.85) scale(0.6)"
+                fill="none"
+                stroke="#000"
+                stroke-linecap="round"
               >
-                <rect width="64" height="64" fill="#fff"></rect>
-                <polygon
-                  points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1"
-                  fill="none"
-                  stroke="#000"
-                  stroke-width="2.4"
-                  stroke-linejoin="round"
-                ></polygon>
-                <g
-                  transform="translate(12.8 13.85) scale(0.6)"
-                  fill="none"
-                  stroke="#000"
-                  stroke-linecap="round"
-                >
-                  <circle cx="32" cy="10" r="6" stroke-width="5"></circle>
-                  <line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line>
-                  <line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line>
-                  <path
-                    d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z"
-                    fill="#000"
-                    stroke="none"
-                  ></path>
-                </g>
-              </mask>
-            </defs>
-            <polygon
-              points="32,4 56,18 56,46 32,60 8,46 8,18"
-              fill="currentColor"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linejoin="round"
-              mask="url(#lgh)"
-            ></polygon></svg
-          ><span
-            style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em"
-            >Anchorly</span
-          ></a
-        >
-        <nav
-          class="nav-links"
-          aria-label="Sayfa bölümleri"
-          style="
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 8px;
-            margin-left: auto;
-            margin-right: 8px;
-          "
-        >
-          <a
-            class="nav-link"
-            href="#neden"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >Neden</a
-          ><a
-            class="nav-link"
-            href="#sayfalar"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >Sayfalar</a
-          ><a
-            class="nav-link"
-            href="#temalar"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >Temalar</a
-          ><a
-            class="nav-link"
-            href="#sss"
-            style="
-              color: #5c5c5c;
-              font-size: 15px;
-              font-weight: 500;
-              padding: 12px 12px;
-            "
-            >SSS</a
+                <circle cx="32" cy="10" r="6" stroke-width="5"></circle>
+                <line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line>
+                <line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line>
+                <path
+                  d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z"
+                  fill="#000"
+                  stroke="none"
+                ></path>
+              </g>
+            </mask>
+          </defs>
+          <polygon
+            points="32,4 56,18 56,46 32,60 8,46 8,18"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"
+            mask="url(#lgh)"
+          ></polygon></svg
+        ><span class="brand-name">Anchorly</span></a
+      >
+      <nav class="nav-links" aria-label="Sayfa bölümleri">
+        <a class="nav-link" href="#neden">Neden</a
+        ><a class="nav-link" href="#sayfalar">Sayfalar</a
+        ><a class="nav-link" href="#temalar">Temalar</a
+        ><a class="nav-link" href="#sss">SSS</a>
+      </nav>
+      <span class="hdr-cta"
+        ><a
+          class="lang-switch"
+          href="en/"
+          hreflang="en"
+          lang="en"
+          aria-label="English"
+          title="English"
+          ><svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-        </nav>
-        <span
-          class="hdr-cta"
-          style="margin-left: auto; display: inline-flex; align-items: center"
-          ><a
-            class="lang-switch"
-            href="en/"
-            hreflang="en"
-            lang="en"
-            aria-label="English"
-            title="English"
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 6px;
-              min-height: 44px;
-              padding: 0 14px;
-              margin-right: 10px;
-              box-sizing: border-box;
-              border: 1.5px solid #111111;
-              border-radius: 999px;
-              color: #111111;
-              font-size: 14px;
-              font-weight: 700;
-              letter-spacing: 0.02em;
-            "
-            ><svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
+            <path
+              d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
+            ></path></svg
+          >EN</a
+        ><a class="btn-primary" href="https://anchorly-app.vercel.app"
+          >Anchorly'yi aç<svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 8h9M8.5 4l4 4-4 4"
               fill="none"
-              stroke="currentColor"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
-              ></path></svg
-            >EN</a
-          ><a
-            class="btn-primary"
-            href="https://anchorly-app.vercel.app"
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 10px;
-              min-height: 44px;
-              padding: 0 20px;
-              border-radius: 12px;
-              background: #111111;
-              color: #ffffff;
-              font-size: 15px;
-              font-weight: 700;
-            "
-            >Anchorly'yi aç<svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              aria-hidden="true"
-            >
-              <path
-                d="M3 8h9M8.5 4l4 4-4 4"
-                fill="none"
-                stroke="#ffffff"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path></svg></a
-        ></span>
-      </header>
-      <section
-        id="ust"
-        class="hero"
-        style="
-          max-width: 1120px;
-          margin: 0 auto;
-          padding: 56px 32px 0;
-          box-sizing: border-box;
-          text-align: center;
-        "
-      >
-        <div
-          style="
-            display: inline-flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px 16px;
-            padding: 8px 16px;
-            border: 1px solid #e2e2e2;
-            border-radius: 999px;
-            background: #f8f8f8;
-            color: #5c5c5c;
-            font-size: 13px;
-            font-weight: 500;
-          "
-        >
+            ></path></svg></a
+      ></span>
+    </header>
+    <main>
+      <section id="ust" class="hero wrap">
+        <div class="hero-chips">
           <span>Görevler</span><span aria-hidden="true">·</span
           ><span>Rutinler</span><span aria-hidden="true">·</span
           ><span>Takvim</span><span aria-hidden="true">·</span
           ><span>Projeler</span>
         </div>
-        <h1
-          style="
-            margin: 26px auto 0;
-            max-width: 880px;
-            font-size: clamp(36px, 6.4vw, 72px);
-            line-height: 1.05;
-            letter-spacing: -0.035em;
-            font-weight: 800;
-            text-wrap: balance;
-          "
-        >
-          Günün dağılmasın,
-          <span style="color: #6b6b6b">tek yerde toplansın.</span>
-        </h1>
-        <p
-          class="hero-sub"
-          style="
-            margin: 22px auto 0;
-            max-width: 640px;
-            font-size: clamp(17px, 2.2vw, 20px);
-            line-height: 1.6;
-            color: #5c5c5c;
-            text-wrap: pretty;
-          "
-        >
+        <h1>Günün dağılmasın, <span>tek yerde toplansın.</span></h1>
+        <p class="hero-sub">
           Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan
           sakin bir uygulama. Uzun listelerin altında ezilmeden günü kendi
           hızında yaşamak isteyenler için.
         </p>
-        <div
-          style="
-            margin-top: 32px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-          "
-        >
-          <a
-            class="btn-primary"
-            href="https://anchorly-app.vercel.app"
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 10px;
-              min-height: 52px;
-              padding: 0 28px;
-              border-radius: 12px;
-              background: #111111;
-              color: #ffffff;
-              font-size: 17px;
-              font-weight: 700;
-            "
+        <div class="hero-actions">
+          <a class="btn-primary btn-lg" href="https://anchorly-app.vercel.app"
             >Anchorly'yi aç<svg
               width="18"
               height="18"
@@ -488,383 +155,87 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               ></path></svg></a
-          ><a
-            class="btn-ghost"
-            href="#neden"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 52px;
-              padding: 0 24px;
-              border-radius: 12px;
-              border: 1px solid #e2e2e2;
-              color: #111111;
-              font-size: 17px;
-              font-weight: 600;
-            "
-            >Neden Anchorly?</a
-          >
+          ><a class="btn-ghost" href="#neden">Neden Anchorly?</a>
         </div>
-        <p style="margin: 18px 0 0; font-size: 14px; color: #6b6b6b">
+        <p class="hero-note">
           Telefon, tablet ve bilgisayarda · Türkçe ve İngilizce
         </p>
       </section>
       <section
         id="tour"
+        class="tour wrap"
         aria-label="Uygulama önizlemesi"
-        class="tour"
-        style="
-          max-width: 1120px;
-          margin: 56px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
       ></section>
-      <section
-        id="neden"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Neden Anchorly
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Gününü üç ayrı uygulamada değil, tek bir yerde gör.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="neden" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Neden Anchorly</div>
+          <h2>Gününü üç ayrı uygulamada değil, tek bir yerde gör.</h2>
+          <p class="lead">
             Yapılacaklar listesi, alışkanlık takibi ve takvim çoğu zaman ayrı
             uygulamalarda durur. Hepsine tek tek bakmadan günün nasıl geçeceğini
             görmek zorlaşır. Anchorly bu üçünü aynı yerde ve birbirine bağlı
             tutar.
           </p>
         </div>
-        <div
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(300px, 100%), 1fr)
-            );
-            gap: 20px;
-          "
-        >
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
-              Sabah neye odaklanacağın belli
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              <strong style="color: #111111">Bugün</strong> sayfası yalnızca
-              bugünü ilgilendiren görevleri gösterir: bugüne tarihlenenler,
-              tarihsiz olanlar ve gecikenler. İleri tarihli işler, günü gelince
-              listene düşer.
+        <div class="grid">
+          <div class="card">
+            <h3>Sabah neye odaklanacağın belli</h3>
+            <p>
+              <strong>Bugün</strong> sayfası yalnızca bugünü ilgilendiren
+              görevleri gösterir: bugüne tarihlenenler, tarihsiz olanlar ve
+              gecikenler. İleri tarihli işler, günü gelince listene düşer.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
-              Alışkanlıklar ayrı bir yerde
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <div class="card">
+            <h3>Alışkanlıklar ayrı bir yerde</h3>
+            <p>
               Su içmek, kitap okumak ya da yürüyüşe çıkmak gibi her gün yaptığın
               şeyler görev listene karışmaz. Bunları
-              <strong style="color: #111111">Günlük Rutin</strong> sayfasındaki
-              haftalık çizelgede işaretlersin.
+              <strong>Günlük Rutin</strong> sayfasındaki haftalık çizelgede
+              işaretlersin.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
-              Geriye dönüp bakabilirsin
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              <strong style="color: #111111">Takvim</strong> her günün
-              tamamlanma oranını,
-              <strong style="color: #111111">Arşiv</strong> ise eklediğin tüm
-              görevleri ve tekrarlı serilerin ilerlemesini saklar. Neyi yapıp
-              neyi aksattığını görmek devam etmeyi kolaylaştırır.
+          <div class="card">
+            <h3>Geriye dönüp bakabilirsin</h3>
+            <p>
+              <strong>Takvim</strong> her günün tamamlanma oranını,
+              <strong>Arşiv</strong> ise eklediğin tüm görevleri ve tekrarlı
+              serilerin ilerlemesini saklar. Neyi yapıp neyi aksattığını görmek
+              devam etmeyi kolaylaştırır.
             </p>
           </div>
         </div>
       </section>
-      <section
-        id="nasil"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Nasıl işliyor
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Kurulum yok, kayıt yok; hemen başlarsın.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="nasil" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Nasıl işliyor</div>
+          <h2>Kurulum yok, kayıt yok; hemen başlarsın.</h2>
+          <p class="lead">
             Anchorly tarayıcıda çalışır. İndirmen gereken bir şey yok, hesap
             açman da gerekmiyor.
           </p>
         </div>
-        <ol
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(300px, 100%), 1fr)
-            );
-            gap: 20px;
-            list-style: none;
-            padding: 0;
-            margin-bottom: 0;
-          "
-        >
-          <li
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: #111111;
-                color: #ffffff;
-                font-size: 15px;
-                font-weight: 700;
-              "
-              >1</span
-            >
-            <h3
-              style="
-                margin: 0;
-                font-size: 21px;
-                letter-spacing: -0.02em;
-                margin-top: 16px;
-              "
-            >
-              Aç ve yaz
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+        <ol class="grid">
+          <li class="card">
+            <span class="step-num" aria-hidden="true">1</span>
+            <h3>Aç ve yaz</h3>
+            <p>
               Anchorly'yi açtığında doğrudan uygulamaya girersin. İlk görevini
               ya da rutinini hemen ekleyebilirsin.
             </p>
           </li>
-          <li
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: #111111;
-                color: #ffffff;
-                font-size: 15px;
-                font-weight: 700;
-              "
-              >2</span
-            >
-            <h3
-              style="
-                margin: 0;
-                font-size: 21px;
-                letter-spacing: -0.02em;
-                margin-top: 16px;
-              "
-            >
-              Verilerin cihazında kalır
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <li class="card">
+            <span class="step-num" aria-hidden="true">2</span>
+            <h3>Verilerin cihazında kalır</h3>
+            <p>
               Hesap açmadan kullandığın sürece her şey yalnızca bu cihazdaki
               tarayıcıda saklanır.
             </p>
           </li>
-          <li
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: #111111;
-                color: #ffffff;
-                font-size: 15px;
-                font-weight: 700;
-              "
-              >3</span
-            >
-            <h3
-              style="
-                margin: 0;
-                font-size: 21px;
-                letter-spacing: -0.02em;
-                margin-top: 16px;
-              "
-            >
-              İstersen hesap aç
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <li class="card">
+            <span class="step-num" aria-hidden="true">3</span>
+            <h3>İstersen hesap aç</h3>
+            <p>
               Verilerine başka cihazlardan da ulaşmak istediğinde hesap açarsın.
               Bu cihazda eklediklerini hesabına aktarmak isteyip istemediğin
               sorulur.
@@ -872,259 +243,53 @@
           </li>
         </ol>
       </section>
-      <section
-        id="fark"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Görev mi, rutin mi?
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            İki farklı şey, iki ayrı yer.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="fark" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Görev mi, rutin mi?</div>
+          <h2>İki farklı şey, iki ayrı yer.</h2>
+          <p class="lead">
             Yapıp bitirdiğin iş görevdir; her gün sürdürdüğün alışkanlık ise
             rutindir.
           </p>
         </div>
-        <div
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(420px, 100%), 1fr)
-            );
-            gap: 20px;
-          "
-        >
-          <div
-            style="
-              padding: 32px;
-              border: 1px solid #e2e2e2;
-              border-radius: 20px;
-              background: #f8f8f8;
-              display: flex;
-              flex-direction: column;
-            "
-            class="card"
-          >
-            <div
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #6b6b6b;
-              "
-            >
-              Yapılınca biter
-            </div>
-            <h3
-              style="margin: 10px 0 0; font-size: 30px; letter-spacing: -0.03em"
-            >
-              Görev
-            </h3>
-            <p
-              style="
-                margin: 14px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+        <div class="grid grid-compare">
+          <div class="card compare">
+            <div class="eyebrow">Yapılınca biter</div>
+            <h3>Görev</h3>
+            <p>
               Tarihi olabilir, bir projeye bağlanabilir; istersen her gün ya da
               her hafta tekrarlanır. Tamamlananlar Arşiv'de kalır.
             </p>
-            <div
-              style="
-                margin-top: 22px;
-                padding: 14px 16px;
-                border: 1px solid #e2e2e2;
-                border-radius: 12px;
-                background: #ffffff;
-                font-size: 14px;
-                color: #333333;
-              "
-            >
-              Örneğin: Faturayı öde
-            </div>
-            <div style="margin-top: 14px; font-size: 13px; color: #6b6b6b">
+            <div class="example">Örneğin: Faturayı öde</div>
+            <div class="shows-in">
               Göründüğü yerler: Bugün · Takvim · Arşiv · Projeler
             </div>
           </div>
-          <div
-            style="
-              padding: 32px;
-              border: 1px solid #e2e2e2;
-              border-radius: 20px;
-              background: #f8f8f8;
-              display: flex;
-              flex-direction: column;
-            "
-            class="card"
-          >
-            <div
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #6b6b6b;
-              "
-            >
-              Her gün sürer
-            </div>
-            <h3
-              style="margin: 10px 0 0; font-size: 30px; letter-spacing: -0.03em"
-            >
-              Rutin
-            </h3>
-            <p
-              style="
-                margin: 14px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+          <div class="card compare">
+            <div class="eyebrow">Her gün sürer</div>
+            <h3>Rutin</h3>
+            <p>
               Biten bir iş değil, sürdürdüğün bir düzendir. Her gün için ayrı
               bir kutuyu işaretlersin; hafta ve ay boyunca nasıl gittiğini
               görürsün.
             </p>
-            <div
-              style="
-                margin-top: 22px;
-                padding: 14px 16px;
-                border: 1px solid #e2e2e2;
-                border-radius: 12px;
-                background: #ffffff;
-                font-size: 14px;
-                color: #333333;
-              "
-            >
-              Örneğin: Su iç
-            </div>
-            <div style="margin-top: 14px; font-size: 13px; color: #6b6b6b">
-              Göründüğü yerler: Günlük Rutin · Panel
-            </div>
+            <div class="example">Örneğin: Su iç</div>
+            <div class="shows-in">Göründüğü yerler: Günlük Rutin · Panel</div>
           </div>
         </div>
       </section>
-      <section
-        id="sayfalar"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Sayfalar
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Her sayfa tek bir işe odaklanır.
-          </h2>
-          <p
-            style="
-              margin: 18px 0 0;
-              font-size: 18px;
-              line-height: 1.65;
-              color: #5c5c5c;
-              text-wrap: pretty;
-            "
-          >
+      <section id="sayfalar" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Sayfalar</div>
+          <h2>Her sayfa tek bir işe odaklanır.</h2>
+          <p class="lead">
             Uygulamada sekiz sayfa var; hangisinin ne işe yaradığına buradan
             bakabilirsin.
           </p>
         </div>
-        <div
-          style="
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              minmax(min(320px, 100%), 1fr)
-            );
-            gap: 20px;
-          "
-        >
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+        <div class="grid grid-pages">
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1139,46 +304,14 @@
                   d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Panel
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Panel</h3>
+            <p>
               Açılış sayfası. Günün sözü, özet sayılar ve istediğin kartlar
               burada.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1193,46 +326,14 @@
                   d="M12 3a9 9 0 100 18 9 9 0 000-18zM8 12l3 3 5-6"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Bugün
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Bugün</h3>
+            <p>
               Bugünün görevleri, tarihsiz görevler ve gecikenler. Seçtiğin
               görevin ayrıntıları hemen yanında açılır.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1247,45 +348,11 @@
                   d="M4 12a8 8 0 0114-5.3L20 9M20 4v5h-5M20 12a8 8 0 01-14 5.3L4 15M4 20v-5h5"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Günlük Rutin
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              Alışkanlıkların için haftalık görünüm ve aylık ilerleme.
-            </p>
+            <h3>Günlük Rutin</h3>
+            <p>Alışkanlıkların için haftalık görünüm ve aylık ilerleme.</p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1298,45 +365,13 @@
               >
                 <path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Takvim
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Takvim</h3>
+            <p>
               Ayın tamamı tek ekranda; her günün görevleri ve tamamlanma oranı.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1349,46 +384,14 @@
               >
                 <path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Arşiv
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Arşiv</h3>
+            <p>
               Eklediğin tüm görevler ve tekrarlı seriler, ilerlemeleriyle
               birlikte.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1403,46 +406,14 @@
                   d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Projeler
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Projeler</h3>
+            <p>
               Birbirine bağlı işleri bir projede topla; pano ya da liste
               görünümünde takip et.
             </p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1457,45 +428,11 @@
                   d="M12 15a3 3 0 100-6 3 3 0 000 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Ayarlar
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
-              Tema, yazı tipi ve dil seçimi.
-            </p>
+            <h3>Ayarlar</h3>
+            <p>Tema, yazı tipi ve dil seçimi.</p>
           </div>
-          <div
-            class="card"
-            style="
-              padding: 28px;
-              border: 1px solid #e2e2e2;
-              border-radius: 16px;
-              background: #f8f8f8;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
-                border: 1px solid #e2e2e2;
-                background: #ffffff;
-                color: #111111;
-              "
+          <div class="card">
+            <span class="page-icon" aria-hidden="true"
               ><svg
                 width="20"
                 height="20"
@@ -1510,920 +447,161 @@
                   d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0"
                 ></path></svg
             ></span>
-            <h3
-              style="margin: 10px 0 0; font-size: 21px; letter-spacing: -0.02em"
-            >
-              Hesap
-            </h3>
-            <p
-              style="
-                margin: 12px 0 0;
-                font-size: 16px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+            <h3>Hesap</h3>
+            <p>
               İsteğe bağlı. Hesapla verilerine başka cihazlardan da ulaşırsın.
             </p>
           </div>
         </div>
       </section>
-      <section
-        id="temalar"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div
-          class="band"
-          style="
-            padding: clamp(24px, 5vw, 56px);
-            border: 1px solid #e2e2e2;
-            border-radius: 24px;
-            background: #f8f8f8;
-          "
-        >
-          <div style="max-width: 680px">
-            <div
-              style="
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: #6b6b6b;
-              "
-            >
-              Sana göre görünsün
-            </div>
-            <h2
-              style="
-                margin: 12px 0 0;
-                font-size: clamp(28px, 4.5vw, 44px);
-                line-height: 1.12;
-                letter-spacing: -0.03em;
-                font-weight: 800;
-                text-wrap: balance;
-              "
-            >
-              Yedi tema, yedi ayrı ruh hali.
-            </h2>
-            <p
-              style="
-                margin: 18px 0 0;
-                font-size: 18px;
-                line-height: 1.65;
-                color: #5c5c5c;
-                text-wrap: pretty;
-              "
-            >
+      <section id="temalar" class="sec wrap">
+        <div class="band">
+          <div class="intro">
+            <div class="eyebrow">Sana göre görünsün</div>
+            <h2>Yedi tema, yedi ayrı ruh hali.</h2>
+            <p class="lead">
               Bunlar uygulamadaki gerçek temalar; yukarıdaki önizlemede de
               deneyebilirsin. Dördü koyu, üçü açık.
             </p>
           </div>
-          <div
-            style="
-              margin-top: 32px;
-              display: grid;
-              grid-template-columns: repeat(
-                auto-fit,
-                minmax(min(130px, 100%), 1fr)
-              );
-              gap: 14px;
-            "
-          >
+          <ul class="theme-grid">
+            <li>
+              <div class="theme-mini" data-theme="gray" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Gri</div>
+              <div class="theme-mode">Açık</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="purple" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Mor</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="blue" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Mavi</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="red" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Kırmızı</div>
+              <div class="theme-mode">Açık</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="green" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Yeşil</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="pink" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Pembe</div>
+              <div class="theme-mode">Açık</div>
+            </li>
+            <li>
+              <div class="theme-mini" data-theme="black" aria-hidden="true">
+                <div class="tm-side">
+                  <span class="tm-line tm-line-accent"></span
+                  ><span class="tm-line tm-line-text"></span
+                  ><span class="tm-line tm-line-text"></span>
+                </div>
+                <div class="tm-main">
+                  <span class="tm-card"></span><span class="tm-tint"></span
+                  ><span class="tm-pill"></span>
+                </div>
+              </div>
+              <div class="theme-name">Siyah</div>
+              <div class="theme-mode">Koyu</div>
+            </li>
+          </ul>
+          <div class="facts">
             <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #f4f6fb;
-                  border: 1px solid #e5e7eb;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #ffffff;
-                    border-right: 1px solid #e5e7eb;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #64748b;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #5b6371;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #5b6371;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #ffffff;
-                      border: 1px solid #e5e7eb;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(100, 116, 139, 0.12);
-                      border: 1px solid #64748b;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #64748b;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Gri
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Açık</div>
+              <div class="fact-title">3 yazı tipi</div>
+              <p>Inter, Poppins ya da Manrope.</p>
             </div>
             <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #1e1b2e;
-                  border: 1px solid #4c3d70;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #2a2440;
-                    border-right: 1px solid #4c3d70;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #9333ea;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #c4b5fd;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #c4b5fd;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #2a2440;
-                      border: 1px solid #4c3d70;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(147, 51, 234, 0.22);
-                      border: 1px solid #9333ea;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #9333ea;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Mor
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Koyu</div>
+              <div class="fact-title">TR · EN</div>
+              <p>Arayüz Türkçe ya da İngilizce.</p>
             </div>
             <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #0f172a;
-                  border: 1px solid #334155;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #1e293b;
-                    border-right: 1px solid #334155;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #3b82f6;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #94a3b8;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #94a3b8;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #1e293b;
-                      border: 1px solid #334155;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(59, 130, 246, 0.22);
-                      border: 1px solid #3b82f6;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #3b82f6;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Mavi
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Koyu</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #fef2f2;
-                  border: 1px solid #fecaca;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #ffffff;
-                    border-right: 1px solid #fecaca;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #dc2626;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #b91c1c;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #b91c1c;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #ffffff;
-                      border: 1px solid #fecaca;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(220, 38, 38, 0.12);
-                      border: 1px solid #dc2626;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #dc2626;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Kırmızı
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Açık</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #050e09;
-                  border: 1px solid #1f5c38;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #07180f;
-                    border-right: 1px solid #1f5c38;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #22c55e;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #86efac;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #86efac;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #07180f;
-                      border: 1px solid #1f5c38;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(34, 197, 94, 0.22);
-                      border: 1px solid #22c55e;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #22c55e;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Yeşil
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Koyu</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #fdf2f8;
-                  border: 1px solid #fbcfe8;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #ffffff;
-                    border-right: 1px solid #fbcfe8;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #db2777;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #9d174d;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #9d174d;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #ffffff;
-                      border: 1px solid #fbcfe8;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(219, 39, 119, 0.12);
-                      border: 1px solid #db2777;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #db2777;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Pembe
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Açık</div>
-            </div>
-            <div>
-              <div
-                style="
-                  display: flex;
-                  height: 96px;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-sizing: border-box;
-                  background: #0a0a0a;
-                  border: 1px solid #2e2e2e;
-                "
-              >
-                <div
-                  style="
-                    flex: 0 0 34%;
-                    box-sizing: border-box;
-                    padding: 10px 8px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                    background: #141414;
-                    border-right: 1px solid #2e2e2e;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 70%;
-                      border-radius: 3px;
-                      background: #e5e5e5;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #a3a3a3;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 6px;
-                      width: 50%;
-                      border-radius: 3px;
-                      opacity: 0.5;
-                      background: #a3a3a3;
-                    "
-                  ></span>
-                </div>
-                <div
-                  style="
-                    flex: 1;
-                    min-width: 0;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                  "
-                >
-                  <span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: #141414;
-                      border: 1px solid #2e2e2e;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 22px;
-                      border-radius: 6px;
-                      background: rgba(229, 229, 229, 0.22);
-                      border: 1px solid #e5e5e5;
-                    "
-                  ></span
-                  ><span
-                    style="
-                      display: block;
-                      height: 8px;
-                      width: 40%;
-                      border-radius: 4px;
-                      background: #e5e5e5;
-                    "
-                  ></span>
-                </div>
-              </div>
-              <div style="margin-top: 8px; font-size: 14px; font-weight: 600">
-                Siyah
-              </div>
-              <div style="font-size: 12px; color: #6b6b6b">Koyu</div>
-            </div>
-          </div>
-          <div
-            style="
-              margin-top: 44px;
-              display: grid;
-              grid-template-columns: repeat(
-                auto-fit,
-                minmax(min(220px, 100%), 1fr)
-              );
-              gap: 28px 32px;
-            "
-          >
-            <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                3 yazı tipi
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
-                Inter, Poppins ya da Manrope.
-              </p>
-            </div>
-            <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                TR · EN
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
-                Arayüz Türkçe ya da İngilizce.
-              </p>
-            </div>
-            <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                Her ekrana uygun
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
+              <div class="fact-title">Her ekrana uygun</div>
+              <p>
                 Masaüstünde kenar çubuğu, tablette ikonlu çubuk, telefonda alt
                 menü.
               </p>
             </div>
             <div>
-              <div
-                style="
-                  font-size: 32px;
-                  font-weight: 800;
-                  letter-spacing: -0.03em;
-                "
-              >
-                Veriler sende
-              </div>
-              <p
-                style="
-                  margin: 8px 0 0;
-                  font-size: 15px;
-                  line-height: 1.6;
-                  color: #5c5c5c;
-                "
-              >
+              <div class="fact-title">Veriler sende</div>
+              <p>
                 Hesap açmak zorunlu değil; açmazsan verilerin bu cihazda kalır.
               </p>
             </div>
           </div>
         </div>
       </section>
-      <section
-        id="sss"
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="max-width: 680px">
-          <div
-            style="
-              font-size: 13px;
-              font-weight: 600;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              color: #6b6b6b;
-            "
-          >
-            Sık sorulanlar
-          </div>
-          <h2
-            style="
-              margin: 12px 0 0;
-              font-size: clamp(28px, 4.5vw, 44px);
-              line-height: 1.12;
-              letter-spacing: -0.03em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Aklına takılabilecekler.
-          </h2>
+      <section id="sss" class="sec wrap">
+        <div class="intro">
+          <div class="eyebrow">Sık sorulanlar</div>
+          <h2>Aklına takılabilecekler.</h2>
         </div>
-        <div
-          style="
-            margin-top: 32px;
-            max-width: 820px;
-            border-bottom: 1px solid #e2e2e2;
-          "
-        >
+        <div class="faq-list">
           <details class="faq" open>
             <summary>Hesap açmam gerekiyor mu?</summary>
             <p>
@@ -2465,984 +643,45 @@
           </details>
         </div>
       </section>
-      <section
-        class="sec"
-        style="
-          max-width: 1120px;
-          margin: 112px auto 0;
-          padding: 0 32px;
-          box-sizing: border-box;
-        "
-      >
-        <div style="text-align: center">
-          <h2
-            style="
-              margin: 0 auto;
-              max-width: 720px;
-              font-size: clamp(30px, 5.2vw, 56px);
-              line-height: 1.08;
-              letter-spacing: -0.035em;
-              font-weight: 800;
-              text-wrap: balance;
-            "
-          >
-            Hazırsan, kapı açık.
-          </h2>
-          <p
-            style="
-              margin: 18px auto 0;
-              max-width: 480px;
-              font-size: 18px;
-              line-height: 1.6;
-              color: #5c5c5c;
-            "
-          >
-            Kayıt yok, kurulum yok. Bir görev yaz, bir rutin ekle ve sana uyup
-            uymadığını gör.
-          </p>
-          <div style="margin-top: 30px">
-            <a
-              class="btn-primary"
-              href="https://anchorly-app.vercel.app"
-              style="
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                min-height: 52px;
-                padding: 0 28px;
-                border-radius: 12px;
-                background: #111111;
-                color: #ffffff;
-                font-size: 17px;
-                font-weight: 700;
-              "
-              >Anchorly'yi aç<svg
-                width="18"
-                height="18"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path
-                  d="M3 8h9M8.5 4l4 4-4 4"
-                  fill="none"
-                  stroke="#ffffff"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path></svg
-            ></a>
-          </div>
+      <section class="sec wrap closing">
+        <h2>Hazırsan, kapı açık.</h2>
+        <p class="lead">
+          Kayıt yok, kurulum yok. Bir görev yaz, bir rutin ekle ve sana uyup
+          uymadığını gör.
+        </p>
+        <div class="closing-action">
+          <a class="btn-primary btn-lg" href="https://anchorly-app.vercel.app"
+            >Anchorly'yi aç<svg
+              width="18"
+              height="18"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8h9M8.5 4l4 4-4 4"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path></svg
+          ></a>
         </div>
       </section>
-      <footer
-        class="ftr"
-        style="
-          max-width: 1120px;
-          margin: 96px auto 0;
-          padding: 32px 32px 56px;
-          box-sizing: border-box;
-          border-top: 1px solid #e2e2e2;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px 24px;
-          color: #6b6b6b;
-          font-size: 14px;
-        "
-      >
-        <div style="display: flex; flex-direction: column; gap: 4px">
-          <a
-            href="https://github.com/berkaycinar-dev"
-            style="
-              font-size: 16px;
-              font-weight: 700;
-              color: #111111;
-              text-decoration: underline;
-              text-decoration-color: #c4c4c4;
-              text-underline-offset: 4px;
-            "
-            >Berkay Çınar</a
-          ><span>Anchorly'nin geliştiricisi</span>
-        </div>
-        <nav
-          aria-label="Alt bilgi"
-          style="display: flex; flex-wrap: wrap; gap: 0 20px"
+    </main>
+    <footer class="ftr wrap">
+      <div class="ftr-person">
+        <a class="ftr-name" href="https://github.com/berkaycinar-dev"
+          >Berkay Çınar</a
+        ><span>Anchorly'nin geliştiricisi</span>
+      </div>
+      <nav class="ftr-links" aria-label="Alt bilgi">
+        <a href="https://anchorly-app.vercel.app/privacy">Gizlilik ve KVKK</a
+        ><a href="https://anchorly-app.vercel.app/terms">Kullanım Koşulları</a
+        ><a href="https://github.com/berkaycinar-dev/Anchorly"
+          >Kaynak kod GitHub'da →</a
         >
-          <a
-            href="https://anchorly-app.vercel.app/privacy"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 44px;
-              color: #5c5c5c;
-              font-weight: 500;
-            "
-            >Gizlilik ve KVKK</a
-          >
-          <a
-            href="https://anchorly-app.vercel.app/terms"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 44px;
-              color: #5c5c5c;
-              font-weight: 500;
-            "
-            >Kullanım Koşulları</a
-          >
-          <a
-            href="https://github.com/berkaycinar-dev/Anchorly"
-            style="
-              display: inline-flex;
-              align-items: center;
-              min-height: 44px;
-              color: #5c5c5c;
-              font-weight: 500;
-            "
-            >Kaynak kod GitHub'da →</a
-          >
-        </nav>
-      </footer>
-    </div>
-    <script>
-      (function () {
-        "use strict";
-
-        const root = document.getElementById("tour");
-        if (!root) {
-          return;
-        }
-
-        const state = { tab: "today", theme: "gray" };
-
-        const LIGHT_CATEGORIES = {
-          work: "#1d4ed8",
-          personal: "#c2410c",
-          growth: "#7e22ce",
-          health: "#15803d",
-          project: "#0f766e",
-          other: "#4b5563",
-        };
-        const DARK_CATEGORIES = {
-          work: "#93c5fd",
-          personal: "#fdba74",
-          growth: "#d8b4fe",
-          health: "#86efac",
-          project: "#5eead4",
-          other: "#d4d4d8",
-        };
-        const THEMES = {
-          gray: {
-            label: "Gri",
-            dark: false,
-            accent: "#64748b",
-            page: "#f4f6fb",
-            card: "#ffffff",
-            subtle: "#f3f4f6",
-            text: "#1f2937",
-            text2: "#5b6371",
-            muted: "#656c79",
-            border: "#e5e7eb",
-            on: "#ffffff",
-            tint: "rgba(100,116,139,0.12)",
-            raised: "#ffffff",
-          },
-          purple: {
-            label: "Mor",
-            dark: true,
-            accent: "#9333ea",
-            page: "#1e1b2e",
-            card: "#2a2440",
-            subtle: "#241f38",
-            text: "#f3f0fa",
-            text2: "#c4b5fd",
-            muted: "#9c8cc4",
-            border: "#4c3d70",
-            on: "#ffffff",
-            tint: "rgba(147,51,234,0.22)",
-            raised: "#36304b",
-          },
-          blue: {
-            label: "Mavi",
-            dark: true,
-            accent: "#3b82f6",
-            page: "#0f172a",
-            card: "#1e293b",
-            subtle: "#16223a",
-            text: "#e0f2fe",
-            text2: "#94a3b8",
-            muted: "#8896a9",
-            border: "#334155",
-            on: "#0f172a",
-            tint: "rgba(59,130,246,0.22)",
-            raised: "#2a3547",
-          },
-          red: {
-            label: "Kırmızı",
-            dark: false,
-            accent: "#dc2626",
-            page: "#fef2f2",
-            card: "#ffffff",
-            subtle: "#fee2e2",
-            text: "#7f1d1d",
-            text2: "#b91c1c",
-            muted: "#895656",
-            border: "#fecaca",
-            on: "#ffffff",
-            tint: "rgba(220,38,38,0.12)",
-            raised: "#ffffff",
-          },
-          green: {
-            label: "Yeşil",
-            dark: true,
-            accent: "#22c55e",
-            page: "#050e09",
-            card: "#07180f",
-            subtle: "#123021",
-            text: "#dcfce7",
-            text2: "#86efac",
-            muted: "#73a184",
-            border: "#1f5c38",
-            on: "#052e13",
-            tint: "rgba(34,197,94,0.22)",
-            raised: "#14261c",
-          },
-          pink: {
-            label: "Pembe",
-            dark: false,
-            accent: "#db2777",
-            page: "#fdf2f8",
-            card: "#ffffff",
-            subtle: "#fce7f3",
-            text: "#831843",
-            text2: "#9d174d",
-            muted: "#9e4a76",
-            border: "#fbcfe8",
-            on: "#ffffff",
-            tint: "rgba(219,39,119,0.12)",
-            raised: "#ffffff",
-          },
-          black: {
-            label: "Siyah",
-            dark: true,
-            accent: "#e5e5e5",
-            page: "#0a0a0a",
-            card: "#141414",
-            subtle: "#1c1c1c",
-            text: "#f5f5f5",
-            text2: "#a3a3a3",
-            muted: "#8a8a8a",
-            border: "#2e2e2e",
-            on: "#000000",
-            tint: "rgba(229,229,229,0.22)",
-            raised: "#222222",
-          },
-        };
-        const THEME_ORDER = [
-          "gray",
-          "purple",
-          "blue",
-          "red",
-          "green",
-          "pink",
-          "black",
-        ];
-
-        const TABS = [
-          { id: "today", label: "Bugün" },
-          { id: "routine", label: "Günlük Rutin" },
-          { id: "calendar", label: "Takvim" },
-          { id: "archive", label: "Arşiv" },
-        ];
-
-        const ICONS = {
-          dashboard: "M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z",
-          today: "M12 3a9 9 0 100 18 9 9 0 000-18zM8 12l3 3 5-6",
-          routine:
-            "M4 12a8 8 0 0114-5.3L20 9M20 4v5h-5M20 12a8 8 0 01-14 5.3L4 15M4 20v-5h5",
-          calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
-          archive: "M3 4h18v4H3zM5 8v12h14V8M10 12h4",
-          projects:
-            "M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z",
-          settings:
-            "M12 15a3 3 0 100-6 3 3 0 000 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1",
-          more: "M5 12h.01M12 12h.01M19 12h.01",
-        };
-
-        const NAV = [
-          { label: "Panel", icon: ICONS.dashboard },
-          { label: "Bugün", badge: "4", icon: ICONS.today, tab: "today" },
-          {
-            label: "Günlük Rutin",
-            badge: "2",
-            icon: ICONS.routine,
-            tab: "routine",
-          },
-          { label: "Takvim", icon: ICONS.calendar, tab: "calendar" },
-          { label: "Arşiv", icon: ICONS.archive, tab: "archive" },
-          { label: "Projeler", badge: "3", icon: ICONS.projects },
-          { label: "Ayarlar", icon: ICONS.settings },
-        ];
-
-        const BOTTOM_NAV = [
-          { label: "Panel", icon: ICONS.dashboard },
-          { label: "Bugün", icon: ICONS.today, tabs: ["today"] },
-          { label: "Rutin", icon: ICONS.routine, tabs: ["routine"] },
-          { label: "Takvim", icon: ICONS.calendar, tabs: ["calendar"] },
-          { label: "Diğer", icon: ICONS.more, tabs: ["archive"] },
-        ];
-
-        const CATEGORIES = {
-          work: { name: "İş", color: "var(--cat-work)" },
-          home: { name: "Kişisel", color: "var(--cat-personal)" },
-          growth: { name: "Kişisel Gelişim", color: "var(--cat-growth)" },
-          health: { name: "Sağlık", color: "var(--cat-health)" },
-        };
-
-        const CHECK =
-          '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5" fill="none" style="stroke:var(--c-on)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
-
-        const LOGO =
-          '<svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="color:var(--c-text);flex:0 0 auto"><defs><mask id="lgm" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><rect width="64" height="64" fill="#fff"></rect><polygon points="32,8.2 52.3,20.1 52.3,43.9 32,55.8 11.7,43.9 11.7,20.1" fill="none" stroke="#000" stroke-width="2.4" stroke-linejoin="round"></polygon><g transform="translate(12.8 13.85) scale(0.6)" fill="none" stroke="#000" stroke-linecap="round"><circle cx="32" cy="10" r="6" stroke-width="5"></circle><line x1="32" y1="16" x2="32" y2="52" stroke-width="7"></line><line x1="21" y1="24" x2="43" y2="24" stroke-width="6"></line><path d="M 7 38 Q 9 59 32 59 Q 55 59 57 38 L 46 45 Q 42 51 32 51 Q 22 51 18 45 Z" fill="#000" stroke="none"></path></g></mask></defs><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="currentColor" stroke="currentColor" stroke-width="4" stroke-linejoin="round" mask="url(#lgm)"></polygon></svg>';
-
-        function icon(path, size) {
-          return (
-            '<svg width="' +
-            size +
-            '" height="' +
-            size +
-            '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' +
-            path +
-            '"></path></svg>'
-          );
-        }
-
-        function themeVars(theme) {
-          const cats = theme.dark ? DARK_CATEGORIES : LIGHT_CATEGORIES;
-          return (
-            "--c-accent:" +
-            theme.accent +
-            ";--c-page:" +
-            theme.page +
-            ";--c-card:" +
-            theme.card +
-            ";--c-subtle:" +
-            theme.subtle +
-            ";--c-text:" +
-            theme.text +
-            ";--c-text2:" +
-            theme.text2 +
-            ";--c-muted:" +
-            theme.muted +
-            ";--c-border:" +
-            theme.border +
-            ";--c-on:" +
-            theme.on +
-            ";--c-tint:" +
-            theme.tint +
-            ";--c-raised:" +
-            theme.raised +
-            ";--cat-work:" +
-            cats.work +
-            ";--cat-personal:" +
-            cats.personal +
-            ";--cat-growth:" +
-            cats.growth +
-            ";--cat-health:" +
-            cats.health +
-            ";--cat-project:" +
-            cats.project +
-            ";--cat-other:" +
-            cats.other +
-            ";"
-          );
-        }
-
-        function box(done) {
-          return (
-            "flex:0 0 22px;width:22px;height:22px;border-radius:6px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:2px solid " +
-            (done ? "var(--c-accent)" : "var(--c-muted)") +
-            ";background:" +
-            (done ? "var(--c-accent)" : "transparent")
-          );
-        }
-
-        function taskRow(title, category, done, selected) {
-          const cat = CATEGORIES[category];
-          const rowStyle =
-            "display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;border:1px solid " +
-            (selected ? "var(--c-accent)" : "var(--c-border)") +
-            ";background:" +
-            (selected ? "var(--c-tint)" : "var(--c-card)");
-          const titleStyle =
-            "flex:1;min-width:0;font-size:15px;font-weight:500;" +
-            (done
-              ? "color:var(--c-muted);text-decoration:line-through"
-              : "color:var(--c-text)");
-
-          return (
-            '<div style="' +
-            rowStyle +
-            '"><span aria-hidden="true" style="' +
-            box(done) +
-            '">' +
-            (done ? CHECK : "") +
-            '</span><span style="' +
-            titleStyle +
-            '">' +
-            title +
-            '</span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--c-text2)"><span aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:' +
-            cat.color +
-            '"></span>' +
-            cat.name +
-            "</span></div>"
-          );
-        }
-
-        function renderToday() {
-          const open = [
-            taskRow("Rapor taslağını bitir", "work", false, true),
-            taskRow("Market alışverişi", "home", false, false),
-            taskRow("React notlarını gözden geçir", "growth", false, false),
-            taskRow("Faturayı öde", "home", false, false),
-          ].join("");
-          const done = [
-            taskRow("Sabah e-postalarını yanıtla", "work", true, false),
-            taskRow("Spor çantasını hazırla", "health", true, false),
-          ].join("");
-
-          return (
-            '<div><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Bugün</h2><span style="color:var(--c-muted);font-size:14px">4 açık görev · 2 tamamlandı</span></div>' +
-            '<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">' +
-            '<div style="flex:999 1 300px;min-width:0;display:flex;flex-direction:column;gap:10px">' +
-            // Mirrors the app's add bar: accent plus, placeholder, date/time/repeat tools.
-            '<div style="display:flex;align-items:center;gap:10px;min-height:48px;padding:0 14px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card);color:var(--c-muted);font-size:14px">' +
-            '<span style="display:inline-flex;color:var(--c-accent)">' +
-            icon("M12 5v14M5 12h14", 18) +
-            "</span>" +
-            '<span style="flex:1;min-width:0">Yeni görev ekle...</span>' +
-            '<span style="display:inline-flex;gap:12px">' +
-            icon(ICONS.calendar, 16) +
-            icon("M12 7v5l3 2M12 3a9 9 0 100 18 9 9 0 000-18z", 16) +
-            icon(ICONS.routine, 16) +
-            "</span></div>" +
-            '<div style="margin-top:6px;font-size:12px;font-weight:600;color:var(--c-muted)">Tamamlanmamış</div>' +
-            open +
-            '<div style="margin-top:6px;font-size:12px;font-weight:600;color:var(--c-muted)">Tamamlanmış</div>' +
-            done +
-            "</div>" +
-            '<div style="flex:1 1 230px;min-width:0;padding:18px;border:1px solid var(--c-border);background:var(--c-card);border-radius:14px">' +
-            '<div style="font-size:12px;color:var(--c-muted)">Görev detayı</div>' +
-            '<div style="margin-top:6px;font-size:18px;font-weight:700;letter-spacing:-0.01em">Rapor taslağını bitir</div>' +
-            '<div style="margin-top:16px;display:flex;flex-direction:column;gap:12px;font-size:14px">' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Durum</span><span>Bekliyor</span></div>' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Tarih</span><span>6 Kasım</span></div>' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Kategori</span><span>İş</span></div>' +
-            '<div style="display:flex;justify-content:space-between;gap:12px"><span style="color:var(--c-muted)">Not</span><span style="text-align:right;color:var(--c-text2)">Giriş ve grafikleri ekle</span></div>' +
-            "</div></div></div></div>"
-          );
-        }
-
-        const DAY_LABELS = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
-
-        function renderRoutine() {
-          const head = DAY_LABELS.map(function (label, i) {
-            const style =
-              "flex:1;text-align:center;font-size:12px;line-height:1.5;color:" +
-              (i === 4 ? "var(--c-text)" : "var(--c-muted)") +
-              ";font-weight:" +
-              (i === 4 ? "700" : "500");
-            return (
-              '<span style="' +
-              style +
-              '">' +
-              label +
-              '<br><span style="font-weight:700;font-size:15px">' +
-              (2 + i) +
-              "</span></span>"
-            );
-          }).join("");
-
-          const routines = [
-            { name: "Su iç", month: "Bu ay 5/6", days: [1, 1, 1, 0, 1, 0, 0] },
-            {
-              name: "Kitap oku",
-              month: "Bu ay 4/6",
-              days: [1, 0, 1, 1, 0, 0, 0],
-            },
-            {
-              name: "Yürüyüş",
-              month: "Bu ay 5/6",
-              days: [0, 1, 1, 1, 1, 0, 0],
-            },
-          ];
-
-          const rows = routines
-            .map(function (routine) {
-              const cells = routine.days
-                .map(function (day, i) {
-                  const done = day === 1;
-                  const future = i > 4;
-                  const style =
-                    "width:28px;height:28px;border-radius:8px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:2px solid " +
-                    (done
-                      ? "var(--c-accent)"
-                      : future
-                        ? "var(--c-border)"
-                        : "var(--c-muted)") +
-                    ";background:" +
-                    (done ? "var(--c-accent)" : "transparent");
-                  return (
-                    '<span style="flex:1;display:flex;justify-content:center"><span aria-hidden="true" style="' +
-                    style +
-                    '">' +
-                    (done ? CHECK : "") +
-                    "</span></span>"
-                  );
-                })
-                .join("");
-
-              return (
-                '<div style="display:flex;align-items:center;gap:8px;padding:12px 4px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card)">' +
-                '<span style="flex:0 0 110px;padding-left:12px;display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">' +
-                routine.name +
-                '</span><span style="font-size:12px;color:var(--c-muted)">' +
-                routine.month +
-                "</span></span>" +
-                cells +
-                "</div>"
-              );
-            })
-            .join("");
-
-          return (
-            '<div><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Günlük Rutin</h2>' +
-            '<div style="display:flex;align-items:center;gap:10px;color:var(--c-text2);font-size:14px">' +
-            icon("M15 6l-6 6 6 6", 18) +
-            "<span>2 – 8 Kasım</span>" +
-            icon("M9 6l6 6-6 6", 18) +
-            "</div></div>" +
-            '<div style="margin-top:20px;overflow-x:auto"><div style="min-width:420px;display:flex;flex-direction:column;gap:10px">' +
-            '<div style="display:flex;align-items:center;gap:8px;padding:0 4px"><span style="flex:0 0 110px"></span>' +
-            head +
-            "</div>" +
-            rows +
-            "</div></div></div>"
-          );
-        }
-
-        function renderCalendar() {
-          const dotColors = [
-            "var(--cat-work)",
-            "var(--cat-personal)",
-            "var(--cat-growth)",
-            "var(--cat-health)",
-          ];
-          const taskData = {
-            3: ["Müşteri toplantısı"],
-            6: ["Rapor taslağını bitir", "Market alışverişi"],
-            9: ["Sunum hazırla"],
-            12: ["Fatura", "Ders notları"],
-            17: ["Proje teslimi"],
-            20: ["Kod gözden geçir", "Alışveriş"],
-            24: ["Randevu"],
-            27: ["Haftalık plan", "Okuma"],
-          };
-          const pctData = { 3: "%100", 6: "%33" };
-          const cellBase =
-            "box-sizing:border-box;min-height:64px;padding:6px;border-radius:8px;display:flex;flex-direction:column;gap:3px;min-width:0;overflow:hidden;";
-
-          function cell(number, numberStyle, style, pct, items) {
-            return (
-              '<div class="cal-cell" style="' +
-              style +
-              '"><div style="display:flex;justify-content:space-between;gap:4px;font-size:12px;font-weight:600"><span style="' +
-              numberStyle +
-              '">' +
-              number +
-              '</span><span style="font-size:10px;font-weight:500;color:var(--c-muted)">' +
-              pct +
-              "</span></div>" +
-              items +
-              "</div>"
-            );
-          }
-
-          function faded(number) {
-            return cell(
-              number,
-              "color:var(--c-muted)",
-              cellBase +
-                "opacity:.4;background:transparent;border:1px solid transparent",
-              "",
-              "",
-            );
-          }
-
-          const cells = [];
-          for (let n = 26; n <= 31; n++) {
-            cells.push(faded(n));
-          }
-          for (let day = 1; day <= 30; day++) {
-            const weekend = (6 + day - 1) % 7 >= 5;
-            const isToday = day === 6;
-            const items = (taskData[day] || [])
-              .map(function (title, i) {
-                const titleStyle = weekend
-                  ? "display:none"
-                  : "font-size:10px;line-height:1.2;color:var(--c-text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0";
-                return (
-                  '<div style="display:flex;align-items:center;gap:4px;min-width:0"><span aria-hidden="true" style="flex:0 0 6px;width:6px;height:6px;border-radius:50%;background:' +
-                  dotColors[i % dotColors.length] +
-                  '"></span><span class="cal-title" style="' +
-                  titleStyle +
-                  '">' +
-                  title +
-                  "</span></div>"
-                );
-              })
-              .join("");
-            const style =
-              cellBase +
-              "border:" +
-              (isToday
-                ? "2px solid var(--c-accent)"
-                : "1px solid var(--c-border)") +
-              ";background:" +
-              (isToday
-                ? "var(--c-tint)"
-                : weekend
-                  ? "var(--c-subtle)"
-                  : "var(--c-card)");
-            cells.push(
-              cell(
-                day,
-                "color:var(--c-text)",
-                style,
-                pctData[day] || "",
-                items,
-              ),
-            );
-          }
-          for (let n = 1; n <= 6; n++) {
-            cells.push(faded(n));
-          }
-
-          const grid =
-            "display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) repeat(2,minmax(0,.55fr));gap:6px";
-          const head = DAY_LABELS.map(function (label) {
-            return (
-              '<span style="text-align:center;font-size:12px;color:var(--c-muted)">' +
-              label +
-              "</span>"
-            );
-          }).join("");
-
-          return (
-            '<div><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Takvim</h2><span style="color:var(--c-muted);font-size:14px">Kasım 2026</span></div>' +
-            '<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">' +
-            '<div style="flex:999 1 340px;min-width:0">' +
-            '<div style="' +
-            grid +
-            ';margin-bottom:6px">' +
-            head +
-            "</div>" +
-            '<div style="' +
-            grid +
-            '">' +
-            cells.join("") +
-            "</div></div>" +
-            '<div style="flex:1 1 220px;min-width:0;padding:16px;border:1px solid var(--c-border);background:var(--c-card);border-radius:14px">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:12px;color:var(--c-muted)">Seçili gün</span><span style="font-size:12px;color:var(--c-muted)">Paneli gizle</span></div>' +
-            '<div style="margin-top:4px;font-size:17px;font-weight:700">6 Kasım, Cuma</div>' +
-            '<div style="margin-top:2px;font-size:13px;color:var(--c-muted)">6 görev · 2 tamamlandı</div>' +
-            '<div style="margin-top:10px;height:6px;border-radius:999px;background:var(--c-border);overflow:hidden"><div style="height:100%;width:33%;border-radius:999px;background:var(--c-accent)"></div></div>' +
-            '<div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;font-size:14px">' +
-            '<div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="' +
-            box(false) +
-            '"></span><span style="flex:1;min-width:0">Rapor taslağını bitir</span><span style="font-size:12px;color:var(--c-text2)">İş</span></div>' +
-            '<div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="' +
-            box(true) +
-            '">' +
-            CHECK +
-            '</span><span style="flex:1;min-width:0;color:var(--c-muted);text-decoration:line-through">Sabah e-postalarını yanıtla</span><span style="font-size:12px;color:var(--c-text2)">İş</span></div></div>' +
-            // Mirrors the app's day panel form: input plus an icon-only add button.
-            '<div style="margin-top:14px;display:flex;gap:8px">' +
-            '<span style="flex:1;min-width:0;padding:10px 12px;border:1px solid var(--c-border);border-radius:10px;font-size:13px;color:var(--c-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">6 Kasım için görev ekle...</span>' +
-            '<span style="flex:0 0 38px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:var(--c-accent);color:var(--c-on)">' +
-            icon("M12 5v14M5 12h14", 18) +
-            "</span></div>" +
-            "</div></div></div>"
-          );
-        }
-
-        function renderArchive() {
-          const series = [
-            {
-              name: "Haftalık plan",
-              color: "var(--cat-work)",
-              pattern: "Her Pazartesi · 12 tekrar",
-              done: 8,
-              total: 12,
-              next: "Sonraki: 9 Kasım",
-            },
-            {
-              name: "Faturaları kontrol et",
-              color: "var(--cat-personal)",
-              pattern: "Her Cuma · 6 tekrar",
-              done: 5,
-              total: 6,
-              next: "Sonraki: Bugün",
-            },
-            {
-              name: "Sulama günü",
-              color: "var(--cat-health)",
-              pattern: "Her gün · 20 tekrar",
-              done: 14,
-              total: 20,
-              next: "Sonraki: Bugün",
-            },
-          ]
-            .map(function (item) {
-              const width = Math.round((item.done / item.total) * 100);
-              return (
-                '<div style="padding:14px 16px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card)"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600"><span aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:' +
-                item.color +
-                '"></span>' +
-                item.name +
-                '</span><span style="font-size:13px;color:var(--c-text2)">' +
-                item.pattern +
-                '</span></div><div style="margin-top:12px;height:6px;border-radius:999px;background:var(--c-border);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--c-accent);width:' +
-                width +
-                '%"></div></div><div style="margin-top:8px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--c-muted)"><span>' +
-                item.done +
-                " / " +
-                item.total +
-                " yapıldı</span><span>" +
-                item.next +
-                "</span></div></div>"
-              );
-            })
-            .join("");
-
-          function stat(label, value) {
-            return (
-              '<div style="padding:12px 14px;border:1px solid var(--c-border);border-radius:12px;background:var(--c-card)"><div style="font-size:12px;color:var(--c-muted)">' +
-              label +
-              '</div><div style="margin-top:2px;font-size:22px;font-weight:700">' +
-              value +
-              "</div></div>"
-            );
-          }
-
-          return (
-            '<div><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><h2 style="margin:0;font-size:26px;letter-spacing:-0.02em">Arşiv</h2><span style="color:var(--c-muted);font-size:14px">Tekrarlı seriler</span></div>' +
-            '<div style="margin-top:16px;display:inline-flex;padding:4px;border:1px solid var(--c-border);border-radius:10px;background:var(--c-subtle);gap:4px"><span style="padding:7px 14px;border-radius:7px;font-size:13px;color:var(--c-text2)">Tek seferlik</span><span style="padding:7px 14px;border-radius:7px;font-size:13px;font-weight:600;background:var(--c-card);color:var(--c-text);border:1px solid var(--c-border)">Tekrarlı seriler</span></div>' +
-            '<div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(120px,100%),1fr));gap:10px">' +
-            stat("Aktif seri", "3") +
-            stat("Bugün bekleyen", "2") +
-            stat("Genel tamamlama", "%71") +
-            "</div>" +
-            '<div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">' +
-            series +
-            "</div></div>"
-          );
-        }
-
-        const PANELS = {
-          today: renderToday,
-          routine: renderRoutine,
-          calendar: renderCalendar,
-          archive: renderArchive,
-        };
-
-        function renderTabs() {
-          return TABS.map(function (tab) {
-            const on = tab.id === state.tab;
-            const style =
-              "min-height:44px;padding:0 20px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid " +
-              (on ? "#111111" : "#e2e2e2") +
-              ";background:" +
-              (on ? "#111111" : "#ffffff") +
-              ";color:" +
-              (on ? "#ffffff" : "#333333");
-            return (
-              '<button type="button" data-tab="' +
-              tab.id +
-              '" aria-pressed="' +
-              on +
-              '" style="' +
-              style +
-              '">' +
-              tab.label +
-              "</button>"
-            );
-          }).join("");
-        }
-
-        function renderSidebar() {
-          const items = NAV.map(function (item) {
-            const on = item.tab === state.tab;
-            const style =
-              "position:relative;display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:8px;font-size:14px;font-weight:" +
-              (on ? "600" : "500") +
-              ";color:" +
-              (on ? "var(--c-text)" : "var(--c-text2)") +
-              ";background:" +
-              (on
-                ? "color-mix(in srgb, var(--c-text) 8%, transparent)"
-                : "transparent");
-            const bar =
-              "position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:2px;background:" +
-              (on ? "var(--c-accent)" : "transparent");
-            const badge = item.badge
-              ? '<span style="min-width:22px;padding:2px 7px;border-radius:999px;background:color-mix(in srgb, var(--c-text) 8%, transparent);color:var(--c-text2);font-size:12px;font-weight:600;text-align:center;box-sizing:border-box">' +
-                item.badge +
-                "</span>"
-              : "";
-            return (
-              '<div style="' +
-              style +
-              '"><span aria-hidden="true" style="' +
-              bar +
-              '"></span>' +
-              icon(item.icon, 18) +
-              '<span style="flex:1">' +
-              item.label +
-              "</span>" +
-              badge +
-              "</div>"
-            );
-          }).join("");
-
-          return (
-            '<div class="mock-side" style="flex:0 0 220px;box-sizing:border-box;padding:22px 12px;border-right:1px solid var(--c-border);background:var(--c-card);display:flex;flex-direction:column;gap:4px;flex-grow:1;max-width:100%">' +
-            '<div style="display:flex;align-items:center;gap:10px;padding:0 12px 14px">' +
-            LOGO +
-            '<span style="font-size:17px;font-weight:700;letter-spacing:-0.02em">Anchorly</span></div>' +
-            items +
-            '<div style="flex:1"></div>' +
-            '<div style="margin-top:12px;padding-top:14px;border-top:1px solid var(--c-border);display:flex;flex-direction:column;gap:8px"><span style="display:flex;align-items:center;justify-content:center;height:36px;border-radius:8px;background:var(--c-accent);color:var(--c-on);font-size:13px;font-weight:600">Giriş yap</span><span style="display:flex;align-items:center;justify-content:center;height:36px;border-radius:8px;border:1px solid var(--c-border);color:var(--c-text);font-size:13px;font-weight:600">Kayıt ol</span></div>' +
-            "</div>"
-          );
-        }
-
-        function renderBottomNav() {
-          const items = BOTTOM_NAV.map(function (item) {
-            const on = Boolean(
-              item.tabs && item.tabs.indexOf(state.tab) !== -1,
-            );
-            const style =
-              "position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:48px;border-radius:10px;color:" +
-              (on ? "var(--c-text)" : "var(--c-muted)") +
-              ";background:" +
-              (on
-                ? "color-mix(in srgb, var(--c-text) 8%, transparent)"
-                : "transparent");
-            const bar =
-              "position:absolute;top:-8px;left:50%;margin-left:-14px;width:28px;height:3px;border-radius:2px;background:" +
-              (on ? "var(--c-accent)" : "transparent");
-            return (
-              '<div style="' +
-              style +
-              '"><span aria-hidden="true" style="' +
-              bar +
-              '"></span>' +
-              icon(item.icon, 20) +
-              '<span style="font-size:11px;font-weight:600">' +
-              item.label +
-              "</span></div>"
-            );
-          }).join("");
-
-          return (
-            '<div class="mock-bottom" style="display:none;border-top:1px solid var(--c-border);background:var(--c-card);padding:8px 8px 10px;gap:4px">' +
-            items +
-            "</div>"
-          );
-        }
-
-        function renderThemePicker() {
-          return THEME_ORDER.map(function (id) {
-            const theme = THEMES[id];
-            const on = id === state.theme;
-            const outer =
-              "display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;box-sizing:border-box;background:" +
-              theme.page +
-              ";border:" +
-              // #8a8a8a keeps the unselected ring above 3:1 against white.
-              (on ? "2px solid #111111" : "1px solid #8a8a8a");
-            return (
-              '<button type="button" data-theme="' +
-              id +
-              '" aria-label="' +
-              theme.label +
-              '" aria-pressed="' +
-              on +
-              '" title="' +
-              theme.label +
-              '" style="width:44px;height:44px;border:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="' +
-              outer +
-              '"><span style="display:block;width:12px;height:12px;border-radius:50%;background:' +
-              theme.accent +
-              '"></span></span></button>'
-            );
-          }).join("");
-        }
-
-        function render() {
-          const theme = THEMES[state.theme];
-
-          root.innerHTML =
-            '<div role="group" aria-label="Önizlenecek sayfa" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px">' +
-            renderTabs() +
-            "</div>" +
-            '<div style="' +
-            themeVars(theme) +
-            'border:1px solid #e2e2e2;border-radius:18px;background:var(--c-page);color:var(--c-text);overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.12)">' +
-            '<div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--c-border);background:var(--c-card)"><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:var(--c-border)"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:var(--c-border)"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:var(--c-border)"></span><span style="margin-left:12px;font-size:13px;color:var(--c-muted)">anchorly</span></div>' +
-            '<div style="display:flex;flex-wrap:wrap;min-height:430px">' +
-            renderSidebar() +
-            '<div class="mock-main" style="flex:999 1 420px;min-width:0;box-sizing:border-box;padding:28px 32px">' +
-            PANELS[state.tab]() +
-            "</div>" +
-            "</div>" +
-            renderBottomNav() +
-            "</div>" +
-            '<div style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 18px"><span style="font-size:14px;color:#6b6b6b">Temayı dene: <strong style="color:#111111">' +
-            theme.label +
-            "</strong></span>" +
-            '<div role="group" aria-label="Önizleme teması" style="display:flex;flex-wrap:wrap;justify-content:center;gap:2px">' +
-            renderThemePicker() +
-            "</div></div>";
-        }
-
-        root.addEventListener("click", function (event) {
-          const button = event.target.closest(
-            "button[data-tab], button[data-theme]",
-          );
-          if (!button) {
-            return;
-          }
-
-          const selector = button.dataset.tab
-            ? '[data-tab="' + button.dataset.tab + '"]'
-            : '[data-theme="' + button.dataset.theme + '"]';
-
-          if (button.dataset.tab) {
-            state.tab = button.dataset.tab;
-          } else {
-            state.theme = button.dataset.theme;
-          }
-
-          render();
-          // innerHTML replaced the clicked button; give focus back to its new copy.
-          root.querySelector(selector).focus();
-        });
-
-        render();
-      })();
-    </script>
+      </nav>
+    </footer>
   </body>
 </html>
