@@ -73,10 +73,27 @@ describe("vercel security headers", () => {
     expect(readHeader("/", "Permissions-Policy")).toContain("camera=()");
   });
 
-  it("keeps the api rewrite before the app fallback", () => {
+  it("keeps the api rewrite first and the app fallback last", () => {
     const sources = vercelConfig.rewrites.map((rewrite) => rewrite.source);
 
-    expect(sources).toEqual(["/api/:path*", "/(.*)"]);
+    expect(sources).toEqual([
+      "/api/:path*",
+      "/welcome/en/?",
+      "/welcome/?",
+      "/(.*)",
+    ]);
+  });
+
+  it("serves the landing pages from their own files", () => {
+    const destinations = Object.fromEntries(
+      vercelConfig.rewrites.map((rewrite) => [
+        rewrite.source,
+        rewrite.destination,
+      ]),
+    );
+
+    expect(destinations["/welcome/?"]).toBe("/welcome/index.html");
+    expect(destinations["/welcome/en/?"]).toBe("/welcome/en/index.html");
   });
 });
 
