@@ -4,6 +4,7 @@ import {
   Archive,
   ArchiveRestore,
   ChevronDown,
+  ChevronLeft,
   Columns3,
   List,
   Plus,
@@ -82,10 +83,12 @@ function ProjectDetail({
     <section className="project-detail">
       <button
         type="button"
-        className="btn btn-secondary project-back-button"
+        className="btn btn-secondary btn-mobile-icon project-back-button"
+        title={t.backToProjects}
         onClick={() => navigate("/projects")}
       >
-        {t.backToProjects}
+        <Icon icon={ChevronLeft} size="lg" className="icon-mobile" />
+        <span className="label-desktop">{t.backToProjects}</span>
       </button>
 
       <header className="project-detail-header">
@@ -162,7 +165,7 @@ function ProjectDetail({
             onClick={() => setView("board")}
           >
             <Icon icon={Columns3} size="md" />
-            {t.projectViewBoard}
+            <span className="label-desktop">{t.projectViewBoard}</span>
           </button>
           <button
             type="button"
@@ -170,7 +173,7 @@ function ProjectDetail({
             onClick={() => setView("list")}
           >
             <Icon icon={List} size="md" />
-            {t.projectViewList}
+            <span className="label-desktop">{t.projectViewList}</span>
           </button>
         </div>
 
@@ -194,11 +197,12 @@ function ProjectDetail({
           <button
             type="button"
             ref={addTaskButtonRef}
-            className="btn btn-primary project-add-task"
+            className="btn btn-primary btn-mobile-icon project-add-task"
+            title={t.projectAddTaskOpen}
             onClick={() => setIsTaskFormOpen(true)}
           >
             <Icon icon={Plus} size="md" />
-            {t.projectAddTaskOpen}
+            <span className="label-desktop">{t.projectAddTaskOpen}</span>
           </button>
         )}
       </div>

@@ -11,10 +11,12 @@ import {
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import {
   CalendarDays,
+  Check,
   CircleAlert,
   CircleCheck,
   Clock,
   Pencil,
+  X,
 } from "lucide-react";
 import Icon from "../components/Icon";
 import DashboardCardFrame from "../components/dashboard/DashboardCardFrame";
@@ -255,17 +257,21 @@ function DashboardPage({
               <>
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary btn-mobile-icon"
+                  title={t.dashboardCancel}
                   onClick={editor.cancel}
                 >
-                  {t.dashboardCancel}
+                  <Icon icon={X} size="lg" className="icon-mobile" />
+                  <span className="label-desktop">{t.dashboardCancel}</span>
                 </button>
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-mobile-icon"
+                  title={t.dashboardDone}
                   onClick={editor.finish}
                 >
-                  {t.dashboardDone}
+                  <Icon icon={Check} size="lg" className="icon-mobile" />
+                  <span className="label-desktop">{t.dashboardDone}</span>
                 </button>
               </>
             ) : (
