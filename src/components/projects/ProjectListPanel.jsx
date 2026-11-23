@@ -126,8 +126,13 @@ function ProjectListPanel({
             t={t}
           />
 
-          <button type="submit" className="btn btn-primary">
-            {t.addProjectButton}
+          <button
+            type="submit"
+            className="btn btn-primary btn-icon"
+            aria-label={t.addProjectButton}
+            title={t.addProjectButton}
+          >
+            <Icon icon={Plus} size="lg" />
           </button>
         </form>
       )}

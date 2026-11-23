@@ -1,3 +1,5 @@
+import { Minus, Plus } from "lucide-react";
+import Icon from "../Icon";
 import { DASHBOARD_CARDS } from "../../constants/dashboardCards";
 
 function CardLibrary({ cards, pickedSlot, t, onAdd, onRemove }) {
@@ -26,20 +28,22 @@ function CardLibrary({ cards, pickedSlot, t, onAdd, onRemove }) {
               {isShown ? (
                 <button
                   type="button"
-                  className="btn btn-secondary card-library-action"
+                  className="btn btn-secondary btn-icon card-library-action"
                   aria-label={t.cardRemoveLabel(name)}
+                  title={t.cardRemove}
                   onClick={() => onRemove(card.id)}
                 >
-                  {t.cardRemove}
+                  <Icon icon={Minus} size="md" />
                 </button>
               ) : (
                 <button
                   type="button"
-                  className="btn btn-primary card-library-action"
+                  className="btn btn-primary btn-icon card-library-action"
                   aria-label={t.cardAddLabel(name)}
+                  title={pickedSlot === null ? t.cardAdd : t.cardAddToSlot}
                   onClick={() => onAdd(card.id)}
                 >
-                  {pickedSlot === null ? t.cardAdd : t.cardAddToSlot}
+                  <Icon icon={Plus} size="md" />
                 </button>
               )}
             </li>

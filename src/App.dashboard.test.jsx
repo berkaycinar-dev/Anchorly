@@ -471,7 +471,7 @@ describe("editing the dashboard", () => {
 
     expect(
       within(library).getByRole("button", { name: "Add the Streaks card" }),
-    ).toHaveTextContent("Add to slot");
+    ).toHaveAttribute("title", "Add to slot");
 
     await user.click(
       within(library).getByRole("button", { name: "Add the Streaks card" }),

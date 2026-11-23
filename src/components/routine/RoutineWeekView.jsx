@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Plus } from "lucide-react";
+import Icon from "../Icon";
 import RoutineCard from "./RoutineCard";
 import RoutineSummary from "./RoutineSummary";
 import RoutineWeekStrip from "./RoutineWeekStrip";
@@ -197,8 +199,13 @@ export default function RoutineWeekView({
               value={newRoutineTitle}
               onChange={(event) => setNewRoutineTitle(event.target.value)}
             />
-            <button type="submit" className="btn btn-primary">
-              {t.addButton}
+            <button
+              type="submit"
+              className="btn btn-primary btn-icon"
+              aria-label={t.addButton}
+              title={t.addButton}
+            >
+              <Icon icon={Plus} size="lg" />
             </button>
           </form>
         </div>
