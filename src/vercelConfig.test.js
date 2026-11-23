@@ -78,8 +78,10 @@ describe("vercel security headers", () => {
 
     expect(sources).toEqual([
       "/api/:path*",
-      "/welcome/en/?",
-      "/welcome/?",
+      "/welcome/en",
+      "/welcome/en/",
+      "/welcome",
+      "/welcome/",
       "/(.*)",
     ]);
   });
@@ -92,8 +94,18 @@ describe("vercel security headers", () => {
       ]),
     );
 
-    expect(destinations["/welcome/?"]).toBe("/welcome/index.html");
-    expect(destinations["/welcome/en/?"]).toBe("/welcome/en/index.html");
+    expect(destinations["/welcome"]).toBe("/welcome/index.html");
+    expect(destinations["/welcome/"]).toBe("/welcome/index.html");
+    expect(destinations["/welcome/en"]).toBe("/welcome/en/index.html");
+    expect(destinations["/welcome/en/"]).toBe("/welcome/en/index.html");
+  });
+
+  // Vercel parses sources with path-to-regexp, which rejects a modifier
+  // straight after a slash ("/welcome/?") and fails the whole deployment.
+  it("uses no optional-segment modifiers after a slash", () => {
+    vercelConfig.rewrites.forEach(({ source }) => {
+      expect(source).not.toMatch(/\/[?*+]/);
+    });
   });
 });
 
