@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, Plus } from "lucide-react";
 import Icon from "../Icon";
 import { getCategoryLabel } from "../../utils/categoryHelpers";
 import { getCompletionPercent } from "../../utils/calendarHelpers";
@@ -167,8 +167,13 @@ function CalendarDayPanel({
           value={newTaskTitle}
           onChange={(event) => setNewTaskTitle(event.target.value)}
         />
-        <button type="submit" className="btn btn-primary">
-          {t.addButton}
+        <button
+          type="submit"
+          className="btn btn-primary btn-icon"
+          aria-label={t.addButton}
+          title={t.addButton}
+        >
+          <Icon icon={Plus} size="lg" />
         </button>
       </form>
     </aside>

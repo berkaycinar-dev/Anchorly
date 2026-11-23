@@ -1185,9 +1185,8 @@
 }
 
 .card-library-action {
-  flex-shrink: 0;
-  padding: 6px 12px;
-  font-size: var(--text-sm);
+  min-width: 36px;
+  min-height: 36px;
 }
 
 .day-dialog {

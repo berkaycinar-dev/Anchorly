@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Plus } from "lucide-react";
+import Icon from "./Icon";
 import { getLocalDateString, parseLocalDate } from "../utils/dateHelpers";
 import { compareTasksForDay } from "../utils/taskTime";
 
@@ -163,8 +165,13 @@ function CalendarAgenda({
             value={newTaskTitle}
             onChange={(event) => setNewTaskTitle(event.target.value)}
           />
-          <button type="submit" className="btn btn-primary">
-            {t.addButton}
+          <button
+            type="submit"
+            className="btn btn-primary btn-icon"
+            aria-label={t.addButton}
+            title={t.addButton}
+          >
+            <Icon icon={Plus} size="lg" />
           </button>
         </form>
       </section>
