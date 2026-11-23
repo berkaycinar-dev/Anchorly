@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ClipboardList } from "lucide-react";
+import Icon from "../Icon";
 import TaskList from "../TaskList";
 import { isOneTimeTask } from "../../utils/archiveSeries";
 
@@ -55,7 +57,9 @@ function OneTimeTasks({
 
       {visibleTasks.length === 0 && filter !== "all" ? (
         <div className="empty-state">
-          <span className="empty-state-icon">📋</span>
+          <span className="empty-state-icon" aria-hidden="true">
+            <Icon icon={ClipboardList} size="xl" />
+          </span>
           <p className="empty-state-title">{t.oneTimeEmptyTitle}</p>
           <p className="empty-state-subtitle">{t.oneTimeEmptySubtitle}</p>
         </div>

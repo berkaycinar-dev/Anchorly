@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Repeat } from "lucide-react";
 import Icon from "../Icon";
 import { getCategoryLabel } from "../../utils/categoryHelpers";
 import { getSeriesSummary } from "../../utils/archiveSeries";
@@ -12,7 +12,9 @@ function SeriesList({ seriesList, t }) {
   if (seriesList.length === 0) {
     return (
       <div className="empty-state">
-        <span className="empty-state-icon">🔁</span>
+        <span className="empty-state-icon" aria-hidden="true">
+          <Icon icon={Repeat} size="xl" />
+        </span>
         <p className="empty-state-title">{t.seriesEmptyTitle}</p>
         <p className="empty-state-subtitle">{t.seriesEmptySubtitle}</p>
       </div>
