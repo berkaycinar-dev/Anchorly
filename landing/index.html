@@ -3174,7 +3174,8 @@
               "display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;box-sizing:border-box;background:" +
               theme.page +
               ";border:" +
-              (on ? "2px solid #111111" : "1px solid #c4c4c4");
+              // #8a8a8a keeps the unselected ring above 3:1 against white.
+              (on ? "2px solid #111111" : "1px solid #8a8a8a");
             return (
               '<button type="button" data-theme="' +
               id +
