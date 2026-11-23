@@ -1,29 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Anchorly — Tasks, routines and calendar in one place</title>
+    <title>Anchorly — Görev, rutin ve takvim tek yerde</title>
     <meta
       name="description"
-      content="Anchorly is a calm app that keeps your tasks, habits and calendar together. No sign-up needed; without an account your data stays on your device."
+      content="Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan sakin bir uygulama. Kayıt gerekmez; hesap açmazsan verilerin cihazında kalır."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="Anchorly" />
     <meta
       property="og:title"
-      content="Anchorly — Tasks, routines and calendar in one place"
+      content="Anchorly — Görev, rutin ve takvim tek yerde"
     />
     <meta
       property="og:description"
-      content="A calm app that keeps your tasks, habits and calendar together."
+      content="Görevlerini, alışkanlıklarını ve takvimini bir arada tutan sakin bir uygulama."
     />
     <meta name="twitter:card" content="summary" />
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-    <link rel="stylesheet" href="../landing.css" />
-    <script src="../tour.js" defer></script>
+    <link rel="icon" type="image/svg+xml" href="/anchorly-svg.svg" />
+    <link rel="stylesheet" href="/welcome/landing.css" />
+    <script src="/welcome/tour.js" defer></script>
   </head>
   <body>
     <header class="hdr wrap">
@@ -79,20 +79,21 @@
           ></polygon></svg
         ><span class="brand-name">Anchorly</span></a
       >
-      <nav class="nav-links" aria-label="Page sections">
-        <a class="nav-link" href="#neden">Why</a
-        ><a class="nav-link" href="#sayfalar">Pages</a
-        ><a class="nav-link" href="#temalar">Themes</a
-        ><a class="nav-link" href="#sss">FAQ</a>
+      <nav class="nav-links" aria-label="Sayfa bölümleri">
+        <a class="nav-link" href="#neden">Neden</a
+        ><a class="nav-link" href="#sayfalar">Sayfalar</a
+        ><a class="nav-link" href="#temalar">Temalar</a
+        ><a class="nav-link" href="#sss">SSS</a>
+        <a class="nav-link" href="/login">Giriş yap</a>
       </nav>
       <span class="hdr-cta"
         ><a
           class="lang-switch"
-          href="../"
-          hreflang="tr"
-          lang="tr"
-          aria-label="Türkçe"
-          title="Türkçe"
+          href="/welcome/en/"
+          hreflang="en"
+          lang="en"
+          aria-label="English"
+          title="English"
           ><svg
             width="16"
             height="16"
@@ -107,9 +108,9 @@
             <path
               d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
             ></path></svg
-          >TR</a
-        ><a class="btn-primary" href="https://anchorly-app.vercel.app"
-          >Open Anchorly<svg
+          >EN</a
+        ><a class="btn-primary" href="/?welcome=tr"
+          >Anchorly'yi aç<svg
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -128,20 +129,20 @@
     <main>
       <section id="ust" class="hero wrap">
         <div class="hero-chips">
-          <span>Tasks</span><span aria-hidden="true">·</span
-          ><span>Routines</span><span aria-hidden="true">·</span
-          ><span>Calendar</span><span aria-hidden="true">·</span
-          ><span>Projects</span>
+          <span>Görevler</span><span aria-hidden="true">·</span
+          ><span>Rutinler</span><span aria-hidden="true">·</span
+          ><span>Takvim</span><span aria-hidden="true">·</span
+          ><span>Projeler</span>
         </div>
-        <h1>Your whole day, <span>in one calm place.</span></h1>
+        <h1>Günün dağılmasın, <span>tek yerde toplansın.</span></h1>
         <p class="hero-sub">
-          Anchorly is a calm app that keeps your tasks, habits and calendar
-          together. It is for people who want to live their day at their own
-          pace without being buried under long lists.
+          Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan
+          sakin bir uygulama. Uzun listelerin altında ezilmeden günü kendi
+          hızında yaşamak isteyenler için.
         </p>
         <div class="hero-actions">
-          <a class="btn-primary btn-lg" href="https://anchorly-app.vercel.app"
-            >Open Anchorly<svg
+          <a class="btn-primary btn-lg" href="/?welcome=tr"
+            >Anchorly'yi aç<svg
               width="18"
               height="18"
               viewBox="0 0 16 16"
@@ -155,128 +156,136 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               ></path></svg></a
-          ><a class="btn-ghost" href="#neden">Why Anchorly?</a>
+          ><a class="btn-ghost" href="#neden">Neden Anchorly?</a>
         </div>
         <p class="hero-note">
-          On phone, tablet and computer · English and Turkish
+          Telefon, tablet ve bilgisayarda · Türkçe ve İngilizce
         </p>
       </section>
-      <section id="tour" class="tour wrap" aria-label="App preview"></section>
+      <section
+        id="tour"
+        class="tour wrap"
+        aria-label="Uygulama önizlemesi"
+      ></section>
       <section id="neden" class="sec wrap">
         <div class="intro">
-          <div class="eyebrow">Why Anchorly</div>
-          <h2>See your day in one place, not across three apps.</h2>
+          <div class="eyebrow">Neden Anchorly</div>
+          <h2>Gününü üç ayrı uygulamada değil, tek bir yerde gör.</h2>
           <p class="lead">
-            To-do lists, habit trackers and calendars usually live in separate
-            apps. Without checking each one, it is hard to tell how your day
-            will go. Anchorly keeps all three together and connected.
+            Yapılacaklar listesi, alışkanlık takibi ve takvim çoğu zaman ayrı
+            uygulamalarda durur. Hepsine tek tek bakmadan günün nasıl geçeceğini
+            görmek zorlaşır. Anchorly bu üçünü aynı yerde ve birbirine bağlı
+            tutar.
           </p>
         </div>
         <div class="grid">
           <div class="card">
-            <h3>Know what to focus on each morning</h3>
+            <h3>Sabah neye odaklanacağın belli</h3>
             <p>
-              The <strong>Today</strong> page shows only what concerns today:
-              tasks dated today, undated tasks and anything overdue. Tasks set
-              for later reach your list when their day comes.
+              <strong>Bugün</strong> sayfası yalnızca bugünü ilgilendiren
+              görevleri gösterir: bugüne tarihlenenler, tarihsiz olanlar ve
+              gecikenler. İleri tarihli işler, günü gelince listene düşer.
             </p>
           </div>
           <div class="card">
-            <h3>Habits get their own place</h3>
+            <h3>Alışkanlıklar ayrı bir yerde</h3>
             <p>
-              Things you do every day, like drinking water, reading or going for
-              a walk, stay out of your task list. You tick them off on a weekly
-              chart on the <strong>Daily Routine</strong> page.
+              Su içmek, kitap okumak ya da yürüyüşe çıkmak gibi her gün yaptığın
+              şeyler görev listene karışmaz. Bunları
+              <strong>Günlük Rutin</strong> sayfasındaki haftalık çizelgede
+              işaretlersin.
             </p>
           </div>
           <div class="card">
-            <h3>Look back any time</h3>
+            <h3>Geriye dönüp bakabilirsin</h3>
             <p>
-              <strong>Calendar</strong> keeps each day's completion rate, and
-              <strong>Archive</strong> keeps every task you have added along
-              with the progress of your recurring series. Seeing what you did
-              and what you missed makes it easier to keep going.
+              <strong>Takvim</strong> her günün tamamlanma oranını,
+              <strong>Arşiv</strong> ise eklediğin tüm görevleri ve tekrarlı
+              serilerin ilerlemesini saklar. Neyi yapıp neyi aksattığını görmek
+              devam etmeyi kolaylaştırır.
             </p>
           </div>
         </div>
       </section>
       <section id="nasil" class="sec wrap">
         <div class="intro">
-          <div class="eyebrow">How it works</div>
-          <h2>No setup, no sign-up. You just start.</h2>
+          <div class="eyebrow">Nasıl işliyor</div>
+          <h2>Kurulum yok, kayıt yok; hemen başlarsın.</h2>
           <p class="lead">
-            Anchorly runs in your browser. There is nothing to download and no
-            account to create.
+            Anchorly tarayıcıda çalışır. İndirmen gereken bir şey yok, hesap
+            açman da gerekmiyor.
           </p>
         </div>
         <ol class="grid">
           <li class="card">
             <span class="step-num" aria-hidden="true">1</span>
-            <h3>Open it and start writing</h3>
+            <h3>Aç ve yaz</h3>
             <p>
-              Opening Anchorly takes you straight into the app, ready for your
-              first task or routine.
+              Anchorly'yi açtığında doğrudan uygulamaya girersin. İlk görevini
+              ya da rutinini hemen ekleyebilirsin.
             </p>
           </li>
           <li class="card">
             <span class="step-num" aria-hidden="true">2</span>
-            <h3>Your data stays on your device</h3>
+            <h3>Verilerin cihazında kalır</h3>
             <p>
-              As long as you use it without an account, everything is stored
-              only in this device's browser.
+              Hesap açmadan kullandığın sürece her şey yalnızca bu cihazdaki
+              tarayıcıda saklanır.
             </p>
           </li>
           <li class="card">
             <span class="step-num" aria-hidden="true">3</span>
-            <h3>Add an account if you want</h3>
+            <h3>İstersen hesap aç</h3>
             <p>
-              When you want your data on other devices too, create an account.
-              You will be asked whether to move what you added on this device
-              into it.
+              Verilerine başka cihazlardan da ulaşmak istediğinde hesap açarsın.
+              Bu cihazda eklediklerini hesabına aktarmak isteyip istemediğin
+              sorulur.
             </p>
           </li>
         </ol>
       </section>
       <section id="fark" class="sec wrap">
         <div class="intro">
-          <div class="eyebrow">Task or routine?</div>
-          <h2>Two different things, two separate places.</h2>
+          <div class="eyebrow">Görev mi, rutin mi?</div>
+          <h2>İki farklı şey, iki ayrı yer.</h2>
           <p class="lead">
-            Something you do and finish is a task; a habit you keep up every day
-            is a routine.
+            Yapıp bitirdiğin iş görevdir; her gün sürdürdüğün alışkanlık ise
+            rutindir.
           </p>
         </div>
         <div class="grid grid-compare">
           <div class="card compare">
-            <div class="eyebrow">Done and finished</div>
-            <h3>Task</h3>
+            <div class="eyebrow">Yapılınca biter</div>
+            <h3>Görev</h3>
             <p>
-              It can have a date, belong to a project and, if you like, repeat
-              every day or every week. Completed tasks stay in the Archive.
+              Tarihi olabilir, bir projeye bağlanabilir; istersen her gün ya da
+              her hafta tekrarlanır. Tamamlananlar Arşiv'de kalır.
             </p>
-            <div class="example">For example: Pay the bill</div>
+            <div class="example">Örneğin: Faturayı öde</div>
             <div class="shows-in">
-              Shows up in: Today · Calendar · Archive · Projects
+              Göründüğü yerler: Bugün · Takvim · Arşiv · Projeler
             </div>
           </div>
           <div class="card compare">
-            <div class="eyebrow">Kept up every day</div>
-            <h3>Routine</h3>
+            <div class="eyebrow">Her gün sürer</div>
+            <h3>Rutin</h3>
             <p>
-              It is not a job that ends but a rhythm you keep. You tick a box
-              for each day and see how your week and month are going.
+              Biten bir iş değil, sürdürdüğün bir düzendir. Her gün için ayrı
+              bir kutuyu işaretlersin; hafta ve ay boyunca nasıl gittiğini
+              görürsün.
             </p>
-            <div class="example">For example: Drink water</div>
-            <div class="shows-in">Shows up in: Daily Routine · Dashboard</div>
+            <div class="example">Örneğin: Su iç</div>
+            <div class="shows-in">Göründüğü yerler: Günlük Rutin · Panel</div>
           </div>
         </div>
       </section>
       <section id="sayfalar" class="sec wrap">
         <div class="intro">
-          <div class="eyebrow">Pages</div>
-          <h2>Each page does one job.</h2>
+          <div class="eyebrow">Sayfalar</div>
+          <h2>Her sayfa tek bir işe odaklanır.</h2>
           <p class="lead">
-            The app has eight pages. Here is what each one is for.
+            Uygulamada sekiz sayfa var; hangisinin ne işe yaradığına buradan
+            bakabilirsin.
           </p>
         </div>
         <div class="grid grid-pages">
@@ -296,10 +305,10 @@
                   d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"
                 ></path></svg
             ></span>
-            <h3>Dashboard</h3>
+            <h3>Panel</h3>
             <p>
-              The start page, with a quote for the day, summary numbers and the
-              cards you choose.
+              Açılış sayfası. Günün sözü, özet sayılar ve istediğin kartlar
+              burada.
             </p>
           </div>
           <div class="card">
@@ -318,10 +327,10 @@
                   d="M12 3a9 9 0 100 18 9 9 0 000-18zM8 12l3 3 5-6"
                 ></path></svg
             ></span>
-            <h3>Today</h3>
+            <h3>Bugün</h3>
             <p>
-              Today's tasks, undated tasks and anything overdue. The task you
-              select opens right next to the list.
+              Bugünün görevleri, tarihsiz görevler ve gecikenler. Seçtiğin
+              görevin ayrıntıları hemen yanında açılır.
             </p>
           </div>
           <div class="card">
@@ -340,10 +349,8 @@
                   d="M4 12a8 8 0 0114-5.3L20 9M20 4v5h-5M20 12a8 8 0 01-14 5.3L4 15M4 20v-5h5"
                 ></path></svg
             ></span>
-            <h3>Daily Routine</h3>
-            <p>
-              A weekly view of your habits and your progress over the month.
-            </p>
+            <h3>Günlük Rutin</h3>
+            <p>Alışkanlıkların için haftalık görünüm ve aylık ilerleme.</p>
           </div>
           <div class="card">
             <span class="page-icon" aria-hidden="true"
@@ -359,10 +366,9 @@
               >
                 <path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"></path></svg
             ></span>
-            <h3>Calendar</h3>
+            <h3>Takvim</h3>
             <p>
-              The whole month on one screen, with each day's tasks and
-              completion rate.
+              Ayın tamamı tek ekranda; her günün görevleri ve tamamlanma oranı.
             </p>
           </div>
           <div class="card">
@@ -379,10 +385,10 @@
               >
                 <path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"></path></svg
             ></span>
-            <h3>Archive</h3>
+            <h3>Arşiv</h3>
             <p>
-              Every task you have added and your recurring series, with their
-              progress.
+              Eklediğin tüm görevler ve tekrarlı seriler, ilerlemeleriyle
+              birlikte.
             </p>
           </div>
           <div class="card">
@@ -401,10 +407,10 @@
                   d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"
                 ></path></svg
             ></span>
-            <h3>Projects</h3>
+            <h3>Projeler</h3>
             <p>
-              Group related work into a project and follow it on a board or as a
-              list.
+              Birbirine bağlı işleri bir projede topla; pano ya da liste
+              görünümünde takip et.
             </p>
           </div>
           <div class="card">
@@ -423,8 +429,8 @@
                   d="M12 15a3 3 0 100-6 3 3 0 000 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"
                 ></path></svg
             ></span>
-            <h3>Settings</h3>
-            <p>Choose your theme, font and language.</p>
+            <h3>Ayarlar</h3>
+            <p>Tema, yazı tipi ve dil seçimi.</p>
           </div>
           <div class="card">
             <span class="page-icon" aria-hidden="true"
@@ -442,10 +448,9 @@
                   d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0"
                 ></path></svg
             ></span>
-            <h3>Account</h3>
+            <h3>Hesap</h3>
             <p>
-              Optional. With an account you can reach your data from other
-              devices too.
+              İsteğe bağlı. Hesapla verilerine başka cihazlardan da ulaşırsın.
             </p>
           </div>
         </div>
@@ -453,11 +458,11 @@
       <section id="temalar" class="sec wrap">
         <div class="band">
           <div class="intro">
-            <div class="eyebrow">Make it yours</div>
-            <h2>Seven themes, seven moods.</h2>
+            <div class="eyebrow">Sana göre görünsün</div>
+            <h2>Yedi tema, yedi ayrı ruh hali.</h2>
             <p class="lead">
-              These are the app's real themes, and you can try them in the
-              preview above. Four are dark and three are light.
+              Bunlar uygulamadaki gerçek temalar; yukarıdaki önizlemede de
+              deneyebilirsin. Dördü koyu, üçü açık.
             </p>
           </div>
           <ul class="theme-grid">
@@ -473,8 +478,8 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Gray</div>
-              <div class="theme-mode">Light</div>
+              <div class="theme-name">Gri</div>
+              <div class="theme-mode">Açık</div>
             </li>
             <li>
               <div class="theme-mini" data-theme="purple" aria-hidden="true">
@@ -488,8 +493,8 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Purple</div>
-              <div class="theme-mode">Dark</div>
+              <div class="theme-name">Mor</div>
+              <div class="theme-mode">Koyu</div>
             </li>
             <li>
               <div class="theme-mini" data-theme="blue" aria-hidden="true">
@@ -503,8 +508,8 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Blue</div>
-              <div class="theme-mode">Dark</div>
+              <div class="theme-name">Mavi</div>
+              <div class="theme-mode">Koyu</div>
             </li>
             <li>
               <div class="theme-mini" data-theme="red" aria-hidden="true">
@@ -518,8 +523,8 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Red</div>
-              <div class="theme-mode">Light</div>
+              <div class="theme-name">Kırmızı</div>
+              <div class="theme-mode">Açık</div>
             </li>
             <li>
               <div class="theme-mini" data-theme="green" aria-hidden="true">
@@ -533,8 +538,8 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Green</div>
-              <div class="theme-mode">Dark</div>
+              <div class="theme-name">Yeşil</div>
+              <div class="theme-mode">Koyu</div>
             </li>
             <li>
               <div class="theme-mini" data-theme="pink" aria-hidden="true">
@@ -548,8 +553,8 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Pink</div>
-              <div class="theme-mode">Light</div>
+              <div class="theme-name">Pembe</div>
+              <div class="theme-mode">Açık</div>
             </li>
             <li>
               <div class="theme-mini" data-theme="black" aria-hidden="true">
@@ -563,31 +568,30 @@
                   ><span class="tm-pill"></span>
                 </div>
               </div>
-              <div class="theme-name">Black</div>
-              <div class="theme-mode">Dark</div>
+              <div class="theme-name">Siyah</div>
+              <div class="theme-mode">Koyu</div>
             </li>
           </ul>
           <div class="facts">
             <div>
-              <div class="fact-title">3 fonts</div>
-              <p>Inter, Poppins or Manrope.</p>
+              <div class="fact-title">3 yazı tipi</div>
+              <p>Inter, Poppins ya da Manrope.</p>
             </div>
             <div>
-              <div class="fact-title">EN · TR</div>
-              <p>Use the app in English or Turkish.</p>
+              <div class="fact-title">TR · EN</div>
+              <p>Arayüz Türkçe ya da İngilizce.</p>
             </div>
             <div>
-              <div class="fact-title">Fits every screen</div>
+              <div class="fact-title">Her ekrana uygun</div>
               <p>
-                A sidebar on desktop, an icon bar on tablet and a bottom menu on
-                phone.
+                Masaüstünde kenar çubuğu, tablette ikonlu çubuk, telefonda alt
+                menü.
               </p>
             </div>
             <div>
-              <div class="fact-title">Your data stays yours</div>
+              <div class="fact-title">Veriler sende</div>
               <p>
-                An account is optional; without one your data stays on this
-                device.
+                Hesap açmak zorunlu değil; açmazsan verilerin bu cihazda kalır.
               </p>
             </div>
           </div>
@@ -595,59 +599,60 @@
       </section>
       <section id="sss" class="sec wrap">
         <div class="intro">
-          <div class="eyebrow">Questions</div>
-          <h2>Things you might be wondering.</h2>
+          <div class="eyebrow">Sık sorulanlar</div>
+          <h2>Aklına takılabilecekler.</h2>
         </div>
         <div class="faq-list">
           <details class="faq" open>
-            <summary>Do I need an account?</summary>
+            <summary>Hesap açmam gerekiyor mu?</summary>
             <p>
-              No. Press “Open Anchorly” and you go straight into the app. You
-              only need an account if you want to use your data on other devices
-              too.
+              Hayır. “Anchorly'yi aç” düğmesine basınca doğrudan uygulamaya
+              girersin. Hesap yalnızca verilerini başka cihazlarda da kullanmak
+              istersen gerekir.
             </p>
           </details>
           <details class="faq">
-            <summary>Where is my data stored?</summary>
+            <summary>Verilerim nerede duruyor?</summary>
             <p>
-              Without an account it stays on your device, inside your browser.
-              With an account it is stored in your account and shows up on your
-              other devices. You are asked whether you want to move what you
-              already added on this device into your account.
+              Hesap açmazsan kendi cihazında, tarayıcının içinde durur. Hesap
+              açarsan hesabında saklanır ve diğer cihazlarından da görünür. Bu
+              cihazda daha önce eklediklerini hesabına aktarmak isteyip
+              istemediğin sorulur.
             </p>
           </details>
           <details class="faq">
-            <summary>Can I use it on my phone?</summary>
+            <summary>Telefonda kullanabilir miyim?</summary>
             <p>
-              Yes. The app adapts its layout to phones, tablets and computers.
+              Evet. Uygulama telefonda, tablette ve bilgisayarda ekrana uygun
+              bir düzenle açılır.
             </p>
           </details>
           <details class="faq">
-            <summary>Is a routine the same as a repeating task?</summary>
+            <summary>Rutin ile tekrarlayan görev aynı şey mi?</summary>
             <p>
-              No. A routine is a habit you tick off every day. A repeating task
-              comes back every day or every week, and it shows up as a series in
-              the Archive.
+              Hayır. Rutin her gün işaretlediğin bir alışkanlıktır. Tekrarlayan
+              görev ise her gün ya da her hafta yeniden oluşan bir görevdir ve
+              Arşiv'de seri olarak görünür.
             </p>
           </details>
           <details class="faq">
-            <summary>Can I change how it looks?</summary>
+            <summary>Görünümü değiştirebilir miyim?</summary>
             <p>
-              Yes. There are seven themes, three fonts, and a choice of English
-              or Turkish.
+              Evet. Yedi tema, üç yazı tipi ve Türkçe ya da İngilizce seçeneği
+              var.
             </p>
           </details>
         </div>
       </section>
       <section class="sec wrap closing">
-        <h2>Ready when you are.</h2>
+        <h2>Hazırsan, kapı açık.</h2>
         <p class="lead">
-          No sign-up and nothing to install. Write a task, add a routine and see
-          whether it suits you.
+          Kayıt yok, kurulum yok. Bir görev yaz, bir rutin ekle ve sana uyup
+          uymadığını gör.
         </p>
         <div class="closing-action">
-          <a class="btn-primary btn-lg" href="https://anchorly-app.vercel.app"
-            >Open Anchorly<svg
+          <a class="btn-primary btn-lg" href="/?welcome=tr"
+            >Anchorly'yi aç<svg
               width="18"
               height="18"
               viewBox="0 0 16 16"
@@ -669,13 +674,13 @@
       <div class="ftr-person">
         <a class="ftr-name" href="https://github.com/berkaycinar-dev"
           >Berkay Çınar</a
-        ><span>Developer of Anchorly</span>
+        ><span>Anchorly'nin geliştiricisi</span>
       </div>
-      <nav class="ftr-links" aria-label="Footer">
-        <a href="https://anchorly-app.vercel.app/privacy">Privacy</a
-        ><a href="https://anchorly-app.vercel.app/terms">Terms of Use</a
+      <nav class="ftr-links" aria-label="Alt bilgi">
+        <a href="/login">Giriş yap</a> <a href="/privacy">Gizlilik ve KVKK</a
+        ><a href="/terms">Kullanım Koşulları</a
         ><a href="https://github.com/berkaycinar-dev/Anchorly"
-          >Source code on GitHub →</a
+          >Kaynak kod GitHub'da →</a
         >
       </nav>
     </footer>

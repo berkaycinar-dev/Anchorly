@@ -26,6 +26,8 @@
       "source": "/api/:path*",
       "destination": "https://anchorly-api-sssx.onrender.com/:path*"
     },
+    { "source": "/welcome/en/?", "destination": "/welcome/en/index.html" },
+    { "source": "/welcome/?", "destination": "/welcome/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
