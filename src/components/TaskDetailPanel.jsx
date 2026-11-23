@@ -118,7 +118,7 @@ function TaskDetailPanelBody({
           onClick={onClose}
         >
           <Icon icon={ChevronLeft} size="lg" />
-          {t.today}
+          <span className="label-desktop">{t.today}</span>
         </button>
       </div>
 

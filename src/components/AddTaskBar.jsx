@@ -53,6 +53,7 @@ function AddTaskBar({
   inputRef,
   label,
   placeholder,
+  submitLabel,
   showTools = true,
   autoFocus = false,
   onClose,
@@ -70,7 +71,7 @@ function AddTaskBar({
       <button
         type="submit"
         className="add-task-bar-submit"
-        aria-label={t.addButton}
+        aria-label={submitLabel ?? t.addButton}
       >
         <Icon icon={Plus} size="lg" />
       </button>

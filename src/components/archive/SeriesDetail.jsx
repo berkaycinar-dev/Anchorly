@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { ChevronLeft } from "lucide-react";
+import Icon from "../Icon";
 import ArchivePagination from "./ArchivePagination";
 import { getCategoryLabel } from "../../utils/categoryHelpers";
 import {
@@ -54,10 +56,12 @@ function SeriesDetail({ series, today, toggleTask, onSelectTask, t }) {
     <section className="archive-detail">
       <button
         type="button"
-        className="btn btn-secondary archive-back-button"
+        className="btn btn-secondary btn-mobile-icon archive-back-button"
+        title={t.backToArchive}
         onClick={() => navigate("/archive")}
       >
-        {t.backToArchive}
+        <Icon icon={ChevronLeft} size="lg" className="icon-mobile" />
+        <span className="label-desktop">{t.backToArchive}</span>
       </button>
 
       <header className="archive-detail-header">
