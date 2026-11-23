@@ -6,10 +6,11 @@
     <title>Anchorly — Görev, rutin ve takvim tek yerde</title>
     <meta
       name="description"
-      content="Anchorly; görevlerini, alışkanlıklarını ve ayın akışını yan yana tutan sakin bir uygulama. Kayıt gerekmez, veriler önce cihazında kalır."
+      content="Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan sakin bir uygulama. Kayıt gerekmez; hesap açmazsan verilerin cihazında kalır."
     />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="Anchorly" />
     <meta
       property="og:title"
@@ -17,7 +18,7 @@
     />
     <meta
       property="og:description"
-      content="Görevlerini, alışkanlıklarını ve ayın akışını yan yana tutan sakin bir uygulama."
+      content="Görevlerini, alışkanlıklarını ve takvimini bir arada tutan sakin bir uygulama."
     />
     <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -170,6 +171,22 @@
           transition: none;
         }
       }
+      .lang-switch:hover {
+        background: #f0f0f0;
+      }
+      @media (max-width: 640px) {
+        .lang-switch {
+          padding: 0 12px !important;
+          margin-right: 6px !important;
+        }
+        .lang-switch svg,
+        .hdr-cta .btn-primary svg {
+          display: none;
+        }
+        .hdr-cta .btn-primary {
+          padding: 0 14px !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -302,7 +319,46 @@
             >SSS</a
           >
         </nav>
-        <span class="hdr-cta" style="margin-left: auto"
+        <span
+          class="hdr-cta"
+          style="margin-left: auto; display: inline-flex; align-items: center"
+          ><a
+            class="lang-switch"
+            href="en/"
+            hreflang="en"
+            lang="en"
+            aria-label="English"
+            title="English"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              min-height: 44px;
+              padding: 0 14px;
+              margin-right: 10px;
+              box-sizing: border-box;
+              border: 1.5px solid #111111;
+              border-radius: 999px;
+              color: #111111;
+              font-size: 14px;
+              font-weight: 700;
+              letter-spacing: 0.02em;
+            "
+            ><svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"
+              ></path></svg
+            >EN</a
           ><a
             class="btn-primary"
             href="https://anchorly-app.vercel.app"
@@ -390,9 +446,9 @@
             text-wrap: pretty;
           "
         >
-          Anchorly; görevlerini, alışkanlıklarını ve ayın akışını yan yana tutan
-          sakin bir uygulama. Listenin altında ezilmeden, günü kendi hızında
-          yaşamak isteyenler için.
+          Anchorly, görevlerini, alışkanlıklarını ve takvimini bir arada tutan
+          sakin bir uygulama. Uzun listelerin altında ezilmeden günü kendi
+          hızında yaşamak isteyenler için.
         </p>
         <div
           style="
@@ -496,8 +552,7 @@
               text-wrap: balance;
             "
           >
-            Görevler, alışkanlıklar ve takvim aynı yerde olunca gün daha net
-            görünür.
+            Gününü üç ayrı uygulamada değil, tek bir yerde gör.
           </h2>
           <p
             style="
@@ -508,9 +563,10 @@
               text-wrap: pretty;
             "
           >
-            Yapılacaklar bir yerde, alışkanlıklar başka yerde, planlar bir
-            üçüncüsünde dururken günün bütününü görmek zor. Anchorly bunları tek
-            uygulamada toplar.
+            Yapılacaklar listesi, alışkanlık takibi ve takvim çoğu zaman ayrı
+            uygulamalarda durur. Hepsine tek tek bakmadan günün nasıl geçeceğini
+            görmek zorlaşır. Anchorly bu üçünü aynı yerde ve birbirine bağlı
+            tutar.
           </p>
         </div>
         <div
@@ -533,8 +589,8 @@
               background: #f8f8f8;
             "
           >
-            <h3 style="margin: 0 0 0; font-size: 21px; letter-spacing: -0.02em">
-              Bugün, sadece bugün
+            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
+              Sabah neye odaklanacağın belli
             </h3>
             <p
               style="
@@ -546,8 +602,9 @@
               "
             >
               <strong style="color: #111111">Bugün</strong> sayfası yalnızca
-              bugünün işlerini gösterir. Gerisi kendi gününü bekler; sabaha
-              dağınık bir listeyle değil, net bir planla başlarsın.
+              bugünü ilgilendiren görevleri gösterir: bugüne tarihlenenler,
+              tarihsiz olanlar ve gecikenler. İleri tarihli işler, günü gelince
+              listene düşer.
             </p>
           </div>
           <div
@@ -559,8 +616,8 @@
               background: #f8f8f8;
             "
           >
-            <h3 style="margin: 0 0 0; font-size: 21px; letter-spacing: -0.02em">
-              Küçük şeyler de sayılır
+            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
+              Alışkanlıklar ayrı bir yerde
             </h3>
             <p
               style="
@@ -571,9 +628,10 @@
                 text-wrap: pretty;
               "
             >
-              Su içmek, kitap okumak, yürümek gibi her gün tekrar eden şeyler
-              <strong style="color: #111111">Günlük Rutin</strong> sayfasında
-              durur. Haftanı ve ayını bir bakışta görürsün.
+              Su içmek, kitap okumak ya da yürüyüşe çıkmak gibi her gün yaptığın
+              şeyler görev listene karışmaz. Bunları
+              <strong style="color: #111111">Günlük Rutin</strong> sayfasındaki
+              haftalık çizelgede işaretlersin.
             </p>
           </div>
           <div
@@ -585,8 +643,8 @@
               background: #f8f8f8;
             "
           >
-            <h3 style="margin: 0 0 0; font-size: 21px; letter-spacing: -0.02em">
-              Ay bitince elde bir şey kalır
+            <h3 style="margin: 0; font-size: 21px; letter-spacing: -0.02em">
+              Geriye dönüp bakabilirsin
             </h3>
             <p
               style="
@@ -597,9 +655,11 @@
                 text-wrap: pretty;
               "
             >
-              <strong style="color: #111111">Takvim</strong> ve
-              <strong style="color: #111111">Arşiv</strong> geçmişi saklar. Ne
-              yaptığına dönüp bakmak, devam etmeyi kolaylaştırır.
+              <strong style="color: #111111">Takvim</strong> her günün
+              tamamlanma oranını,
+              <strong style="color: #111111">Arşiv</strong> ise eklediğin tüm
+              görevleri ve tekrarlı serilerin ilerlemesini saklar. Neyi yapıp
+              neyi aksattığını görmek devam etmeyi kolaylaştırır.
             </p>
           </div>
         </div>
@@ -636,7 +696,7 @@
               text-wrap: balance;
             "
           >
-            Sade başlar, ihtiyacın kadar büyür.
+            Kurulum yok, kayıt yok; hemen başlarsın.
           </h2>
           <p
             style="
@@ -647,50 +707,170 @@
               text-wrap: pretty;
             "
           >
-            Anchorly'yi açınca doğrudan uygulamaya girersin; kayıt gerekmez.
-            Görevlerini yazar, rutinlerini takip eder, günlerini takvimde
-            görürsün. Hesap açmak istersen verilerin başka cihazlarda da seninle
-            olur.
+            Anchorly tarayıcıda çalışır. İndirmen gereken bir şey yok, hesap
+            açman da gerekmiyor.
           </p>
         </div>
-        <div
-          style="margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px"
+        <ol
+          style="
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(
+              auto-fit,
+              minmax(min(300px, 100%), 1fr)
+            );
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 0;
+          "
         >
-          <span
+          <li
+            class="card"
             style="
-              padding: 8px 16px;
+              padding: 28px;
               border: 1px solid #e2e2e2;
-              border-radius: 999px;
+              border-radius: 16px;
               background: #f8f8f8;
-              font-size: 14px;
-              font-weight: 500;
-              color: #111111;
             "
-            >Kayıt gerekmez</span
-          ><span
-            style="
-              padding: 8px 16px;
-              border: 1px solid #e2e2e2;
-              border-radius: 999px;
-              background: #f8f8f8;
-              font-size: 14px;
-              font-weight: 500;
-              color: #111111;
-            "
-            >Verin önce cihazında</span
-          ><span
-            style="
-              padding: 8px 16px;
-              border: 1px solid #e2e2e2;
-              border-radius: 999px;
-              background: #f8f8f8;
-              font-size: 14px;
-              font-weight: 500;
-              color: #111111;
-            "
-            >Hesap istersen sonra</span
           >
-        </div>
+            <span
+              aria-hidden="true"
+              style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #111111;
+                color: #ffffff;
+                font-size: 15px;
+                font-weight: 700;
+              "
+              >1</span
+            >
+            <h3
+              style="
+                margin: 0;
+                font-size: 21px;
+                letter-spacing: -0.02em;
+                margin-top: 16px;
+              "
+            >
+              Aç ve yaz
+            </h3>
+            <p
+              style="
+                margin: 12px 0 0;
+                font-size: 16px;
+                line-height: 1.65;
+                color: #5c5c5c;
+                text-wrap: pretty;
+              "
+            >
+              Anchorly'yi açtığında doğrudan uygulamaya girersin. İlk görevini
+              ya da rutinini hemen ekleyebilirsin.
+            </p>
+          </li>
+          <li
+            class="card"
+            style="
+              padding: 28px;
+              border: 1px solid #e2e2e2;
+              border-radius: 16px;
+              background: #f8f8f8;
+            "
+          >
+            <span
+              aria-hidden="true"
+              style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #111111;
+                color: #ffffff;
+                font-size: 15px;
+                font-weight: 700;
+              "
+              >2</span
+            >
+            <h3
+              style="
+                margin: 0;
+                font-size: 21px;
+                letter-spacing: -0.02em;
+                margin-top: 16px;
+              "
+            >
+              Verilerin cihazında kalır
+            </h3>
+            <p
+              style="
+                margin: 12px 0 0;
+                font-size: 16px;
+                line-height: 1.65;
+                color: #5c5c5c;
+                text-wrap: pretty;
+              "
+            >
+              Hesap açmadan kullandığın sürece her şey yalnızca bu cihazdaki
+              tarayıcıda saklanır.
+            </p>
+          </li>
+          <li
+            class="card"
+            style="
+              padding: 28px;
+              border: 1px solid #e2e2e2;
+              border-radius: 16px;
+              background: #f8f8f8;
+            "
+          >
+            <span
+              aria-hidden="true"
+              style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #111111;
+                color: #ffffff;
+                font-size: 15px;
+                font-weight: 700;
+              "
+              >3</span
+            >
+            <h3
+              style="
+                margin: 0;
+                font-size: 21px;
+                letter-spacing: -0.02em;
+                margin-top: 16px;
+              "
+            >
+              İstersen hesap aç
+            </h3>
+            <p
+              style="
+                margin: 12px 0 0;
+                font-size: 16px;
+                line-height: 1.65;
+                color: #5c5c5c;
+                text-wrap: pretty;
+              "
+            >
+              Verilerine başka cihazlardan da ulaşmak istediğinde hesap açarsın.
+              Bu cihazda eklediklerini hesabına aktarmak isteyip istemediğin
+              sorulur.
+            </p>
+          </li>
+        </ol>
       </section>
       <section
         id="fark"
@@ -735,7 +915,7 @@
               text-wrap: pretty;
             "
           >
-            Bir kez yapıp bitirdiğin iş görevdir; her gün sürdürdüğün alışkanlık
+            Yapıp bitirdiğin iş görevdir; her gün sürdürdüğün alışkanlık ise
             rutindir.
           </p>
         </div>
@@ -770,7 +950,7 @@
                 color: #6b6b6b;
               "
             >
-              Bir kez biter
+              Yapılınca biter
             </div>
             <h3
               style="margin: 10px 0 0; font-size: 30px; letter-spacing: -0.03em"
@@ -786,8 +966,8 @@
                 text-wrap: pretty;
               "
             >
-              Tarihi olabilir, bir projeye bağlanabilir, istersen belli
-              aralıklarla tekrar edebilir. Tamamlananlar Arşiv'de kalır.
+              Tarihi olabilir, bir projeye bağlanabilir; istersen her gün ya da
+              her hafta tekrarlanır. Tamamlananlar Arşiv'de kalır.
             </p>
             <div
               style="
@@ -803,7 +983,7 @@
               Örneğin: Faturayı öde
             </div>
             <div style="margin-top: 14px; font-size: 13px; color: #6b6b6b">
-              Görünür: Bugün · Takvim · Arşiv · Projeler
+              Göründüğü yerler: Bugün · Takvim · Arşiv · Projeler
             </div>
           </div>
           <div
@@ -842,8 +1022,9 @@
                 text-wrap: pretty;
               "
             >
-              Biten bir iş değil, sürdürdüğün bir düzen. Her gün için ayrı bir
-              kutu işaretlenir; hafta ve ay boyunca nasıl gittiğini görürsün.
+              Biten bir iş değil, sürdürdüğün bir düzendir. Her gün için ayrı
+              bir kutuyu işaretlersin; hafta ve ay boyunca nasıl gittiğini
+              görürsün.
             </p>
             <div
               style="
@@ -859,7 +1040,7 @@
               Örneğin: Su iç
             </div>
             <div style="margin-top: 14px; font-size: 13px; color: #6b6b6b">
-              Görünür: Günlük Rutin · Panel
+              Göründüğü yerler: Günlük Rutin · Panel
             </div>
           </div>
         </div>
@@ -1026,8 +1207,8 @@
                 text-wrap: pretty;
               "
             >
-              Yalnızca bugünün görevleri; seçtiğin görevin detayı yanında
-              açılır.
+              Bugünün görevleri, tarihsiz görevler ve gecikenler. Seçtiğin
+              görevin ayrıntıları hemen yanında açılır.
             </p>
           </div>
           <div
@@ -1182,7 +1363,8 @@
                 text-wrap: pretty;
               "
             >
-              Geçmiş görevler ve tekrarlı seriler, ilerlemeleriyle birlikte.
+              Eklediğin tüm görevler ve tekrarlı seriler, ilerlemeleriyle
+              birlikte.
             </p>
           </div>
           <div
@@ -1235,7 +1417,8 @@
                 text-wrap: pretty;
               "
             >
-              Birbirine bağlı işleri bir projede topla, Kanban panosunda gör.
+              Birbirine bağlı işleri bir projede topla; pano ya da liste
+              görünümünde takip et.
             </p>
           </div>
           <div
@@ -1375,7 +1558,7 @@
                 color: #6b6b6b;
               "
             >
-              Senin gibi çalışsın
+              Sana göre görünsün
             </div>
             <h2
               style="
@@ -2161,7 +2344,7 @@
                   letter-spacing: -0.03em;
                 "
               >
-                Her ekran
+                Her ekrana uygun
               </div>
               <p
                 style="
@@ -2183,7 +2366,7 @@
                   letter-spacing: -0.03em;
                 "
               >
-                Önce cihazın
+                Veriler sende
               </div>
               <p
                 style="
@@ -2193,7 +2376,7 @@
                   color: #5c5c5c;
                 "
               >
-                Hesap isteğe bağlı; açmazsan veriler bu cihazda kalır.
+                Hesap açmak zorunlu değil; açmazsan verilerin bu cihazda kalır.
               </p>
             </div>
           </div>
@@ -2252,19 +2435,24 @@
           <details class="faq">
             <summary>Verilerim nerede duruyor?</summary>
             <p>
-              Hesap açmazsan kendi cihazında, tarayıcıda. Hesap açarsan hesabına
-              bağlanır ve diğer cihazlarından da görünür.
+              Hesap açmazsan kendi cihazında, tarayıcının içinde durur. Hesap
+              açarsan hesabında saklanır ve diğer cihazlarından da görünür. Bu
+              cihazda daha önce eklediklerini hesabına aktarmak isteyip
+              istemediğin sorulur.
             </p>
           </details>
           <details class="faq">
             <summary>Telefonda kullanabilir miyim?</summary>
-            <p>Evet. Telefon, tablet ve bilgisayar için ayrı bir düzeni var.</p>
+            <p>
+              Evet. Uygulama telefonda, tablette ve bilgisayarda ekrana uygun
+              bir düzenle açılır.
+            </p>
           </details>
           <details class="faq">
             <summary>Rutin ile tekrarlayan görev aynı şey mi?</summary>
             <p>
               Hayır. Rutin her gün işaretlediğin bir alışkanlıktır. Tekrarlayan
-              görev ise belli aralıklarla yeniden ortaya çıkan bir görevdir ve
+              görev ise her gün ya da her hafta yeniden oluşan bir görevdir ve
               Arşiv'de seri olarak görünür.
             </p>
           </details>
@@ -2309,8 +2497,8 @@
               color: #5c5c5c;
             "
           >
-            Kayıt yok, kurulum yok. Bir görev yaz, bir rutin ekle, nasıl
-            hissettirdiğine bak.
+            Kayıt yok, kurulum yok. Bir görev yaz, bir rutin ekle ve sana uyup
+            uymadığını gör.
           </p>
           <div style="margin-top: 30px">
             <a
@@ -2412,7 +2600,7 @@
               color: #5c5c5c;
               font-weight: 500;
             "
-            >GitHub'da kaynak kod →</a
+            >Kaynak kod GitHub'da →</a
           >
         </nav>
       </footer>
@@ -3002,18 +3190,18 @@
             {
               name: "Faturaları kontrol et",
               color: "var(--cat-personal)",
-              pattern: "Her ayın 1’i · 6 tekrar",
+              pattern: "Her Cuma · 6 tekrar",
               done: 5,
               total: 6,
-              next: "Sonraki: 1 Aralık",
+              next: "Sonraki: Bugün",
             },
             {
               name: "Sulama günü",
               color: "var(--cat-health)",
-              pattern: "Her Salı ve Cuma · 20 tekrar",
+              pattern: "Her gün · 20 tekrar",
               done: 14,
               total: 20,
-              next: "Sonraki: 10 Kasım",
+              next: "Sonraki: Bugün",
             },
           ]
             .map(function (item) {
