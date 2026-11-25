@@ -30,6 +30,7 @@
   --color-category-project-bg: #ccfbf1;
   --color-category-other: #4b5563;
   --color-category-other-bg: #f3f4f6;
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-pop: 0 8px 24px rgba(15, 23, 42, 0.12);
   --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.22);
 
@@ -39,6 +40,7 @@
   --text-lg: 16px;
   --text-xl: 20px;
   --text-2xl: 24px;
+  --font-main: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
