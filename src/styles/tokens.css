@@ -64,10 +64,6 @@
   --duration-base: 200ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
-  --bp-sm: 480px;
-  --bp-md: 768px;
-  --bp-lg: 1024px;
-
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-right: env(safe-area-inset-right, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
