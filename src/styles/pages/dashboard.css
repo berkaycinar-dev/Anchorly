@@ -107,17 +107,6 @@
   transition: transform var(--duration-fast) ease;
 }
 
-@media (hover: hover) {
-  .dashboard-icon-button:hover:not(:disabled) {
-    border-color: var(--color-text-secondary);
-    color: var(--color-text-primary);
-  }
-
-  .dashboard-card-link:hover svg {
-    transform: translate(1px, -1px);
-  }
-}
-
 .dashboard-edit-button {
   width: 38px;
   height: 38px;
@@ -216,12 +205,6 @@
     border-color var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease,
     opacity var(--duration-fast) ease;
-}
-
-@media (hover: hover) {
-  .dashboard-card:not(.dashboard-card-editing):hover {
-    border-color: var(--color-text-muted);
-  }
 }
 
 .dashboard-card-editing {
@@ -374,17 +357,6 @@
 .dashboard-sub {
   border-radius: 6px;
   transition: background-color var(--duration-fast) ease;
-}
-
-@media (hover: hover) {
-  .dashboard-item:hover {
-    border-color: var(--color-accent);
-    background-color: var(--dashboard-item-hover);
-  }
-
-  .dashboard-sub:hover {
-    background-color: var(--dashboard-item-hover);
-  }
 }
 
 .dashboard-item:active {
@@ -1036,6 +1008,25 @@
 }
 
 @media (hover: hover) {
+  .dashboard-icon-button:hover:not(:disabled) {
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+  }
+
+  .dashboard-card-link:hover svg {
+    transform: translate(1px, -1px);
+  }
+  .dashboard-card:not(.dashboard-card-editing):hover {
+    border-color: var(--color-text-muted);
+  }
+  .dashboard-item:hover {
+    border-color: var(--color-accent);
+    background-color: var(--dashboard-item-hover);
+  }
+
+  .dashboard-sub:hover {
+    background-color: var(--dashboard-item-hover);
+  }
   .dashboard-day:not(.dashboard-day-today):hover {
     background-color: var(--dashboard-item-hover);
   }

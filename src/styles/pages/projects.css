@@ -128,6 +128,17 @@
   .project-item:hover {
     background-color: var(--color-bg-subtle);
   }
+  .board-card:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent) 55%,
+      var(--color-border)
+    );
+  }
+  .board-more:hover {
+    background-color: var(--color-border);
+    color: var(--color-text-primary);
+  }
 }
 
 .project-item[aria-current="page"] {
@@ -396,16 +407,6 @@
   transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
-@media (hover: hover) {
-  .board-card:hover {
-    border-color: color-mix(
-      in srgb,
-      var(--color-accent) 55%,
-      var(--color-border)
-    );
-  }
-}
-
 .board-card-title {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
@@ -495,13 +496,6 @@
   font-family: inherit;
   font-size: var(--text-sm);
   cursor: pointer;
-}
-
-@media (hover: hover) {
-  .board-more:hover {
-    background-color: var(--color-border);
-    color: var(--color-text-primary);
-  }
 }
 
 @media (max-width: 767.98px) {
@@ -645,14 +639,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .project-item,
-  .board-card,
-  .project-progress-fill {
-    transition: none;
-  }
-}
-
 .board-card {
   cursor: grab;
 }
@@ -677,6 +663,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .project-item,
+  .board-card,
+  .project-progress-fill {
+    transition: none;
+  }
   .board-column {
     transition: none;
   }

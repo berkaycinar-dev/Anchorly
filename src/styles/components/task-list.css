@@ -32,18 +32,6 @@
     border-color 0.15s ease;
 }
 
-@media (hover: hover) {
-  .task-card:hover {
-    border-color: color-mix(
-      in srgb,
-      var(--color-accent) 45%,
-      var(--color-border)
-    );
-    box-shadow: 0 2px 10px
-      color-mix(in srgb, var(--color-accent) 22%, transparent);
-  }
-}
-
 .task-checkbox {
   appearance: none;
   width: 20px;
@@ -135,21 +123,6 @@
   transition:
     opacity 0.15s ease,
     background-color 0.15s ease;
-}
-
-@media (hover: hover) {
-  .task-delete-button {
-    opacity: 0;
-  }
-
-  .task-card:hover .task-delete-button,
-  .task-card:focus-within .task-delete-button {
-    opacity: 1;
-  }
-
-  .task-delete-button:hover {
-    background-color: #fee2e2;
-  }
 }
 
 .completed-section {
@@ -248,17 +221,6 @@
   transition: opacity 0.15s ease;
 }
 
-@media (hover: hover) {
-  .task-card .task-move-controls {
-    opacity: 0;
-  }
-
-  .task-card:hover .task-move-controls,
-  .task-card:focus-within .task-move-controls {
-    opacity: 1;
-  }
-}
-
 .task-card .task-move-button {
   display: flex;
   align-items: center;
@@ -273,17 +235,6 @@
   font-size: 10px;
   line-height: 1;
   cursor: pointer;
-}
-
-@media (hover: hover) {
-  .task-card .task-move-button:hover:not(:disabled) {
-    background-color: color-mix(
-      in srgb,
-      var(--color-accent) 18%,
-      var(--color-bg-subtle)
-    );
-    color: var(--color-accent);
-  }
 }
 
 .task-card .task-move-button:disabled {
@@ -336,12 +287,6 @@
   box-sizing: border-box;
   padding: 6px 4px 6px 14px;
   border-radius: var(--radius-sm);
-}
-
-@media (hover: hover) {
-  .task-list-today .task-card:hover {
-    box-shadow: none;
-  }
 }
 
 .task-list-today .task-card .task-title {
@@ -397,6 +342,46 @@
 }
 
 @media (hover: hover) {
+  .task-card:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--color-accent) 45%,
+      var(--color-border)
+    );
+    box-shadow: 0 2px 10px
+      color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  .task-delete-button {
+    opacity: 0;
+  }
+
+  .task-card:hover .task-delete-button,
+  .task-card:focus-within .task-delete-button {
+    opacity: 1;
+  }
+
+  .task-delete-button:hover {
+    background-color: #fee2e2;
+  }
+  .task-card .task-move-controls {
+    opacity: 0;
+  }
+
+  .task-card:hover .task-move-controls,
+  .task-card:focus-within .task-move-controls {
+    opacity: 1;
+  }
+  .task-card .task-move-button:hover:not(:disabled) {
+    background-color: color-mix(
+      in srgb,
+      var(--color-accent) 18%,
+      var(--color-bg-subtle)
+    );
+    color: var(--color-accent);
+  }
+  .task-list-today .task-card:hover {
+    box-shadow: none;
+  }
   .task-star:hover {
     background-color: var(--color-bg-subtle);
   }

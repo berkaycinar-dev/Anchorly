@@ -89,15 +89,6 @@
   outline-offset: -4px;
 }
 
-@media (hover: hover) {
-  button.calendar-cell:hover {
-    background-image: linear-gradient(
-      var(--color-accent-tint),
-      var(--color-accent-tint)
-    );
-  }
-}
-
 .calendar-cell-head {
   display: flex;
   align-items: center;
@@ -351,6 +342,12 @@
 }
 
 @media (hover: hover) {
+  button.calendar-cell:hover {
+    background-image: linear-gradient(
+      var(--color-accent-tint),
+      var(--color-accent-tint)
+    );
+  }
   .calendar-panel-task-title:hover {
     text-decoration: underline;
   }

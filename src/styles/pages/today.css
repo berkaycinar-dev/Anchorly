@@ -118,13 +118,6 @@
   cursor: pointer;
 }
 
-@media (hover: hover) {
-  .add-task-bar-close:hover {
-    background-color: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-  }
-}
-
 .add-task-bar-input {
   flex: 1;
   min-width: 0;
@@ -170,6 +163,10 @@
 }
 
 @media (hover: hover) {
+  .add-task-bar-close:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
   .add-task-tool:hover {
     background-color: var(--color-bg-subtle);
   }

@@ -15,24 +15,9 @@
     color var(--duration-fast) var(--ease-standard);
 }
 
-@media (hover: hover) {
-  .icon-button:hover {
-    background-color: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-  }
-}
-
 .icon-button-filled {
   background-color: var(--color-accent);
   color: var(--color-accent-contrast);
-}
-
-@media (hover: hover) {
-  .icon-button-filled:hover {
-    background-color: var(--color-accent);
-    color: var(--color-accent-contrast);
-    opacity: 0.9;
-  }
 }
 
 .icon-button-danger {
@@ -40,6 +25,15 @@
 }
 
 @media (hover: hover) {
+  .icon-button:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
+  .icon-button-filled:hover {
+    background-color: var(--color-accent);
+    color: var(--color-accent-contrast);
+    opacity: 0.9;
+  }
   .icon-button-danger:hover {
     background-color: var(--color-danger-bg);
     color: var(--color-danger);

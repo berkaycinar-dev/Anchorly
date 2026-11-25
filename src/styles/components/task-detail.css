@@ -88,6 +88,18 @@
   .task-detail-title:hover {
     border-color: var(--color-border);
   }
+  .task-detail-icon-button:hover,
+  .task-detail-clear:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
+  .task-detail-delete:hover {
+    background-color: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
+  .step-delete-button:hover {
+    background-color: #fee2e2;
+  }
 }
 
 .task-detail-title:focus-visible {
@@ -123,14 +135,6 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-}
-
-@media (hover: hover) {
-  .task-detail-icon-button:hover,
-  .task-detail-clear:hover {
-    background-color: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-  }
 }
 
 .task-detail-section {
@@ -271,13 +275,6 @@
   color: var(--color-danger);
 }
 
-@media (hover: hover) {
-  .task-detail-delete:hover {
-    background-color: var(--color-danger-bg);
-    color: var(--color-danger);
-  }
-}
-
 @media (min-width: 768px) and (max-width: 1099px) {
   .task-detail-panel {
     left: auto;
@@ -410,12 +407,6 @@
   height: 28px;
   border-radius: 50%;
   font-size: 18px;
-}
-
-@media (hover: hover) {
-  .step-delete-button:hover {
-    background-color: #fee2e2;
-  }
 }
 
 .step-done {

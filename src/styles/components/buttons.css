@@ -16,21 +16,9 @@
   color: var(--color-accent-contrast);
 }
 
-@media (hover: hover) {
-  .btn-primary:hover:not(:disabled) {
-    opacity: 0.9;
-  }
-}
-
 .btn-secondary {
   background-color: var(--color-bg-subtle);
   color: var(--color-text-primary);
-}
-
-@media (hover: hover) {
-  .btn-secondary:hover:not(:disabled) {
-    background-color: var(--color-border);
-  }
 }
 
 .btn-danger {
@@ -40,6 +28,12 @@
 }
 
 @media (hover: hover) {
+  .btn-primary:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-border);
+  }
   .btn-danger:hover:not(:disabled) {
     background-color: #b91c1c;
   }

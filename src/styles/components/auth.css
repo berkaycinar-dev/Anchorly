@@ -123,20 +123,6 @@
   }
 }
 
-@media (pointer: coarse) {
-  .auth-guest-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-  }
-
-  .auth-switch a {
-    display: inline-block;
-    padding: 14px 6px;
-    margin: -14px -6px;
-  }
-}
-
 .auth-status {
   display: flex;
   flex-direction: column;
@@ -199,6 +185,17 @@
 }
 
 @media (pointer: coarse) {
+  .auth-guest-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .auth-switch a {
+    display: inline-block;
+    padding: 14px 6px;
+    margin: -14px -6px;
+  }
   .auth-inline-link {
     display: inline-flex;
     align-items: center;
