@@ -25,7 +25,16 @@
 @import "./components/task-detail.css";
 @import "./components/toast.css";
 
-@import "./pages/dashboard.css";
+@import "./pages/dashboard/layout.css";
+@import "./pages/dashboard/card-frame.css";
+@import "./pages/dashboard/items.css";
+@import "./pages/dashboard/card-charts.css";
+@import "./pages/dashboard/card-lists.css";
+@import "./pages/dashboard/editing.css";
+@import "./pages/dashboard/day-dialog.css";
+@import "./pages/dashboard/animations.css";
+@import "./pages/dashboard/responsive.css";
+
 @import "./pages/today.css";
 @import "./pages/routine.css";
 @import "./pages/calendar.css";
