@@ -78,6 +78,12 @@ function getGreetingSegment() {
   return "evening";
 }
 
+const GREETING_KEYS = {
+  morning: "greetingMorning",
+  afternoon: "greetingAfternoon",
+  evening: "greetingEvening",
+};
+
 function AppContent() {
   const today = useToday();
   const {
@@ -343,13 +349,6 @@ function AppContent() {
     greetingSegment,
   ]);
 
-  function getGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) return t.greetingMorning;
-    if (hour < 18) return t.greetingAfternoon;
-    return t.greetingEvening;
-  }
-
   function handleAddTask(event) {
     event.preventDefault();
 
@@ -456,7 +455,7 @@ function AppContent() {
         language={language}
         today={today}
         weekStartDay={weekStartDay}
-        greeting={getGreeting()}
+        greeting={t[GREETING_KEYS[greetingSegment]]}
         dashboardMessage={dashboardMessage}
         tasks={tasks}
         todayScopedTasks={todayScopedTasks}
@@ -707,21 +706,9 @@ function AppContent() {
           onClose={closeTaskDetail}
           onToggleTask={toggleTask}
           onToggleImportant={toggleTaskImportant}
-          onUpdateDescription={taskDetailActions.onUpdateDescription}
-          onUpdateTitle={taskDetailActions.onUpdateTitle}
-          onUpdateDate={taskDetailActions.onUpdateDate}
-          onUpdateTime={taskDetailActions.onUpdateTime}
-          onUpdateCategory={taskDetailActions.onUpdateCategory}
-          onDeleteTask={taskDetailActions.onDeleteTask}
-          onAddStep={taskDetailActions.onAddStep}
-          onToggleStep={taskDetailActions.onToggleStep}
-          onDeleteStep={taskDetailActions.onDeleteStep}
-          onUpdateRepeat={taskDetailActions.onUpdateRepeat}
-          onAddAttachment={taskDetailActions.onAddAttachment}
-          onDeleteAttachment={taskDetailActions.onDeleteAttachment}
-          t={t}
+          {...taskDetailActions}
           projects={projects}
-          onAssignProject={taskDetailActions.onAssignProject}
+          t={t}
         />
       </ToastProvider>
     </div>

@@ -1,12 +1,5 @@
 import { useLayoutEffect, useRef, useState, memo } from "react";
-import {
-  DndContext,
-  MouseSensor,
-  TouchSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
   useSortable,
@@ -27,17 +20,11 @@ import {
   Star,
 } from "lucide-react";
 import Icon from "./Icon";
+import useDragSensors, { SILENT_ANNOUNCEMENTS } from "../hooks/useDragSensors";
 import { getCategoryLabel } from "../utils/categoryHelpers";
 import { parseLocalDate } from "../utils/dateHelpers";
 
 const DRAG_MODIFIERS = [restrictToVerticalAxis, restrictToParentElement];
-const SILENT_ANNOUNCEMENTS = {
-  onDragStart: () => undefined,
-  onDragOver: () => undefined,
-  onDragEnd: () => undefined,
-  onDragCancel: () => undefined,
-};
-
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 function getOverdueDays(task, today) {
@@ -83,12 +70,7 @@ function TaskList({
   const [announcement, setAnnouncement] = useState("");
   const pendingFocus = useRef(null);
   const containerRef = useRef(null);
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 250, tolerance: 5 },
-    }),
-  );
+  const sensors = useDragSensors();
 
   const activeTasks = tasks
     .filter((task) => !task.completed)

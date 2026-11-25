@@ -1,13 +1,6 @@
 import { Fragment, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import {
-  closestCenter,
-  DndContext,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+import { closestCenter, DndContext } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import {
   CalendarDays,
@@ -19,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import Icon from "../components/Icon";
+import useDragSensors, { SILENT_ANNOUNCEMENTS } from "../hooks/useDragSensors";
 import DashboardCardFrame from "../components/dashboard/DashboardCardFrame";
 import DashboardSlot from "../components/dashboard/DashboardSlot";
 import CardLibrary from "../components/dashboard/CardLibrary";
@@ -42,13 +36,6 @@ import {
   getWeekRange,
 } from "../utils/dashboardData";
 import { getRoutineKeyForDate, parseLocalDate } from "../utils/dateHelpers";
-
-const SILENT_ANNOUNCEMENTS = {
-  onDragStart: () => undefined,
-  onDragOver: () => undefined,
-  onDragEnd: () => undefined,
-  onDragCancel: () => undefined,
-};
 
 function createFormatter(locale, options) {
   const formatter = new Intl.DateTimeFormat(locale, options);
@@ -102,12 +89,7 @@ function DashboardPage({
   const navigate = useNavigate();
   const [dayDialogDate, setDayDialogDate] = useState(null);
   const editor = useDashboardEditor({ layout, onSave: onSaveLayout, t });
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 250, tolerance: 5 },
-    }),
-  );
+  const sensors = useDragSensors(6);
   const locale = language === "tr" ? "tr-TR" : "en-US";
 
   const data = useMemo(() => {
@@ -188,10 +170,10 @@ function DashboardPage({
 
   const actions = {
     navigate,
-    openTask: (id) => onOpenTask(id),
-    openDay: (date) => setDayDialogDate(date),
+    openTask: onOpenTask,
+    openDay: setDayDialogDate,
     openProject: (id) => navigate(getProjectPath(id)),
-    toggleRoutine: (id) => onToggleRoutine(id),
+    toggleRoutine: onToggleRoutine,
   };
 
   const stats = [
