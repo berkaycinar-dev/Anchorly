@@ -471,7 +471,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .archive-summary {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
