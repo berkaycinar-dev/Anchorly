@@ -1,63 +1,28 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect } from "react";
+import { Link } from "react-router";
 import { CircleCheck, Loader, TriangleAlert } from "lucide-react";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthStatus from "../components/auth/AuthStatus";
 import Button from "../components/ui/Button";
-import describeAuthError from "../auth/authErrors";
 import { AUTH_STATUS } from "../auth/authStatus";
 import useAuth from "../auth/useAuth";
+import useTokenRequest from "../auth/useTokenRequest";
 
-function readToken(hash) {
-  return new URLSearchParams(hash.replace(/^#/, "")).get("token") ?? "";
+function classifyError(error) {
+  return error?.code === "EMAIL_TAKEN" ? "taken" : null;
 }
 
 function ConfirmEmailPage({ t }) {
   const { api, status, user, setUser } = useAuth();
-  const { hash } = useLocation();
-  const navigate = useNavigate();
-  const [token] = useState(() => readToken(hash));
-  const [state, setState] = useState(
-    token === "" ? { kind: "invalid" } : { kind: "loading" },
-  );
-  const [changedUser, setChangedUser] = useState(null);
-  const [attempt, setAttempt] = useState(0);
-  const startedAttemptRef = useRef(-1);
-
-  useEffect(() => {
-    if (hash !== "") {
-      navigate({ hash: "" }, { replace: true });
-    }
-  }, [hash, navigate]);
-
-  useEffect(() => {
-    if (token === "" || startedAttemptRef.current === attempt) {
-      return;
-    }
-
-    startedAttemptRef.current = attempt;
-
-    api.confirmEmailChange(token).then(
-      (updated) => {
-        setChangedUser(updated);
-        setState({ kind: "success" });
-      },
-      (error) => {
-        if (error?.code === "EMAIL_TAKEN") {
-          setState({ kind: "taken" });
-          return;
-        }
-
-        const described = describeAuthError(error, t);
-
-        if (described.tokenInvalid) {
-          setState({ kind: "invalid" });
-        } else {
-          setState({ kind: "failed", message: described.alert.message });
-        }
-      },
-    );
-  }, [api, attempt, t, token]);
+  const {
+    state,
+    result: changedUser,
+    retry,
+  } = useTokenRequest({
+    request: (token) => api.confirmEmailChange(token),
+    classifyError,
+    t,
+  });
 
   useEffect(() => {
     if (
@@ -71,20 +36,14 @@ function ConfirmEmailPage({ t }) {
   }, [changedUser, status, user, setUser]);
 
   const signedIn = status === AUTH_STATUS.signedIn;
-  const nextLink = signedIn ? (
-    <Link to="/account" className="btn btn-primary btn-lg">
-      {t.accountGoToAccount}
-    </Link>
-  ) : (
-    <Link to="/login" className="btn btn-primary btn-lg">
-      {t.signIn}
+  const nextLink = (
+    <Link
+      to={signedIn ? "/account" : "/login"}
+      className="btn btn-primary btn-lg"
+    >
+      {signedIn ? t.accountGoToAccount : t.signIn}
     </Link>
   );
-
-  function handleRetry() {
-    setState({ kind: "loading" });
-    setAttempt((current) => current + 1);
-  }
 
   let content;
 
@@ -123,7 +82,7 @@ function ConfirmEmailPage({ t }) {
         tone="warning"
         title={t.confirmEmailFailedTitle}
         actions={
-          <Button size="lg" onClick={handleRetry}>
+          <Button size="lg" onClick={retry}>
             {t.verifyRetry}
           </Button>
         }

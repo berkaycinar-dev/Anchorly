@@ -1,40 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { TriangleAlert } from "lucide-react";
 import AuthAlert from "../components/auth/AuthAlert";
+import { AuthSubmitButton } from "../components/auth/AuthFormParts";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthStatus from "../components/auth/AuthStatus";
-import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
 import describeAuthError from "../auth/authErrors";
 import useAuth from "../auth/useAuth";
-import useCountdown, { formatCountdown } from "../auth/useCountdown";
+import useCountdown from "../auth/useCountdown";
+import useHashToken from "../auth/useHashToken";
 import {
   PASSWORD_MIN_LENGTH,
   validatePassword,
 } from "../auth/validateAuthForm";
 
-function readToken(hash) {
-  return new URLSearchParams(hash.replace(/^#/, "")).get("token") ?? "";
-}
-
 function ResetPasswordPage({ t }) {
   const { api } = useAuth();
-  const { hash } = useLocation();
   const navigate = useNavigate();
-  const [token, setToken] = useState(() => readToken(hash));
+  const [token, setToken] = useHashToken();
   const [password, setPassword] = useState("");
   const [fieldError, setFieldError] = useState("");
   const [alert, setAlert] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [remaining, startCountdown] = useCountdown();
   const passwordRef = useRef(null);
-
-  useEffect(() => {
-    if (hash !== "") {
-      navigate({ hash: "" }, { replace: true });
-    }
-  }, [hash, navigate]);
 
   if (token === "") {
     return (
@@ -125,17 +115,9 @@ function ResetPasswordPage({ t }) {
           hint={t.authPasswordHint}
           hintDone={password.length >= PASSWORD_MIN_LENGTH}
         />
-        <Button
-          type="submit"
-          size="lg"
-          block
-          loading={submitting}
-          disabled={remaining > 0}
-        >
-          {remaining > 0
-            ? `${t.authResetSubmit} (${formatCountdown(remaining)})`
-            : t.authResetSubmit}
-        </Button>
+        <AuthSubmitButton submitting={submitting} remaining={remaining}>
+          {t.authResetSubmit}
+        </AuthSubmitButton>
       </form>
     </AuthLayout>
   );

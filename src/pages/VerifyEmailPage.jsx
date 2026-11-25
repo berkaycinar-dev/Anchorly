@@ -1,62 +1,25 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import { CircleCheck, Loader, TriangleAlert } from "lucide-react";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthStatus from "../components/auth/AuthStatus";
 import Button from "../components/ui/Button";
-import describeAuthError from "../auth/authErrors";
 import { AUTH_STATUS } from "../auth/authStatus";
 import useAuth from "../auth/useAuth";
 import useResendVerification from "../auth/useResendVerification";
-
-function readToken(hash) {
-  return new URLSearchParams(hash.replace(/^#/, "")).get("token") ?? "";
-}
+import useTokenRequest from "../auth/useTokenRequest";
 
 function VerifyEmailPage({ t }) {
   const { api, status, user, setUser } = useAuth();
-  const { hash } = useLocation();
-  const navigate = useNavigate();
-  const [token] = useState(() => readToken(hash));
-  const [state, setState] = useState(
-    token === "" ? { kind: "invalid" } : { kind: "loading" },
-  );
-  const [verifiedUser, setVerifiedUser] = useState(null);
-  const [attempt, setAttempt] = useState(0);
-  const startedAttemptRef = useRef(-1);
+  const {
+    state,
+    setState,
+    result: verifiedUser,
+    retry,
+  } = useTokenRequest({ request: (token) => api.verifyEmail(token), t });
   const [linkSent, setLinkSent] = useState(false);
   const [resendMessage, setResendMessage] = useState(null);
   const { resend, sending, remaining } = useResendVerification(t);
-
-  useEffect(() => {
-    if (hash !== "") {
-      navigate({ hash: "" }, { replace: true });
-    }
-  }, [hash, navigate]);
-
-  useEffect(() => {
-    if (token === "" || startedAttemptRef.current === attempt) {
-      return;
-    }
-
-    startedAttemptRef.current = attempt;
-
-    api.verifyEmail(token).then(
-      (verified) => {
-        setVerifiedUser(verified);
-        setState({ kind: "success" });
-      },
-      (error) => {
-        const described = describeAuthError(error, t);
-
-        if (described.tokenInvalid) {
-          setState({ kind: "invalid" });
-        } else {
-          setState({ kind: "failed", message: described.alert.message });
-        }
-      },
-    );
-  }, [api, attempt, t, token]);
 
   useEffect(() => {
     if (
@@ -82,11 +45,6 @@ function VerifyEmailPage({ t }) {
     } else {
       setResendMessage(result.message);
     }
-  }
-
-  function handleRetry() {
-    setState({ kind: "loading" });
-    setAttempt((current) => current + 1);
   }
 
   let content;
@@ -122,7 +80,7 @@ function VerifyEmailPage({ t }) {
         tone="warning"
         title={t.verifyFailedTitle}
         actions={
-          <Button size="lg" onClick={handleRetry}>
+          <Button size="lg" onClick={retry}>
             {t.verifyRetry}
           </Button>
         }
