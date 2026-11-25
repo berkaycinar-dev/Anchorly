@@ -330,3 +330,79 @@
   color: var(--color-accent-text);
   font-variant-numeric: tabular-nums;
 }
+
+.task-list-today .task-card {
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 6px 4px 6px 14px;
+  border-radius: var(--radius-sm);
+}
+
+@media (hover: hover) {
+  .task-list-today .task-card:hover {
+    box-shadow: none;
+  }
+}
+
+.task-list-today .task-card .task-title {
+  font-size: var(--text-md);
+}
+
+.task-list-today .task-card-content {
+  gap: 2px;
+}
+
+.task-list-today .task-meta {
+  gap: 2px 14px;
+}
+
+.task-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  font-size: 12.5px;
+}
+
+.task-meta-accent {
+  color: var(--color-accent-text);
+}
+
+.task-meta-overdue {
+  color: var(--color-danger);
+}
+
+.task-star {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.task-star-active {
+  color: var(--color-warning);
+}
+
+.task-star-active svg {
+  fill: currentColor;
+}
+
+@media (hover: hover) {
+  .task-star:hover {
+    background-color: var(--color-bg-subtle);
+  }
+}
+
+.task-star:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}

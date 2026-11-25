@@ -1,0 +1,96 @@
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .icon-button:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
+}
+
+.icon-button-filled {
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+@media (hover: hover) {
+  .icon-button-filled:hover {
+    background-color: var(--color-accent);
+    color: var(--color-accent-contrast);
+    opacity: 0.9;
+  }
+}
+
+.icon-button-danger {
+  color: var(--color-danger);
+}
+
+@media (hover: hover) {
+  .icon-button-danger:hover {
+    background-color: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
+}
+
+.icon-button:focus-visible,
+.segmented button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+}
+
+.segmented button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed="true"] {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text-primary);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+@media (pointer: coarse) {
+  .icon-button,
+  .segmented button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-button {
+    transition: none;
+  }
+}

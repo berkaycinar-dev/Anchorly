@@ -1,108 +1,3 @@
-.task-steps-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 12px;
-}
-
-.task-steps-list li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-}
-
-.task-steps-list li span {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.step-delete-button,
-.attachment-delete-button {
-  flex-shrink: 0;
-  border: none;
-  background: none;
-  color: #ef4444;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.step-delete-button {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 18px;
-}
-
-@media (hover: hover) {
-  .step-delete-button:hover {
-    background-color: #fee2e2;
-  }
-}
-
-.step-done {
-  text-decoration: line-through;
-  color: var(--color-text-muted);
-}
-
-.task-step-form {
-  display: flex;
-  gap: 8px;
-}
-
-.task-step-form input {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background-color: var(--color-bg-input);
-  color: var(--color-text-primary);
-}
-
-.attachments-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.attachment-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background-color: var(--color-bg-subtle);
-  border-radius: 8px;
-  padding: 6px 10px;
-}
-
-.attachment-preview {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.attachment-name {
-  font-size: 13px;
-  color: var(--color-text-primary);
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.attachment-delete-button {
-  font-size: 14px;
-}
-
-.attachment-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 .confirm-box {
   background-color: var(--color-bg-card);
   color: var(--color-text-primary);
@@ -185,12 +80,6 @@
   }
 }
 
-@media (max-width: 767.98px) {
-  .task-step-form {
-    flex-direction: column;
-  }
-}
-
 @media (min-width: 768px) {
   .modal-dialog {
     width: 480px;
@@ -202,25 +91,5 @@
 
   .modal-dialog[open] {
     animation: none;
-  }
-}
-
-@media (pointer: coarse) {
-  .step-delete-button,
-  .attachment-delete-button {
-    position: relative;
-  }
-
-  .step-delete-button::before,
-  .attachment-delete-button::before {
-    content: "";
-    position: absolute;
-    inset: -8px;
-  }
-
-  .task-steps-list .themed-checkbox::before {
-    content: "";
-    position: absolute;
-    inset: -14px;
   }
 }
