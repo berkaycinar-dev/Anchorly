@@ -3,7 +3,8 @@
 @import "./base.css";
 @import "./layout.css";
 
-@import "./components/sidebar.css";
+@import "./components/sidebar/nav.css";
+@import "./components/sidebar/account.css";
 @import "./components/bottom-nav.css";
 @import "./components/mobile-brand-bar.css";
 @import "./components/alert.css";
