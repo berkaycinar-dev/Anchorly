@@ -1,23 +1,6 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 const RING_RADIUS = 17;
 const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
-
-function ChevronIcon({ direction }) {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={direction === "left" ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6"} />
-    </svg>
-  );
-}
 
 function DayRing({ percent, label }) {
   return (
@@ -64,7 +47,7 @@ export default function RoutineWeekStrip({
         aria-label={t.previousWeekLabel}
         onClick={onPreviousWeek}
       >
-        <ChevronIcon direction="left" />
+        <ChevronLeft size={18} strokeWidth={2} aria-hidden="true" />
       </button>
 
       <div
@@ -119,7 +102,7 @@ export default function RoutineWeekStrip({
         aria-label={t.nextWeekLabel}
         onClick={onNextWeek}
       >
-        <ChevronIcon direction="right" />
+        <ChevronRight size={18} strokeWidth={2} aria-hidden="true" />
       </button>
     </div>
   );
