@@ -1,7 +1,7 @@
 import { Clock, Calendar, Plus, Repeat, X } from "lucide-react";
 import Icon from "./Icon";
 import TimeField from "./TimeField";
-import { parseLocalDate } from "../utils/dateHelpers";
+import { formatShortDate } from "../utils/dateHelpers";
 
 function openNativePicker(event) {
   try {
@@ -9,13 +9,6 @@ function openNativePicker(event) {
   } catch {
     return;
   }
-}
-
-function formatShortDate(date, t) {
-  return parseLocalDate(date).toLocaleDateString(t.dateLocale, {
-    day: "numeric",
-    month: "short",
-  });
 }
 
 function getRepeatText(repeat, t) {
@@ -106,7 +99,7 @@ function AddTaskBar({
         <div className="add-task-tools">
           <Tool
             icon={Calendar}
-            valueText={date ? formatShortDate(date, t) : ""}
+            valueText={date ? formatShortDate(date, t.dateLocale) : ""}
           >
             <input
               type="date"

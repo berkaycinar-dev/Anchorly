@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   buildSeriesList,
   filterOccurrences,
-  getDaysFromToday,
   getOccurrenceStatus,
   getPageCount,
   getPageSlice,
@@ -12,6 +11,7 @@ import {
   isOneTimeTask,
   isRecurringTask,
 } from "./archiveSeries";
+import { getDaysFromToday } from "./dateHelpers";
 
 const TODAY = "2026-11-03";
 

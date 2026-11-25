@@ -22,19 +22,15 @@ import {
 import Icon from "./Icon";
 import useDragSensors, { SILENT_ANNOUNCEMENTS } from "../hooks/useDragSensors";
 import { getCategoryLabel } from "../utils/categoryHelpers";
-import { parseLocalDate } from "../utils/dateHelpers";
+import { formatShortDate, getDaysFromToday } from "../utils/dateHelpers";
 
 const DRAG_MODIFIERS = [restrictToVerticalAxis, restrictToParentElement];
-const DAY_IN_MS = 24 * 60 * 60 * 1000;
-
 function getOverdueDays(task, today) {
   if (task.completed || !task.date || !today || task.date >= today) {
     return 0;
   }
 
-  return Math.round(
-    (parseLocalDate(today) - parseLocalDate(task.date)) / DAY_IN_MS,
-  );
+  return -getDaysFromToday(task.date, today);
 }
 
 function SortableTaskItem({ id, children }) {
@@ -240,10 +236,7 @@ function TaskList({
       items.push(
         <span key="date" className="task-meta-item">
           <Icon icon={Calendar} size="sm" />
-          {parseLocalDate(task.date).toLocaleDateString(t.dateLocale, {
-            day: "numeric",
-            month: "short",
-          })}
+          {formatShortDate(task.date, t.dateLocale)}
         </span>,
       );
     }

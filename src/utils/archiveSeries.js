@@ -1,8 +1,4 @@
-import { parseLocalDate } from "./dateHelpers";
-
 export const SERIES_PAGE_SIZE = 8;
-
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export function isRecurringTask(task) {
   return Boolean(task.repeatGroupId);
@@ -26,12 +22,6 @@ export function getOccurrenceStatus(task, today) {
   }
 
   return "upcoming";
-}
-
-export function getDaysFromToday(dateString, today) {
-  const difference = parseLocalDate(dateString) - parseLocalDate(today);
-
-  return Math.round(difference / MS_PER_DAY);
 }
 
 function buildSeries(id, occurrences, today) {

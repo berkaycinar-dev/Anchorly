@@ -4,7 +4,7 @@ import Icon from "../Icon";
 import { getCategoryLabel } from "../../utils/categoryHelpers";
 import { getSeriesSummary } from "../../utils/archiveSeries";
 import { getArchiveSeriesPath } from "../../routes";
-import { formatShortDate } from "../../utils/archiveFormat";
+import { formatShortDate } from "../../utils/dateHelpers";
 
 function SeriesList({ seriesList, t }) {
   const summary = getSeriesSummary(seriesList);

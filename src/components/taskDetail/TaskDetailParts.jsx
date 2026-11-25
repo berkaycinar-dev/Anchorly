@@ -14,7 +14,7 @@ import {
 import Icon from "../Icon";
 import DateField from "../DateField";
 import TimeField from "../TimeField";
-import { parseLocalDate } from "../../utils/dateHelpers";
+import { formatLongDate } from "../../utils/dateHelpers";
 import {
   CATEGORY_OPTIONS,
   getCategoryLabel,
@@ -276,12 +276,7 @@ export function TaskDetailFooter({ task, onClose, onDelete, t }) {
 
       <span className="task-detail-created">
         {task.createdAt
-          ? t.taskCreatedOn(
-              parseLocalDate(task.createdAt).toLocaleDateString(t.dateLocale, {
-                day: "numeric",
-                month: "long",
-              }),
-            )
+          ? t.taskCreatedOn(formatLongDate(task.createdAt, t.dateLocale))
           : ""}
       </span>
 

@@ -7,12 +7,15 @@ import { getCategoryLabel } from "../../utils/categoryHelpers";
 import {
   SERIES_PAGE_SIZE,
   filterOccurrences,
-  getDaysFromToday,
   getOccurrenceStatus,
   getPageSlice,
   getTodayPageIndex,
 } from "../../utils/archiveSeries";
-import { formatShortDate, formatWeekdayDate } from "../../utils/archiveFormat";
+import {
+  formatShortDate,
+  formatWeekdayDate,
+  getDaysFromToday,
+} from "../../utils/dateHelpers";
 
 const FILTERS = [
   { value: "all", labelKey: "seriesFilterAll" },
