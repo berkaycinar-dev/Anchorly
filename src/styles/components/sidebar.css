@@ -226,15 +226,6 @@
   color: var(--color-text-primary);
 }
 
-.app-logo-outline {
-  fill: none;
-  stroke: currentColor;
-}
-
-.app-logo-inner {
-  fill: currentColor;
-}
-
 @media (min-width: 768px) {
   .sidebar {
     display: block;

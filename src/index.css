@@ -1,9 +1,6 @@
 :root {
   --font-main: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: var(--font-main);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --spacing-card: 20px;
 
   font: 18px/145% var(--font-main);
   letter-spacing: 0.18px;
@@ -36,7 +33,7 @@ body {
 
 h1,
 h2 {
-  font-family: var(--heading);
+  font-family: var(--font-main);
   font-weight: 500;
 }
 

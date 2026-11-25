@@ -187,7 +187,6 @@
 
 .project-item:focus-visible,
 .board-card:focus-visible,
-.board-add-card:focus-visible,
 .board-more:focus-visible,
 .icon-button:focus-visible,
 .segmented button:focus-visible,
@@ -562,8 +561,7 @@
   color: var(--color-text-secondary);
 }
 
-.board-more,
-.board-add-card {
+.board-more {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -578,13 +576,8 @@
   cursor: pointer;
 }
 
-.board-add-card {
-  justify-content: flex-start;
-}
-
 @media (hover: hover) {
-  .board-more:hover,
-  .board-add-card:hover {
+  .board-more:hover {
     background-color: var(--color-border);
     color: var(--color-text-primary);
   }
@@ -714,8 +707,7 @@
 @media (pointer: coarse) {
   .icon-button,
   .segmented button,
-  .board-more,
-  .board-add-card {
+  .board-more {
     min-width: 44px;
     min-height: 44px;
   }

@@ -1,24 +1,15 @@
 import { useEffect, useId, useRef, useState } from "react";
-import {
-  Calendar,
-  Clock,
-  Folder,
-  Paperclip,
-  Plus,
-  Repeat,
-  Star,
-  StickyNote,
-  Tag,
-  Trash2,
-  X,
-} from "lucide-react";
-import Icon from "./Icon";
-import { parseLocalDate } from "../utils/dateHelpers";
-import { CATEGORY_OPTIONS, getCategoryLabel } from "../utils/categoryHelpers";
+import { Paperclip } from "lucide-react";
 import { useToastHost } from "./toast/useToast";
-import DateField from "./DateField";
-import TimeField from "./TimeField";
 import ConfirmDeleteDialog from "./taskDetail/ConfirmDeleteDialog";
+import {
+  DetailRow,
+  TaskDetailFooter,
+  TaskFieldsSection,
+  TaskNoteSection,
+  TaskStarButton,
+  TaskStepsSection,
+} from "./taskDetail/TaskDetailParts";
 import { useAttachmentUpload } from "./taskDetail/useAttachmentUpload";
 import { useBackdropClose } from "./taskDetail/useBackdropClose";
 
@@ -26,24 +17,13 @@ function TaskDetailModal({
   task,
   onClose,
   onToggleTask,
-  onToggleImportant,
   onUpdateTitle,
-  onUpdateDate,
-  onUpdateTime,
-  onUpdateCategory,
-  onUpdateDescription,
-  onAddStep,
-  onToggleStep,
-  onDeleteStep,
-  onUpdateRepeat,
   onAddAttachment,
   onDeleteAttachment,
-  projects,
-  onAssignProject,
   onDeleteTask,
   t,
+  ...handlers
 }) {
-  const [newStepText, setNewStepText] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -51,15 +31,7 @@ function TaskDetailModal({
   const openerRef = useRef(null);
   const titleRef = useRef(null);
   const titleId = useId();
-  const fieldId = useId();
-  const descriptionId = `${fieldId}-description`;
-  const timeId = `${fieldId}-time`;
-  const dateId = `${fieldId}-date`;
-  const repeatId = `${fieldId}-repeat`;
-  const fileId = `${fieldId}-file`;
-  const projectId = `${fieldId}-project`;
-  const categoryId = `${fieldId}-category`;
-  const stepInputId = `${fieldId}-step`;
+  const fileId = useId();
   const setToastHost = useToastHost();
   const backdropClose = useBackdropClose(dialogRef);
   const hasTask = Boolean(task);
@@ -95,12 +67,6 @@ function TaskDetailModal({
     return null;
   }
 
-  function handleAddStep(event) {
-    event.preventDefault();
-    onAddStep(task.id, newStepText);
-    setNewStepText("");
-  }
-
   function startEditingTitle() {
     setEditedTitle(task.title);
     setIsEditingTitle(true);
@@ -109,13 +75,10 @@ function TaskDetailModal({
   function saveTitle() {
     const trimmedTitle = editedTitle.trim();
 
-    if (trimmedTitle === "") {
-      setEditedTitle(task.title);
-      setIsEditingTitle(false);
-      return;
+    if (trimmedTitle !== "") {
+      onUpdateTitle(task.id, trimmedTitle);
     }
 
-    onUpdateTitle(task.id, trimmedTitle);
     setIsEditingTitle(false);
   }
 
@@ -127,13 +90,8 @@ function TaskDetailModal({
 
     if (event.key === "Escape") {
       event.preventDefault();
-      setEditedTitle(task.title);
       setIsEditingTitle(false);
     }
-  }
-
-  function requestClose() {
-    dialogRef.current.close();
   }
 
   function handleDialogClose(event) {
@@ -146,19 +104,6 @@ function TaskDetailModal({
     if (event.target === event.currentTarget && isEditingTitle) {
       event.preventDefault();
     }
-  }
-
-  function handleDeleteTask() {
-    setIsDeleteConfirmOpen(true);
-  }
-
-  function confirmDeleteTask() {
-    onDeleteTask(task.id);
-    onClose();
-  }
-
-  function cancelDeleteTask() {
-    setIsDeleteConfirmOpen(false);
   }
 
   return (
@@ -212,192 +157,25 @@ function TaskDetailModal({
               </h2>
             )}
 
-            <button
-              type="button"
-              className={
-                task.important
-                  ? "task-star task-star-active task-detail-star"
-                  : "task-star task-detail-star"
-              }
-              aria-pressed={task.important === true}
-              aria-label={t.importantTaskLabel(task.title)}
-              onClick={() => onToggleImportant(task.id)}
-            >
-              <Icon icon={Star} size="md" />
-            </button>
+            <TaskStarButton task={task} t={t} {...handlers} />
           </div>
 
-          <section className="task-detail-section">
-            <ul className="task-steps-list">
-              {(task.steps || []).map((step) => (
-                <li key={step.id}>
-                  <input
-                    type="checkbox"
-                    className="task-checkbox task-step-checkbox"
-                    aria-label={t.completeStepLabel(step.text)}
-                    checked={step.done}
-                    onChange={() => onToggleStep(task.id, step.id)}
-                  />
-                  <span className={step.done ? "step-done" : ""}>
-                    {step.text}
-                  </span>
-                  <button
-                    type="button"
-                    className="step-delete-button"
-                    aria-label={t.deleteStepLabel(step.text)}
-                    onClick={() => onDeleteStep(task.id, step.id)}
-                  >
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+          <TaskStepsSection task={task} t={t} {...handlers} />
 
-            <form className="task-step-form" onSubmit={handleAddStep}>
-              <span className="task-step-plus" aria-hidden="true">
-                <Icon icon={Plus} size="md" />
-              </span>
+          <TaskFieldsSection task={task} t={t} {...handlers}>
+            <DetailRow
+              icon={Paperclip}
+              label={t.attachmentsLabel}
+              htmlFor={fileId}
+              className="task-detail-row-files"
+            >
               <input
-                id={stepInputId}
-                type="text"
-                enterKeyHint="done"
-                autoComplete="off"
-                aria-label={t.newStepLabel}
-                placeholder={t.addStepButtonLabel}
-                value={newStepText}
-                onChange={(event) => setNewStepText(event.target.value)}
+                id={fileId}
+                type="file"
+                onChange={handleFileUpload}
+                className="task-detail-file"
               />
-              <button type="submit" className="visually-hidden">
-                {t.addButton}
-              </button>
-            </form>
-          </section>
-
-          <section className="task-detail-section">
-            <div className="task-detail-row">
-              <Icon icon={Clock} size="lg" />
-              <label htmlFor={timeId}>{t.timeLabel}</label>
-              <div className="task-detail-row-control">
-                <TimeField
-                  id={timeId}
-                  className="task-detail-input task-detail-time"
-                  value={task.dueTime || ""}
-                  onChange={(time) => onUpdateTime(task.id, time)}
-                  t={t}
-                />
-
-                {task.dueTime && (
-                  <button
-                    type="button"
-                    className="task-detail-clear"
-                    aria-label={t.clearTimeLabel}
-                    onClick={() => onUpdateTime(task.id, "")}
-                  >
-                    <Icon icon={X} size="sm" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="task-detail-row">
-              <Icon icon={Calendar} size="lg" />
-              <label htmlFor={dateId}>{t.dateLabel}</label>
-              <div className="task-detail-row-control">
-                <DateField
-                  id={dateId}
-                  value={task.date || ""}
-                  onChange={(date) => onUpdateDate(task.id, date)}
-                  t={t}
-                />
-
-                {task.date && (
-                  <button
-                    type="button"
-                    className="task-detail-clear"
-                    aria-label={t.removeDateButton}
-                    onClick={() => onUpdateDate(task.id, "")}
-                  >
-                    <Icon icon={X} size="sm" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="task-detail-row">
-              <Icon icon={Repeat} size="lg" />
-              <label htmlFor={repeatId}>{t.repeatLabel}</label>
-              <div className="task-detail-row-control">
-                <select
-                  id={repeatId}
-                  className="task-detail-input"
-                  value={task.repeat || "none"}
-                  disabled={!task.date}
-                  onChange={(event) =>
-                    onUpdateRepeat(task.id, event.target.value)
-                  }
-                >
-                  <option value="none">{t.repeatNone}</option>
-                  <option value="daily">{t.repeatDaily}</option>
-                  <option value="weekly">{t.repeatWeekly}</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="task-detail-row">
-              <Icon icon={Tag} size="lg" />
-              <label htmlFor={categoryId}>{t.categoryLabel}</label>
-              <div className="task-detail-row-control">
-                <select
-                  id={categoryId}
-                  className="task-detail-input"
-                  value={task.category || "Other"}
-                  onChange={(event) =>
-                    onUpdateCategory(task.id, event.target.value)
-                  }
-                >
-                  {CATEGORY_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {getCategoryLabel(option, t)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="task-detail-row">
-              <Icon icon={Folder} size="lg" />
-              <label htmlFor={projectId}>{t.project}</label>
-              <div className="task-detail-row-control">
-                <select
-                  id={projectId}
-                  className="task-detail-input"
-                  value={task.projectId ?? ""}
-                  onChange={(event) =>
-                    onAssignProject(task.id, event.target.value || null)
-                  }
-                >
-                  <option value="">{t.noProject}</option>
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="task-detail-row task-detail-row-files">
-              <Icon icon={Paperclip} size="lg" />
-              <label htmlFor={fileId}>{t.attachmentsLabel}</label>
-              <div className="task-detail-row-control">
-                <input
-                  id={fileId}
-                  type="file"
-                  onChange={handleFileUpload}
-                  className="task-detail-file"
-                />
-              </div>
-            </div>
+            </DetailRow>
 
             {task.attachments.length > 0 && (
               <div className="attachments-list">
@@ -435,55 +213,17 @@ function TaskDetailModal({
                 ))}
               </div>
             )}
-          </section>
+          </TaskFieldsSection>
 
-          <section className="task-detail-note">
-            <Icon icon={StickyNote} size="lg" />
-            <label htmlFor={descriptionId} className="visually-hidden">
-              {t.descriptionLabel}
-            </label>
-            <textarea
-              id={descriptionId}
-              className="task-detail-description"
-              value={task.description || ""}
-              onChange={(event) =>
-                onUpdateDescription(task.id, event.target.value)
-              }
-              placeholder={t.descriptionPlaceholder}
-            />
-          </section>
+          <TaskNoteSection task={task} t={t} {...handlers} />
         </div>
 
-        <div className="task-detail-footer">
-          <button
-            type="button"
-            className="task-detail-icon-button task-detail-close"
-            aria-label={t.closeButton}
-            onClick={requestClose}
-          >
-            <Icon icon={X} size="lg" />
-          </button>
-
-          <span className="task-detail-created">
-            {task.createdAt
-              ? t.taskCreatedOn(
-                  parseLocalDate(task.createdAt).toLocaleDateString(
-                    t.dateLocale,
-                    { day: "numeric", month: "long" },
-                  ),
-                )
-              : ""}
-          </span>
-
-          <button
-            type="button"
-            className="task-detail-icon-button task-detail-delete"
-            aria-label={t.deleteButtonAria}
-            onClick={handleDeleteTask}
-          >
-            <Icon icon={Trash2} size="lg" />
-          </button>
-        </div>
+        <TaskDetailFooter
+          task={task}
+          onClose={() => dialogRef.current.close()}
+          onDelete={() => setIsDeleteConfirmOpen(true)}
+          t={t}
+        />
       </div>
 
       {isDeleteConfirmOpen && (
@@ -491,8 +231,11 @@ function TaskDetailModal({
           message={t.confirmDeleteMessage(task.title)}
           cancelLabel={t.confirmDeleteCancel}
           confirmLabel={t.confirmDeleteConfirm}
-          onCancel={cancelDeleteTask}
-          onConfirm={confirmDeleteTask}
+          onCancel={() => setIsDeleteConfirmOpen(false)}
+          onConfirm={() => {
+            onDeleteTask(task.id);
+            onClose();
+          }}
         />
       )}
 

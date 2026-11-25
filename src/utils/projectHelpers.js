@@ -9,7 +9,6 @@ export const PROJECT_COLOR_KEYS = [
   "other",
 ];
 
-export const BOARD_COLUMNS = ["todo", "doing", "done"];
 export const BOARD_DONE_LIMIT = 3;
 
 export function getProjectColorKey(projectId) {
