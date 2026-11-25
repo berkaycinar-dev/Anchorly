@@ -20,17 +20,16 @@ import {
   Star,
 } from "lucide-react";
 import Icon from "./Icon";
+import { isTaskOverdue } from "../utils/taskHelpers";
 import useDragSensors, { SILENT_ANNOUNCEMENTS } from "../hooks/useDragSensors";
 import { getCategoryLabel } from "../utils/categoryHelpers";
 import { formatShortDate, getDaysFromToday } from "../utils/dateHelpers";
 
 const DRAG_MODIFIERS = [restrictToVerticalAxis, restrictToParentElement];
 function getOverdueDays(task, today) {
-  if (task.completed || !task.date || !today || task.date >= today) {
-    return 0;
-  }
-
-  return -getDaysFromToday(task.date, today);
+  return today && isTaskOverdue(task, today)
+    ? -getDaysFromToday(task.date, today)
+    : 0;
 }
 
 function SortableTaskItem({ id, children }) {

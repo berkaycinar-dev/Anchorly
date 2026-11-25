@@ -56,6 +56,10 @@ export function generateRepeatOccurrences(
   return newOccurrences;
 }
 
+export function isTaskOverdue(task, today) {
+  return !task.completed && Boolean(task.date) && task.date < today;
+}
+
 export function isTaskVisibleToday(task, today) {
   const isDateless = !task.date;
   const isTodayDated = task.date === today;
