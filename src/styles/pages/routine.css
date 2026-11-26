@@ -88,13 +88,6 @@
   outline-offset: 2px;
 }
 
-@media (hover: hover) {
-  .routine-page .calendar-nav-arrow:hover {
-    background-color: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-  }
-}
-
 .routine-day-view {
   display: flex;
   flex-direction: column;
@@ -239,12 +232,6 @@
   cursor: pointer;
 }
 
-@media (hover: hover) {
-  .routine-day-delete:hover {
-    background-color: #fee2e2;
-  }
-}
-
 .routine-week-view,
 .routine-day-panel {
   display: flex;
@@ -294,13 +281,6 @@
   transition: background-color var(--duration-fast) ease;
 }
 
-@media (hover: hover) {
-  .routine-week-arrow:hover {
-    background-color: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-  }
-}
-
 .routine-week-days {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -321,12 +301,6 @@
   font: inherit;
   cursor: pointer;
   transition: background-color var(--duration-fast) ease;
-}
-
-@media (hover: hover) {
-  .routine-week-day:not([aria-pressed="true"]):hover {
-    background-color: color-mix(in srgb, var(--color-accent) 6%, transparent);
-  }
 }
 
 .routine-week-day[aria-pressed="true"] {
@@ -537,13 +511,6 @@
   transform: translate(-50%, -50%) rotate(45deg) scale(1);
 }
 
-@media (hover: hover) {
-  .routine-card-check:not(:checked):hover {
-    border-color: var(--color-accent);
-    background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  }
-}
-
 .routine-card-check:active {
   transform: scale(0.95);
 }
@@ -607,13 +574,6 @@
   transition: background-color var(--duration-fast) ease;
 }
 
-@media (hover: hover) {
-  .routine-menu-button:hover {
-    background-color: var(--color-bg-subtle);
-    color: var(--color-text-primary);
-  }
-}
-
 .routine-menu-button[aria-expanded="true"] {
   background-color: var(--color-bg-subtle);
   color: var(--color-text-primary);
@@ -653,6 +613,28 @@
 }
 
 @media (hover: hover) {
+  .routine-page .calendar-nav-arrow:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
+  .routine-day-delete:hover {
+    background-color: #fee2e2;
+  }
+  .routine-week-arrow:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
+  .routine-week-day:not([aria-pressed="true"]):hover {
+    background-color: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+  .routine-card-check:not(:checked):hover {
+    border-color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
+  .routine-menu-button:hover {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+  }
   .routine-menu-item:hover {
     background-color: var(--color-danger-bg);
   }

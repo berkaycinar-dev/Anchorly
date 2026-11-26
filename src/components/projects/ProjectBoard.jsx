@@ -3,28 +3,21 @@ import {
   DndContext,
   DragOverlay,
   KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
   closestCenter,
   pointerWithin,
   useDraggable,
   useDroppable,
   useSensor,
-  useSensors,
 } from "@dnd-kit/core";
+import useDragSensors, {
+  SILENT_ANNOUNCEMENTS,
+} from "../../hooks/useDragSensors";
 import ProjectTaskCard, { ProjectTaskCardOverlay } from "./ProjectTaskCard";
 import {
   BOARD_DONE_LIMIT,
   getTaskColumn,
   groupTasksByColumn,
 } from "../../utils/projectHelpers";
-
-const SILENT_ANNOUNCEMENTS = {
-  onDragStart: () => undefined,
-  onDragOver: () => undefined,
-  onDragEnd: () => undefined,
-  onDragCancel: () => undefined,
-};
 
 const KEYBOARD_CODES = {
   start: ["Space"],
@@ -121,16 +114,11 @@ function ProjectBoard({ tasks, today, onSelectTask, onMoveTask, t }) {
   const [showAllDone, setShowAllDone] = useState(false);
   const [activeTaskId, setActiveTaskId] = useState(null);
   const [announcement, setAnnouncement] = useState("");
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 250, tolerance: 5 },
-    }),
-    useSensor(KeyboardSensor, {
-      keyboardCodes: KEYBOARD_CODES,
-      coordinateGetter: columnKeyboardCoordinates,
-    }),
-  );
+  const keyboardSensor = useSensor(KeyboardSensor, {
+    keyboardCodes: KEYBOARD_CODES,
+    coordinateGetter: columnKeyboardCoordinates,
+  });
+  const sensors = useDragSensors(8, keyboardSensor);
 
   const columns = groupTasksByColumn(tasks);
   const activeTask = tasks.find((task) => task.id === activeTaskId) ?? null;

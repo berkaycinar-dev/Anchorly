@@ -20,12 +20,11 @@ import {
 } from "../../utils/categoryHelpers";
 import {
   filterTasksByCategory,
-  formatLongDate,
-  getDaysLeft,
   getProjectColorKey,
   getProjectInitial,
   getProjectProgress,
 } from "../../utils/projectHelpers";
+import { formatLongDate, getDaysFromToday } from "../../utils/dateHelpers";
 
 function ProjectDetail({
   project,
@@ -67,7 +66,7 @@ function ProjectDetail({
   const colorKey = getProjectColorKey(project.id);
 
   const dueText = project.dueDate
-    ? `${t.projectDueOn(formatLongDate(project.dueDate, t.dateLocale))} · ${t.projectDaysLeft(getDaysLeft(project.dueDate, today))}`
+    ? `${t.projectDueOn(formatLongDate(project.dueDate, t.dateLocale))} · ${t.projectDaysLeft(getDaysFromToday(project.dueDate, today))}`
     : t.projectNoDueDate;
 
   function handleArchiveToggle() {

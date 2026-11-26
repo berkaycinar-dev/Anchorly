@@ -224,14 +224,10 @@ export const strings = {
     previousLabel: "Önceki",
     nextLabel: "Sonraki",
 
-    searchPlaceholder: "Görev ara...",
     todaysTasksTitle: "Bugünün Görevleri",
-    filterAll: "Tümü",
-    filterActive: "Aktif",
     filterCompleted: "Tamamlanan",
     newTaskPlaceholder: "Yeni görev ekle...",
     addButton: "Ekle",
-    deleteButton: "Sil",
     closeButton: "Kapat",
     cancelButton: "İptal",
     categoryWork: "İş",
@@ -240,7 +236,6 @@ export const strings = {
     categoryOther: "Diğer",
     categoryHealth: "Sağlık",
     categoryProject: "Proje",
-    searchLabel: "Görev ara",
     newTaskLabel: "Yeni görev",
     categoryLabel: "Kategori",
     taskTitleLabel: "Görev başlığı",
@@ -252,7 +247,6 @@ export const strings = {
       `${fullDate}: ${total} rutinden ${completed} tamamlandı, %${percent}`,
     emptyTaskTitle: "Henüz görev yok",
     emptyTaskSubtitle: "Yeni bir görev ekleyerek başla.",
-    emptyTaskMessage: "Görev bulunamadı.",
     completedSection: "Tamamlandı",
 
     archivePageTitle: "Arşiv",
@@ -325,13 +319,10 @@ export const strings = {
     newProjectTaskLabel: "Yeni proje görevi",
 
     projectsPageTitle: "Projeler",
-    projectsPageDescription:
-      "Projelerine özel görev klasörleri oluşturabilirsin.",
     newProjectPlaceholder: "Yeni proje adı...",
     addProjectButton: "Proje Ekle",
     backToProjects: "← Projelere Dön",
     newProjectTaskPlaceholder: "Proje görevi ekle...",
-    taskCountSuffix: "görev",
     openNewProjectForm: "Yeni proje oluştur",
     projectDueDateLabel: "Bitiş tarihi",
     projectActiveSection: "Aktif",
@@ -554,10 +545,8 @@ export const strings = {
     repeatNone: "Tekrarlanmaz",
     repeatDaily: "Her gün",
     repeatWeekly: "Her hafta",
-    repeatHint: "Tekrar ayarlamak için önce göreve bir tarih eklemelisin.",
     attachmentsLabel: "Dosyalar",
     stepsLabel: "Adımlar",
-    newStepPlaceholder: "Yeni adım ekle...",
     project: "Proje",
     noProject: "Proje yok",
     deleteButtonAria: "Görevi sil",
@@ -586,7 +575,6 @@ export const strings = {
     confirmDeleteConfirm: "Evet, Sil",
     fileTooLargeWarning:
       "Bu dosya çok büyük (1MB üzeri). Tarayıcı depolama alanı sınırlı olduğu için daha küçük bir dosya seçmelisin.",
-    deleteStepAria: "Adımı sil",
     storageQuotaWarning:
       "Depolama alanı dolu; son değişiklikler kaydedilemedi. Büyük dosya eklerini silerek yer aç.",
     storageUnavailableWarning:
@@ -596,6 +584,9 @@ export const strings = {
     dataLoading: "Verilerin yükleniyor",
     dataLoadingSlow:
       "Sunucu uyanıyor olabilir, bu bir dakikayı bulabilir. Oturumun korunuyor.",
+    dataContinueLocally: "Bu cihazda devam et",
+    dataContinueLocallyHint:
+      "Beklemek istemiyorsan hesabına bağlanmadan, bu cihazda saklanan verilerle devam edebilirsin. Oturumun kapanmaz; bir sonraki açılışta tekrar bağlanmayı deneriz.",
     dataLoadErrorTitle: "Verilerin yüklenemedi",
     dataLoadErrorBody:
       "Sunucuya ulaşılamadı veya bir sorun oluştu. Bağlantını kontrol edip tekrar dene.",
@@ -1075,14 +1066,10 @@ export const strings = {
     previousLabel: "Previous",
     nextLabel: "Next",
 
-    searchPlaceholder: "Search tasks...",
     todaysTasksTitle: "Today's Tasks",
-    filterAll: "All",
-    filterActive: "Active",
     filterCompleted: "Completed",
     newTaskPlaceholder: "Add a new task...",
     addButton: "Add",
-    deleteButton: "Delete",
     closeButton: "Close",
     cancelButton: "Cancel",
     categoryWork: "Work",
@@ -1091,7 +1078,6 @@ export const strings = {
     categoryOther: "Other",
     categoryHealth: "Health",
     categoryProject: "Project",
-    searchLabel: "Search tasks",
     newTaskLabel: "New task",
     categoryLabel: "Category",
     taskTitleLabel: "Task title",
@@ -1103,7 +1089,6 @@ export const strings = {
       `${fullDate}: ${completed} of ${total} routines done, ${percent}%`,
     emptyTaskTitle: "No tasks yet",
     emptyTaskSubtitle: "Add a new task to get started.",
-    emptyTaskMessage: "No tasks found.",
     completedSection: "Completed",
 
     archivePageTitle: "Archive",
@@ -1176,12 +1161,10 @@ export const strings = {
     newProjectTaskLabel: "New project task",
 
     projectsPageTitle: "Projects",
-    projectsPageDescription: "Create dedicated task folders for your projects.",
     newProjectPlaceholder: "New project name...",
     addProjectButton: "Add Project",
     backToProjects: "← Back to Projects",
     newProjectTaskPlaceholder: "Add a project task...",
-    taskCountSuffix: "tasks",
     openNewProjectForm: "Create a new project",
     projectDueDateLabel: "Due date",
     projectActiveSection: "Active",
@@ -1411,10 +1394,8 @@ export const strings = {
     repeatNone: "Doesn't repeat",
     repeatDaily: "Daily",
     repeatWeekly: "Weekly",
-    repeatHint: "Add a date to this task before setting a repeat.",
     attachmentsLabel: "Attachments",
     stepsLabel: "Steps",
-    newStepPlaceholder: "Add a new step...",
     project: "Project",
     noProject: "No project",
     deleteButtonAria: "Delete task",
@@ -1444,7 +1425,6 @@ export const strings = {
     confirmDeleteConfirm: "Yes, Delete",
     fileTooLargeWarning:
       "This file is too large (over 1MB). Since browser storage is limited, please choose a smaller file.",
-    deleteStepAria: "Delete step",
     storageQuotaWarning:
       "Storage is full; your latest changes could not be saved. Remove large attachments to free up space.",
     storageUnavailableWarning:
@@ -1454,6 +1434,9 @@ export const strings = {
     dataLoading: "Loading your data",
     dataLoadingSlow:
       "The server may be waking up, this can take up to a minute. You are still signed in.",
+    dataContinueLocally: "Continue on this device",
+    dataContinueLocallyHint:
+      "If you don't want to wait, you can continue without your account, using the data stored on this device. You stay signed in; we will try to connect again next time.",
     dataLoadErrorTitle: "Your data could not be loaded",
     dataLoadErrorBody:
       "The server could not be reached or something went wrong. Check your connection and try again.",

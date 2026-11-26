@@ -62,7 +62,7 @@ import useSettings from "./hooks/useSettings";
 import DataProvider from "./data/DataProvider";
 import AuthProvider from "./auth/AuthProvider";
 import useAuth from "./auth/useAuth";
-import { isTaskVisibleToday } from "./utils/taskHelpers";
+import { isTaskOverdue, isTaskVisibleToday } from "./utils/taskHelpers";
 
 function getGreetingSegment() {
   const hour = new Date().getHours();
@@ -77,6 +77,12 @@ function getGreetingSegment() {
 
   return "evening";
 }
+
+const GREETING_KEYS = {
+  morning: "greetingMorning",
+  afternoon: "greetingAfternoon",
+  evening: "greetingEvening",
+};
 
 function AppContent() {
   const today = useToday();
@@ -236,9 +242,7 @@ function AppContent() {
   const todayPageTasks = useMemo(
     () =>
       tasks.filter(
-        (task) =>
-          isTaskVisibleToday(task, today) ||
-          (!task.completed && task.date && task.date < today),
+        (task) => isTaskVisibleToday(task, today) || isTaskOverdue(task, today),
       ),
     [tasks, today],
   );
@@ -247,9 +251,8 @@ function AppContent() {
     () => ({
       remaining: todayPageTasks.filter((task) => !task.completed).length,
       completed: todayPageTasks.filter((task) => task.completed).length,
-      overdue: todayPageTasks.filter(
-        (task) => !task.completed && task.date && task.date < today,
-      ).length,
+      overdue: todayPageTasks.filter((task) => isTaskOverdue(task, today))
+        .length,
     }),
     [todayPageTasks, today],
   );
@@ -260,9 +263,7 @@ function AppContent() {
       (task) => task.completed && task.completedAt === today,
     ).length;
     const active = todayScopedTasks.filter((task) => !task.completed).length;
-    const overdue = tasks.filter(
-      (task) => !task.completed && task.date && task.date < today,
-    ).length;
+    const overdue = tasks.filter((task) => isTaskOverdue(task, today)).length;
     const completionPercent =
       total === 0 ? 0 : Math.round((completed / total) * 100);
 
@@ -342,13 +343,6 @@ function AppContent() {
     weekStartDay,
     greetingSegment,
   ]);
-
-  function getGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) return t.greetingMorning;
-    if (hour < 18) return t.greetingAfternoon;
-    return t.greetingEvening;
-  }
 
   function handleAddTask(event) {
     event.preventDefault();
@@ -456,7 +450,7 @@ function AppContent() {
         language={language}
         today={today}
         weekStartDay={weekStartDay}
-        greeting={getGreeting()}
+        greeting={t[GREETING_KEYS[greetingSegment]]}
         dashboardMessage={dashboardMessage}
         tasks={tasks}
         todayScopedTasks={todayScopedTasks}
@@ -707,21 +701,9 @@ function AppContent() {
           onClose={closeTaskDetail}
           onToggleTask={toggleTask}
           onToggleImportant={toggleTaskImportant}
-          onUpdateDescription={taskDetailActions.onUpdateDescription}
-          onUpdateTitle={taskDetailActions.onUpdateTitle}
-          onUpdateDate={taskDetailActions.onUpdateDate}
-          onUpdateTime={taskDetailActions.onUpdateTime}
-          onUpdateCategory={taskDetailActions.onUpdateCategory}
-          onDeleteTask={taskDetailActions.onDeleteTask}
-          onAddStep={taskDetailActions.onAddStep}
-          onToggleStep={taskDetailActions.onToggleStep}
-          onDeleteStep={taskDetailActions.onDeleteStep}
-          onUpdateRepeat={taskDetailActions.onUpdateRepeat}
-          onAddAttachment={taskDetailActions.onAddAttachment}
-          onDeleteAttachment={taskDetailActions.onDeleteAttachment}
-          t={t}
+          {...taskDetailActions}
           projects={projects}
-          onAssignProject={taskDetailActions.onAssignProject}
+          t={t}
         />
       </ToastProvider>
     </div>

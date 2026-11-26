@@ -3,13 +3,17 @@
 @import "./base.css";
 @import "./layout.css";
 
-@import "./components/sidebar.css";
+@import "./components/sidebar/nav.css";
+@import "./components/sidebar/account.css";
 @import "./components/bottom-nav.css";
 @import "./components/mobile-brand-bar.css";
 @import "./components/alert.css";
 @import "./components/auth.css";
+@import "./components/banner.css";
+@import "./components/data-screen.css";
 @import "./components/legal.css";
 @import "./components/buttons.css";
+@import "./components/controls.css";
 @import "./components/card.css";
 @import "./components/checkbox.css";
 @import "./components/date-field.css";
@@ -19,14 +23,25 @@
 @import "./components/task-list.css";
 @import "./components/text-field.css";
 @import "./components/modal.css";
+@import "./components/task-detail.css";
 @import "./components/toast.css";
 
-@import "./pages/dashboard.css";
+@import "./pages/dashboard/layout.css";
+@import "./pages/dashboard/card-frame.css";
+@import "./pages/dashboard/items.css";
+@import "./pages/dashboard/card-charts.css";
+@import "./pages/dashboard/card-lists.css";
+@import "./pages/dashboard/editing.css";
+@import "./pages/dashboard/day-dialog.css";
+@import "./pages/dashboard/animations.css";
+@import "./pages/dashboard/responsive.css";
+
 @import "./pages/today.css";
 @import "./pages/routine.css";
 @import "./pages/calendar.css";
 @import "./pages/archive.css";
 @import "./pages/projects.css";
 @import "./pages/settings.css";
+@import "./pages/account.css";
 
 @import "./utilities.css";

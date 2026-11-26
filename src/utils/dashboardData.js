@@ -1,3 +1,4 @@
+import { isTaskOverdue } from "./taskHelpers";
 import { LIST_LIMIT, LIST_SHOWN } from "../constants/dashboardCards";
 import {
   addDaysToDateString,
@@ -49,7 +50,7 @@ export function getTasksForDate(tasks, date) {
 
 export function getOverdueTasks(tasks, today) {
   return tasks
-    .filter((task) => !task.completed && task.date && task.date < today)
+    .filter((task) => isTaskOverdue(task, today))
     .sort((a, b) => a.date.localeCompare(b.date) || byOrder(a, b));
 }
 

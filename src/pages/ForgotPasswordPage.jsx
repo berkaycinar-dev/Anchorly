@@ -2,11 +2,11 @@ import { useRef, useState } from "react";
 import { Link } from "react-router";
 import { ChevronLeft, Mail } from "lucide-react";
 import AuthAlert from "../components/auth/AuthAlert";
+import { EmailField } from "../components/auth/AuthFormParts";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthStatus from "../components/auth/AuthStatus";
 import Icon from "../components/Icon";
 import Button from "../components/ui/Button";
-import TextField from "../components/ui/TextField";
 import describeAuthError from "../auth/authErrors";
 import useAuth from "../auth/useAuth";
 import useCountdown from "../auth/useCountdown";
@@ -103,16 +103,9 @@ function ForgotPasswordPage({ t }) {
     >
       <form className="auth-form" noValidate onSubmit={handleSubmit}>
         <AuthAlert t={t} alert={alert} />
-        <TextField
+        <EmailField
           ref={emailRef}
-          label={t.authEmailLabel}
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
-          autoCapitalize="none"
-          spellCheck={false}
-          placeholder={t.authEmailPlaceholder}
+          t={t}
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);

@@ -1,12 +1,5 @@
 import { useLayoutEffect, useRef, useState, memo } from "react";
-import {
-  DndContext,
-  MouseSensor,
-  TouchSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
   useSortable,
@@ -27,27 +20,16 @@ import {
   Star,
 } from "lucide-react";
 import Icon from "./Icon";
+import { isTaskOverdue } from "../utils/taskHelpers";
+import useDragSensors, { SILENT_ANNOUNCEMENTS } from "../hooks/useDragSensors";
 import { getCategoryLabel } from "../utils/categoryHelpers";
-import { parseLocalDate } from "../utils/dateHelpers";
+import { formatShortDate, getDaysFromToday } from "../utils/dateHelpers";
 
 const DRAG_MODIFIERS = [restrictToVerticalAxis, restrictToParentElement];
-const SILENT_ANNOUNCEMENTS = {
-  onDragStart: () => undefined,
-  onDragOver: () => undefined,
-  onDragEnd: () => undefined,
-  onDragCancel: () => undefined,
-};
-
-const DAY_IN_MS = 24 * 60 * 60 * 1000;
-
 function getOverdueDays(task, today) {
-  if (task.completed || !task.date || !today || task.date >= today) {
-    return 0;
-  }
-
-  return Math.round(
-    (parseLocalDate(today) - parseLocalDate(task.date)) / DAY_IN_MS,
-  );
+  return today && isTaskOverdue(task, today)
+    ? -getDaysFromToday(task.date, today)
+    : 0;
 }
 
 function SortableTaskItem({ id, children }) {
@@ -83,12 +65,7 @@ function TaskList({
   const [announcement, setAnnouncement] = useState("");
   const pendingFocus = useRef(null);
   const containerRef = useRef(null);
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 250, tolerance: 5 },
-    }),
-  );
+  const sensors = useDragSensors();
 
   const activeTasks = tasks
     .filter((task) => !task.completed)
@@ -258,10 +235,7 @@ function TaskList({
       items.push(
         <span key="date" className="task-meta-item">
           <Icon icon={Calendar} size="sm" />
-          {parseLocalDate(task.date).toLocaleDateString(t.dateLocale, {
-            day: "numeric",
-            month: "short",
-          })}
+          {formatShortDate(task.date, t.dateLocale)}
         </span>,
       );
     }

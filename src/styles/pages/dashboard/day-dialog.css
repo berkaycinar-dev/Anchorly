@@ -1,0 +1,68 @@
+.day-dialog {
+  width: min(460px, calc(100vw - 32px));
+  max-height: min(80vh, 640px);
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-modal);
+}
+
+.day-dialog[open] {
+  animation: dashboard-pop 200ms var(--ease-standard) both;
+}
+
+.day-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0.45);
+}
+
+.day-dialog-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+}
+
+.day-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.day-dialog-header > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.day-dialog-kicker {
+  margin: 0 0 2px;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.day-dialog-header h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.day-dialog-list {
+  gap: 6px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.day-dialog-list .dashboard-row {
+  padding: 10px 12px;
+}
+
+.day-dialog-list svg:last-child {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.day-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}

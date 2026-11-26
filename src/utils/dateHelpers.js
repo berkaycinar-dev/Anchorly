@@ -77,3 +77,38 @@ export function getRoutineIdFromKey(key) {
 
   return key.slice(secondDash + 1, lastDash);
 }
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+// Whole days from `today` to `dateString`: negative in the past.
+export function getDaysFromToday(dateString, today) {
+  const difference = parseLocalDate(dateString) - parseLocalDate(today);
+
+  return Math.round(difference / MS_PER_DAY);
+}
+
+function formatDate(dateString, locale, options) {
+  return new Intl.DateTimeFormat(locale, options).format(
+    parseLocalDate(dateString),
+  );
+}
+
+// "Oct 24" / "24 Eki"
+export function formatShortDate(dateString, locale) {
+  return formatDate(dateString, locale, { day: "numeric", month: "short" });
+}
+
+// "October 24" / "24 Ekim"
+export function formatLongDate(dateString, locale) {
+  return formatDate(dateString, locale, { day: "numeric", month: "long" });
+}
+
+// "Sat, Oct 24, 2026"
+export function formatWeekdayDate(dateString, locale) {
+  return formatDate(dateString, locale, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}

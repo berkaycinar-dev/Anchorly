@@ -1,6 +1,7 @@
 import { Paperclip } from "lucide-react";
 import Icon from "../Icon";
-import { formatShortDate, getStepProgress } from "../../utils/projectHelpers";
+import { getStepProgress } from "../../utils/projectHelpers";
+import { formatShortDate } from "../../utils/dateHelpers";
 
 function getDateTone(task, today) {
   if (task.completed) {

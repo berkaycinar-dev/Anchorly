@@ -182,6 +182,16 @@ export default function createApiTasksRepository({ client, today }) {
     };
   }
 
+  function sendBulk(chunk) {
+    return client.request("POST", `${TASKS_PATH}/bulk`, {
+      body: { operations: chunk.map(({ operation }) => operation) },
+    });
+  }
+
+  function isStored(id) {
+    return store.getSnapshot().some((task) => task.id === id);
+  }
+
   function findTask(id) {
     return getSnapshot().find((task) => task.id === id) ?? null;
   }
@@ -254,10 +264,7 @@ export default function createApiTasksRepository({ client, today }) {
             ...current,
             ...chunk.map(({ task }) => toStateTask(task)),
           ],
-          send: () =>
-            client.request("POST", `${TASKS_PATH}/bulk`, {
-              body: { operations: chunk.map(({ operation }) => operation) },
-            }),
+          send: () => sendBulk(chunk),
           settle: (current, response) =>
             overlayServerTasks(current, getResultTasks(response)),
         }),
@@ -266,11 +273,7 @@ export default function createApiTasksRepository({ client, today }) {
       () => tasks.map((task) => findTask(task.id)),
       (error) => {
         clearLocalFields(
-          tasks
-            .filter(
-              (task) => !store.getSnapshot().some((s) => s.id === task.id),
-            )
-            .map((task) => task.id),
+          tasks.filter((task) => !isStored(task.id)).map((task) => task.id),
         );
         throw error;
       },
@@ -319,10 +322,7 @@ export default function createApiTasksRepository({ client, today }) {
     const requests = chunkEntries(entries).map((chunk) =>
       store.mutate({
         apply: applyPatches(chunk),
-        send: () =>
-          client.request("POST", `${TASKS_PATH}/bulk`, {
-            body: { operations: chunk.map(({ operation }) => operation) },
-          }),
+        send: () => sendBulk(chunk),
         settle: (current, response) =>
           overlayServerTasks(current, getResultTasks(response)),
       }),
@@ -346,9 +346,7 @@ export default function createApiTasksRepository({ client, today }) {
   }
 
   function removeMany(ids) {
-    const existingIds = ids.filter((id) =>
-      store.getSnapshot().some((task) => task.id === id),
-    );
+    const existingIds = ids.filter(isStored);
     const entries = existingIds.map((id) => ({
       id,
       operation: { type: "delete", id },
@@ -360,10 +358,7 @@ export default function createApiTasksRepository({ client, today }) {
           .mutate({
             apply: (tasks) =>
               tasks.filter((task) => !chunk.some(({ id }) => id === task.id)),
-            send: () =>
-              client.request("POST", `${TASKS_PATH}/bulk`, {
-                body: { operations: chunk.map(({ operation }) => operation) },
-              }),
+            send: () => sendBulk(chunk),
           })
           .then(() => clearLocalFields(chunk.map(({ id }) => id))),
       ),
@@ -375,9 +370,7 @@ export default function createApiTasksRepository({ client, today }) {
   }
 
   function reorder(orderedIds) {
-    const knownIds = orderedIds.filter((id) =>
-      store.getSnapshot().some((task) => task.id === id),
-    );
+    const knownIds = orderedIds.filter(isStored);
 
     if (knownIds.length === 0) {
       return Promise.resolve();

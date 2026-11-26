@@ -1,8 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
   filterTasksByCategory,
-  formatShortDate,
-  getDaysLeft,
   getOpenTaskCount,
   getProjectColorKey,
   getProjectInitial,
@@ -13,6 +11,7 @@ import {
   PROJECT_COLOR_KEYS,
   splitProjects,
 } from "./projectHelpers";
+import { formatShortDate, getDaysFromToday } from "./dateHelpers";
 
 function createTask(overrides = {}) {
   return {
@@ -159,18 +158,18 @@ describe("getOpenTaskCount", () => {
   });
 });
 
-describe("getDaysLeft", () => {
+describe("getDaysFromToday", () => {
   it("gives the number of days until the due date", () => {
-    expect(getDaysLeft("2026-11-15", "2026-11-02")).toBe(13);
+    expect(getDaysFromToday("2026-11-15", "2026-11-02")).toBe(13);
   });
 
   it("gives zero on the due date and a negative number after it", () => {
-    expect(getDaysLeft("2026-11-02", "2026-11-02")).toBe(0);
-    expect(getDaysLeft("2026-11-01", "2026-11-02")).toBe(-1);
+    expect(getDaysFromToday("2026-11-02", "2026-11-02")).toBe(0);
+    expect(getDaysFromToday("2026-11-01", "2026-11-02")).toBe(-1);
   });
 
   it("counts whole days across a daylight saving change", () => {
-    expect(getDaysLeft("2026-04-01", "2026-03-20")).toBe(12);
+    expect(getDaysFromToday("2026-04-01", "2026-03-20")).toBe(12);
   });
 });
 

@@ -49,6 +49,22 @@
   .sidebar-brand:hover {
     background-color: var(--nav-hover-bg);
   }
+  .sidebar .nav-item:hover {
+    background-color: var(--nav-hover-bg);
+  }
+  .account-trigger:hover {
+    background-color: var(--nav-hover-bg);
+  }
+  .account-menu-item:hover {
+    background-color: var(--nav-hover-bg);
+  }
+  .account-guest-primary:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 88%, #000000);
+  }
+
+  .account-guest-secondary:hover {
+    background-color: var(--nav-hover-bg);
+  }
 }
 
 .sidebar-brand:focus-visible {
@@ -90,12 +106,6 @@
     background-color 0.18s ease,
     color 0.18s ease,
     transform 0.12s ease;
-}
-
-@media (hover: hover) {
-  .sidebar .nav-item:hover {
-    background-color: var(--nav-hover-bg);
-  }
 }
 
 .sidebar .nav-item:active {
@@ -226,15 +236,6 @@
   color: var(--color-text-primary);
 }
 
-.app-logo-outline {
-  fill: none;
-  stroke: currentColor;
-}
-
-.app-logo-inner {
-  fill: currentColor;
-}
-
 @media (min-width: 768px) {
   .sidebar {
     display: block;
@@ -336,319 +337,6 @@
       transform var(--duration-fast) ease 300ms,
       visibility 0s linear 300ms;
   }
-}
-
-@media (min-width: 1024px) {
-  .sidebar[data-expanded="false"] {
-    width: 72px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1023.98px) {
-  .sidebar {
-    width: 72px;
-  }
-
-  .sidebar[data-overlay="true"] .sidebar-panel {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 60;
-    width: 248px;
-    padding-left: calc(12px + var(--safe-area-left));
-    background-color: var(--color-bg-card);
-    border-right: 1px solid var(--color-border);
-    box-shadow: var(--shadow-modal);
-    animation: sidebar-slide-in var(--duration-base) var(--ease-standard);
-  }
-
-  .sidebar-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 55;
-    display: block;
-    background-color: rgba(15, 23, 42, 0.35);
-    animation: sidebar-fade-in var(--duration-base) ease;
-  }
-}
-
-@keyframes sidebar-slide-in {
-  from {
-    width: 72px;
-  }
-  to {
-    width: 248px;
-  }
-}
-
-.sidebar-account {
-  position: relative;
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--color-border);
-}
-
-.account-trigger {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: var(--radius-md);
-  background-color: transparent;
-  color: var(--color-text-primary);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color var(--duration-fast) ease;
-}
-
-@media (hover: hover) {
-  .account-trigger:hover {
-    background-color: var(--nav-hover-bg);
-  }
-}
-
-.account-trigger[aria-expanded="true"] {
-  background-color: var(--nav-active-bg);
-}
-
-.account-trigger:focus-visible,
-.account-guest-button:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.account-avatar {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-accent-tint);
-  color: var(--color-text-primary);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.account-text {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.account-name,
-.account-email,
-.account-menu-name,
-.account-menu-email {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.account-name {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.account-email {
-  color: var(--color-text-secondary);
-  font-size: 12px;
-}
-
-.account-chevron {
-  flex-shrink: 0;
-  color: var(--color-text-secondary);
-}
-
-.account-menu-anchor {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
-  left: 0;
-  z-index: 80;
-}
-
-.account-menu {
-  display: flex;
-  flex-direction: column;
-  padding: 6px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background-color: var(--color-bg-card);
-  box-shadow: var(--shadow-pop);
-  animation: account-menu-in var(--duration-fast) var(--ease-standard);
-}
-
-.account-menu-header {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 4px;
-  padding: 8px 10px 10px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.account-menu-name {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.account-menu-email {
-  color: var(--color-text-secondary);
-  font-size: 12px;
-}
-
-.account-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  height: 36px;
-  padding: 0 10px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background-color: transparent;
-  color: var(--color-text-primary);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.account-menu-item svg {
-  color: var(--color-text-secondary);
-}
-
-@media (hover: hover) {
-  .account-menu-item:hover {
-    background-color: var(--nav-hover-bg);
-  }
-}
-
-.account-menu-item:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: -2px;
-}
-
-.account-menu-danger,
-.account-menu-danger svg {
-  color: var(--color-danger);
-}
-
-.account-menu-separator {
-  height: 1px;
-  margin: 4px 0;
-  background-color: var(--color-border);
-}
-
-.sidebar-account-guest {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.account-guest-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    background-color var(--duration-fast) ease,
-    border-color var(--duration-fast) ease;
-}
-
-.account-guest-primary {
-  border: 1px solid var(--color-accent);
-  background-color: var(--color-accent);
-  color: var(--color-accent-contrast);
-}
-
-.account-guest-secondary {
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: var(--color-text-primary);
-}
-
-@media (hover: hover) {
-  .account-guest-primary:hover {
-    background-color: color-mix(in srgb, var(--color-accent) 88%, #000000);
-  }
-
-  .account-guest-secondary:hover {
-    background-color: var(--nav-hover-bg);
-  }
-}
-
-.account-guest-icon {
-  display: none;
-}
-
-.sidebar-account-loading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 20px 8px 8px;
-}
-
-.account-skeleton {
-  background-color: color-mix(
-    in srgb,
-    var(--color-text-primary) 9%,
-    transparent
-  );
-  animation: account-skeleton-pulse 1.2s ease-in-out infinite;
-}
-
-.account-skeleton-line {
-  display: block;
-  width: 100%;
-  height: 10px;
-  border-radius: 4px;
-}
-
-.account-skeleton-short {
-  width: 60%;
-}
-
-@keyframes account-menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes account-skeleton-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.45;
-  }
-}
-
-@media (min-width: 768px) {
   .sidebar[data-expanded="false"] .account-text,
   .sidebar[data-expanded="false"] .account-chevron,
   .sidebar[data-expanded="false"] .account-guest-secondary {
@@ -713,6 +401,50 @@
       opacity var(--duration-fast) ease 300ms,
       transform var(--duration-fast) ease 300ms,
       visibility 0s linear 300ms;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar[data-expanded="false"] {
+    width: 72px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .sidebar {
+    width: 72px;
+  }
+
+  .sidebar[data-overlay="true"] .sidebar-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 60;
+    width: 248px;
+    padding-left: calc(12px + var(--safe-area-left));
+    background-color: var(--color-bg-card);
+    border-right: 1px solid var(--color-border);
+    box-shadow: var(--shadow-modal);
+    animation: sidebar-slide-in var(--duration-base) var(--ease-standard);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    background-color: rgba(15, 23, 42, 0.35);
+    animation: sidebar-fade-in var(--duration-base) ease;
+  }
+}
+
+@keyframes sidebar-slide-in {
+  from {
+    width: 72px;
+  }
+  to {
+    width: 248px;
   }
 }
 

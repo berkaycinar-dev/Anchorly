@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
-const FLAME_PATH =
-  "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z";
+import { EllipsisVertical, Flame } from "lucide-react";
 
 function RoutineMenu({ title, onDelete, t }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,18 +48,7 @@ function RoutineMenu({ title, onDelete, t }) {
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
       >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          aria-hidden="true"
-        >
-          <path d="M12 5h.01 M12 12h.01 M12 19h.01" />
-        </svg>
+        <EllipsisVertical size={18} strokeWidth={2.4} aria-hidden="true" />
       </button>
 
       {isOpen && (
@@ -125,19 +112,7 @@ export default function RoutineCard({
               : "routine-streak routine-streak-empty"
           }
         >
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d={FLAME_PATH} />
-          </svg>
+          <Flame size={13} strokeWidth={2} aria-hidden="true" />
           {streak > 0 ? t.streakDays(streak) : t.noStreak}
         </span>
 

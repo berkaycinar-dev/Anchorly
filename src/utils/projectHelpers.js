@@ -1,5 +1,3 @@
-import { parseLocalDate } from "./dateHelpers";
-
 export const PROJECT_COLOR_KEYS = [
   "work",
   "growth",
@@ -9,7 +7,6 @@ export const PROJECT_COLOR_KEYS = [
   "other",
 ];
 
-export const BOARD_COLUMNS = ["todo", "doing", "done"];
 export const BOARD_DONE_LIMIT = 3;
 
 export function getProjectColorKey(projectId) {
@@ -73,27 +70,6 @@ export function getStepProgress(task) {
 export function getOpenTaskCount(tasks, projectId) {
   return tasks.filter((task) => task.projectId === projectId && !task.completed)
     .length;
-}
-
-export function getDaysLeft(dueDate, today) {
-  const millisecondsPerDay = 24 * 60 * 60 * 1000;
-  const difference = parseLocalDate(dueDate) - parseLocalDate(today);
-
-  return Math.round(difference / millisecondsPerDay);
-}
-
-export function formatShortDate(dateString, locale) {
-  return parseLocalDate(dateString).toLocaleDateString(locale, {
-    day: "numeric",
-    month: "short",
-  });
-}
-
-export function formatLongDate(dateString, locale) {
-  return parseLocalDate(dateString).toLocaleDateString(locale, {
-    day: "numeric",
-    month: "long",
-  });
 }
 
 export function filterTasksByCategory(tasks, category) {

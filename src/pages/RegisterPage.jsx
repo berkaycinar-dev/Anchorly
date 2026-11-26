@@ -3,15 +3,19 @@ import { CircleAlert } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router";
 import AuthAlert from "../components/auth/AuthAlert";
 import AuthLayout from "../components/auth/AuthLayout";
+import {
+  AuthLoading,
+  AuthSubmitButton,
+  EmailField,
+} from "../components/auth/AuthFormParts";
 import Icon from "../components/Icon";
-import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
 import describeAuthError from "../auth/authErrors";
 import { AUTH_STATUS } from "../auth/authStatus";
 import getSafeNextPath, { withNextPath } from "../auth/safeNextPath";
 import useAuth from "../auth/useAuth";
 import getDeviceName from "../auth/deviceName";
-import useCountdown, { formatCountdown } from "../auth/useCountdown";
+import useCountdown from "../auth/useCountdown";
 import {
   PASSWORD_MIN_LENGTH,
   validateEmail,
@@ -53,13 +57,7 @@ function RegisterPage({ t, language }) {
   }
 
   if (status === AUTH_STATUS.loading) {
-    return (
-      <AuthLayout t={t}>
-        <p className="auth-loading" role="status" aria-busy="true">
-          {t.accountLoading}
-        </p>
-      </AuthLayout>
-    );
+    return <AuthLoading t={t} />;
   }
 
   const visibleAlert =
@@ -185,16 +183,9 @@ function RegisterPage({ t, language }) {
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
-        <TextField
+        <EmailField
           ref={emailRef}
-          label={t.authEmailLabel}
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
-          autoCapitalize="none"
-          spellCheck={false}
-          placeholder={t.authEmailPlaceholder}
+          t={t}
           value={email}
           onChange={handleEmailChange}
           error={fieldErrors.email}
@@ -251,17 +242,9 @@ function RegisterPage({ t, language }) {
             </p>
           ) : null}
         </div>
-        <Button
-          type="submit"
-          size="lg"
-          block
-          loading={submitting}
-          disabled={remaining > 0}
-        >
-          {remaining > 0
-            ? `${t.authRegisterTitle} (${formatCountdown(remaining)})`
-            : t.authRegisterTitle}
-        </Button>
+        <AuthSubmitButton submitting={submitting} remaining={remaining}>
+          {t.authRegisterTitle}
+        </AuthSubmitButton>
       </form>
     </AuthLayout>
   );

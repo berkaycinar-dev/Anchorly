@@ -373,6 +373,67 @@ describe("AuthProvider on start", () => {
     expect(refreshSession).toHaveBeenCalledTimes(1);
   });
 
+  it("continues on this device without waiting for the server", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    let finish;
+    const refreshSession = vi.fn(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const { auth } = renderAuth({ api: createFakeApi({ refreshSession }) });
+
+    expect(status()).toBe(AUTH_STATUS.loading);
+
+    act(() => {
+      auth().continueLocally();
+    });
+
+    expect(status()).toBe(AUTH_STATUS.signedOut);
+    expect(screen.getByTestId("startup-error")).toHaveTextContent("");
+    expect(hasSessionHint()).toBe(true);
+
+    await act(async () => {
+      finish(session());
+    });
+    await advance(STARTUP_RETRY_DELAY_MS * STARTUP_REFRESH_ATTEMPTS);
+
+    expect(status()).toBe(AUTH_STATUS.signedOut);
+    expect(refreshSession).toHaveBeenCalledTimes(1);
+  });
+
+  it("stops retrying once someone continues on this device", async () => {
+    vi.useFakeTimers();
+    setSessionHint();
+    const refreshSession = vi.fn().mockRejectedValue(networkError());
+    const { auth } = renderAuth({ api: createFakeApi({ refreshSession }) });
+
+    await advance(0);
+    act(() => {
+      auth().continueLocally();
+    });
+    await advance(STARTUP_RETRY_DELAY_MS * STARTUP_REFRESH_ATTEMPTS);
+
+    expect(refreshSession).toHaveBeenCalledTimes(1);
+    expect(status()).toBe(AUTH_STATUS.signedOut);
+  });
+
+  it("ignores continuing on this device once signed in", async () => {
+    setSessionHint();
+    const { auth } = renderAuth();
+
+    await waitFor(() => {
+      expect(status()).toBe(AUTH_STATUS.signedIn);
+    });
+    act(() => {
+      auth().continueLocally();
+    });
+
+    expect(status()).toBe(AUTH_STATUS.signedIn);
+  });
+
   it("does not write the hint back when it was removed during the restore", async () => {
     setSessionHint();
     let finish;

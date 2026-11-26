@@ -111,32 +111,6 @@
   color: var(--color-text-primary);
 }
 
-.auth-legal-links {
-  margin-top: calc(var(--space-6) * -1 + var(--space-1));
-}
-
-.auth-consent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.auth-consent-row {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-}
-
-.auth-consent-row .themed-checkbox {
-  margin-top: 1px;
-}
-
-.auth-consent-label {
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--color-text-secondary);
-}
-
 .auth-consent-label a,
 .terms-dialog-links a {
   color: var(--color-accent-text);
