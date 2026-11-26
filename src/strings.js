@@ -584,6 +584,9 @@ export const strings = {
     dataLoading: "Verilerin yükleniyor",
     dataLoadingSlow:
       "Sunucu uyanıyor olabilir, bu bir dakikayı bulabilir. Oturumun korunuyor.",
+    dataContinueLocally: "Bu cihazda devam et",
+    dataContinueLocallyHint:
+      "Beklemek istemiyorsan hesabına bağlanmadan, bu cihazda saklanan verilerle devam edebilirsin. Oturumun kapanmaz; bir sonraki açılışta tekrar bağlanmayı deneriz.",
     dataLoadErrorTitle: "Verilerin yüklenemedi",
     dataLoadErrorBody:
       "Sunucuya ulaşılamadı veya bir sorun oluştu. Bağlantını kontrol edip tekrar dene.",
@@ -1431,6 +1434,9 @@ export const strings = {
     dataLoading: "Loading your data",
     dataLoadingSlow:
       "The server may be waking up, this can take up to a minute. You are still signed in.",
+    dataContinueLocally: "Continue on this device",
+    dataContinueLocallyHint:
+      "If you don't want to wait, you can continue without your account, using the data stored on this device. You stay signed in; we will try to connect again next time.",
     dataLoadErrorTitle: "Your data could not be loaded",
     dataLoadErrorBody:
       "The server could not be reached or something went wrong. Check your connection and try again.",

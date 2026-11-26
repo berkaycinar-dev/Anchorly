@@ -138,7 +138,7 @@ export default function DataProvider({
   const status = auth?.status ?? AUTH_STATUS.disabled;
 
   if (status === AUTH_STATUS.loading) {
-    return <DataLoadingScreen />;
+    return <DataLoadingScreen onContinueLocally={auth.continueLocally} />;
   }
 
   const client =

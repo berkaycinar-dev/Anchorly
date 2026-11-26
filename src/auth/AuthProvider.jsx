@@ -53,6 +53,7 @@ export default function AuthProvider({
   createChannel = createAuthChannel,
 }) {
   const channelRef = useRef(null);
+  const cancelRestoreRef = useRef(null);
   const [shouldRestore] = useState(() => enabled && hasSessionHint());
   const [sessionEvents] = useState(() => new EventTarget());
   const [api] = useState(() =>
@@ -153,13 +154,32 @@ export default function AuthProvider({
       );
     }
 
+    function cancel() {
+      cancelled = true;
+      clearTimeout(retryTimer);
+    }
+
+    cancelRestoreRef.current = cancel;
     attempt(1);
 
     return () => {
-      cancelled = true;
-      clearTimeout(retryTimer);
+      cancel();
+
+      if (cancelRestoreRef.current === cancel) {
+        cancelRestoreRef.current = null;
+      }
     };
   }, [api, shouldRestore, showSignedIn, showSignedOut]);
+
+  // Lets someone stop waiting for an unreachable server and use the data
+  // kept on this device. The hint stays, so the next visit tries again.
+  const continueLocally = useCallback(() => {
+    cancelRestoreRef.current?.();
+    cancelRestoreRef.current = null;
+    setState((current) =>
+      current.status === AUTH_STATUS.loading ? signedOutState() : current,
+    );
+  }, []);
 
   useEffect(() => {
     if (!api) {
@@ -252,6 +272,7 @@ export default function AuthProvider({
         logout: rejectDisabled,
         setUser: ignore,
         endSession: ignore,
+        continueLocally: ignore,
       };
     }
 
@@ -264,8 +285,19 @@ export default function AuthProvider({
       logout,
       setUser,
       endSession,
+      continueLocally,
     };
-  }, [api, enabled, endSession, login, logout, register, setUser, state]);
+  }, [
+    api,
+    continueLocally,
+    enabled,
+    endSession,
+    login,
+    logout,
+    register,
+    setUser,
+    state,
+  ]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

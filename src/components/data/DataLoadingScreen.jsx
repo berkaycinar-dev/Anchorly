@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { strings } from "../../strings";
 import Logo from "../Logo";
+import Button from "../ui/Button";
 import useFallbackPreferences from "./useFallbackPreferences";
 
 export const SLOW_LOADING_MS = 6000;
 
-function DataLoadingScreen() {
+function DataLoadingScreen({ onContinueLocally }) {
   const { language, theme, fontFamily } = useFallbackPreferences();
   const [slow, setSlow] = useState(false);
   const t = strings[language];
@@ -27,6 +28,14 @@ function DataLoadingScreen() {
         </div>
         <p className="data-gate-text">{t.dataLoading}</p>
         {slow ? <p className="data-gate-text">{t.dataLoadingSlow}</p> : null}
+        {slow && onContinueLocally ? (
+          <div className="data-gate-card">
+            <p className="data-gate-text">{t.dataContinueLocallyHint}</p>
+            <Button variant="secondary" onClick={onContinueLocally}>
+              {t.dataContinueLocally}
+            </Button>
+          </div>
+        ) : null}
       </main>
     </div>
   );
