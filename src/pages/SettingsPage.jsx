@@ -3,6 +3,7 @@ import { Info, Languages, Palette, User } from "lucide-react";
 import { Link } from "react-router";
 import Icon from "../components/Icon";
 import AccountPanel from "../components/settings/AccountPanel";
+import InstallAppRow from "../components/settings/InstallAppRow";
 import SegmentedOptions from "../components/settings/SegmentedOptions";
 import SettingsRow from "../components/settings/SettingsRow";
 import ThemeSwatches from "../components/settings/ThemeSwatches";
@@ -22,6 +23,7 @@ export default function SettingsPage({
   setFontFamily,
   weekStartDay,
   setWeekStartDay,
+  installPromptStore,
 }) {
   const { status, user, logout } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
@@ -142,6 +144,7 @@ export default function SettingsPage({
 
           {activeId === "about" && (
             <>
+              <InstallAppRow t={t} store={installPromptStore} />
               <SettingsRow
                 label={t.legalPrivacyTitle}
                 description={t.settingsPrivacyDescription}

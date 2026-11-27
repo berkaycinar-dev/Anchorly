@@ -628,6 +628,15 @@ export const strings = {
       "Hangi verileri neden işlediğimiz, ne kadar sakladığımız ve hakların",
     settingsTermsDescription: "Anchorly'yi kullanma kuralları",
     settingsOpenDocument: "Aç",
+    settingsInstallTitle: "Uygulamayı yükle",
+    settingsInstallDescription:
+      "Anchorly'yi bu cihaza uygulama olarak ekle. Kendi penceresinde açılır, internet olmadan da çalışır.",
+    settingsInstallButton: "Yükle",
+    settingsInstallInstalled: "Anchorly bu cihazda yüklü.",
+    settingsInstallIos:
+      "Safari'de Paylaş düğmesine dokun, ardından “Ana Ekrana Ekle”yi seç.",
+    settingsInstallUnavailable:
+      "Bu tarayıcı buradan yüklemeyi desteklemiyor ya da Anchorly zaten yüklü. Tarayıcı menüsündeki “Uygulamayı yükle” seçeneğini deneyebilirsin.",
     legalDocuments: {
       privacy: {
         intro: [
@@ -1485,6 +1494,15 @@ export const strings = {
       "Which data we process and why, how long we keep it and your rights",
     settingsTermsDescription: "The rules for using Anchorly",
     settingsOpenDocument: "Open",
+    settingsInstallTitle: "Install the app",
+    settingsInstallDescription:
+      "Add Anchorly to this device as an app. It opens in its own window and works offline too.",
+    settingsInstallButton: "Install",
+    settingsInstallInstalled: "Anchorly is installed on this device.",
+    settingsInstallIos:
+      "In Safari, tap the Share button, then choose “Add to Home Screen”.",
+    settingsInstallUnavailable:
+      "This browser can't install from here, or Anchorly is already installed. Try “Install app” in the browser menu.",
     legalDocuments: {
       privacy: {
         intro: [
