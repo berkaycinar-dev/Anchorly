@@ -59,6 +59,7 @@ import useTasks from "./hooks/useTasks";
 import useRoutines from "./hooks/useRoutines";
 import useProjects from "./hooks/useProjects";
 import useSettings from "./hooks/useSettings";
+import useThemeColor from "./pwa/useThemeColor";
 import DataProvider from "./data/DataProvider";
 import AuthProvider from "./auth/AuthProvider";
 import useAuth from "./auth/useAuth";
@@ -161,6 +162,13 @@ function AppContent() {
     dashboardLayout,
     setDashboardLayout,
   } = useSettings();
+  useThemeColor(theme);
+
+  // index.html ships lang="en"; without this a Turkish UI is announced as
+  // English and browsers keep offering to translate the page.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   const t = strings[language];
   const sidebar = useSidebar();

@@ -9,7 +9,11 @@ import SettingsPage from "./SettingsPage";
 
 const t = strings.en;
 
-function renderSettings() {
+function fakeInstallStore(status, install = vi.fn(async () => "accepted")) {
+  return { getStatus: () => status, subscribe: () => () => {}, install };
+}
+
+function renderSettings({ installPromptStore } = {}) {
   return render(
     <MemoryRouter useTransitions={false}>
       <AuthContext.Provider
@@ -25,6 +29,7 @@ function renderSettings() {
           setFontFamily={vi.fn()}
           weekStartDay="monday"
           setWeekStartDay={vi.fn()}
+          installPromptStore={installPromptStore}
         />
       </AuthContext.Provider>
     </MemoryRouter>,
@@ -54,5 +59,42 @@ describe("SettingsPage", () => {
         name: `${t.settingsOpenDocument}: ${t.legalTermsTitle}`,
       }),
     ).toHaveAttribute("href", "/terms");
+  });
+
+  it("installs the app from About when the browser offers it", async () => {
+    const user = userEvent.setup();
+    const install = vi.fn(async () => "accepted");
+    renderSettings({
+      installPromptStore: fakeInstallStore("available", install),
+    });
+
+    await user.click(
+      screen.getByRole("button", { name: t.settingsCategoryAbout }),
+    );
+
+    expect(screen.getByText(t.settingsInstallTitle)).toBeInTheDocument();
+    expect(screen.getByText(t.settingsInstallDescription)).toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: t.settingsInstallButton }),
+    );
+    expect(install).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ["installed", t.settingsInstallInstalled],
+    ["ios", t.settingsInstallIos],
+    ["unavailable", t.settingsInstallUnavailable],
+  ])("explains instead of showing a button when %s", async (status, text) => {
+    const user = userEvent.setup();
+    renderSettings({ installPromptStore: fakeInstallStore(status) });
+
+    await user.click(
+      screen.getByRole("button", { name: t.settingsCategoryAbout }),
+    );
+
+    expect(screen.getByText(text)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: t.settingsInstallButton }),
+    ).not.toBeInTheDocument();
   });
 });

@@ -39,6 +39,18 @@ describe("App settings", () => {
     expect(document.querySelector(".page-title")).toHaveTextContent("Ayarlar");
   });
 
+  it("keeps the page's lang attribute in step with the app language", async () => {
+    const user = userEvent.setup();
+    renderApp("/settings");
+
+    expect(document.documentElement.lang).toBe("tr");
+
+    await user.click(screen.getByRole("button", { name: "Dil ve bölge" }));
+    await user.click(screen.getByRole("button", { name: "English" }));
+
+    expect(document.documentElement.lang).toBe("en");
+  });
+
   it("opens on the appearance category without an account category", () => {
     renderApp("/settings");
 

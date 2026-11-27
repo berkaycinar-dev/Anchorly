@@ -25,6 +25,7 @@
 @import "./components/modal.css";
 @import "./components/task-detail.css";
 @import "./components/toast.css";
+@import "./components/titlebar.css";
 
 @import "./pages/dashboard/layout.css";
 @import "./pages/dashboard/card-frame.css";
