@@ -20,6 +20,7 @@
 @import "./components/text-field.css";
 @import "./components/modal.css";
 @import "./components/toast.css";
+@import "./components/titlebar.css";
 
 @import "./pages/dashboard.css";
 @import "./pages/today.css";

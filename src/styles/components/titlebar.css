@@ -1,0 +1,56 @@
+/* Installed desktop app in Window Controls Overlay mode: the browser's title
+   bar is gone and the page runs up to the top edge, with the window buttons
+   drawn over its top-right corner. env(titlebar-area-*) describe the strip
+   beside those buttons; outside this mode the media query does not match. */
+@media (display-mode: window-controls-overlay) {
+  :root {
+    --titlebar-height: env(titlebar-area-height, 0px);
+    /* Everything that already clears the top inset (the app shell, modal
+       headers, the task panel) now clears the window buttons too. */
+    --safe-area-top: max(env(safe-area-inset-top, 0px), var(--titlebar-height));
+  }
+
+  /* An empty strip the window can be dragged by. It sits inside the themed
+     root so it takes the theme's page colour, which useThemeColor also gives
+     the area behind the window buttons. */
+  .app::before,
+  .auth-shell::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--titlebar-height);
+    background-color: var(--color-bg-page);
+    app-region: drag;
+    -webkit-app-region: drag;
+  }
+
+  /* Sticky and fixed elements measured from the top of the viewport, each at
+     the breakpoint where it becomes sticky. */
+  @media (min-width: 768px) {
+    .sidebar {
+      top: var(--titlebar-height);
+      height: calc(100dvh - var(--titlebar-height));
+    }
+
+    .sidebar[data-overlay="true"] .sidebar-panel {
+      top: var(--titlebar-height);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .card-library {
+      top: calc(16px + var(--titlebar-height));
+      max-height: calc(100dvh - 32px - var(--titlebar-height));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .task-detail-panel {
+      top: calc(32px + var(--titlebar-height));
+      max-height: calc(100dvh - 64px - var(--titlebar-height));
+    }
+  }
+}
